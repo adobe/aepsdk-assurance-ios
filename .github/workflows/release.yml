@@ -13,13 +13,13 @@ on:
         required: true
         default: 'yes'
 
-      release_AEPEdgeConsent:
-        description: 'release AEPEdgeConsent to Cocoapods ("no" to skip)'
+      release_AEPAssurance:
+        description: 'release AEPAssurance to Cocoapods ("no" to skip)'
         required: true
         default: 'yes'
 
 jobs:
-  release_consent:
+  release_assurance:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
@@ -62,11 +62,11 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Publish Pods - AEPEdgeConsent
-      if: ${{ github.event.inputs.release_AEPEdgeConsent == 'yes' }}
+    - name: Publish Pods - AEPAssurance
+      if: ${{ github.event.inputs.release_AEPAssurance == 'yes' }}
       run: |
         set -eo pipefail
-        pod trunk push AEPEdgeConsent.podspec --allow-warnings --synchronous --swift-version=5.1
+        pod trunk push AEPAssurance.podspec --allow-warnings --synchronous --swift-version=5.1
         pod repo update
       env:
         COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
