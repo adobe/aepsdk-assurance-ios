@@ -10,21 +10,29 @@
  governing permissions and limitations under the License.
  */
 
-import XCTest
-@testable import AEPAssurance
+import Foundation
 
-class AEPAssuranceTests: XCTestCase {
+@testable import AEPCore
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+class MockExtension: Extension {    
+    var name = "mockExtension"
+    var friendlyName = "mockExtension"
+    static var extensionVersion = "0.0.1"
+    var metadata: [String : String]?
+
+    let runtime: ExtensionRuntime
+
+    required init(runtime: ExtensionRuntime) {
+        self.runtime = runtime
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func onRegistered() {
     }
 
-    func test_extensionVersion() throws {
-        XCTAssertEqual (AssuranceConstants.EXTENSION_VERSION, Assurance.extensionVersion)
+    func onUnregistered() {
     }
 
+    func readyForEvent(_: Event) -> Bool {
+        return true
+    }
 }
