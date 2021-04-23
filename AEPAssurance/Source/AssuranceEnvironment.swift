@@ -22,13 +22,13 @@ enum AssuranceEnvironment: String {
     var urlFormat: String {
         switch self {
         case .prod:
-            return AssuranceConstants.AssuranceEnvironmentURLFormat.PRODUCTION
+            return AssuranceEnvironmentURLFormat.PRODUCTION
         case .qa:
-            return AssuranceConstants.AssuranceEnvironmentURLFormat.QA
+            return AssuranceEnvironmentURLFormat.QA
         case .stage:
-            return AssuranceConstants.AssuranceEnvironmentURLFormat.STAGE
+            return AssuranceEnvironmentURLFormat.STAGE
         case .dev:
-            return AssuranceConstants.AssuranceEnvironmentURLFormat.DEV
+            return AssuranceEnvironmentURLFormat.DEV
         }
     }
     /// Initializer that converts a `String` to its respective `AssuranceEnvironment`
@@ -37,6 +37,14 @@ enum AssuranceEnvironment: String {
     /// - Returns: a `AssuranceEnvironment` representing the passed-in `String`
     init(envString: String){
         self = AssuranceEnvironment(rawValue: envString) ?? .prod
+    }
+    
+    
+    enum AssuranceEnvironmentURLFormat {
+        static let PRODUCTION = ""
+        static let QA = "-qa"
+        static let STAGE = "-stage"
+        static let DEV = "-dev"
     }
 
 }

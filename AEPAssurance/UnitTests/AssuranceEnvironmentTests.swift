@@ -30,12 +30,11 @@ class AssuranceEnvironmentTests: XCTestCase {
         XCTAssertEqual(defaultEnum, AssuranceEnvironment.prod)
     }
     
-    
     func test_AssuranceEnvironment_URLFormat() throws {
-        XCTAssertEqual(AssuranceConstants.AssuranceEnvironmentURLFormat.DEV, AssuranceEnvironment.dev.urlFormat)
-        XCTAssertEqual(AssuranceConstants.AssuranceEnvironmentURLFormat.QA, AssuranceEnvironment.qa.urlFormat)
-        XCTAssertEqual(AssuranceConstants.AssuranceEnvironmentURLFormat.STAGE, AssuranceEnvironment.stage.urlFormat)
-        XCTAssertEqual(AssuranceConstants.AssuranceEnvironmentURLFormat.PRODUCTION, AssuranceEnvironment.prod.urlFormat)
+        XCTAssertEqual("-dev", AssuranceEnvironment.dev.urlFormat)
+        XCTAssertEqual("-qa", AssuranceEnvironment.qa.urlFormat)
+        XCTAssertEqual("-stage", AssuranceEnvironment.stage.urlFormat)
+        XCTAssertEqual("", AssuranceEnvironment.prod.urlFormat)
     }
 
 }
