@@ -12,10 +12,11 @@
 
 import Foundation
 
-/// Represents a assurance server environment to which a session attempts to connect.
-/// Following is an example which assists on how to use the `AssuranceEnvironment` enum
+/// Represents an assurance server environment to which a session attempts to connect.
 ///
-/// Extract the environment query parameter from the deeplink URL as an `AssuranceEnvironment` variable
+/// Following example assists on how to use the `AssuranceEnvironment` enum
+///
+/// From the assurance deeplink URL extract the environment query parameter and create an `AssuranceEnvironment` variable
 /// Stage -  griffon://?adb_validation_sessionid=someId&env=stage -> AssuranceEnvionement.stage
 /// Prod  -   griffon://?adb_validation_sessionid=someId -> AssuranceEnvionement.prod  (empty value or no value defaults to prod)
 ///
