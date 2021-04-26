@@ -11,27 +11,8 @@
  */
 
 import Foundation
-@testable import AEPCore
+import AEPServices
 
-class MockExtension: Extension {    
-    var name = "mockExtension"
-    var friendlyName = "mockExtension"
-    static var extensionVersion = "0.0.1"
-    var metadata: [String : String]?
-
-    let runtime: ExtensionRuntime
-
-    required init(runtime: ExtensionRuntime) {
-        self.runtime = runtime
-    }
-
-    func onRegistered() {
-    }
-
-    func onUnregistered() {
-    }
-
-    func readyForEvent(_: Event) -> Bool {
-        return true
-    }
+class AssuranceEvent : Codable {
 }
+

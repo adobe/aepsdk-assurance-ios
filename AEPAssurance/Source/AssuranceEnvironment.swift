@@ -12,13 +12,24 @@
 
 import Foundation
 
-/// Represents a griffon server environment to which a session attempts to connect.
+/// Represents a assurance server environment to which a session attempts to connect.
+/// Following is an example which assists on how to use the `AssuranceEnvironment` enum
+///
+/// Extract the environment query parameter from the deeplink URL as an `AssuranceEnvironment` variable
+/// Stage -  griffon://?adb_validation_sessionid=someId&env=stage -> AssuranceEnvionement.stage
+/// Prod  -   griffon://?adb_validation_sessionid=someId -> AssuranceEnvionement.prod  (empty value or no value defaults to prod)
+///
+/// And use the AssuranceEnvironment.urlformat to prepare the host for socket connection
+/// Staging : wss://connect-stage
+/// Prod : wss://connect
 enum AssuranceEnvironment: String {
     case prod = ""
     case qa = "qa"
     case stage = "stage"
     case dev = "dev"
 
+    /// A String that represents the environment URL format to be appending to the host of the url
+    /// An empty string is provided for `PRODUCTION` environment
     var urlFormat: String {
         switch self {
         case .prod:

@@ -13,7 +13,7 @@
 import Foundation
 
 /**
- An  extesnion for URL class to parse the URL and return a dictionary with key value pairs from the query string
+ An  extension for URL class to parse the URL and return a dictionary with key value pairs from the query string
  The query values will be URL decoded when they are stored in the output dictionary.
  */
 extension URL {

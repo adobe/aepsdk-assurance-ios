@@ -10,28 +10,11 @@
  governing permissions and limitations under the License.
  */
 
-import Foundation
-@testable import AEPCore
+import XCTest
+import AEPCore
+@testable import AEPAssurance
 
-class MockExtension: Extension {    
-    var name = "mockExtension"
-    var friendlyName = "mockExtension"
-    static var extensionVersion = "0.0.1"
-    var metadata: [String : String]?
+class AssuranceEventTests: XCTestCase {
 
-    let runtime: ExtensionRuntime
 
-    required init(runtime: ExtensionRuntime) {
-        self.runtime = runtime
-    }
-
-    func onRegistered() {
-    }
-
-    func onUnregistered() {
-    }
-
-    func readyForEvent(_: Event) -> Bool {
-        return true
-    }
 }

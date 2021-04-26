@@ -31,4 +31,20 @@ enum AssuranceConstants {
         static let START_SESSION_URL = "startSessionURL"
     }
     
+    enum DataStoteKeys {
+        static let SESSION_ID = "assurance.session.Id"
+        static let CLIENT_ID = "assurance.client.Id"
+    }
+    
+    enum SharedStateKeys {
+        static let CLIENT_ID = "sessionid"
+        static let SESSION_ID = "clientid"
+        static let INTEGRATION_ID = "integrationid"
+    }
+    
+    enum Vendor {
+        static let MOBILE = "com.adobe.griffon.mobile"
+        static let SDK = "com.adobe.marketing.mobile.sdk"
+    }
+    
 }
