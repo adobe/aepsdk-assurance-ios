@@ -16,4 +16,19 @@ enum AssuranceConstants {
     static let EXTENSION_NAME = "com.adobe.assurance"
     static let FRIENDLY_NAME = "Assurance"
     static let EXTENSION_VERSION = "2.0.0"
+    static let LOG_TAG = FRIENDLY_NAME
+    
+    enum Deeplink {
+        static let SESSIONID_KEY = "adb_validation_sessionid"
+        static let ENVIRONMENT_KEY = "env"
+    }
+    
+    enum EventType {
+        static let ASSURANCE = "com.adobe.eventType.assurance"
+    }
+    
+    enum EventDataKey {
+        static let START_SESSION_URL = "startSessionURL"
+    }
+    
 }

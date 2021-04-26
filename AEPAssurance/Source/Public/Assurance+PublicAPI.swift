@@ -11,9 +11,35 @@
  */
 
 import AEPCore
+import AEPServices
 import Foundation
 
 @objc public extension Assurance {
     
+    /// Starts an AEPAssurance session.
+    ///
+    /// Calling this method when a session has already been started results in a no-op, otherwise it attempts to initiate a new AEPAssurance session.
+    /// A call to this API with an non griffon session url will be ignored
+    ///
+    /// - Parameter url: a valid AEPAssurance URL to start a session
+    ///
+    static func startSession(url : NSURL) {
+        guard let urlString = url.absoluteString else {
+            return
+        }
+        
+        if !urlString.contains(AssuranceConstants.Deeplink.SESSIONID_KEY) {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Not a valid Assurance deeplink, ignorning start session API call for URL : \(urlString)")
+            return
+        }
+        
+        let eventData = [AssuranceConstants.EventDataKey.START_SESSION_URL : urlString]
+        let event = Event(name: "Assurance Start Session",
+                          type: AssuranceConstants.EventType.ASSURANCE,
+                          source: EventSource.requestContent,
+                          data: eventData)
+
+        MobileCore.dispatch(event: event)
+    }
     
 }

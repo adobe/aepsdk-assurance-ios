@@ -10,7 +10,7 @@
 		2245E076165949645772B85C /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F8B491ECF9BCD5C6F3B4BAA /* Pods_UnitTests.framework */; };
 		41A996C4B0DB4C4A392979F8 /* Pods_TestApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D1F8C3301AFD98B288AF95 /* Pods_TestApp.framework */; };
 		B64071A3262C313E00C43183 /* AEPAssurance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6407199262C313E00C43183 /* AEPAssurance.framework */; };
-		B64071A8262C313E00C43183 /* AEPAssuranceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64071A7262C313E00C43183 /* AEPAssuranceTests.swift */; };
+		B64071A8262C313E00C43183 /* AssurancePublicAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64071A7262C313E00C43183 /* AssurancePublicAPITests.swift */; };
 		B64071AA262C313E00C43183 /* AEPAssurance.h in Headers */ = {isa = PBXBuildFile; fileRef = B640719C262C313E00C43183 /* AEPAssurance.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B64071D3262C368C00C43183 /* Assurance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64071D2262C368C00C43183 /* Assurance.swift */; };
 		B64071D7262C376A00C43183 /* AssuranceConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64071D6262C376A00C43183 /* AssuranceConstants.swift */; };
@@ -21,6 +21,10 @@
 		B64071F0262C8F8D00C43183 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B64071EF262C8F8D00C43183 /* Preview Assets.xcassets */; };
 		B64071F3262C8F8D00C43183 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B64071F1262C8F8D00C43183 /* LaunchScreen.storyboard */; };
 		B6407206262C90FA00C43183 /* Assurance+PublicAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6407205262C90FA00C43183 /* Assurance+PublicAPI.swift */; };
+		B6407223262CEBC600C43183 /* URL+Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6407222262CEBC600C43183 /* URL+Parser.swift */; };
+		B640722B262CF06100C43183 /* AssuranceEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640722A262CF06100C43183 /* AssuranceEnvironment.swift */; };
+		B6D2A91026322D6D0062AC5E /* AssuranceEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D2A90B26322D1C0062AC5E /* AssuranceEnvironmentTests.swift */; };
+		B6D2A91F2632B7640062AC5E /* MockExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D2A91E2632B7640062AC5E /* MockExtension.swift */; };
 		EC3DB0C500F7E8EF2EFD4905 /* Pods_AEPAssurance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B1657E858FFB503CA351AA7 /* Pods_AEPAssurance.framework */; };
 /* End PBXBuildFile section */
 
@@ -55,7 +59,7 @@
 		B640719C262C313E00C43183 /* AEPAssurance.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AEPAssurance.h; sourceTree = "<group>"; };
 		B640719D262C313E00C43183 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B64071A2262C313E00C43183 /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B64071A7262C313E00C43183 /* AEPAssuranceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AEPAssuranceTests.swift; sourceTree = "<group>"; };
+		B64071A7262C313E00C43183 /* AssurancePublicAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssurancePublicAPITests.swift; sourceTree = "<group>"; };
 		B64071A9262C313E00C43183 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B64071D2262C368C00C43183 /* Assurance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assurance.swift; sourceTree = "<group>"; };
 		B64071D6262C376A00C43183 /* AssuranceConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceConstants.swift; sourceTree = "<group>"; };
@@ -68,6 +72,10 @@
 		B64071F2262C8F8D00C43183 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B64071F4262C8F8D00C43183 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6407205262C90FA00C43183 /* Assurance+PublicAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Assurance+PublicAPI.swift"; sourceTree = "<group>"; };
+		B6407222262CEBC600C43183 /* URL+Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Parser.swift"; sourceTree = "<group>"; };
+		B640722A262CF06100C43183 /* AssuranceEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEnvironment.swift; sourceTree = "<group>"; };
+		B6D2A90B26322D1C0062AC5E /* AssuranceEnvironmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEnvironmentTests.swift; sourceTree = "<group>"; };
+		B6D2A91E2632B7640062AC5E /* MockExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,11 +155,13 @@
 		B640719B262C313E00C43183 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				B6407221262CEACE00C43183 /* Extensions */,
 				B6407204262C90CD00C43183 /* Public */,
 				B64071D2262C368C00C43183 /* Assurance.swift */,
 				B64071D6262C376A00C43183 /* AssuranceConstants.swift */,
 				B640719C262C313E00C43183 /* AEPAssurance.h */,
 				B640719D262C313E00C43183 /* Info.plist */,
+				B640722A262CF06100C43183 /* AssuranceEnvironment.swift */,
 			);
 			name = Source;
 			path = AEPAssurance/Source;
@@ -160,7 +170,9 @@
 		B64071A6262C313E00C43183 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				B64071A7262C313E00C43183 /* AEPAssuranceTests.swift */,
+				B6D2A91D2632B7290062AC5E /* Mocks */,
+				B64071A7262C313E00C43183 /* AssurancePublicAPITests.swift */,
+				B6D2A90B26322D1C0062AC5E /* AssuranceEnvironmentTests.swift */,
 				B64071A9262C313E00C43183 /* Info.plist */,
 			);
 			name = UnitTests;
@@ -195,6 +207,22 @@
 				B6407205262C90FA00C43183 /* Assurance+PublicAPI.swift */,
 			);
 			path = Public;
+			sourceTree = "<group>";
+		};
+		B6407221262CEACE00C43183 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B6407222262CEBC600C43183 /* URL+Parser.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B6D2A91D2632B7290062AC5E /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				B6D2A91E2632B7640062AC5E /* MockExtension.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -448,6 +476,8 @@
 			files = (
 				B64071D3262C368C00C43183 /* Assurance.swift in Sources */,
 				B64071D7262C376A00C43183 /* AssuranceConstants.swift in Sources */,
+				B6407223262CEBC600C43183 /* URL+Parser.swift in Sources */,
+				B640722B262CF06100C43183 /* AssuranceEnvironment.swift in Sources */,
 				B6407206262C90FA00C43183 /* Assurance+PublicAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -456,7 +486,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B64071A8262C313E00C43183 /* AEPAssuranceTests.swift in Sources */,
+				B6D2A91F2632B7640062AC5E /* MockExtension.swift in Sources */,
+				B64071A8262C313E00C43183 /* AssurancePublicAPITests.swift in Sources */,
+				B6D2A91026322D6D0062AC5E /* AssuranceEnvironmentTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

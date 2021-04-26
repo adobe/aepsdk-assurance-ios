@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.summary          = "AEPAssurance SDK for Adobe Experience Platform Mobile SDK. Written and maintained by Adobe."
 
   s.description      = <<-DESC
-                       The Experience Platform Consent Collection extension enables consent preferences collection from a mobile app when using the Adobe Experience Platform Mobile SDK and the Edge Network extension.
+                       AEPAssurance extension enables capabilities for Project Griffon..
                        DESC
 
   s.homepage         = "https://github.com/adobe/aepsdk-assurance-ios.git"
