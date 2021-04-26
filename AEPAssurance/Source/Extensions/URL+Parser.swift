@@ -25,12 +25,11 @@ extension URL {
               let queryItems = components.queryItems else {
             return [:]
         }
-        var dict = [String:String]()
+        var dict : [String:String] = [:]
         for item in queryItems {
-            guard let queryValue = item.value else {
-                continue
+            if let queryValue = item.value {
+                dict[item.name] = queryValue
             }
-            dict[item.name] = queryValue
         }        
         return dict
     }
