@@ -39,7 +39,6 @@ enum AssuranceEnvironment: String {
         self = AssuranceEnvironment(rawValue: envString) ?? .prod
     }
     
-    
     enum AssuranceEnvironmentURLFormat {
         static let PRODUCTION = ""
         static let QA = "-qa"

@@ -12,19 +12,26 @@
 
 import Foundation
 
+/**
+ An  extesnion for URL class to parse the URL and return a dictionary with key value pairs from the query string
+ The query values will be URL decoded when they are stored in the output dictionary.
+ */
 extension URL {
-    var params : [String:Any] {
-    var dict = [String:Any]()
-
-    if let components = URLComponents(url: self, resolvingAgainstBaseURL: false) {
-      if let queryItems = components.queryItems {
-        for item in queryItems {
-          dict[item.name] = item.value!
+    /**
+     A computed variable that returns the dictionary of available query string and value for this URL
+     */
+    var params : [String:String] {
+        guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false),
+              let queryItems = components.queryItems else {
+            return [:]
         }
-      }
-      return dict
-    } else {
-      return [:]
+        var dict = [String:String]()
+        for item in queryItems {
+            guard let queryValue = item.value else {
+                continue
+            }
+            dict[item.name] = queryValue
+        }        
+        return dict
     }
-  }
 }
