@@ -10,18 +10,18 @@
  governing permissions and limitations under the License.
  */
 
-import XCTest
-import Foundation
-import AEPServices
 @testable import AEPAssurance
+import AEPServices
+import Foundation
+import XCTest
 
 class AssuranceStateTests: XCTestCase {
-    
-    var state : AssuranceState!
+
+    var state: AssuranceState!
     var mockDataStore: MockDataStore {
         return ServiceProvider.shared.namedKeyValueService as! MockDataStore
     }
-    
+
     override func setUp() {
         ServiceProvider.shared.namedKeyValueService = MockDataStore()
         state = AssuranceState()
@@ -33,48 +33,48 @@ class AssuranceStateTests: XCTestCase {
         XCTAssertEqual(1, mockDataStore.dict.count)
         XCTAssertEqual(state.clientID, mockDataStore.dict[AssuranceConstants.DataStoteKeys.CLIENT_ID] as! String)
     }
-    
+
     func test_assuranceState_loadsPersistedClientID() throws {
         // setup
         mockClientIDToPersistence(clientID: "mockClientID")
-        
+
         // test
         XCTAssertEqual("mockClientID", state.clientID)
     }
-    
+
     func test_assuranceState_loadsPersistedSessionID() throws {
         // setup
         mockSessionIDToPersistence(sesssionID: "mockSessionID")
-        
+
         // test
         XCTAssertEqual("mockSessionID", state.sessionId)
     }
-    
+
     func test_assuranceState_savesSessionIDToPersistence() throws {
         // test
         state.sessionId = "newSessionID"
-        
+
         // verify
         XCTAssertEqual(1, mockDataStore.dict.count)
         XCTAssertEqual("newSessionID", mockDataStore.dict[AssuranceConstants.DataStoteKeys.SESSION_ID] as! String)
         XCTAssertEqual("newSessionID", state.sessionId)
     }
-    
+
     func test_assuranceState_getSharedState_nilSessonID() throws {
         // test
         let sharedState = state.getSharedStateData()
-        
+
         // verify
         XCTAssertNil(sharedState)
     }
-    
+
     func test_assuranceState_getSharedState_happy() throws {
         // test
         state.sessionId = "newSessionID"
-        
+
         // test
         let sharedState = state.getSharedStateData()
-        
+
         // verify
         XCTAssertNotNil(sharedState?[AssuranceConstants.SharedStateKeys.CLIENT_ID])
         XCTAssertNotNil(sharedState?[AssuranceConstants.SharedStateKeys.SESSION_ID])
@@ -83,17 +83,17 @@ class AssuranceStateTests: XCTestCase {
         XCTAssertEqual(state.sessionId, sharedState?[AssuranceConstants.SharedStateKeys.SESSION_ID])
         XCTAssertEqual("\(state.clientID)" + "|" + "\(state.sessionId!)", sharedState?[AssuranceConstants.SharedStateKeys.INTEGRATION_ID])
     }
-    
+
     //********************************************************************
     // Private methods
     //********************************************************************
-    
-    private func mockClientIDToPersistence(clientID : String) {
-        mockDataStore.dict[AssuranceConstants.DataStoteKeys.CLIENT_ID] = clientID;
+
+    private func mockClientIDToPersistence(clientID: String) {
+        mockDataStore.dict[AssuranceConstants.DataStoteKeys.CLIENT_ID] = clientID
     }
-    
-    private func mockSessionIDToPersistence(sesssionID : String) {
-        mockDataStore.dict[AssuranceConstants.DataStoteKeys.SESSION_ID] = sesssionID;
+
+    private func mockSessionIDToPersistence(sesssionID: String) {
+        mockDataStore.dict[AssuranceConstants.DataStoteKeys.SESSION_ID] = sesssionID
     }
-    
+
 }

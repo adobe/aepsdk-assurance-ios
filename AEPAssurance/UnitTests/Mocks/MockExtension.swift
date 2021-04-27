@@ -10,14 +10,14 @@
  governing permissions and limitations under the License.
  */
 
-import Foundation
 @testable import AEPCore
+import Foundation
 
-class MockExtension: Extension {    
+class MockExtension: Extension {
     var name = "mockExtension"
     var friendlyName = "mockExtension"
     static var extensionVersion = "0.0.1"
-    var metadata: [String : String]?
+    var metadata: [String: String]?
 
     let runtime: ExtensionRuntime
 

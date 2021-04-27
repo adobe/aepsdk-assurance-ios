@@ -10,16 +10,16 @@
  governing permissions and limitations under the License.
  */
 
-import Foundation
 import AEPServices
+import Foundation
 
-struct AssuranceEvent : Codable {
-    var eventID : String = UUID().uuidString
-    var vendor : String
-    var type : String
-    var payload : [String: AnyCodable]?
-    var eventNumber : Int32?
-    var timestamp : Int64
+struct AssuranceEvent: Codable {
+    var eventID: String = UUID().uuidString
+    var vendor: String
+    var type: String
+    var payload: [String: AnyCodable]?
+    var eventNumber: Int32?
+    var timestamp: Int64
 
     /// Decodes a [String: Any] dictionary into a `ConsentPreferences`
     /// - Parameter data: the event data representing `ConsentPreferences`
@@ -32,44 +32,43 @@ struct AssuranceEvent : Codable {
         event.eventNumber = AssuranceEvent.generateEventNumber()
         return event
     }
-    
-    init(type : String, payload : [String : AnyCodable]?, timestamp : Int64 = (Date().getUnixTimeInSeconds() * 1000), vendor : String = AssuranceConstants.Vendor.MOBILE) {
+
+    init(type: String, payload: [String: AnyCodable]?, timestamp: Int64 = (Date().getUnixTimeInSeconds() * 1000), vendor: String = AssuranceConstants.Vendor.MOBILE) {
         self.type = type
         self.payload = payload
         self.timestamp = timestamp
         self.vendor = vendor
         self.eventNumber = AssuranceEvent.generateEventNumber()
     }
-    
+
     func getControlEventType() -> String? {
-        if (AssuranceConstants.EventType.CONTROL != type){
+        if AssuranceConstants.EventType.CONTROL != type {
             return nil
         }
-        
-        guard let controlType = payload?[AssuranceConstants.PayloadKey.TYPE]?.stringValue else{
+
+        guard let controlType = payload?[AssuranceConstants.PayloadKey.TYPE]?.stringValue else {
             return nil
         }
-        
-        return controlType;
+
+        return controlType
     }
-    
-    func getControlEventDetail() -> [String:Any]? {
-        if (AssuranceConstants.EventType.CONTROL != type){
+
+    func getControlEventDetail() -> [String: Any]? {
+        if AssuranceConstants.EventType.CONTROL != type {
             return nil
         }
-        
-        guard let controlDetail = payload?[AssuranceConstants.PayloadKey.DETAIL]?.dictionaryValue else{
+
+        guard let controlDetail = payload?[AssuranceConstants.PayloadKey.DETAIL]?.dictionaryValue else {
             return nil
         }
-        
-        return controlDetail;
+
+        return controlDetail
     }
-    
-    static private var eventNumberCounter : Int32 = 0
+
+    static private var eventNumberCounter: Int32 = 0
     private static func generateEventNumber() -> Int32 {
         OSAtomicIncrement32(&eventNumberCounter)
         return eventNumberCounter
     }
 
 }
-

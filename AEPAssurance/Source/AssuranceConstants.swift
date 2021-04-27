@@ -17,36 +17,36 @@ enum AssuranceConstants {
     static let FRIENDLY_NAME = "Assurance"
     static let EXTENSION_VERSION = "2.0.0"
     static let LOG_TAG = FRIENDLY_NAME
-    
+
     enum Deeplink {
         static let SESSIONID_KEY = "adb_validation_sessionid"
         static let ENVIRONMENT_KEY = "env"
     }
-    
+
     enum Vendor {
         static let MOBILE = "com.adobe.griffon.mobile"
         static let SDK = "com.adobe.marketing.mobile.sdk"
     }
-    
+
     enum SDKEventType {
         static let ASSURANCE = "com.adobe.eventType.assurance"
     }
-    
+
     enum EventDataKey {
         static let START_SESSION_URL = "startSessionURL"
     }
-    
+
     enum DataStoteKeys {
         static let SESSION_ID = "assurance.session.Id"
         static let CLIENT_ID = "assurance.client.Id"
     }
-    
+
     enum SharedStateKeys {
         static let CLIENT_ID = "sessionid"
         static let SESSION_ID = "clientid"
         static let INTEGRATION_ID = "integrationid"
     }
-    
+
     enum EventType {
         static let GENERIC = "generic"
         static let LOG = "log"
@@ -54,7 +54,7 @@ enum AssuranceConstants {
         static let CLIENT = "client"
         static let BLOB = "blob"
     }
-    
+
     enum PayloadKey {
         static let SHAREDSTATE_DATA = "state.data"
         static let XDM_SHAREDSTATE_DATA = "xdm.state.data"
@@ -62,5 +62,5 @@ enum AssuranceConstants {
         static let TYPE = "type"
         static let DETAIL = "detail"
     }
-    
+
 }

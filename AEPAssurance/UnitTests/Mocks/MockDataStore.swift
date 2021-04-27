@@ -40,4 +40,3 @@ public class MockDataStore: NamedCollectionProcessing {
         dict.removeValue(forKey: key)
     }
 }
-

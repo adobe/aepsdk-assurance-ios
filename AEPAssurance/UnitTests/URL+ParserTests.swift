@@ -10,54 +10,54 @@
  governing permissions and limitations under the License.
  */
 
-import XCTest
 @testable import AEPAssurance
+import XCTest
 
 class URL_ParserTests: XCTestCase {
 
     func test_queryParams_happy() throws {
         // setup
         let url = URL.init(string: "griffon://?adb_validation_sessionid=someId&env=stage")
-        
+
         // test
         XCTAssertEqual(2, url?.params.count)
         XCTAssertEqual("someId", url?.params["adb_validation_sessionid"])
         XCTAssertEqual("stage", url?.params["env"])
     }
-    
+
     func test_queryParams_emptyParameter() throws {
         // setup
         let url = URL.init(string: "griffon://?adb_validation_sessionid=someId&env=")
-        
+
         // test
         XCTAssertEqual(2, url?.params.count)
         XCTAssertEqual("someId", url?.params["adb_validation_sessionid"])
         XCTAssertEqual("", url?.params["env"])
     }
-    
+
     func test_queryParams_invalidParameter() throws {
         // setup
         let url = URL.init(string: "griffon://?adb_validation_sessionid=someId&env")
-        
+
         // test
         XCTAssertEqual(1, url?.params.count)
         XCTAssertEqual("someId", url?.params["adb_validation_sessionid"])
     }
-    
+
     func test_queryParams_integerParameter() throws {
         // setup
         let url = URL.init(string: "griffon://?adb_validation_sessionid=someId&env=67")
-        
+
         // test
         XCTAssertEqual(2, url?.params.count)
         XCTAssertEqual("someId", url?.params["adb_validation_sessionid"])
         XCTAssertEqual("67", url?.params["env"])
     }
-    
+
     func test_queryParams_noParameters() throws {
         // setup
         let url = URL.init(string: "griffon://")
-        
+
         // test
         XCTAssertEqual(0, url?.params.count)
     }
