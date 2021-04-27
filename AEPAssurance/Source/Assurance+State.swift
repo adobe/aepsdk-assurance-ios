@@ -14,29 +14,18 @@ import AEPCore
 import AEPServices
 import Foundation
 
-class AssuranceState {
+extension Assurance {
 
-    private let datastore = NamedCollectionDataStore(name: AssuranceConstants.EXTENSION_NAME)
-
-    var sessionId: String? {
-        get {
-            datastore.getString(key: AssuranceConstants.DataStoteKeys.SESSION_ID)
-        }
-        set {
-            datastore.set(key: AssuranceConstants.DataStoteKeys.SESSION_ID, value: newValue)
-        }
+    /// Call this function to create a new shared state for Assurance
+    /// Important - An empty shared state is created if sessionId is not available
+    func shareSharedState() {
+        runtime.createSharedState(data: getSharedStateData() ?? [:], event: nil)
     }
 
-    // getter for client ID
-    lazy var clientID: String = {
-        // check for client ID in persistence, if not create a UUID
-        guard let persistedClientID = datastore.getString(key: AssuranceConstants.DataStoteKeys.CLIENT_ID) else {
-            let newClientID = UUID().uuidString
-            datastore.set(key: AssuranceConstants.DataStoteKeys.CLIENT_ID, value: newClientID)
-            return newClientID
-        }
-        return persistedClientID
-    }()
+    /// Call this function to empty the latest Assurance shared state
+    func clearSharedState() {
+        runtime.createSharedState(data: [:], event: nil)
+    }
 
     func getSharedStateData() -> [String: String]? {
         // do not share shared state if the sessionId is unavailable
