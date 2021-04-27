@@ -35,7 +35,7 @@ import Foundation
         
         let eventData = [AssuranceConstants.EventDataKey.START_SESSION_URL : urlString]
         let event = Event(name: "Assurance Start Session",
-                          type: AssuranceConstants.EventType.ASSURANCE,
+                          type: AssuranceConstants.SDKEventType.ASSURANCE,
                           source: EventSource.requestContent,
                           data: eventData)
 

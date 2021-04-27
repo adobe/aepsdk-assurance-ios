@@ -23,7 +23,12 @@ enum AssuranceConstants {
         static let ENVIRONMENT_KEY = "env"
     }
     
-    enum EventType {
+    enum Vendor {
+        static let MOBILE = "com.adobe.griffon.mobile"
+        static let SDK = "com.adobe.marketing.mobile.sdk"
+    }
+    
+    enum SDKEventType {
         static let ASSURANCE = "com.adobe.eventType.assurance"
     }
     
@@ -42,9 +47,20 @@ enum AssuranceConstants {
         static let INTEGRATION_ID = "integrationid"
     }
     
-    enum Vendor {
-        static let MOBILE = "com.adobe.griffon.mobile"
-        static let SDK = "com.adobe.marketing.mobile.sdk"
+    enum EventType {
+        static let GENERIC = "generic"
+        static let LOG = "log"
+        static let CONTROL = "control"
+        static let CLIENT = "client"
+        static let BLOB = "blob"
+    }
+    
+    enum PayloadKey {
+        static let SHAREDSTATE_DATA = "state.data"
+        static let XDM_SHAREDSTATE_DATA = "xdm.state.data"
+        static let METADATA = "metadata"
+        static let TYPE = "type"
+        static let DETAIL = "detail"
     }
     
 }

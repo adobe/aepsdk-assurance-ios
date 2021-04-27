@@ -35,7 +35,7 @@ class AEPAssuranceTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Start session with valid assurance deeplink URL should dispatch event")
         
         // event dispatch verification
-        EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: AssuranceConstants.EventType.ASSURANCE, source: EventSource.requestContent) { event in
+        EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: AssuranceConstants.SDKEventType.ASSURANCE, source: EventSource.requestContent) { event in
             XCTAssertEqual(event.data?[AssuranceConstants.EventDataKey.START_SESSION_URL] as! String, validSessionURL)
             expectation.fulfill()
         }
@@ -53,7 +53,7 @@ class AEPAssuranceTests: XCTestCase {
         expectation.isInverted = true
         
         // event dispatch verification
-        EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: AssuranceConstants.EventType.ASSURANCE, source: EventSource.requestContent) { event in
+        EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: AssuranceConstants.SDKEventType.ASSURANCE, source: EventSource.requestContent) { event in
             expectation.fulfill()
         }
         
