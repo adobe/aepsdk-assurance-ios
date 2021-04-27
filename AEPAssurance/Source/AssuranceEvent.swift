@@ -21,9 +21,25 @@ struct AssuranceEvent: Codable {
     var eventNumber: Int32?
     var timestamp: Int64
 
-    /// Decodes a [String: Any] dictionary into a `ConsentPreferences`
-    /// - Parameter data: the event data representing `ConsentPreferences`
-    /// - Returns: a `ConsentPreferences` that is represented in the event data, nil if data is not in the correct format
+    /// Decodes a JSON data into a `AssuranceEvent`
+    ///
+    /// The following keys are required in the provided JSON:
+    ///      - eventID - A unique UUID string to identify the event
+    ///      - vendor - A vendor string
+    ///      - type - A string describing the type of the event
+    ///      - timestamp - A whole number representing milliseconds since the Unix epoch
+    ///      - payload (optional) - A JSON object containing the event's payload
+    ///
+    /// This method will return nil if called under any of the following conditions:
+    ///      - The provided json is not valid
+    ///      - The provided json is not an object at its root
+    ///      - Any of the required keys are missing (see above for a list of required keys)
+    ///      - Any of the required keys do not contain the correct type of data
+    ///
+    /// - Parameters:
+    ///   - jsonData: jsonData representing `AssuranceEvent`
+    ///
+    /// - Returns: a `AssuranceEvent` that is represented in the json data, nil if data is not in the correct format
     static func from(jsonData: Data) -> AssuranceEvent? {
         guard var event = try? JSONDecoder().decode(AssuranceEvent.self, from: jsonData) else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Unable to decode jsonData into an AssuranceEvent.")
@@ -33,6 +49,13 @@ struct AssuranceEvent: Codable {
         return event
     }
 
+    /// Initializer to construct `AssuranceEvent`instance  with the given parameters
+    ///
+    /// - Parameters:
+    ///   - type: a String describing the type of AssuranceEvent
+    ///   - payload: A dictionary representing the payload to be sent wrapped in the event. This will be serialized into JSON in the transportation process
+    ///   - timestamp: optional argument representing the time original event was created. If not provided current time is taken
+    ///   - vendor: vendor for the created `AssuranceEvent` defaults to "com.adobe.griffon.mobile".
     init(type: String, payload: [String: AnyCodable]?, timestamp: Int64 = (Date().getUnixTimeInSeconds() * 1000), vendor: String = AssuranceConstants.Vendor.MOBILE) {
         self.type = type
         self.payload = payload
@@ -41,6 +64,20 @@ struct AssuranceEvent: Codable {
         self.eventNumber = AssuranceEvent.generateEventNumber()
     }
 
+    /// Returns the type of the control event. Applies only for control events. This method returns null for all other `AssuranceEvent` types.
+    ///
+    /// Returns nil if the event is not a control event.
+    /// Returns nil if the payload does not contain "type" key.
+    /// Returns nil if the payload "type" key contains non string data.
+    ///
+    /// Following are the available control events to the SDK.
+    ///  * startEventForwarding
+    ///  * screenshot
+    ///  * logForwarding
+    ///  * fakeEvent
+    ///  * configUpdate
+    ///
+    /// - Returns: a string value representing the control type
     func getControlEventType() -> String? {
         if AssuranceConstants.EventType.CONTROL != type {
             return nil
@@ -53,6 +90,13 @@ struct AssuranceEvent: Codable {
         return controlType
     }
 
+    /// Returns the details of the control event. Applies only for control events. This method returns null for all other `AssuranceEvent` types.
+    ///
+    /// Returns nil if the event is not a control event.
+    /// Returns nil if the payload does not contain "type" key.
+    /// Returns nil if the payload "type" key contains non string data.
+    ///
+    /// - Returns: a dictionary representing the control details
     func getControlEventDetail() -> [String: Any]? {
         if AssuranceConstants.EventType.CONTROL != type {
             return nil

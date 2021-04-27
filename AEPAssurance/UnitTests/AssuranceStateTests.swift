@@ -17,21 +17,29 @@ import XCTest
 
 class AssuranceStateTests: XCTestCase {
 
-    var state: AssuranceState!
+    var assurance: Assurance!
+    var runtime: TestableExtensionRuntime!
+
     var mockDataStore: MockDataStore {
         return ServiceProvider.shared.namedKeyValueService as! MockDataStore
     }
 
     override func setUp() {
         ServiceProvider.shared.namedKeyValueService = MockDataStore()
-        state = AssuranceState()
+        runtime = TestableExtensionRuntime()
+        assurance = Assurance(runtime: runtime)
+        assurance.onRegistered()
+    }
+
+    override func tearDown() {
+        runtime.reset()
     }
 
     func test_assuranceState_createsAndPersistsClientId() throws {
         // test
-        XCTAssertNotNil(state.clientID)
+        XCTAssertNotNil(assurance.clientID)
         XCTAssertEqual(1, mockDataStore.dict.count)
-        XCTAssertEqual(state.clientID, mockDataStore.dict[AssuranceConstants.DataStoteKeys.CLIENT_ID] as! String)
+        XCTAssertEqual(assurance.clientID, mockDataStore.dict[AssuranceConstants.DataStoteKeys.CLIENT_ID] as! String)
     }
 
     func test_assuranceState_loadsPersistedClientID() throws {
@@ -39,7 +47,7 @@ class AssuranceStateTests: XCTestCase {
         mockClientIDToPersistence(clientID: "mockClientID")
 
         // test
-        XCTAssertEqual("mockClientID", state.clientID)
+        XCTAssertEqual("mockClientID", assurance.clientID)
     }
 
     func test_assuranceState_loadsPersistedSessionID() throws {
@@ -47,41 +55,57 @@ class AssuranceStateTests: XCTestCase {
         mockSessionIDToPersistence(sesssionID: "mockSessionID")
 
         // test
-        XCTAssertEqual("mockSessionID", state.sessionId)
+        XCTAssertEqual("mockSessionID", assurance.sessionId)
     }
 
     func test_assuranceState_savesSessionIDToPersistence() throws {
         // test
-        state.sessionId = "newSessionID"
+        assurance.sessionId = "newSessionID"
 
         // verify
         XCTAssertEqual(1, mockDataStore.dict.count)
         XCTAssertEqual("newSessionID", mockDataStore.dict[AssuranceConstants.DataStoteKeys.SESSION_ID] as! String)
-        XCTAssertEqual("newSessionID", state.sessionId)
+        XCTAssertEqual("newSessionID", assurance.sessionId)
     }
 
-    func test_assuranceState_getSharedState_nilSessonID() throws {
+    func test_assuranceState_shareSharedState_nilSessonID() throws {
         // test
-        let sharedState = state.getSharedStateData()
+        assurance.shareSharedState()
 
         // verify
-        XCTAssertNil(sharedState)
+        XCTAssertEqual(1, runtime.sharedStates.count)
+        XCTAssertTrue(runtime.firstSharedState!.isEmpty)
     }
 
-    func test_assuranceState_getSharedState_happy() throws {
+    func test_assuranceState_shareSharedState_happy() throws {
         // test
-        state.sessionId = "newSessionID"
+        assurance.sessionId = "newSessionID"
 
         // test
-        let sharedState = state.getSharedStateData()
+        assurance.shareSharedState()
 
         // verify
-        XCTAssertNotNil(sharedState?[AssuranceConstants.SharedStateKeys.CLIENT_ID])
-        XCTAssertNotNil(sharedState?[AssuranceConstants.SharedStateKeys.SESSION_ID])
-        XCTAssertNotNil(sharedState?[AssuranceConstants.SharedStateKeys.INTEGRATION_ID])
-        XCTAssertEqual(state.clientID, sharedState?[AssuranceConstants.SharedStateKeys.CLIENT_ID])
-        XCTAssertEqual(state.sessionId, sharedState?[AssuranceConstants.SharedStateKeys.SESSION_ID])
-        XCTAssertEqual("\(state.clientID)" + "|" + "\(state.sessionId!)", sharedState?[AssuranceConstants.SharedStateKeys.INTEGRATION_ID])
+        XCTAssertEqual(1, runtime.sharedStates.count)
+        XCTAssertNotNil(runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.CLIENT_ID])
+        XCTAssertNotNil(runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.SESSION_ID])
+        XCTAssertNotNil(runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.INTEGRATION_ID])
+        XCTAssertEqual(assurance.clientID, runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.CLIENT_ID] as? String)
+        XCTAssertEqual(assurance.sessionId, runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.SESSION_ID] as? String)
+        XCTAssertEqual("\(assurance.clientID)" + "|" + "\(assurance.sessionId!)", runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.INTEGRATION_ID] as? String)
+    }
+
+    func test_assuranceState_clearSharedState() throws {
+        // setup
+        assurance.sessionId = "newSessionID"
+
+        // test
+        assurance.shareSharedState() // first set the shared state
+        assurance.clearSharedState() // and then attempt to clear it
+
+        // verify
+        XCTAssertEqual(2, runtime.sharedStates.count)
+        XCTAssertFalse(runtime.firstSharedState!.isEmpty)
+        XCTAssertTrue(runtime.secondSharedState!.isEmpty)
     }
 
     //********************************************************************
