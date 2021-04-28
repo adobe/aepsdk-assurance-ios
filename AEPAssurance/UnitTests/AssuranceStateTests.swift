@@ -39,7 +39,7 @@ class AssuranceStateTests: XCTestCase {
         // test
         XCTAssertNotNil(assurance.clientID)
         XCTAssertEqual(1, mockDataStore.dict.count)
-        XCTAssertEqual(assurance.clientID, mockDataStore.dict[AssuranceConstants.DataStoteKeys.CLIENT_ID] as! String)
+        XCTAssertEqual(assurance.clientID, mockDataStore.dict[AssuranceConstants.DataStoreKeys.CLIENT_ID] as! String)
     }
 
     func test_assuranceState_loadsPersistedClientID() throws {
@@ -52,7 +52,7 @@ class AssuranceStateTests: XCTestCase {
 
     func test_assuranceState_loadsPersistedSessionID() throws {
         // setup
-        mockSessionIDToPersistence(sesssionID: "mockSessionID")
+        mockSessionIDToPersistence(sessionID: "mockSessionID")
 
         // test
         XCTAssertEqual("mockSessionID", assurance.sessionId)
@@ -64,11 +64,11 @@ class AssuranceStateTests: XCTestCase {
 
         // verify
         XCTAssertEqual(1, mockDataStore.dict.count)
-        XCTAssertEqual("newSessionID", mockDataStore.dict[AssuranceConstants.DataStoteKeys.SESSION_ID] as! String)
+        XCTAssertEqual("newSessionID", mockDataStore.dict[AssuranceConstants.DataStoreKeys.SESSION_ID] as! String)
         XCTAssertEqual("newSessionID", assurance.sessionId)
     }
 
-    func test_assuranceState_shareSharedState_nilSessonID() throws {
+    func test_assuranceState_shareSharedState_nilSessionID() throws {
         // test
         assurance.shareSharedState()
 
@@ -113,11 +113,11 @@ class AssuranceStateTests: XCTestCase {
     //********************************************************************
 
     private func mockClientIDToPersistence(clientID: String) {
-        mockDataStore.dict[AssuranceConstants.DataStoteKeys.CLIENT_ID] = clientID
+        mockDataStore.dict[AssuranceConstants.DataStoreKeys.CLIENT_ID] = clientID
     }
 
-    private func mockSessionIDToPersistence(sesssionID: String) {
-        mockDataStore.dict[AssuranceConstants.DataStoteKeys.SESSION_ID] = sesssionID
+    private func mockSessionIDToPersistence(sessionID: String) {
+        mockDataStore.dict[AssuranceConstants.DataStoreKeys.SESSION_ID] = sessionID
     }
 
 }

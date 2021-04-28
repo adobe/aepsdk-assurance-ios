@@ -36,7 +36,7 @@ enum AssuranceConstants {
         static let START_SESSION_URL = "startSessionURL"
     }
 
-    enum DataStoteKeys {
+    enum DataStoreKeys {
         static let SESSION_ID = "assurance.session.Id"
         static let CLIENT_ID = "assurance.client.Id"
     }

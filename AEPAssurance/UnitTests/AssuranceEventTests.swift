@@ -21,7 +21,7 @@ class AssuranceEventTests: XCTestCase {
     private let SAMPLE_TIMESTAMP: Int64 = 22999111
 
     /*--------------------------------------------------
-     Initilizer
+     Initializer
      --------------------------------------------------*/
     func test_init() throws {
         // test
@@ -151,24 +151,24 @@ class AssuranceEventTests: XCTestCase {
         // setup
         let data1 = "".data(using: .utf8)!
         let data2 = "I am meaningless".data(using: .utf8)!
-        let datawithNoEventID = """
+        let dataWithNoEventID = """
                     {
                       "WrongEventIDKey": "someID", "vendor": "someVendor", "type": "someType", "timestamp": 113435556
                     }
                    """.data(using: .utf8)!
-        let datawithNoVendor = """
+        let dataWithNoVendor = """
                     {
                       "eventID": "someID", "type": "someType", "timestamp": 113435556
                     }
                    """.data(using: .utf8)!
 
-        let datawithNoType = """
+        let dataWithNoType = """
                     {
                       "eventID": "someID", "vendor": "someVendor", "WrongType": "someType", "timestamp": 113435556
                     }
                    """.data(using: .utf8)!
 
-        let datawithNoTimestamp = """
+        let dataWithNoTimestamp = """
                     {
                       "eventID": "someID", "vendor": "someVendor", "type": "someType"
                     }
@@ -177,10 +177,10 @@ class AssuranceEventTests: XCTestCase {
         // test
         let event1 = AssuranceEvent.from(jsonData: data1)
         let event2 = AssuranceEvent.from(jsonData: data2)
-        let event3 = AssuranceEvent.from(jsonData: datawithNoEventID)
-        let event4 = AssuranceEvent.from(jsonData: datawithNoVendor)
-        let event5 = AssuranceEvent.from(jsonData: datawithNoType)
-        let event6 = AssuranceEvent.from(jsonData: datawithNoTimestamp)
+        let event3 = AssuranceEvent.from(jsonData: dataWithNoEventID)
+        let event4 = AssuranceEvent.from(jsonData: dataWithNoVendor)
+        let event5 = AssuranceEvent.from(jsonData: dataWithNoType)
+        let event6 = AssuranceEvent.from(jsonData: dataWithNoTimestamp)
 
         // verify
         XCTAssertNil(event1)
@@ -298,10 +298,10 @@ class AssuranceEventTests: XCTestCase {
 
         // test
         let event = AssuranceEvent.from(jsonData: data)
-        let controldetail = event?.getControlEventDetail()
+        let controlDetail = event?.getControlEventDetail()
 
         // verify
-        XCTAssertEqual("value", controldetail!["key"] as? String, "Inaccurate ControlType")
+        XCTAssertEqual("value", controlDetail!["key"] as? String, "Inaccurate ControlType")
     }
 
     func test_getControlEventDetail_whenNotAControlEvent() throws {
@@ -321,10 +321,10 @@ class AssuranceEventTests: XCTestCase {
 
         // test
         let event = AssuranceEvent.from(jsonData: data)
-        let controldetail = event?.getControlEventDetail()
+        let controlDetail = event?.getControlEventDetail()
 
         // verify
-        XCTAssertNil(controldetail, "control details should be nil")
+        XCTAssertNil(controlDetail, "control details should be nil")
     }
 
     func test_getControlEventDetail_whenDetailNotADictionary() throws {
@@ -341,9 +341,9 @@ class AssuranceEventTests: XCTestCase {
 
         // test
         let event = AssuranceEvent.from(jsonData: data)
-        let controldetail = event?.getControlEventDetail()
+        let controlDetail = event?.getControlEventDetail()
 
         // verify
-        XCTAssertNil(controldetail, "control details should be nil")
+        XCTAssertNil(controlDetail, "control details should be nil")
     }
 }

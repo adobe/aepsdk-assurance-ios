@@ -26,19 +26,19 @@ public class Assurance: NSObject, Extension {
 
     var sessionId: String? {
         get {
-            datastore.getString(key: AssuranceConstants.DataStoteKeys.SESSION_ID)
+            datastore.getString(key: AssuranceConstants.DataStoreKeys.SESSION_ID)
         }
         set {
-            datastore.set(key: AssuranceConstants.DataStoteKeys.SESSION_ID, value: newValue)
+            datastore.set(key: AssuranceConstants.DataStoreKeys.SESSION_ID, value: newValue)
         }
     }
 
     // getter for client ID
     lazy var clientID: String = {
         // check for client ID in persistence, if not create a UUID
-        guard let persistedClientID = datastore.getString(key: AssuranceConstants.DataStoteKeys.CLIENT_ID) else {
+        guard let persistedClientID = datastore.getString(key: AssuranceConstants.DataStoreKeys.CLIENT_ID) else {
             let newClientID = UUID().uuidString
-            datastore.set(key: AssuranceConstants.DataStoteKeys.CLIENT_ID, value: newClientID)
+            datastore.set(key: AssuranceConstants.DataStoreKeys.CLIENT_ID, value: newClientID)
             return newClientID
         }
         return persistedClientID

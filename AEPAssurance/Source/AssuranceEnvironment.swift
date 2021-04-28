@@ -17,8 +17,8 @@ import Foundation
 /// Following example assists on how to use the `AssuranceEnvironment` enum
 ///
 /// From the assurance deeplink URL extract the environment query parameter and create an `AssuranceEnvironment` variable
-/// Stage -  griffon://?adb_validation_sessionid=someId&env=stage -> AssuranceEnvionement.stage
-/// Prod  -   griffon://?adb_validation_sessionid=someId -> AssuranceEnvionement.prod  (empty value or no value defaults to prod)
+/// Stage -  griffon://?adb_validation_sessionid=someId&env=stage -> AssuranceEnvironment.stage
+/// Prod  -   griffon://?adb_validation_sessionid=someId -> AssuranceEnvironment.prod  (empty value or no value defaults to prod)
 ///
 /// And use the AssuranceEnvironment.urlformat to prepare the host for socket connection
 /// Staging : wss://connect-stage
