@@ -35,17 +35,20 @@ public class Assurance: NSObject, Extension {
 
     // getter for client ID
     lazy var clientID: String = {
-        // check for client ID in persistence, if not create a UUID
-        guard let persistedClientID = datastore.getString(key: AssuranceConstants.DataStoreKeys.CLIENT_ID) else {
-            let newClientID = UUID().uuidString
-            datastore.set(key: AssuranceConstants.DataStoreKeys.CLIENT_ID, value: newClientID)
-            return newClientID
+        // return with clientId, if it is already available in persistence
+        if let persistedClientID = datastore.getString(key: AssuranceConstants.DataStoreKeys.CLIENT_ID) {
+            return persistedClientID
         }
-        return persistedClientID
+        
+        // If not generate a new clientId
+        let newClientID = UUID().uuidString
+        datastore.set(key: AssuranceConstants.DataStoreKeys.CLIENT_ID, value: newClientID)
+        return newClientID
+        
     }()
 
     public func onRegistered() {
-        registerListener(type: AssuranceConstants.SDKEventType.ASSURANCE, source: EventSource.requestContent, listener: handleAssuranceRequestContent(event:))
+        registerListener(type: AssuranceConstants.SDKEventType.ASSURANCE, source: EventSource.requestContent, listener: handleAssuranceRequestContent)
     }
 
     public func onUnregistered() {}
@@ -60,30 +63,30 @@ public class Assurance: NSObject, Extension {
 
     private func handleAssuranceRequestContent(event: Event) {
         guard let startSessionData = event.data else {
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance - Assurance start session event recieved with empty data. Dropping event.")
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance start session event received with empty data. Dropping event.")
             return
         }
 
         guard let deeplinkUrlString = startSessionData[AssuranceConstants.EventDataKey.START_SESSION_URL] as? String else {
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance - Assurance start session event recieved with no deeplink url. Dropping event.")
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance start session event received with no deeplink url. Dropping event.")
             return
         }
 
         let deeplinkURL = URL(string: deeplinkUrlString)
         guard let sessionID = deeplinkURL?.params[AssuranceConstants.Deeplink.SESSIONID_KEY] else {
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance - Deeplink URL is invalid : " + deeplinkUrlString)
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Deeplink URL is invalid. Does not contain 'adb_validation_sessionid' query parameter : " + deeplinkUrlString)
             return
         }
 
         // make sure the sessionID is an UUID string
         guard let _ = UUID(uuidString: sessionID) else {
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance - Deeplink URL is invalid : " + deeplinkUrlString)
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Deeplink URL is invalid. It contains sessionId that is not an valid UUID : " + deeplinkUrlString)
             return
         }
 
         // Read the environment query parameter from the deeplink url
         let environmentString = deeplinkURL?.params[AssuranceConstants.Deeplink.ENVIRONMENT_KEY] ?? ""
-        let enviroment = AssuranceEnvironment.init(envString: environmentString)
+        let environment = AssuranceEnvironment.init(envString: environmentString)
 
     }
 

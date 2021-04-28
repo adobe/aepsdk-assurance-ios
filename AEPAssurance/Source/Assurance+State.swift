@@ -18,16 +18,23 @@ extension Assurance {
 
     /// Call this function to create a new shared state for Assurance
     /// Important - An empty shared state is created if sessionId is not available
-    func shareSharedState() {
+    func shareState() {
         runtime.createSharedState(data: getSharedStateData() ?? [:], event: nil)
     }
 
     /// Call this function to empty the latest Assurance shared state
-    func clearSharedState() {
+    func clearState() {
         runtime.createSharedState(data: [:], event: nil)
     }
 
-    func getSharedStateData() -> [String: String]? {
+    /// Prepares the shared state data for the Assurance Extension
+    /// A valid shared state contains:
+    /// - sessionid
+    /// - clientid
+    /// - integrationid
+    ///
+    /// - Returns: a dictionary  representing the current shared state data
+    private func getSharedStateData() -> [String: String]? {
         // do not share shared state if the sessionId is unavailable
         guard let sessionId = sessionId else {
             return nil

@@ -19,7 +19,7 @@ struct AssuranceEvent: Codable {
     var type: String
     var payload: [String: AnyCodable]?
     var eventNumber: Int32?
-    var timestamp: Int64
+    var timestamp: Int64  // Todo : verify if this can rewritten as `Date` type
 
     /// Decodes a JSON data into a `AssuranceEvent`
     ///
@@ -49,7 +49,7 @@ struct AssuranceEvent: Codable {
         return event
     }
 
-    /// Initializer to construct `AssuranceEvent`instance  with the given parameters
+    /// Initializer to construct `AssuranceEvent`instance with the given parameters
     ///
     /// - Parameters:
     ///   - type: a String describing the type of AssuranceEvent
@@ -82,12 +82,8 @@ struct AssuranceEvent: Codable {
         if AssuranceConstants.EventType.CONTROL != type {
             return nil
         }
-
-        guard let controlType = payload?[AssuranceConstants.PayloadKey.TYPE]?.stringValue else {
-            return nil
-        }
-
-        return controlType
+        
+        return payload?[AssuranceConstants.PayloadKey.TYPE]?.stringValue
     }
 
     /// Returns the details of the control event. Applies only for control events. This method returns null for all other `AssuranceEvent` types.
@@ -102,11 +98,7 @@ struct AssuranceEvent: Codable {
             return nil
         }
 
-        guard let controlDetail = payload?[AssuranceConstants.PayloadKey.DETAIL]?.dictionaryValue else {
-            return nil
-        }
-
-        return controlDetail
+        return payload?[AssuranceConstants.PayloadKey.DETAIL]?.dictionaryValue
     }
 
     static private var eventNumberCounter: Int32 = 0

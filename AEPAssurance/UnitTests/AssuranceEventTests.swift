@@ -116,15 +116,15 @@ class AssuranceEventTests: XCTestCase {
                    """.data(using: .utf8)!
 
         // test
-        let event = AssuranceEvent.from(jsonData: data)
+        let event = AssuranceEvent.from(jsonData: data)!
 
         // verify
         XCTAssertNotNil(event, "Assurance event should be created from the json data")
-        XCTAssertEqual("someID", event?.eventID, "Inaccurate eventID")
-        XCTAssertEqual("someVendor", event?.vendor, "Inaccurate vendor")
-        XCTAssertEqual("someType", event?.type, "Inaccurate type")
-        XCTAssertEqual(113435556, event?.timestamp, "Inaccurate timestamp")
-        let payloadValue = event?.payload?["levelOneKey"]?.dictionaryValue!["levelTwoKey"]
+        XCTAssertEqual("someID", event.eventID, "Inaccurate eventID")
+        XCTAssertEqual("someVendor", event.vendor, "Inaccurate vendor")
+        XCTAssertEqual("someType", event.type, "Inaccurate type")
+        XCTAssertEqual(113435556, event.timestamp, "Inaccurate timestamp")
+        let payloadValue = event.payload?["levelOneKey"]?.dictionaryValue!["levelTwoKey"]
         XCTAssertEqual("levelTwoValue", payloadValue as! String)
     }
 
@@ -140,11 +140,11 @@ class AssuranceEventTests: XCTestCase {
                    """.data(using: .utf8)!
 
         // test
-        let event = AssuranceEvent.from(jsonData: data)
+        let event = AssuranceEvent.from(jsonData: data)!
 
         // verify
         XCTAssertNotNil(event, "Assurance event should be created from the json data")
-        XCTAssertNil(event!.payload, "Assurance event's payload should be nil")
+        XCTAssertNil(event.payload, "Assurance event's payload should be nil")
     }
 
     func test_initWithJSONData_InvalidData() throws {

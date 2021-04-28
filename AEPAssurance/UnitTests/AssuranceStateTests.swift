@@ -68,21 +68,21 @@ class AssuranceStateTests: XCTestCase {
         XCTAssertEqual("newSessionID", assurance.sessionId)
     }
 
-    func test_assuranceState_shareSharedState_nilSessionID() throws {
+    func test_assuranceState_shareState_nilSessionID() throws {
         // test
-        assurance.shareSharedState()
+        assurance.shareState()
 
         // verify
         XCTAssertEqual(1, runtime.sharedStates.count)
         XCTAssertTrue(runtime.firstSharedState!.isEmpty)
     }
 
-    func test_assuranceState_shareSharedState_happy() throws {
+    func test_assuranceState_shareState_happy() throws {
         // test
         assurance.sessionId = "newSessionID"
 
         // test
-        assurance.shareSharedState()
+        assurance.shareState()
 
         // verify
         XCTAssertEqual(1, runtime.sharedStates.count)
@@ -94,13 +94,13 @@ class AssuranceStateTests: XCTestCase {
         XCTAssertEqual("\(assurance.clientID)" + "|" + "\(assurance.sessionId!)", runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.INTEGRATION_ID] as? String)
     }
 
-    func test_assuranceState_clearSharedState() throws {
+    func test_assuranceState_clearState() throws {
         // setup
         assurance.sessionId = "newSessionID"
 
         // test
-        assurance.shareSharedState() // first set the shared state
-        assurance.clearSharedState() // and then attempt to clear it
+        assurance.shareState() // first set the shared state
+        assurance.clearState() // and then attempt to clear it
 
         // verify
         XCTAssertEqual(2, runtime.sharedStates.count)
