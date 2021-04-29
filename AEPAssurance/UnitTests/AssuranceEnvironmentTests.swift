@@ -10,9 +10,9 @@
  governing permissions and limitations under the License.
  */
 
-import XCTest
-import Foundation
 @testable import AEPAssurance
+import Foundation
+import XCTest
 
 class AssuranceEnvironmentTests: XCTestCase {
 
@@ -22,14 +22,14 @@ class AssuranceEnvironmentTests: XCTestCase {
         let stageEnum = AssuranceEnvironment.init(envString: "stage")
         let prodEnum = AssuranceEnvironment.init(envString: "")
         let defaultEnum = AssuranceEnvironment.init(envString: "wonder what i am")
-             
+
         XCTAssertEqual(devEnum, AssuranceEnvironment.dev)
         XCTAssertEqual(qaEnum, AssuranceEnvironment.qa)
         XCTAssertEqual(stageEnum, AssuranceEnvironment.stage)
         XCTAssertEqual(prodEnum, AssuranceEnvironment.prod)
         XCTAssertEqual(defaultEnum, AssuranceEnvironment.prod)
     }
-    
+
     func test_assuranceEnvironment_URLFormat() throws {
         XCTAssertEqual("-dev", AssuranceEnvironment.dev.urlFormat)
         XCTAssertEqual("-qa", AssuranceEnvironment.qa.urlFormat)
