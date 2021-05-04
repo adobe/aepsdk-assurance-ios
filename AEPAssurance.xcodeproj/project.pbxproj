@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2245E076165949645772B85C /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F8B491ECF9BCD5C6F3B4BAA /* Pods_UnitTests.framework */; };
-		41A996C4B0DB4C4A392979F8 /* Pods_TestApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D1F8C3301AFD98B288AF95 /* Pods_TestApp.framework */; };
 		B64071A3262C313E00C43183 /* AEPAssurance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6407199262C313E00C43183 /* AEPAssurance.framework */; };
 		B64071A8262C313E00C43183 /* AssurancePublicAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64071A7262C313E00C43183 /* AssurancePublicAPITests.swift */; };
 		B64071AA262C313E00C43183 /* AEPAssurance.h in Headers */ = {isa = PBXBuildFile; fileRef = B640719C262C313E00C43183 /* AEPAssurance.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -25,6 +24,11 @@
 		B640722B262CF06100C43183 /* AssuranceEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640722A262CF06100C43183 /* AssuranceEnvironment.swift */; };
 		B66D3C5B263752EE0076108B /* URL+ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66D3C5A263752EE0076108B /* URL+ParserTests.swift */; };
 		B670E63D2638BF2A000FCB96 /* TestableExtensionRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = B670E63C2638BF2A000FCB96 /* TestableExtensionRuntime.swift */; };
+		B670E72426395954000FCB96 /* StatusInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B670E72226395954000FCB96 /* StatusInfo.swift */; };
+		B670E72526395954000FCB96 /* PinDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B670E72326395954000FCB96 /* PinDialog.swift */; };
+		B670E74226395E65000FCB96 /* Pods_TestApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D1F8C3301AFD98B288AF95 /* Pods_TestApp.framework */; };
+		B670E74A26395F27000FCB96 /* AEPAssurance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6407199262C313E00C43183 /* AEPAssurance.framework */; };
+		B670E74B26395F27000FCB96 /* AEPAssurance.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B6407199262C313E00C43183 /* AEPAssurance.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B6AB2DE6263372AF00FE8AEA /* Assurance+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D2A92626334A3D0062AC5E /* Assurance+State.swift */; };
 		B6AB2DEE26337BB700FE8AEA /* MockDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB2DED26337BB700FE8AEA /* MockDataStore.swift */; };
 		B6AB2DF326337BE700FE8AEA /* AssuranceStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB2DF226337BE700FE8AEA /* AssuranceStateTests.swift */; };
@@ -32,6 +36,9 @@
 		B6AFD58E2634041E00C63608 /* AssuranceEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AFD58D2634041E00C63608 /* AssuranceEventTests.swift */; };
 		B6D2A91026322D6D0062AC5E /* AssuranceEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D2A90B26322D1C0062AC5E /* AssuranceEnvironmentTests.swift */; };
 		B6D2A91F2632B7640062AC5E /* MockExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D2A91E2632B7640062AC5E /* MockExtension.swift */; };
+		B6FEB8AC263A18E600F0F240 /* SocketScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FEB8AB263A18E600F0F240 /* SocketScript.swift */; };
+		B6FEB8B1263A18F500F0F240 /* InactiveIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FEB8AF263A18F500F0F240 /* InactiveIcon.swift */; };
+		B6FEB8B2263A18F500F0F240 /* ActiveIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FEB8B0263A18F500F0F240 /* ActiveIcon.swift */; };
 		EC3DB0C500F7E8EF2EFD4905 /* Pods_AEPAssurance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B1657E858FFB503CA351AA7 /* Pods_AEPAssurance.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,7 +50,14 @@
 			remoteGlobalIDString = B6407198262C313E00C43183;
 			remoteInfo = AEPAssurance;
 		};
-		B640720A262C921200C43183 /* PBXContainerItemProxy */ = {
+		B670E73D26395E00000FCB96 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B6407190262C313E00C43183 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B6407198262C313E00C43183;
+			remoteInfo = AEPAssurance;
+		};
+		B670E74C26395F27000FCB96 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B6407190262C313E00C43183 /* Project object */;
 			proxyType = 1;
@@ -51,6 +65,20 @@
 			remoteInfo = AEPAssurance;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B670E74E26395F27000FCB96 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B670E74B26395F27000FCB96 /* AEPAssurance.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0B1657E858FFB503CA351AA7 /* Pods_AEPAssurance.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AEPAssurance.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,6 +111,12 @@
 		B640722A262CF06100C43183 /* AssuranceEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEnvironment.swift; sourceTree = "<group>"; };
 		B66D3C5A263752EE0076108B /* URL+ParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+ParserTests.swift"; sourceTree = "<group>"; };
 		B670E63C2638BF2A000FCB96 /* TestableExtensionRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestableExtensionRuntime.swift; sourceTree = "<group>"; };
+		B670E67426392F95000FCB96 /* PinDialog.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = PinDialog.html; sourceTree = "<group>"; };
+		B670E67526392FD1000FCB96 /* StatusInfo.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = StatusInfo.html; sourceTree = "<group>"; };
+		B670E67826393277000FCB96 /* active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = active.png; sourceTree = "<group>"; };
+		B670E67926393284000FCB96 /* inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = inactive.png; sourceTree = "<group>"; };
+		B670E72226395954000FCB96 /* StatusInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusInfo.swift; sourceTree = "<group>"; };
+		B670E72326395954000FCB96 /* PinDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinDialog.swift; sourceTree = "<group>"; };
 		B6AB2DED26337BB700FE8AEA /* MockDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataStore.swift; sourceTree = "<group>"; };
 		B6AB2DF226337BE700FE8AEA /* AssuranceStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStateTests.swift; sourceTree = "<group>"; };
 		B6AFD588263403EB00C63608 /* AssuranceEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEvent.swift; sourceTree = "<group>"; };
@@ -90,6 +124,9 @@
 		B6D2A90B26322D1C0062AC5E /* AssuranceEnvironmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEnvironmentTests.swift; sourceTree = "<group>"; };
 		B6D2A91E2632B7640062AC5E /* MockExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockExtension.swift; sourceTree = "<group>"; };
 		B6D2A92626334A3D0062AC5E /* Assurance+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Assurance+State.swift"; sourceTree = "<group>"; };
+		B6FEB8AB263A18E600F0F240 /* SocketScript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketScript.swift; sourceTree = "<group>"; };
+		B6FEB8AF263A18F500F0F240 /* InactiveIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InactiveIcon.swift; sourceTree = "<group>"; };
+		B6FEB8B0263A18F500F0F240 /* ActiveIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveIcon.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +151,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41A996C4B0DB4C4A392979F8 /* Pods_TestApp.framework in Frameworks */,
+				B670E74226395E65000FCB96 /* Pods_TestApp.framework in Frameworks */,
+				B670E74A26395F27000FCB96 /* AEPAssurance.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,6 +185,7 @@
 		B640718F262C313E00C43183 = {
 			isa = PBXGroup;
 			children = (
+				B670E67326392F62000FCB96 /* Resources */,
 				B640719B262C313E00C43183 /* Source */,
 				B64071A6262C313E00C43183 /* UnitTests */,
 				B64071E5262C8F8B00C43183 /* TestApp */,
@@ -169,6 +208,7 @@
 		B640719B262C313E00C43183 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				B670E67D26393300000FCB96 /* BuiltResources */,
 				B6407221262CEACE00C43183 /* Extensions */,
 				B6407204262C90CD00C43183 /* Public */,
 				B640719C262C313E00C43183 /* AEPAssurance.h */,
@@ -236,6 +276,53 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		B670E67326392F62000FCB96 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B6FEB8A8263A185100F0F240 /* Javascript */,
+				B670E67726392FEE000FCB96 /* Icons */,
+				B670E67626392FDB000FCB96 /* HTML */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		B670E67626392FDB000FCB96 /* HTML */ = {
+			isa = PBXGroup;
+			children = (
+				B670E67426392F95000FCB96 /* PinDialog.html */,
+				B670E67526392FD1000FCB96 /* StatusInfo.html */,
+			);
+			path = HTML;
+			sourceTree = "<group>";
+		};
+		B670E67726392FEE000FCB96 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				B670E67826393277000FCB96 /* active.png */,
+				B670E67926393284000FCB96 /* inactive.png */,
+			);
+			path = Icons;
+			sourceTree = "<group>";
+		};
+		B670E67D26393300000FCB96 /* BuiltResources */ = {
+			isa = PBXGroup;
+			children = (
+				B6FEB8A5263A179C00F0F240 /* Javascript */,
+				B6FEB88A263A0F0700F0F240 /* Icons */,
+				B670E67F263935BD000FCB96 /* HTML */,
+			);
+			path = BuiltResources;
+			sourceTree = "<group>";
+		};
+		B670E67F263935BD000FCB96 /* HTML */ = {
+			isa = PBXGroup;
+			children = (
+				B670E72326395954000FCB96 /* PinDialog.swift */,
+				B670E72226395954000FCB96 /* StatusInfo.swift */,
+			);
+			path = HTML;
+			sourceTree = "<group>";
+		};
 		B6D2A91D2632B7290062AC5E /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -244,6 +331,30 @@
 				B670E63C2638BF2A000FCB96 /* TestableExtensionRuntime.swift */,
 			);
 			path = Mocks;
+			sourceTree = "<group>";
+		};
+		B6FEB88A263A0F0700F0F240 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				B6FEB8B0263A18F500F0F240 /* ActiveIcon.swift */,
+				B6FEB8AF263A18F500F0F240 /* InactiveIcon.swift */,
+			);
+			path = Icons;
+			sourceTree = "<group>";
+		};
+		B6FEB8A5263A179C00F0F240 /* Javascript */ = {
+			isa = PBXGroup;
+			children = (
+				B6FEB8AB263A18E600F0F240 /* SocketScript.swift */,
+			);
+			path = Javascript;
+			sourceTree = "<group>";
+		};
+		B6FEB8A8263A185100F0F240 /* Javascript */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Javascript;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,6 +376,9 @@
 			buildConfigurationList = B64071AD262C313E00C43183 /* Build configuration list for PBXNativeTarget "AEPAssurance" */;
 			buildPhases = (
 				F1ACF4754BFD24A3260E817E /* [CP] Check Pods Manifest.lock */,
+				B670E67E26393389000FCB96 /* Generate binary representation of HTML file */,
+				B6FEB8A4263A171200F0F240 /* Generate binary representation of Javascript files */,
+				B6FEB899263A13A400F0F240 /* Generate binary representation of Icons */,
 				B6407194262C313E00C43183 /* Headers */,
 				B6407195262C313E00C43183 /* Sources */,
 				B6407196262C313E00C43183 /* Frameworks */,
@@ -308,11 +422,13 @@
 				B64071E1262C8F8A00C43183 /* Frameworks */,
 				B64071E2262C8F8A00C43183 /* Resources */,
 				DD115CBF22339A9AAF24D1A6 /* [CP] Embed Pods Frameworks */,
+				B670E74E26395F27000FCB96 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				B640720B262C921200C43183 /* PBXTargetDependency */,
+				B670E73E26395E00000FCB96 /* PBXTargetDependency */,
+				B670E74D26395F27000FCB96 /* PBXTargetDependency */,
 			);
 			name = TestApp;
 			productName = TestApp;
@@ -427,6 +543,70 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UnitTests/Pods-UnitTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		B670E67E26393389000FCB96 /* Generate binary representation of HTML file */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Resources/HTML/PinDialog.html",
+				"$(SRCROOT)/Resources/HTML/StatusInfo.html",
+			);
+			name = "Generate binary representation of HTML file";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/AEPAssurance/Source/BuiltResources/HTML/PinDialog.swift",
+				"$(SRCROOT)/AEPAssurance/Source/BuiltResources/HTML/StatusInfo.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\n\n# generate Array<UInt8> representation for PinDialog.html\n# Output file - PinDialog.swift\necho \"enum PinDialogHTML {\" > ${SCRIPT_OUTPUT_FILE_0}\necho \"    static let content : [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\ncat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n\n# generate Array<UInt8> representation StatusInfo.html\n# Output file - StatusInfo.swift\necho \"enum StatusInfoHTML {\" > ${SCRIPT_OUTPUT_FILE_1}\necho \"    static let content : [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_1}\ncat ${SCRIPT_INPUT_FILE_1} |  xxd -i >> ${SCRIPT_OUTPUT_FILE_1}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_1}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_1}\n";
+		};
+		B6FEB899263A13A400F0F240 /* Generate binary representation of Icons */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Resources/Icons/active.png",
+				"$(SRCROOT)/Resources/Icons/inactive.png",
+			);
+			name = "Generate binary representation of Icons";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/AEPAssurance/Source/BuiltResources/Icons/ActiveIcon.swift",
+				"$(SRCROOT)/AEPAssurance/Source/BuiltResources/Icons/InactiveIcon.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\n\n# Generate Array<UInt8> representation for active.png\n# Output file - ActiveIcon.swift\necho \"enum ActiveIcon {\" > ${SCRIPT_OUTPUT_FILE_0}\necho \"    static let content : [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\ncat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n\n# Generate Array<UInt8> representation inactive.png\n# Output file - InActiveIcon.swift\necho \"enum InactiveIcon {\" > ${SCRIPT_OUTPUT_FILE_1}\necho \"    static let content : [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_1}\ncat ${SCRIPT_INPUT_FILE_1} |  xxd -i >> ${SCRIPT_OUTPUT_FILE_1}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_1}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_1}\n";
+		};
+		B6FEB8A4263A171200F0F240 /* Generate binary representation of Javascript files */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Resources/Javascript/SocketScript.js",
+			);
+			name = "Generate binary representation of Javascript files";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/AEPAssurance/Source/BuiltResources/Javascript/SocketScript.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\n\n# generate Array<UInt8> representation for SocketScript.js\n# Output file - SocketScript.swift\necho \"enum SocketScript {\" > ${SCRIPT_OUTPUT_FILE_0}\necho \"    static let content : [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\ncat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n";
+		};
 		DD115CBF22339A9AAF24D1A6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -498,8 +678,13 @@
 				B64071D3262C368C00C43183 /* Assurance.swift in Sources */,
 				B64071D7262C376A00C43183 /* AssuranceConstants.swift in Sources */,
 				B6AFD589263403EB00C63608 /* AssuranceEvent.swift in Sources */,
+				B6FEB8AC263A18E600F0F240 /* SocketScript.swift in Sources */,
+				B670E72526395954000FCB96 /* PinDialog.swift in Sources */,
+				B670E72426395954000FCB96 /* StatusInfo.swift in Sources */,
 				B6407223262CEBC600C43183 /* URL+Parser.swift in Sources */,
 				B640722B262CF06100C43183 /* AssuranceEnvironment.swift in Sources */,
+				B6FEB8B2263A18F500F0F240 /* ActiveIcon.swift in Sources */,
+				B6FEB8B1263A18F500F0F240 /* InactiveIcon.swift in Sources */,
 				B6407206262C90FA00C43183 /* Assurance+PublicAPI.swift in Sources */,
 				B6AB2DE6263372AF00FE8AEA /* Assurance+State.swift in Sources */,
 			);
@@ -538,10 +723,15 @@
 			target = B6407198262C313E00C43183 /* AEPAssurance */;
 			targetProxy = B64071A4262C313E00C43183 /* PBXContainerItemProxy */;
 		};
-		B640720B262C921200C43183 /* PBXTargetDependency */ = {
+		B670E73E26395E00000FCB96 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B6407198262C313E00C43183 /* AEPAssurance */;
-			targetProxy = B640720A262C921200C43183 /* PBXContainerItemProxy */;
+			targetProxy = B670E73D26395E00000FCB96 /* PBXContainerItemProxy */;
+		};
+		B670E74D26395F27000FCB96 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B6407198262C313E00C43183 /* AEPAssurance */;
+			targetProxy = B670E74C26395F27000FCB96 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
