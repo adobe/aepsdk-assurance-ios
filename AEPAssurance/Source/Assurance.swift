@@ -34,7 +34,7 @@ public class Assurance: NSObject, Extension {
         }
     }
 
-    let DEFAULT_ENVIRONMENT = AssuranceEnvironment.prod
+    private let DEFAULT_ENVIRONMENT = AssuranceEnvironment.prod
     var environment: AssuranceEnvironment {
         get {
             AssuranceEnvironment.init(envString: datastore.getString(key: AssuranceConstants.DataStoreKeys.ENVIRONMENT) ?? DEFAULT_ENVIRONMENT.rawValue)

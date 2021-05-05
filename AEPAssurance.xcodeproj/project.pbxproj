@@ -10,6 +10,7 @@
 		40FC01E5ADD295768967606F /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0BC14154AD66528E5C67AD3 /* Pods_UnitTests.framework */; };
 		82535258EFF855777E1FA044 /* Pods_TestApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60F3B3ACD3ECD7E6203EC6BA /* Pods_TestApp.framework */; };
 		A4DAC0327D23B8B21A1D1E26 /* Pods_AEPAssurance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41887819F8B86D54D8ED4E00 /* Pods_AEPAssurance.framework */; };
+		B60BAC0C26434ED90054CD21 /* AssuranceSocketError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60BAC0B26434ED90054CD21 /* AssuranceSocketError.swift */; };
 		B64071A3262C313E00C43183 /* AEPAssurance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6407199262C313E00C43183 /* AEPAssurance.framework */; };
 		B64071A8262C313E00C43183 /* AssurancePublicAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64071A7262C313E00C43183 /* AssurancePublicAPITests.swift */; };
 		B64071AA262C313E00C43183 /* AEPAssurance.h in Headers */ = {isa = PBXBuildFile; fileRef = B640719C262C313E00C43183 /* AEPAssurance.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -93,6 +94,7 @@
 		4A367FFA56F50A9C4AB05782 /* Pods-AEPAssurance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AEPAssurance.release.xcconfig"; path = "Target Support Files/Pods-AEPAssurance/Pods-AEPAssurance.release.xcconfig"; sourceTree = "<group>"; };
 		5A74AA93E85769E9857F8F14 /* Pods-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.debug.xcconfig"; path = "Target Support Files/Pods-UnitTests/Pods-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		60F3B3ACD3ECD7E6203EC6BA /* Pods_TestApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B60BAC0B26434ED90054CD21 /* AssuranceSocketError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceSocketError.swift; sourceTree = "<group>"; };
 		B6407199262C313E00C43183 /* AEPAssurance.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AEPAssurance.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B640719C262C313E00C43183 /* AEPAssurance.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AEPAssurance.h; sourceTree = "<group>"; };
 		B640719D262C313E00C43183 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 				B6AFD588263403EB00C63608 /* AssuranceEvent.swift */,
 				B640722A262CF06100C43183 /* AssuranceEnvironment.swift */,
 				B64071D6262C376A00C43183 /* AssuranceConstants.swift */,
+				B60BAC0B26434ED90054CD21 /* AssuranceSocketError.swift */,
 				B640719D262C313E00C43183 /* Info.plist */,
 			);
 			name = Source;
@@ -725,6 +728,7 @@
 				B6FEB8B2263A18F500F0F240 /* ActiveIcon.swift in Sources */,
 				B6B0E2C9263C674F00EF5E21 /* SessionAuthorizable.swift in Sources */,
 				B6FEB8B1263A18F500F0F240 /* InactiveIcon.swift in Sources */,
+				B60BAC0C26434ED90054CD21 /* AssuranceSocketError.swift in Sources */,
 				B6B0E2CD263C709100EF5E21 /* iOSPinCodeScreen.swift in Sources */,
 				B6407206262C90FA00C43183 /* Assurance+PublicAPI.swift in Sources */,
 				B6B0E2D7263C7FAB00EF5E21 /* AssuranceSession.swift in Sources */,
