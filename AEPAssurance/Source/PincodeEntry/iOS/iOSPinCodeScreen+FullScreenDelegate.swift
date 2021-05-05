@@ -92,10 +92,10 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
         Log.warning(label: AssuranceConstants.LOG_TAG, "Unable to display the pincode screen, onShowFailure delegate method is invoked")
     }
 
-    /// Getter to retrieve the url encoded experience cloud orgId obtained from configuration response.
-    /// Return nil
-    ///  - if Core is not configured and configuration shared state is not available
-    ///  - Configuration Shared State does not have `experienceCloud.org` config key is  unavailable
+    /// Getter to retrieve the url encoded experience cloud orgId  from configuration
+    /// Returns nil
+    ///  - if Core is not configured and configuration shared state is not available.
+    ///  - Configuration Shared State does not have `experienceCloud.org` config key is unavailable.
     ///
     /// - Returns: optional string representing the url coded experienceCloud Org Id to which the `MobileCore` is configured
     func getURLEncodedOrgID() -> String? {
