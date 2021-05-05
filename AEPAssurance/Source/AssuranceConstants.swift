@@ -18,9 +18,15 @@ enum AssuranceConstants {
     static let EXTENSION_VERSION = "2.0.0"
     static let LOG_TAG = FRIENDLY_NAME
 
+    static let BASE_SOCKET_URL = "wss://connect%@.griffon.adobe.com/client/v1?sessionId=%@&token=%@&orgId=%@&clientId=%@"
+
     enum Deeplink {
         static let SESSIONID_KEY = "adb_validation_sessionid"
         static let ENVIRONMENT_KEY = "env"
+    }
+
+    enum SharedStateName {
+        static let CONFIGURATION = "com.adobe.module.configuration"
     }
 
     enum Vendor {
@@ -34,11 +40,13 @@ enum AssuranceConstants {
 
     enum EventDataKey {
         static let START_SESSION_URL = "startSessionURL"
+        static let CONFIG_ORG_ID = "experienceCloud.org"
     }
 
     enum DataStoreKeys {
         static let SESSION_ID = "assurance.session.Id"
         static let CLIENT_ID = "assurance.client.Id"
+        static let ENVIRONMENT = "assurance.environment"
     }
 
     enum SharedStateKeys {
@@ -61,6 +69,11 @@ enum AssuranceConstants {
         static let METADATA = "metadata"
         static let TYPE = "type"
         static let DETAIL = "detail"
+    }
+
+    enum HTMLURLPath {
+        static let CANCEL   = "cancel"
+        static let CONFIRM  = "confirm"
     }
 
 }

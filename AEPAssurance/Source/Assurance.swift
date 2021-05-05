@@ -23,6 +23,7 @@ public class Assurance: NSObject, Extension {
     public var runtime: ExtensionRuntime
 
     let datastore = NamedCollectionDataStore(name: AssuranceConstants.EXTENSION_NAME)
+    var assuranceSession: AssuranceSession?
 
     var sessionId: String? {
         get {
@@ -33,22 +34,33 @@ public class Assurance: NSObject, Extension {
         }
     }
 
+    private let DEFAULT_ENVIRONMENT = AssuranceEnvironment.prod
+    var environment: AssuranceEnvironment {
+        get {
+            AssuranceEnvironment.init(envString: datastore.getString(key: AssuranceConstants.DataStoreKeys.ENVIRONMENT) ?? DEFAULT_ENVIRONMENT.rawValue)
+        }
+        set {
+            datastore.set(key: AssuranceConstants.DataStoreKeys.ENVIRONMENT, value: newValue.rawValue)
+        }
+    }
+
     // getter for client ID
     lazy var clientID: String = {
         // return with clientId, if it is already available in persistence
         if let persistedClientID = datastore.getString(key: AssuranceConstants.DataStoreKeys.CLIENT_ID) {
             return persistedClientID
         }
-        
+
         // If not generate a new clientId
         let newClientID = UUID().uuidString
         datastore.set(key: AssuranceConstants.DataStoreKeys.CLIENT_ID, value: newClientID)
         return newClientID
-        
+
     }()
 
     public func onRegistered() {
         registerListener(type: AssuranceConstants.SDKEventType.ASSURANCE, source: EventSource.requestContent, listener: handleAssuranceRequestContent)
+        self.assuranceSession = AssuranceSession(self)
     }
 
     public func onUnregistered() {}
@@ -73,21 +85,23 @@ public class Assurance: NSObject, Extension {
         }
 
         let deeplinkURL = URL(string: deeplinkUrlString)
-        guard let sessionID = deeplinkURL?.params[AssuranceConstants.Deeplink.SESSIONID_KEY] else {
+        guard let sessionId = deeplinkURL?.params[AssuranceConstants.Deeplink.SESSIONID_KEY] else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Deeplink URL is invalid. Does not contain 'adb_validation_sessionid' query parameter : " + deeplinkUrlString)
             return
         }
 
         // make sure the sessionID is an UUID string
-        guard let _ = UUID(uuidString: sessionID) else {
+        guard let _ = UUID(uuidString: sessionId) else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Deeplink URL is invalid. It contains sessionId that is not an valid UUID : " + deeplinkUrlString)
             return
         }
 
         // Read the environment query parameter from the deeplink url
         let environmentString = deeplinkURL?.params[AssuranceConstants.Deeplink.ENVIRONMENT_KEY] ?? ""
-        let environment = AssuranceEnvironment.init(envString: environmentString)
 
+        // save the environment and sessionID
+        environment = AssuranceEnvironment.init(envString: environmentString)
+        self.sessionId = sessionId
+        assuranceSession?.startSession()
     }
-
 }
