@@ -18,35 +18,35 @@ class iOSPinCodeScreen: SessionAuthorizable {
     var assuranceExtension: Assurance
     var fullscreenMessage: FullscreenPresentable?
     var fullscreenWebView: WKWebView?
-    var callback: callback?
+    var authorizedURLCallback: authorizedURLCallback?
 
     /// Initializer
     required init(withExtension assuranceExtension: Assurance) {
         self.assuranceExtension = assuranceExtension
     }
 
-    /// Invoke this during start session to display the pinCode screen
-    func getSocketURL(callback: @escaping callback) {
-        self.callback = callback
+    /// Invoke this during start session to display the pinCode screen.
+    func getSocketURL(callback: @escaping authorizedURLCallback) {
+        self.authorizedURLCallback = callback
         showPincodeScreen()
     }
 
-    /// Invoked when the a socket connection is initialized
+    /// Invoked when the a socket connection is initialized.
     func connectionInitialized() {
         fullscreenWebView?.evaluateJavaScript("showLoading();", completionHandler: nil)
     }
 
-    /// Invoked when the a successful socket connection is established with a desired assurance session
+    /// Invoked when the a successful socket connection is established with a desired assurance session.
     func connectionSucceeded() {
         fullscreenMessage?.dismiss()
     }
 
-    /// Invoked when the a successful socket connection is terminated
+    /// Invoked when the a successful socket connection is terminated.
     func connectionFinished() {
         fullscreenMessage?.dismiss()
     }
 
-    /// Invoked when the a socket connection is failed
+    /// Invoked when the a socket connection is failed.
     /// - Parameters
     ///     - error - an `AssuranceSocketError` explaining the reason why the connection failed
     ///     - shouldShowRetry - boolean indication if the retry button on the pinpad button should still be shown
@@ -56,7 +56,7 @@ class iOSPinCodeScreen: SessionAuthorizable {
         fullscreenWebView?.evaluateJavaScript(jsFunctionCall, completionHandler: nil)
     }
 
-    /// Uses the UIService to create a fullscreen message with the  `PinDialogHTML` and show to the user
+    /// Uses the UIService to create a fullscreen message with the `PinDialogHTML` and show to the user.
     func showPincodeScreen() {
         fullscreenMessage = ServiceProvider.shared.uiService.createFullscreenMessage(payload: String(bytes: PinDialogHTML.content, encoding: .utf8)!, listener: self, isLocalImageUsed: false)
         fullscreenMessage?.show()

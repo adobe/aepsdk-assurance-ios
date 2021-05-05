@@ -79,7 +79,7 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
                                    assuranceExtension.clientID)
 
             self.connectionInitialized()
-            self.callback?(socketURL)
+            self.authorizedURLCallback?(socketURL)
         }
 
         return false

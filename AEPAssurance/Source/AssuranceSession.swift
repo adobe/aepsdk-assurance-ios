@@ -17,10 +17,15 @@ struct AssuranceSession {
     let assuranceExtension: Assurance
     var pinCodeScreen: SessionAuthorizable?
 
+    /// Initializer with instance of  `Assurance` extension
     init(_ assuranceExtension: Assurance) {
         self.assuranceExtension = assuranceExtension
     }
 
+    /// Called when a valid assurance deeplink url is received from the startSession API
+    /// Calling this method will attempt to display the pincode screen for session authentication
+    ///
+    /// Thread : Listener thread from EventHub
     mutating func startSession() {
         let pinCodeScreen = iOSPinCodeScreen.init(withExtension: assuranceExtension)
         self.pinCodeScreen = pinCodeScreen
