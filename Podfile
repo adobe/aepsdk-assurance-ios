@@ -6,16 +6,16 @@ workspace 'AEPAssurance'
 project 'AEPAssurance.xcodeproj'
 
 target 'AEPAssurance' do
-  pod 'AEPCore'
+  pod 'AEPCore', :git => 'https://github.com/PravinPK/aepsdk-core-ios.git', :branch => 'assuranceSwift'
   pod 'AEPServices'
 end
 
 target 'UnitTests' do
-  pod 'AEPCore'
+  pod 'AEPCore', :git => 'https://github.com/PravinPK/aepsdk-core-ios.git', :branch => 'assuranceSwift'
   pod 'AEPServices'
 end
 
 target 'TestApp' do
-  pod 'AEPCore'
+  pod 'AEPCore', :git => 'https://github.com/PravinPK/aepsdk-core-ios.git', :branch => 'assuranceSwift'
   pod 'AEPServices'
 end

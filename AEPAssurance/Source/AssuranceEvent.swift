@@ -82,7 +82,7 @@ struct AssuranceEvent: Codable {
         if AssuranceConstants.EventType.CONTROL != type {
             return nil
         }
-        
+
         return payload?[AssuranceConstants.PayloadKey.TYPE]?.stringValue
     }
 
