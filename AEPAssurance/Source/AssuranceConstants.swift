@@ -98,7 +98,7 @@ enum AssuranceSocketError {
                     "Unable to extract valid Assurance sessionID from deeplink URL. Please retry to connect to session with a valid deeplink URL")
         case .NO_PINCODE:
             return ("HTML Error",
-                    "Unable to extract valid extract pincode details entered.")
+                    "Unable to extract the pincode entered.")
         case .NO_ORGID:
             return ("Invalid Launch & SDK Configuration",
                     "The Experience Cloud Org identifier is unavailable from SDK configuration. Please ensure the Launch mobile property is properly configured.")
