@@ -61,12 +61,12 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
             }
 
             guard let sessionId = assuranceExtension.sessionId else {
-                connectionFailedWithError(AssuranceSocketError.NO_SESSIONID, shouldShowRetry: true)
+                connectionFailedWithError(AssuranceSocketError.NO_SESSION_ID, shouldShowRetry: false)
                 return false
             }
 
             guard let orgID = getURLEncodedOrgID() else {
-                connectionFailedWithError(AssuranceSocketError.NO_ORGID, shouldShowRetry: true)
+                connectionFailedWithError(AssuranceSocketError.NO_ORG_ID, shouldShowRetry: true)
                 return false
             }
 
@@ -84,7 +84,6 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
 
         return false
     }
-
     ///
     /// Invoked when the FullscreenMessage failed to be displayed
     ///
@@ -94,8 +93,8 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
 
     /// Getter to retrieve the url encoded experience cloud orgId  from configuration
     /// Returns nil
-    ///  - if Core is not configured and configuration shared state is not available.
-    ///  - Configuration Shared State does not have `experienceCloud.org` config key is unavailable.
+    ///  - if core is not configured and configuration shared state is not available.
+    ///  - if configuration shared state does not have value for `experienceCloud.org`
     ///
     /// - Returns: optional string representing the url coded experienceCloud Org Id to which the `MobileCore` is configured
     func getURLEncodedOrgID() -> String? {

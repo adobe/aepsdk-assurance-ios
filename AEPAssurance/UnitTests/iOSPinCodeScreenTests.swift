@@ -89,7 +89,7 @@ class iOSPinCodeScreenTests: XCTestCase {
         _ = pinCodeScreen.overrideUrlLoad(message: mockMessage, url: "adbinapp://confirm?code=4444")
 
         // verify that the javascript to show error is called
-        XCTAssertEqual(String(format: "showError('%@','%@', 1);", AssuranceSocketError.NO_ORGID.info.name, AssuranceSocketError.NO_ORGID.info.description), mockWebView.javaScriptStringReceived)
+        XCTAssertEqual(String(format: "showError('%@','%@', 1);", AssuranceSocketError.NO_ORG_ID.info.name, AssuranceSocketError.NO_ORG_ID.info.description), mockWebView.javaScriptStringReceived)
     }
 
     /*--------------------------------------------------

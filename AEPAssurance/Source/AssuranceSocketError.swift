@@ -14,8 +14,8 @@ import Foundation
 
 enum AssuranceSocketError {
     case GENERIC_ERROR
-    case NO_ORGID
-    case NO_SESSIONID
+    case NO_ORG_ID
+    case NO_SESSION_ID
     case NO_PINCODE
     case ORGID_MISMATCH
     case CONNECTION_LIMIT
@@ -27,24 +27,24 @@ enum AssuranceSocketError {
         case .GENERIC_ERROR:
             return ("Connection Error",
                     "The connection may be failing due to a network issue or an incorrect PIN. Please verify internet connectivity or the PIN and try again.")
-        case .NO_SESSIONID:
+        case .NO_SESSION_ID:
             return ("Invalid SessionID",
-                    "Unable to extract valid Assurance sessionID from deeplink URL. Please retry to connect to session with a valid deeplink URL")
+                    "Unable to extract valid Assurance sessionID from deeplink URL. Please try re-connecting to the session with a valid deeplink URL")
         case .NO_PINCODE:
             return ("HTML Error",
                     "Unable to extract the pincode entered.")
-        case .NO_ORGID:
+        case .NO_ORG_ID:
             return ("Invalid Launch & SDK Configuration",
                     "The Experience Cloud Org identifier is unavailable from SDK configuration. Please ensure the Launch mobile property is properly configured.")
         case .ORGID_MISMATCH:
             return ("Unauthorized Access",
-                    "AEP Assurance sessions and Launch mobile properties must be created in the same organization.")
+                    "The Experience Cloud organization for this Launch Property does not match that of the AEP Assurance session")
         case .CONNECTION_LIMIT:
             return ("Connection Limit Reached",
-                    "You have reached the maximum number of connected device allowed to a session. Please disconnect few devices and retry.")
+                    "You have reached the maximum number of connected device (50) allowed to a session.")
         case .EVENT_LIMIT:
             return ("Event Limit Reached",
-                    "You have reached the maximum number of events that can be sent per minute.")
+                    "You have reached the maximum number of events (10k) that can be sent per minute.")
         case .CLIENT_ERROR:
             return ("Client Disconnected",
                     "This client has been disconnected due to an unexpected error. Error Code 4400.")

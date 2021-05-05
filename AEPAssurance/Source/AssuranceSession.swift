@@ -31,7 +31,7 @@ struct AssuranceSession {
         self.pinCodeScreen = pinCodeScreen
 
         pinCodeScreen.getSocketURL(callback: { socketUrl in
-            Log.debug(label: AssuranceConstants.LOG_TAG, String(format: "Attempting to make a socket connection with URL :", socketUrl))
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to make a socket connection with URL : \(socketUrl)")
             pinCodeScreen.connectionInitialized()
         })
 
