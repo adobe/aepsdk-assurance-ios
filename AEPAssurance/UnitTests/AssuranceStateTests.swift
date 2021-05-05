@@ -18,7 +18,7 @@ import XCTest
 class AssuranceStateTests: XCTestCase {
 
     var assurance: Assurance!
-    var runtime: TestableExtensionRuntime!
+    let runtime = TestableExtensionRuntime()
 
     var mockDataStore: MockDataStore {
         return ServiceProvider.shared.namedKeyValueService as! MockDataStore
@@ -26,7 +26,6 @@ class AssuranceStateTests: XCTestCase {
 
     override func setUp() {
         ServiceProvider.shared.namedKeyValueService = MockDataStore()
-        runtime = TestableExtensionRuntime()
         assurance = Assurance(runtime: runtime)
         assurance.onRegistered()
     }
