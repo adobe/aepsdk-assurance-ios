@@ -86,7 +86,7 @@ class ThreadSafeQueueTests: XCTestCase {
         let group = DispatchGroup()
         for _ in 0...10 {
             
-            // Enqueue task
+            // Spawning threads for enqueue task
             group.enter()
             DispatchQueue.global().async {
                 let sleepVal = arc4random() % 1000
@@ -95,7 +95,7 @@ class ThreadSafeQueueTests: XCTestCase {
                 group.leave()
             }
             
-            // Dequeuing task
+            // Spawning threads for dequeue task
             group.enter()
             DispatchQueue.global().async {
                 let sleepVal = arc4random() % 1000
@@ -105,7 +105,7 @@ class ThreadSafeQueueTests: XCTestCase {
             }
             
             
-            // size check task
+            // Spawning threads for size check task
             group.enter()
             DispatchQueue.global().async {
                 let sleepVal = arc4random() % 1000
