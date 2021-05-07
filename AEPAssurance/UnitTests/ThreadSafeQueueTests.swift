@@ -115,6 +115,7 @@ class ThreadSafeQueueTests: XCTestCase {
             } 
         }
         
+        // verify that all the asynchronous operations are completed without crashing
         let result = group.wait(timeout: DispatchTime.now() + 3)
         XCTAssert(result == .success)
     }

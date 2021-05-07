@@ -14,9 +14,9 @@ import Foundation
 
 /// Thread safe FIFO Queue for Assurance
 class ThreadSafeQueue<T> {
-    private let limit : Int;
+    private let limit : Int
     private var array: [T] = []
-    private let accessQueue = DispatchQueue(label: "com.adobe.assurance.ThreadSafeQueue", attributes: .concurrent)
+    private let accessQueue = DispatchQueue(label: "com.adobe.assurance.ThreadSafeQueue") // serial queue
     
     /// Initializes the queue with the provide maximum capacity
     init(withLimit  limit: Int) {
@@ -26,22 +26,26 @@ class ThreadSafeQueue<T> {
     /// Appends the specified element to the end of this queue.
     /// If the queue has reached its limit then the first element of the queue is removed
     func enqueue(newElement: T) {
-        self.accessQueue.async(flags:.barrier) {
+        self.accessQueue.async {
+            print("Insert")
             self.array.append(newElement)
             
             if(self.limit > 0 && self.array.count > self.limit){
                 self.array.removeFirst()
             }
+            print("Insert Done")
         }        
     }
     
     /// Retrieves and removes the first element of this queue, or returns nil if this queue is empty.
     func dequeue() -> T? {
         var element : T?
-        self.accessQueue.sync(flags:.barrier) {
+        self.accessQueue.sync {
+            print("Readee")
             if (!array.isEmpty) {
                 element = array.removeFirst()
             }
+            print("Readee Done")
         }
         
         return element;
@@ -50,8 +54,10 @@ class ThreadSafeQueue<T> {
     /// Returns the current size of the queue
     func size() -> Int {
         var size = 0
-        self.accessQueue.sync(flags:.barrier) {
+        self.accessQueue.sync {
+            print("Sizeee")
             size = array.count
+            print("Sizeee Done")
         }
         
         return size;
@@ -59,7 +65,7 @@ class ThreadSafeQueue<T> {
     
     ///Removes all of the elements from this queue.
     func clear() {
-        self.accessQueue.async(flags:.barrier) {
+        self.accessQueue.async {
             self.array.removeAll()
         }
     }
