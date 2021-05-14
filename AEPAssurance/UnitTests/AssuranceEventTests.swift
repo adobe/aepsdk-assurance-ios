@@ -55,7 +55,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertEqual("generic", event.type, "Inaccurate event type")
         XCTAssertEqual(SAMPLE_PAYLOAD, event.payload, "Inaccurate event payload")
         XCTAssertEqual(AssuranceConstants.Vendor.SDK, event.vendor, "Inaccurate event vendor")
-        XCTAssertEqual((Date().getUnixTimeInSeconds() * 1000), event.timestamp, accuracy: 100, "Timestamp should be close to current date")
+        XCTAssertEqual((Date().getUnixTimeInSeconds() * 1000), event.timestamp as! Int64, accuracy: 100, "Timestamp should be close to current date")
     }
 
     func test_init_withVendorAndTimestamp() throws {
@@ -111,9 +111,8 @@ class AssuranceEventTests: XCTestCase {
                         "levelOneKey": {
                           "levelTwoKey": "levelTwoValue"
                         }
-                      }
                     }
-                   """.data(using: .utf8)!
+                    """.data(using: .utf8)!
 
         // test
         let event = AssuranceEvent.from(jsonData: data)!

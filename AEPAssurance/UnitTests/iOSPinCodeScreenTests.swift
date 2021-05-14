@@ -66,7 +66,7 @@ class iOSPinCodeScreenTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Correct webSocket url should be created")
         expectation.assertForOverFulfill = true
         pinCodeScreen.getSocketURL(callback: { socketURL in
-            XCTAssertTrue(socketURL.contains("wss://connect.griffon.adobe.com/client/v1?sessionId=mockSessionID&token=4444&orgId=mockorg@adobe.com&clientId="))
+            XCTAssertTrue(socketURL.absoluteString.contains("wss://connect.griffon.adobe.com/client/v1?sessionId=mockSessionID&token=4444&orgId=mockorg@adobe.com&clientId="))
             expectation.fulfill()
         })
 

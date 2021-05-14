@@ -17,6 +17,7 @@ enum AssuranceSocketError {
     case NO_ORG_ID
     case NO_SESSION_ID
     case NO_PINCODE
+    case NO_URL
     case ORGID_MISMATCH
     case CONNECTION_LIMIT
     case EVENT_LIMIT
@@ -33,6 +34,9 @@ enum AssuranceSocketError {
         case .NO_PINCODE:
             return ("HTML Error",
                     "Unable to extract the pincode entered.")
+        case .NO_URL:
+            return ("Socket Connection Error",
+                    "Unable to form a valid socket URL for connection.")
         case .NO_ORG_ID:
             return ("Invalid Launch & SDK Configuration",
                     "The Experience Cloud Org identifier is unavailable from SDK configuration. Please ensure the Launch mobile property is properly configured.")

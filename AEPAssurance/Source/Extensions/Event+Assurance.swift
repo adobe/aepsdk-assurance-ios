@@ -11,8 +11,17 @@
  */
 
 
+import AEPCore
 import Foundation
 
-class ThreadSafeDictionary<T> {
-    // TODO
+extension Event {
+    // MARK: - Event Type/Source Detection
+    var isSharedStateEvent: Bool {
+        return type == EventType.hub && source == EventSource.sharedState
+    }
+    
+    // MARK: - EventData values
+    var sharedStateOwner: String? {
+        return data?[AssuranceConstants.EventDataKey.SHARED_STATE_OWNER] as? String
+    }
 }

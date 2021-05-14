@@ -1,18 +1,57 @@
 PODS:
+  - AEPAnalytics (3.0.1):
+    - AEPCore
+    - AEPServices
   - AEPCore (3.1.2):
     - AEPRulesEngine (= 1.0.0)
     - AEPServices (= 3.1.2)
+  - AEPEdge (1.1.0):
+    - AEPCore (>= 3.1.1)
+    - AEPEdgeIdentity
+  - AEPEdgeConsent (1.0.0):
+    - AEPCore (>= 3.1.0)
+  - AEPEdgeIdentity (1.0.0):
+    - AEPCore (>= 3.1.1)
+  - AEPIdentity (3.1.2):
+    - AEPCore (= 3.1.2)
+  - AEPLifecycle (3.1.2):
+    - AEPCore (= 3.1.2)
   - AEPRulesEngine (1.0.0)
   - AEPServices (3.1.2)
+  - AEPSignal (3.1.2):
+    - AEPCore (= 3.1.2)
+  - AEPTarget (3.0.0):
+    - AEPCore (>= 3.1.0)
+  - AEPUserProfile (3.0.0):
+    - AEPCore
 
 DEPENDENCIES:
+  - AEPAnalytics
   - AEPCore (from `https://github.com/PravinPK/aepsdk-core-ios.git`, branch `assuranceSwift`)
+  - AEPEdge
+  - AEPEdgeConsent
+  - AEPEdgeIdentity
+  - AEPIdentity
+  - AEPLifecycle
+  - AEPRulesEngine
   - AEPServices
+  - AEPSignal
+  - AEPTarget
+  - AEPUserProfile
 
 SPEC REPOS:
   trunk:
+    - AEPAnalytics
+    - AEPEdge
+    - AEPEdgeConsent
+    - AEPEdgeIdentity
+    - AEPIdentity
+    - AEPLifecycle
     - AEPRulesEngine
     - AEPServices
+    - AEPSignal
+    - AEPTarget
+    - AEPUserProfile
 
 EXTERNAL SOURCES:
   AEPCore:
@@ -25,10 +64,19 @@ CHECKOUT OPTIONS:
     :git: https://github.com/PravinPK/aepsdk-core-ios.git
 
 SPEC CHECKSUMS:
+  AEPAnalytics: 13353b3ea333be0af7cfc4845830d87d360726e2
   AEPCore: d85439869b2f9bcb9d84c1662ced049dd5fa9b56
+  AEPEdge: 818ca6ea6ac1a9e16a876036c78908996033599f
+  AEPEdgeConsent: dd46002b0c4bf55443f5441990e799248975713e
+  AEPEdgeIdentity: 40d312b4434b710a46c1738ab2a221dda4cfd67e
+  AEPIdentity: 0102f7e5d0302d5b99cdd34c8ea6c5598ed222d2
+  AEPLifecycle: fdcd802351bec596be0f2365fd21a6f342318a51
   AEPRulesEngine: 8bbc694fce6900cd33b2496c7d4b33ee2eeffc46
   AEPServices: 891fc1fb2e2ecacf02f293d1a7f3c478dc4d338b
+  AEPSignal: c49cdf7e1647fae543c698a8ce1089844543c244
+  AEPTarget: 3411e002f25b5bb4b9718878f3f4aa47ded82fd7
+  AEPUserProfile: d8702b2e3fc321febdc3854208db9bb1ad3b61c8
 
-PODFILE CHECKSUM: 2e2d4bec028ed5f867b3a31e4917bf0170984df1
+PODFILE CHECKSUM: eba88bcc6eba455c66174550d4c6a45d9c7bf041
 
 COCOAPODS: 1.10.1

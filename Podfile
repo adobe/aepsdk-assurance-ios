@@ -18,4 +18,14 @@ end
 target 'TestApp' do
   pod 'AEPCore', :git => 'https://github.com/PravinPK/aepsdk-core-ios.git', :branch => 'assuranceSwift'
   pod 'AEPServices'
+  pod 'AEPLifecycle'
+  pod 'AEPIdentity'
+  pod 'AEPSignal'
+  pod 'AEPRulesEngine'
+  pod 'AEPEdge'
+  pod 'AEPEdgeConsent'
+  pod 'AEPEdgeIdentity'
+  pod 'AEPUserProfile'
+  pod 'AEPTarget'
+  pod 'AEPAnalytics'
 end

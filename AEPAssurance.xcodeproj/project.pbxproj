@@ -27,13 +27,26 @@
 		B6407206262C90FA00C43183 /* Assurance+PublicAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6407205262C90FA00C43183 /* Assurance+PublicAPI.swift */; };
 		B6407223262CEBC600C43183 /* URL+Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6407222262CEBC600C43183 /* URL+Parser.swift */; };
 		B640722B262CF06100C43183 /* AssuranceEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640722A262CF06100C43183 /* AssuranceEnvironment.swift */; };
+		B64FDF63264E64B000D33192 /* Event+Assurance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64FDF62264E64B000D33192 /* Event+Assurance.swift */; };
+		B64FDF67264E8E8B00D33192 /* iOSStatusUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64FDF66264E8E8B00D33192 /* iOSStatusUI.swift */; };
+		B64FDF69264E95C400D33192 /* iOSStatusUI+FloatingButtonDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64FDF68264E95C400D33192 /* iOSStatusUI+FloatingButtonDelegate.swift */; };
+		B64FDF6B264E9BE400D33192 /* iOSStatusUI+FullScreenMessageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64FDF6A264E9BE400D33192 /* iOSStatusUI+FullScreenMessageDelegate.swift */; };
 		B66D3C5B263752EE0076108B /* URL+ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66D3C5A263752EE0076108B /* URL+ParserTests.swift */; };
 		B670E63D2638BF2A000FCB96 /* TestableExtensionRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = B670E63C2638BF2A000FCB96 /* TestableExtensionRuntime.swift */; };
 		B670E72426395954000FCB96 /* StatusInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B670E72226395954000FCB96 /* StatusInfo.swift */; };
 		B670E72526395954000FCB96 /* PinDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B670E72326395954000FCB96 /* PinDialog.swift */; };
 		B670E74A26395F27000FCB96 /* AEPAssurance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6407199262C313E00C43183 /* AEPAssurance.framework */; };
 		B670E74B26395F27000FCB96 /* AEPAssurance.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B6407199262C313E00C43183 /* AEPAssurance.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		B68AC5CB2644CADB00E41264 /* ThreadSafeDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68AC5CA2644CADB00E41264 /* ThreadSafeDictionary.swift */; };
+		B68AC5D02644D24600E41264 /* SocketConnectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68AC5CF2644D24600E41264 /* SocketConnectable.swift */; };
+		B68AC5D72644D39E00E41264 /* WebViewSocketConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68AC5D62644D39E00E41264 /* WebViewSocketConnection.swift */; };
+		B68AC5DD2644D40900E41264 /* SocketDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68AC5DC2644D40900E41264 /* SocketDelegate.swift */; };
+		B68AC5E32644D5B900E41264 /* SocketState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68AC5E22644D5B900E41264 /* SocketState.swift */; };
+		B68AC5FC2647B88E00E41264 /* AssuranceSession+SocketDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68AC5FB2647B88E00E41264 /* AssuranceSession+SocketDelegate.swift */; };
+		B68AC6032647C3EC00E41264 /* AssuranceClientInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68AC6022647C3EC00E41264 /* AssuranceClientInfo.swift */; };
+		B68AC6112648A46000E41264 /* AssurancePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68AC6102648A46000E41264 /* AssurancePlugin.swift */; };
+		B68AC6192648A98200E41264 /* AssurancePluginCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68AC6182648A98200E41264 /* AssurancePluginCollection.swift */; };
+		B68AC61E2649015B00E41264 /* PluginFakeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68AC61D2649015B00E41264 /* PluginFakeEvent.swift */; };
+		B68AC6242649066A00E41264 /* PluginConfigUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68AC6232649066A00E41264 /* PluginConfigUpdate.swift */; };
 		B6AB2DE6263372AF00FE8AEA /* Assurance+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D2A92626334A3D0062AC5E /* Assurance+State.swift */; };
 		B6AB2DEE26337BB700FE8AEA /* MockDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB2DED26337BB700FE8AEA /* MockDataStore.swift */; };
 		B6AB2DF326337BE700FE8AEA /* AssuranceStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB2DF226337BE700FE8AEA /* AssuranceStateTests.swift */; };
@@ -119,6 +132,10 @@
 		B6407205262C90FA00C43183 /* Assurance+PublicAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Assurance+PublicAPI.swift"; sourceTree = "<group>"; };
 		B6407222262CEBC600C43183 /* URL+Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Parser.swift"; sourceTree = "<group>"; };
 		B640722A262CF06100C43183 /* AssuranceEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEnvironment.swift; sourceTree = "<group>"; };
+		B64FDF62264E64B000D33192 /* Event+Assurance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+Assurance.swift"; sourceTree = "<group>"; };
+		B64FDF66264E8E8B00D33192 /* iOSStatusUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSStatusUI.swift; sourceTree = "<group>"; };
+		B64FDF68264E95C400D33192 /* iOSStatusUI+FloatingButtonDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "iOSStatusUI+FloatingButtonDelegate.swift"; sourceTree = "<group>"; };
+		B64FDF6A264E9BE400D33192 /* iOSStatusUI+FullScreenMessageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "iOSStatusUI+FullScreenMessageDelegate.swift"; sourceTree = "<group>"; };
 		B66D3C5A263752EE0076108B /* URL+ParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+ParserTests.swift"; sourceTree = "<group>"; };
 		B670E63C2638BF2A000FCB96 /* TestableExtensionRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestableExtensionRuntime.swift; sourceTree = "<group>"; };
 		B670E67426392F95000FCB96 /* PinDialog.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = PinDialog.html; sourceTree = "<group>"; };
@@ -127,7 +144,16 @@
 		B670E67926393284000FCB96 /* inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = inactive.png; sourceTree = "<group>"; };
 		B670E72226395954000FCB96 /* StatusInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusInfo.swift; sourceTree = "<group>"; };
 		B670E72326395954000FCB96 /* PinDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinDialog.swift; sourceTree = "<group>"; };
-		B68AC5CA2644CADB00E41264 /* ThreadSafeDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadSafeDictionary.swift; sourceTree = "<group>"; };
+		B68AC5CF2644D24600E41264 /* SocketConnectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketConnectable.swift; sourceTree = "<group>"; };
+		B68AC5D62644D39E00E41264 /* WebViewSocketConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewSocketConnection.swift; sourceTree = "<group>"; };
+		B68AC5DC2644D40900E41264 /* SocketDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketDelegate.swift; sourceTree = "<group>"; };
+		B68AC5E22644D5B900E41264 /* SocketState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketState.swift; sourceTree = "<group>"; };
+		B68AC5FB2647B88E00E41264 /* AssuranceSession+SocketDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssuranceSession+SocketDelegate.swift"; sourceTree = "<group>"; };
+		B68AC6022647C3EC00E41264 /* AssuranceClientInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceClientInfo.swift; sourceTree = "<group>"; };
+		B68AC6102648A46000E41264 /* AssurancePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssurancePlugin.swift; sourceTree = "<group>"; };
+		B68AC6182648A98200E41264 /* AssurancePluginCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssurancePluginCollection.swift; sourceTree = "<group>"; };
+		B68AC61D2649015B00E41264 /* PluginFakeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginFakeEvent.swift; sourceTree = "<group>"; };
+		B68AC6232649066A00E41264 /* PluginConfigUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginConfigUpdate.swift; sourceTree = "<group>"; };
 		B6AB2DED26337BB700FE8AEA /* MockDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataStore.swift; sourceTree = "<group>"; };
 		B6AB2DF226337BE700FE8AEA /* AssuranceStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStateTests.swift; sourceTree = "<group>"; };
 		B6AFD588263403EB00C63608 /* AssuranceEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEvent.swift; sourceTree = "<group>"; };
@@ -230,19 +256,24 @@
 		B640719B262C313E00C43183 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				B68AC60E2648A3C800E41264 /* Plugin */,
 				B670E67D26393300000FCB96 /* BuiltResources */,
 				B6407221262CEACE00C43183 /* Extensions */,
 				B68AC5C92644A95400E41264 /* Primitives */,
+				B64FDF64264E8E5200D33192 /* StatusUI */,
 				B6B0E2B6263A737600EF5E21 /* PincodeEntry */,
+				B68AC5CE2644CE3C00E41264 /* Socket */,
 				B6407204262C90CD00C43183 /* Public */,
 				B640719C262C313E00C43183 /* AEPAssurance.h */,
 				B64071D2262C368C00C43183 /* Assurance.swift */,
 				B6D2A92626334A3D0062AC5E /* Assurance+State.swift */,
 				B6B0E2D6263C7FAB00EF5E21 /* AssuranceSession.swift */,
+				B68AC5FB2647B88E00E41264 /* AssuranceSession+SocketDelegate.swift */,
 				B6AFD588263403EB00C63608 /* AssuranceEvent.swift */,
 				B640722A262CF06100C43183 /* AssuranceEnvironment.swift */,
 				B64071D6262C376A00C43183 /* AssuranceConstants.swift */,
 				B60BAC0B26434ED90054CD21 /* AssuranceSocketError.swift */,
+				B68AC6022647C3EC00E41264 /* AssuranceClientInfo.swift */,
 				B640719D262C313E00C43183 /* Info.plist */,
 			);
 			name = Source;
@@ -301,8 +332,27 @@
 			isa = PBXGroup;
 			children = (
 				B6407222262CEBC600C43183 /* URL+Parser.swift */,
+				B64FDF62264E64B000D33192 /* Event+Assurance.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B64FDF64264E8E5200D33192 /* StatusUI */ = {
+			isa = PBXGroup;
+			children = (
+				B64FDF65264E8E7900D33192 /* iOS */,
+			);
+			path = StatusUI;
+			sourceTree = "<group>";
+		};
+		B64FDF65264E8E7900D33192 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				B64FDF66264E8E8B00D33192 /* iOSStatusUI.swift */,
+				B64FDF68264E95C400D33192 /* iOSStatusUI+FloatingButtonDelegate.swift */,
+				B64FDF6A264E9BE400D33192 /* iOSStatusUI+FullScreenMessageDelegate.swift */,
+			);
+			path = iOS;
 			sourceTree = "<group>";
 		};
 		B670E67326392F62000FCB96 /* Resources */ = {
@@ -356,9 +406,38 @@
 			isa = PBXGroup;
 			children = (
 				B60BAC1126445DD70054CD21 /* ThreadSafeQueue.swift */,
-				B68AC5CA2644CADB00E41264 /* ThreadSafeDictionary.swift */,
 			);
 			path = Primitives;
+			sourceTree = "<group>";
+		};
+		B68AC5CE2644CE3C00E41264 /* Socket */ = {
+			isa = PBXGroup;
+			children = (
+				B68AC5E22644D5B900E41264 /* SocketState.swift */,
+				B68AC5CF2644D24600E41264 /* SocketConnectable.swift */,
+				B68AC5DC2644D40900E41264 /* SocketDelegate.swift */,
+				B68AC5D52644D36D00E41264 /* WebView */,
+			);
+			path = Socket;
+			sourceTree = "<group>";
+		};
+		B68AC5D52644D36D00E41264 /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				B68AC5D62644D39E00E41264 /* WebViewSocketConnection.swift */,
+			);
+			path = WebView;
+			sourceTree = "<group>";
+		};
+		B68AC60E2648A3C800E41264 /* Plugin */ = {
+			isa = PBXGroup;
+			children = (
+				B68AC6102648A46000E41264 /* AssurancePlugin.swift */,
+				B68AC6182648A98200E41264 /* AssurancePluginCollection.swift */,
+				B68AC61D2649015B00E41264 /* PluginFakeEvent.swift */,
+				B68AC6232649066A00E41264 /* PluginConfigUpdate.swift */,
+			);
+			path = Plugin;
 			sourceTree = "<group>";
 		};
 		B6B0E2B6263A737600EF5E21 /* PincodeEntry */ = {
@@ -734,23 +813,36 @@
 			files = (
 				B64071D3262C368C00C43183 /* Assurance.swift in Sources */,
 				B6B23ACE26414C8100EE8153 /* iOSPinCodeScreen+FullScreenDelegate.swift in Sources */,
+				B64FDF67264E8E8B00D33192 /* iOSStatusUI.swift in Sources */,
 				B64071D7262C376A00C43183 /* AssuranceConstants.swift in Sources */,
 				B6AFD589263403EB00C63608 /* AssuranceEvent.swift in Sources */,
+				B68AC5D72644D39E00E41264 /* WebViewSocketConnection.swift in Sources */,
+				B64FDF69264E95C400D33192 /* iOSStatusUI+FloatingButtonDelegate.swift in Sources */,
+				B68AC5D02644D24600E41264 /* SocketConnectable.swift in Sources */,
+				B68AC6112648A46000E41264 /* AssurancePlugin.swift in Sources */,
 				B6FEB8AC263A18E600F0F240 /* SocketScript.swift in Sources */,
 				B6B0E2D3263C7E5300EF5E21 /* MockUIService.swift in Sources */,
+				B68AC6032647C3EC00E41264 /* AssuranceClientInfo.swift in Sources */,
 				B670E72526395954000FCB96 /* PinDialog.swift in Sources */,
+				B68AC6192648A98200E41264 /* AssurancePluginCollection.swift in Sources */,
+				B68AC61E2649015B00E41264 /* PluginFakeEvent.swift in Sources */,
+				B68AC6242649066A00E41264 /* PluginConfigUpdate.swift in Sources */,
 				B670E72426395954000FCB96 /* StatusInfo.swift in Sources */,
 				B6407223262CEBC600C43183 /* URL+Parser.swift in Sources */,
 				B640722B262CF06100C43183 /* AssuranceEnvironment.swift in Sources */,
 				B6FEB8B2263A18F500F0F240 /* ActiveIcon.swift in Sources */,
 				B6B0E2C9263C674F00EF5E21 /* SessionAuthorizable.swift in Sources */,
+				B64FDF6B264E9BE400D33192 /* iOSStatusUI+FullScreenMessageDelegate.swift in Sources */,
 				B6FEB8B1263A18F500F0F240 /* InactiveIcon.swift in Sources */,
+				B68AC5FC2647B88E00E41264 /* AssuranceSession+SocketDelegate.swift in Sources */,
 				B60BAC1226445DD70054CD21 /* ThreadSafeQueue.swift in Sources */,
-				B68AC5CB2644CADB00E41264 /* ThreadSafeDictionary.swift in Sources */,
+				B64FDF63264E64B000D33192 /* Event+Assurance.swift in Sources */,
 				B60BAC0C26434ED90054CD21 /* AssuranceSocketError.swift in Sources */,
 				B6B0E2CD263C709100EF5E21 /* iOSPinCodeScreen.swift in Sources */,
+				B68AC5DD2644D40900E41264 /* SocketDelegate.swift in Sources */,
 				B6407206262C90FA00C43183 /* Assurance+PublicAPI.swift in Sources */,
 				B6B0E2D7263C7FAB00EF5E21 /* AssuranceSession.swift in Sources */,
+				B68AC5E32644D5B900E41264 /* SocketState.swift in Sources */,
 				B6AB2DE6263372AF00FE8AEA /* Assurance+State.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

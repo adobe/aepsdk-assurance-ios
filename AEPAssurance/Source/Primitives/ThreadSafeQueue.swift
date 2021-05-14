@@ -27,13 +27,11 @@ class ThreadSafeQueue<T> {
     /// If the queue has reached its limit then the first element of the queue is removed
     func enqueue(newElement: T) {
         self.accessQueue.async {
-            print("Insert")
             self.array.append(newElement)
             
             if(self.limit > 0 && self.array.count > self.limit){
                 self.array.removeFirst()
             }
-            print("Insert Done")
         }        
     }
     
@@ -41,11 +39,9 @@ class ThreadSafeQueue<T> {
     func dequeue() -> T? {
         var element : T?
         self.accessQueue.sync {
-            print("Readee")
             if (!array.isEmpty) {
                 element = array.removeFirst()
             }
-            print("Readee Done")
         }
         
         return element;
@@ -55,9 +51,7 @@ class ThreadSafeQueue<T> {
     func size() -> Int {
         var size = 0
         self.accessQueue.sync {
-            print("Sizeee")
             size = array.count
-            print("Sizeee Done")
         }
         
         return size;

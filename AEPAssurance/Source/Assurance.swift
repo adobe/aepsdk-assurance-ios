@@ -60,6 +60,7 @@ public class Assurance: NSObject, Extension {
 
     public func onRegistered() {
         registerListener(type: AssuranceConstants.SDKEventType.ASSURANCE, source: EventSource.requestContent, listener: handleAssuranceRequestContent)
+        registerListener(type: EventType.wildcard, source: EventSource.wildcard, listener: handleWildcardEvent)
         self.assuranceSession = AssuranceSession(self)
     }
 
@@ -72,7 +73,57 @@ public class Assurance: NSObject, Extension {
     public func readyForEvent(_ event: Event) -> Bool {
         return true
     }
-
+    
+    // MARK: - Private - Event Handlers
+    
+    /// TODO
+    private func handleWildcardEvent(event : Event) {
+        if event.isSharedStateEvent {
+            processSharedStateEvent(event: event)
+            return
+        }
+        
+        let assuranceEvent = AssuranceEvent.from(sdkEvent: event)
+        assuranceSession?.sendEvent(assuranceEvent)
+    }
+    
+    /// TODO
+    private func processSharedStateEvent(event : Event) {
+        guard let stateOwner = event.sharedStateOwner else {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "No shared state owner found for the shared state change event. Dropping event.")
+            return
+        }
+        
+        // Differentiate the type of shared state using the event name and get the state content accordingly
+        // Event Name for XDM shared          = "Shared state content (XDM)"
+        // Event Name for Regular  shared     = "Shared state content"
+        var sharedStateResult : SharedStateResult?
+        var sharedContentKey : String
+        
+        if (AssuranceConstants.SDKEventName.XDM_SHARED_STATE_CHANGE.lowercased() == event.name.lowercased()) {
+            sharedContentKey = AssuranceConstants.PayloadKey.XDM_SHARED_STATE_DATA
+            sharedStateResult = runtime.getXDMSharedState(extensionName: stateOwner, event: nil, barrier: false)
+        } else {
+            sharedContentKey = AssuranceConstants.PayloadKey.SHARED_STATE_DATA
+            sharedStateResult = runtime.getSharedState(extensionName: stateOwner, event: nil, barrier: false)
+        }
+        
+        // do not send any sharedState thats empty, this includes Assurance not logging any PENDING_SHARED_STATE
+        guard let sharedStateResult = sharedStateResult else {
+            return
+        }
+        
+        if (sharedStateResult.status != .set) {
+            return
+        }
+          
+        let sharedStatePayload = [sharedContentKey : sharedStateResult.value]
+        var assuranceEvent = AssuranceEvent.from(sdkEvent: event)
+        assuranceEvent.payload?.updateValue(AnyCodable.init(sharedStatePayload), forKey: AssuranceConstants.PayloadKey.METADATA)
+        assuranceSession?.sendEvent(assuranceEvent)
+    }
+    
+    /// TODO
     private func handleAssuranceRequestContent(event: Event) {
         guard let startSessionData = event.data else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance start session event received with empty data. Dropping event.")
@@ -102,6 +153,7 @@ public class Assurance: NSObject, Extension {
         // save the environment and sessionID
         environment = AssuranceEnvironment.init(envString: environmentString)
         self.sessionId = sessionId
+        shareState()
         assuranceSession?.startSession()
     }
 }

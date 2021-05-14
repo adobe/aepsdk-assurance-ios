@@ -36,6 +36,8 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
     ///     - message: Fullscreen message
     ///     - url:     String the url being loaded by the message
     /// - Returns: True if the core wants to handle the URL (and not the fullscreen message view implementation)
+    ///
+    /// Thread: main thread
     func overrideUrlLoad(message: FullscreenMessage, url: String?) -> Bool {
 
         // no operation if we are unable to find the host of the url
@@ -78,8 +80,13 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
                                    orgID,
                                    assuranceExtension.clientID)
 
+            
+            guard let url = URL(string: socketURL) else {
+                connectionFailedWithError(AssuranceSocketError.NO_URL, shouldShowRetry: true)
+                return false
+            }
             self.connectionInitialized()
-            self.authorizedURLCallback?(socketURL)
+            self.authorizedURLCallback?(url)
         }
 
         return false

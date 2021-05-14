@@ -11,6 +11,7 @@
  */
 
 import AEPServices
+import AEPCore
 import Foundation
 
 struct AssuranceEvent: Codable {
@@ -19,7 +20,7 @@ struct AssuranceEvent: Codable {
     var type: String
     var payload: [String: AnyCodable]?
     var eventNumber: Int32?
-    var timestamp: Int64  // Todo : verify if this can rewritten as `Date` type
+    var timestamp: Int64?  // Todo : verify if this can rewritten as `Date` type
 
     /// Decodes a JSON data into a `AssuranceEvent`
     ///
@@ -46,7 +47,32 @@ struct AssuranceEvent: Codable {
             return nil
         }
         event.eventNumber = AssuranceEvent.generateEventNumber()
+        if(event.timestamp == nil) {
+            event.timestamp = Date().getUnixTimeInSeconds() * 1000
+        }
         return event
+    }
+    
+    /// TODO
+    static func from(sdkEvent : Event) -> AssuranceEvent {
+        var payload : [String : AnyCodable] = [:]
+        payload[AssuranceConstants.ACPExtensionEventKey.NAME] = AnyCodable.init(sdkEvent.name)
+        payload[AssuranceConstants.ACPExtensionEventKey.TYPE] = AnyCodable.init(sdkEvent.type)
+        payload[AssuranceConstants.ACPExtensionEventKey.SOURCE] = AnyCodable.init(sdkEvent.source)
+        payload[AssuranceConstants.ACPExtensionEventKey.UNIQUE_IDENTIFIER] = AnyCodable.init(sdkEvent.id)
+        payload[AssuranceConstants.ACPExtensionEventKey.TIMESTAMP] = AnyCodable.init(sdkEvent.timestamp)
+        
+        // if available, add eventData
+        if let eventData = sdkEvent.data {
+            payload[AssuranceConstants.ACPExtensionEventKey.DATA] = AnyCodable.init(eventData)
+        }
+        
+        // if available, add responseID
+        if  let responseID = sdkEvent.responseID {
+            payload[AssuranceConstants.ACPExtensionEventKey.RESPONSE_IDENTIFIER] = AnyCodable.init(responseID)
+        }
+                    
+        return AssuranceEvent(type: AssuranceConstants.EventType.GENERIC, payload: payload)
     }
 
     /// Initializer to construct `AssuranceEvent`instance with the given parameters
@@ -105,6 +131,19 @@ struct AssuranceEvent: Codable {
     private static func generateEventNumber() -> Int32 {
         OSAtomicIncrement32(&eventNumberCounter)
         return eventNumberCounter
+    }
+    
+    public var description: String {
+        // swiftformat:disable indent
+        return "\n[\n" +
+                "  id: \(eventID)\n" +
+                "  type: \(type)\n" +
+                "  vendor: \(vendor)\n" +
+                "  payload: \(PrettyDictionary.prettify(payload))\n" +
+                "  eventNumber: \(String(describing: eventNumber))\n" +
+                "  timestamp: \(String(describing: timestamp?.description))\n" +
+                "]"
+        // swiftformat:enable indent
     }
 
 }
