@@ -64,21 +64,24 @@ struct AssuranceEvent: Codable {
         self.eventNumber = AssuranceEvent.generateEventNumber()
     }
 
-    /// Returns the type of the control event. Applies only for control events. This method returns null for all other `AssuranceEvent` types.
+    /// Returns the type of the command. Applies only for command events. This method returns nil for all other `AssuranceEvent`s.
     ///
-    /// Returns nil if the event is not a control event.
+    /// Returns nil if the event is not a command event.
     /// Returns nil if the payload does not contain "type" key.
     /// Returns nil if the payload "type" key contains non string data.
     ///
-    /// Following are the available control events to the SDK.
+    /// Following are the currently available command recognized by Assurance SDK.
     ///  * startEventForwarding
     ///  * screenshot
     ///  * logForwarding
     ///  * fakeEvent
     ///  * configUpdate
     ///
-    /// - Returns: a string value representing the control type
-    func getControlEventType() -> String? {
+    ///  Note : Commands are `AssuranceEvent` with type "control".
+    ///  They are usually events generated from the Griffon UI demanding a specific action at the mobile client.
+    ///
+    /// - Returns: a string value representing the command (or) control type
+    func getCommandType() -> String? {
         if AssuranceConstants.EventType.CONTROL != type {
             return nil
         }
@@ -86,14 +89,17 @@ struct AssuranceEvent: Codable {
         return payload?[AssuranceConstants.PayloadKey.TYPE]?.stringValue
     }
 
-    /// Returns the details of the control event. Applies only for control events. This method returns null for all other `AssuranceEvent` types.
+    /// Returns the details of the command. Applies only for command events. This method returns nil for all other `AssuranceEvent`s.
     ///
-    /// Returns nil if the event is not a control event.
+    /// Returns nil if the event is not a command event.
     /// Returns nil if the payload does not contain "type" key.
     /// Returns nil if the payload "type" key contains non string data.
     ///
-    /// - Returns: a dictionary representing the control details
-    func getControlEventDetail() -> [String: Any]? {
+    /// Note : Commands are `AssuranceEvent` with type "control".
+    /// They are usually events generated from the Griffon UI demanding a specific action at the mobile client.
+    ///
+    /// - Returns: a dictionary representing the command details
+    func getCommandDetail() -> [String: Any]? {
         if AssuranceConstants.EventType.CONTROL != type {
             return nil
         }

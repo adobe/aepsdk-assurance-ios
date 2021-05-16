@@ -192,10 +192,10 @@ class AssuranceEventTests: XCTestCase {
     }
 
     /*--------------------------------------------------
-     GetControlEventType
+     GetCommandEventType
      --------------------------------------------------*/
 
-    func test_getControlEventType() throws {
+    func test_getCommandEventType() throws {
         // setup
         let data = """
                     {
@@ -209,18 +209,18 @@ class AssuranceEventTests: XCTestCase {
 
         // test
         let event = AssuranceEvent.from(jsonData: data)
-        let controlType = event?.getControlEventType()
+        let commandType = event?.getCommandType()
 
         // verify
-        XCTAssertEqual("screenshot", controlType, "Inaccurate ControlType")
+        XCTAssertEqual("screenshot", commandType, "Inaccurate command type")
     }
 
-    func test_getControlEventType_whenNotAControlEvent() throws {
+    func test_getCommandEventType_whenNotACommand() throws {
         // setup
         let data = """
                     {
                       "eventID": "someID", "vendor": "someVendor", "timestamp": 113435556 ,
-                      "type": "not_a_control_event",
+                      "type": "not_a_command_event",
                       "payload": {
                         "type": "screenshot"
                       }
@@ -229,13 +229,13 @@ class AssuranceEventTests: XCTestCase {
 
         // test
         let event = AssuranceEvent.from(jsonData: data)
-        let controlType = event?.getControlEventType()
+        let commandType = event?.getCommandType()
 
         // verify
-        XCTAssertNil(controlType, "Control type should be nil")
+        XCTAssertNil(commandType, "Command type should be nil")
     }
 
-    func test_getControlEventType_whenTypeUnavailable() throws {
+    func test_getCommandEventType_whenTypeUnavailable() throws {
         // setup
         let data = """
                     {
@@ -249,13 +249,13 @@ class AssuranceEventTests: XCTestCase {
 
         // test
         let event = AssuranceEvent.from(jsonData: data)
-        let controlType = event?.getControlEventType()
+        let commandType = event?.getCommandType()
 
         // verify
-        XCTAssertNil(controlType, "Control type should be nil")
+        XCTAssertNil(commandType, "command type should be nil")
     }
 
-    func test_getControlEventType_whenTypeNotAString() throws {
+    func test_getCommandEventType_whenTypeNotAString() throws {
         // setup
         let data = """
                     {
@@ -271,17 +271,17 @@ class AssuranceEventTests: XCTestCase {
 
         // test
         let event = AssuranceEvent.from(jsonData: data)
-        let controlType = event?.getControlEventType()
+        let commandType = event?.getCommandType()
 
         // verify
-        XCTAssertNil(controlType, "Control type should be nil")
+        XCTAssertNil(commandType, "Command type should be nil")
     }
 
     /*--------------------------------------------------
-     GetControlEventDetail
+     getCommandEventDetail
      --------------------------------------------------*/
 
-    func test_getControlEventDetail() throws {
+    func test_getCommandEventDetail() throws {
         // setup
         let data = """
                     {
@@ -298,13 +298,13 @@ class AssuranceEventTests: XCTestCase {
 
         // test
         let event = AssuranceEvent.from(jsonData: data)
-        let controlDetail = event?.getControlEventDetail()
+        let commandDetail = event?.getCommandDetail()
 
         // verify
-        XCTAssertEqual("value", controlDetail!["key"] as? String, "Inaccurate ControlType")
+        XCTAssertEqual("value", commandDetail!["key"] as? String, "Inaccurate command type")
     }
 
-    func test_getControlEventDetail_whenNotAControlEvent() throws {
+    func test_getCommandEventDetail_whenNotACommand() throws {
         // setup
         let data = """
                     {
@@ -321,13 +321,13 @@ class AssuranceEventTests: XCTestCase {
 
         // test
         let event = AssuranceEvent.from(jsonData: data)
-        let controlDetail = event?.getControlEventDetail()
+        let commandDetail = event?.getCommandDetail()
 
         // verify
-        XCTAssertNil(controlDetail, "control details should be nil")
+        XCTAssertNil(commandDetail, "command details should be nil")
     }
 
-    func test_getControlEventDetail_whenDetailNotADictionary() throws {
+    func test_getCommandEventDetail_whenDetailNotADictionary() throws {
         // setup
         let data = """
                     {
@@ -341,9 +341,9 @@ class AssuranceEventTests: XCTestCase {
 
         // test
         let event = AssuranceEvent.from(jsonData: data)
-        let controlDetail = event?.getControlEventDetail()
+        let commandDetail = event?.getCommandDetail()
 
         // verify
-        XCTAssertNil(controlDetail, "control details should be nil")
+        XCTAssertNil(commandDetail, "command details should be nil")
     }
 }
