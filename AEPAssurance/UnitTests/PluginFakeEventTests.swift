@@ -16,160 +16,149 @@
 import Foundation
 import XCTest
 
-
-class PluginFakeEventTests : XCTestCase {
+class PluginFakeEventTests: XCTestCase {
 
     let runtime = TestableExtensionRuntime()
     let plugin = PluginFakeEvent()
-    
-    
+
     override func setUpWithError() throws {
         EventHub.shared.start()
         registerMockExtension(MockExtension.self)
     }
 
-    override func tearDown() {
-        runtime.reset()
-    }
-    
     override func tearDownWithError() throws {
         unregisterMockExtension(MockExtension.self)
+        runtime.reset()
     }
-    
+
     func test_vendor() {
-        XCTAssertEqual(AssuranceConstants.Vendor.MOBILE, plugin.vendor);
+        XCTAssertEqual(AssuranceConstants.Vendor.MOBILE, plugin.vendor)
     }
-    
+
     func test_commandType() {
-        XCTAssertEqual(AssuranceConstants.CommandType.FAKE_EVENT, plugin.commandType);
+        XCTAssertEqual(AssuranceConstants.CommandType.FAKE_EVENT, plugin.commandType)
     }
-    
+
     func test_commandFakeEvent() {
         // setup
         let expectation = XCTestExpectation(description: "Fake event should be dispatched.")
-                
+
         // event dispatch verification
         EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: "fakeEventType", source: "fakeEventSource") { _ in
             expectation.fulfill()
         }
-                
+
         // test
         plugin.receiveEvent(prepareFakeEventCommand())
-        
+
         // verify
         wait(for: [expectation], timeout: 1)
     }
-    
+
     func test_commandFakeEvent_withNoDetails() {
         // setup
-        let payload : [String : AnyCodable] = ["type" : "Control"]
+        let payload: [String: AnyCodable] = ["type": "Control"]
         let expectation = XCTestExpectation(description: "")
         expectation.isInverted = true
-                
+
         // event dispatch verification
         EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: "fakeEventType", source: "fakeEventSource") { _ in
             expectation.fulfill()
         }
-                
+
         // test
-        plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL , payload: payload))
-        
+        plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
+
         // verify
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 0.5)
     }
-    
-    
+
     func test_commandFakeEvent_withNoEventName() {
         // setup
-        let eventInfo : [String : String] =
+        let eventInfo: [String: String] =
             ["eventType": "fakeEventType",
              "eventSource": "fakeEventSource"]
-        
-        let payload : [String : AnyCodable] = [
-            "detail" : AnyCodable.init(eventInfo),
-            "type" : "Control"]
+
+        let payload: [String: AnyCodable] = [
+            "detail": AnyCodable.init(eventInfo),
+            "type": "Control"]
         let expectation = XCTestExpectation(description: "")
         expectation.isInverted = true
-                
+
         // event dispatch verification
         EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: "fakeEventType", source: "fakeEventSource") { _ in
             expectation.fulfill()
         }
-                
+
         // test
-        plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL , payload: payload))
-        
+        plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
+
         // verify
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 0.5)
     }
-    
-    
+
     func test_commandFakeEvent_withNoEventType() {
         // setup
-        let eventInfo : [String : String] =
+        let eventInfo: [String: String] =
             ["eventName": "Configuration Update",
              "eventSource": "fakeEventSource"]
-        
-        let payload : [String : AnyCodable] = [
-            "detail" : AnyCodable.init(eventInfo),
-            "type" : "Control"]
+
+        let payload: [String: AnyCodable] = [
+            "detail": AnyCodable.init(eventInfo),
+            "type": "Control"]
         let expectation = XCTestExpectation(description: "")
         expectation.isInverted = true
-                
+
         // event dispatch verification
         EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: "fakeEventType", source: "fakeEventSource") { _ in
             expectation.fulfill()
         }
-                
+
         // test
-        plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL , payload: payload))
-        
+        plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
+
         // verify
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 0.5)
     }
-    
-    
+
     func test_commandFakeEvent_withNoEventSource() {
         // setup
-        let eventInfo : [String : String] =
+        let eventInfo: [String: String] =
             ["eventName": "Configuration Update",
              "eventType": "fakeEventType"]
-        
-        let payload : [String : AnyCodable] = [
-            "detail" : AnyCodable.init(eventInfo),
-            "type" : "Control"]
+
+        let payload: [String: AnyCodable] = [
+            "detail": AnyCodable.init(eventInfo),
+            "type": "Control"]
         let expectation = XCTestExpectation(description: "")
         expectation.isInverted = true
-                
+
         // event dispatch verification
         EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: "fakeEventType", source: "fakeEventSource") { _ in
             expectation.fulfill()
         }
-                
+
         // test
-        plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL , payload: payload))
-        
+        plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
+
         // verify
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 0.5)
     }
-    
-    
-    
+
     // MARK: - Private functions
-    
+
     private func prepareFakeEventCommand() -> AssuranceEvent {
-        let eventInfo : [String : String] =
+        let eventInfo: [String: String] =
             ["eventName": "Configuration Update",
              "eventType": "fakeEventType",
              "eventSource": "fakeEventSource"]
-        
-        let payload : [String : AnyCodable] = [
-            "detail" : AnyCodable.init(eventInfo),
-            "type" : "Control"]
-        return AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL , payload: payload)
+
+        let payload: [String: AnyCodable] = [
+            "detail": AnyCodable.init(eventInfo),
+            "type": "Control"]
+        return AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload)
     }
-    
-    
+
     private func registerMockExtension<T: Extension> (_ type: T.Type) {
         let semaphore = DispatchSemaphore(value: 0)
         EventHub.shared.registerExtension(type) { _ in
@@ -178,7 +167,7 @@ class PluginFakeEventTests : XCTestCase {
 
         semaphore.wait()
     }
-    
+
     private func unregisterMockExtension<T: Extension> (_ type: T.Type) {
         let semaphore = DispatchSemaphore(value: 0)
         EventHub.shared.unregisterExtension(type) { _ in
@@ -187,5 +176,4 @@ class PluginFakeEventTests : XCTestCase {
 
         semaphore.wait()
     }
-    
 }

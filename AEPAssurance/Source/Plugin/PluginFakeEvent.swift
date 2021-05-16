@@ -10,9 +10,9 @@
  governing permissions and limitations under the License.
  */
 
-import Foundation
-import AEPServices
 import AEPCore
+import AEPServices
+import Foundation
 
 /// Plugin to dispatch fake events to Mobile Core.
 ///
@@ -25,49 +25,49 @@ import AEPCore
 /// This plugin extracts the SDK event details from the command, creates an `Event` and dispatches to `MobileCore`.
 ///
 /// @see AssuranceConstants.PluginFakeEvent
-struct PluginFakeEvent : AssurancePlugin {
-        
+struct PluginFakeEvent: AssurancePlugin {
+
     var vendor: String = AssuranceConstants.Vendor.MOBILE
-    
+
     var commandType: String = AssuranceConstants.CommandType.FAKE_EVENT
-    
+
     func receiveEvent(_ event: AssuranceEvent) {
         guard let commandDetails = event.getCommandDetail() else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "PluginFakeEvent - Command detail is empty. Assurance SDK is ignoring the fake event command.")
             return
         }
-        
+
         // extract the details of the fake event from the Assurance event's payload
         // 1. Read the event name
         guard let eventName = commandDetails[AssuranceConstants.PluginFakeEvent.NAME] as? String else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "PluginFakeEvent - Event name is null or not a valid string. Assurance SDK is ignoring the fake event command.")
             return
         }
-        
+
         // 2. Read event source
         guard let eventSource = commandDetails[AssuranceConstants.PluginFakeEvent.SOURCE] as? String else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "PluginFakeEvent -  Event source is null or not a string in the payload. Assurance SDK is ignoring the fake event command.")
             return
         }
-        
+
         // 3. Read event type
         guard let eventType = commandDetails[AssuranceConstants.PluginFakeEvent.TYPE] as? String else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "PluginFakeEvent - Event type is null or not a string in the payload. Assurance SDK is ignoring the fake event command.")
             return
         }
-         
+
         // make and dispatch a fake event to eventHub
-        let fakeEvent = Event(name: eventName, type: eventType, source: eventSource, data: commandDetails[AssuranceConstants.PluginFakeEvent.DATA] as? [String : Any])
+        let fakeEvent = Event(name: eventName, type: eventType, source: eventSource, data: commandDetails[AssuranceConstants.PluginFakeEvent.DATA] as? [String: Any])
         MobileCore.dispatch(event: fakeEvent)
     }
-        
+
     // no op - protocol methods
     func onRegistered(_ session: AssuranceSession) {}
-        
+
     func onSessionConnected() {}
-    
+
     func onSessionDisconnectedWithCloseCode(_ closeCode: Int) {}
-    
+
     func onSessionTerminated() {}
-        
+
 }

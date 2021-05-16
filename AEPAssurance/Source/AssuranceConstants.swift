@@ -33,7 +33,7 @@ enum AssuranceConstants {
         static let MOBILE = "com.adobe.griffon.mobile"
         static let SDK = "com.adobe.marketing.mobile.sdk"
     }
-    
+
     enum SDKEventName {
         static let SHARED_STATE_CHANGE    = "Shared state change"
         static let XDM_SHARED_STATE_CHANGE    = "Shared state change (XDM)"
@@ -42,7 +42,7 @@ enum AssuranceConstants {
     enum SDKEventType {
         static let ASSURANCE = "com.adobe.eventType.assurance"
     }
-    
+
     enum PluginFakeEvent {
         static let NAME    = "eventName"
         static let TYPE    = "eventType"
@@ -101,14 +101,14 @@ enum AssuranceConstants {
         static let CANCEL   = "cancel"
         static let CONFIRM  = "confirm"
     }
-    
+
     enum ClientInfoKeys {
         static let TYPE  = "type"
         static let VERSION   = "version"
         static let DEVICE_INFO  = "deviceInfo"
         static let APP_SETTINGS  = "appSettings"
     }
-    
+
     enum CommandType {
         static let START_EVENT_FORWARDING  = "startEventForwarding"
         static let UPDATE_CONFIG  = "configUpdate"
@@ -118,4 +118,3 @@ enum AssuranceConstants {
         static let WILDCARD = "wildcard"
     }
 }
-

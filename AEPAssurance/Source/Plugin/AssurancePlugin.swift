@@ -14,32 +14,31 @@ import Foundation
 
 /// The protocol that needs to be adopted by a class to receive and respond to Assurance commands
 protocol AssurancePlugin {
-    
+
     /// the vendor name for the Assurance plugin
-    var vendor : String { get }
-    
+    var vendor: String { get }
+
     /// the command type for the Assurance plugin
-    var commandType : String { get }
+    var commandType: String { get }
 
     /// This protocol method is invoked when plugin is successfully registered to the AssuranceSession.
     /// - Parameter session : an instance of the active Assurance Session
-    func onRegistered(_ session : AssuranceSession)
-    
+    func onRegistered(_ session: AssuranceSession)
+
     /// This protocol method is invoked when an AEPAssuranceEvent is received for a specific vendor.
     /// - Parameter event : an AssuranceEvent designated for the listening vendor
-    func receiveEvent(_ event : AssuranceEvent)
-    
+    func receiveEvent(_ event: AssuranceEvent)
+
     /// This protocol method is invoked when a successful Assurance socket connection is established.
     func onSessionConnected()
-    
+
     ///  This protocol method is invoked when an Assurance session is disconnected.
     ///  More information about various close code could be found here : https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
     /// - Parameter closeCode : an integer value representing the reason for webSocket disconnect
     func onSessionDisconnectedWithCloseCode(_ closeCode: Int)
-    
+
     ///This protocol method is invoked when Assurance session is disconnected and the Assurance Floating UI button is removed.
     ///Invocation of this method guarantees that the Assurance session is completely terminated and the Assurance extension will not automatically
     ///reconnect the session on the next app launch.
     func onSessionTerminated()
 }
-
