@@ -12,7 +12,7 @@
 
 import Foundation
 
-/// Represents an assurance server environment to which a session attempts to connect.
+/// Representation of an assurance server environment to which a session attempts to connect.
 ///
 /// Following example assists on how to use the `AssuranceEnvironment` enum
 ///
