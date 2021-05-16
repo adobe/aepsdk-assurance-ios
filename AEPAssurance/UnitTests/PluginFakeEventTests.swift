@@ -18,7 +18,6 @@ import XCTest
 
 class PluginFakeEventTests: XCTestCase {
 
-    let runtime = TestableExtensionRuntime()
     let plugin = PluginFakeEvent()
 
     override func setUpWithError() throws {
@@ -28,7 +27,6 @@ class PluginFakeEventTests: XCTestCase {
 
     override func tearDownWithError() throws {
         unregisterMockExtension(MockExtension.self)
-        runtime.reset()
     }
 
     func test_vendor() {
@@ -41,7 +39,7 @@ class PluginFakeEventTests: XCTestCase {
 
     func test_commandFakeEvent() {
         // setup
-        let expectation = XCTestExpectation(description: "Fake event should be dispatched.")
+        let expectation = XCTestExpectation(description: "Fake event should be dispatched when command is recieved with correct details")
 
         // event dispatch verification
         EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: "fakeEventType", source: "fakeEventSource") { _ in
@@ -58,7 +56,7 @@ class PluginFakeEventTests: XCTestCase {
     func test_commandFakeEvent_withNoDetails() {
         // setup
         let payload: [String: AnyCodable] = ["type": "Control"]
-        let expectation = XCTestExpectation(description: "")
+        let expectation = XCTestExpectation(description: "PluginFakeEvent should not dispatch event when there are no details in the command")
         expectation.isInverted = true
 
         // event dispatch verification
@@ -70,7 +68,7 @@ class PluginFakeEventTests: XCTestCase {
         plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
 
         // verify
-        wait(for: [expectation], timeout: 0.5)
+        wait(for: [expectation], timeout: 0.3)
     }
 
     func test_commandFakeEvent_withNoEventName() {
@@ -82,7 +80,7 @@ class PluginFakeEventTests: XCTestCase {
         let payload: [String: AnyCodable] = [
             "detail": AnyCodable.init(eventInfo),
             "type": "Control"]
-        let expectation = XCTestExpectation(description: "")
+        let expectation = XCTestExpectation(description: "PluginFakeEvent should not dispatch event when eventName is not available")
         expectation.isInverted = true
 
         // event dispatch verification
@@ -94,7 +92,7 @@ class PluginFakeEventTests: XCTestCase {
         plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
 
         // verify
-        wait(for: [expectation], timeout: 0.5)
+        wait(for: [expectation], timeout: 0.3)
     }
 
     func test_commandFakeEvent_withNoEventType() {
@@ -106,7 +104,7 @@ class PluginFakeEventTests: XCTestCase {
         let payload: [String: AnyCodable] = [
             "detail": AnyCodable.init(eventInfo),
             "type": "Control"]
-        let expectation = XCTestExpectation(description: "")
+        let expectation = XCTestExpectation(description: "PluginFakeEvent should not dispatch event when eventType is not available")
         expectation.isInverted = true
 
         // event dispatch verification
@@ -118,7 +116,7 @@ class PluginFakeEventTests: XCTestCase {
         plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
 
         // verify
-        wait(for: [expectation], timeout: 0.5)
+        wait(for: [expectation], timeout: 0.3)
     }
 
     func test_commandFakeEvent_withNoEventSource() {
@@ -130,7 +128,7 @@ class PluginFakeEventTests: XCTestCase {
         let payload: [String: AnyCodable] = [
             "detail": AnyCodable.init(eventInfo),
             "type": "Control"]
-        let expectation = XCTestExpectation(description: "")
+        let expectation = XCTestExpectation(description: "PluginFakeEvent should not dispatch event when eventSource is not available")
         expectation.isInverted = true
 
         // event dispatch verification
@@ -142,7 +140,7 @@ class PluginFakeEventTests: XCTestCase {
         plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
 
         // verify
-        wait(for: [expectation], timeout: 0.5)
+        wait(for: [expectation], timeout: 0.3)
     }
 
     // MARK: - Private functions
