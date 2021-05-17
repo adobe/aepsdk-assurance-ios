@@ -17,10 +17,10 @@ import Foundation
 /// Plugin to dispatch fake events to Mobile Core.
 ///
 /// The plugin gets invoked with Assurance command event having
-/// - vendor                : "com.adobe.griffon.mobile"
-/// - command type   : "fakeEvent"
+///   - vendor :  "com.adobe.griffon.mobile"
+///   - command type  :  "fakeEvent"
 ///
-/// This plugin gets registered with `PluginHub`during the registration of Assurance extension.
+/// This plugin gets registered with `PluginHub` during the registration of Assurance extension.
 /// Once a command to dispatch a fakeEvent is received.
 /// This plugin extracts the SDK event details from the command, creates an `Event` and dispatches to `MobileCore`.
 ///

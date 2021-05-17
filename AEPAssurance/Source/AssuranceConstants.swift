@@ -59,7 +59,7 @@ enum AssuranceConstants {
         static let TIMESTAMP    = "ACPExtensionEventTimestamp"
         static let NUMBER    = "ACPExtensionEventNumber"
         static let UNIQUE_IDENTIFIER = "ACPExtensionEventUniqueIdentifier"
-        static let RESPONSE_IDENTIFIER = "ACPExtensionEventResponseIdentifier" // todo new key introduces convey to UI team
+        static let RESPONSE_IDENTIFIER = "ACPExtensionEventResponseIdentifier" // todo new key introduced : convey to UI team
     }
 
     enum EventDataKey {
