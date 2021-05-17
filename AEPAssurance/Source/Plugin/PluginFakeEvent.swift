@@ -32,32 +32,28 @@ struct PluginFakeEvent: AssurancePlugin {
     var commandType: String = AssuranceConstants.CommandType.FAKE_EVENT
 
     func receiveEvent(_ event: AssuranceEvent) {
-        guard let commandDetails = event.getCommandDetail() else {
-            Log.debug(label: AssuranceConstants.LOG_TAG, "PluginFakeEvent - Command detail is empty. Assurance SDK is ignoring the fake event command.")
-            return
-        }
 
         // extract the details of the fake event from the Assurance event's payload
         // 1. Read the event name
-        guard let eventName = commandDetails[AssuranceConstants.PluginFakeEvent.NAME] as? String else {
+        guard let eventName = event.eventName else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "PluginFakeEvent - Event name is null or not a valid string. Assurance SDK is ignoring the fake event command.")
             return
         }
 
         // 2. Read event source
-        guard let eventSource = commandDetails[AssuranceConstants.PluginFakeEvent.SOURCE] as? String else {
+        guard let eventSource = event.eventSource else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "PluginFakeEvent -  Event source is null or not a string in the payload. Assurance SDK is ignoring the fake event command.")
             return
         }
 
         // 3. Read event type
-        guard let eventType = commandDetails[AssuranceConstants.PluginFakeEvent.TYPE] as? String else {
+        guard let eventType = event.eventType else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "PluginFakeEvent - Event type is null or not a string in the payload. Assurance SDK is ignoring the fake event command.")
             return
         }
 
         // make and dispatch a fake event to eventHub
-        let fakeEvent = Event(name: eventName, type: eventType, source: eventSource, data: commandDetails[AssuranceConstants.PluginFakeEvent.DATA] as? [String: Any])
+        let fakeEvent = Event(name: eventName, type: eventType, source: eventSource, data: event.eventData)
         MobileCore.dispatch(event: fakeEvent)
     }
 
@@ -70,4 +66,24 @@ struct PluginFakeEvent: AssurancePlugin {
 
     func onSessionTerminated() {}
 
+}
+
+/// AssuranceEvent extension to simplify reading of command detail keys for PluginFakeEvent
+private extension AssuranceEvent {
+
+    var eventName: String? {
+        return getCommandDetail()?[AssuranceConstants.PluginFakeEvent.NAME] as? String
+    }
+
+    var eventType: String? {
+        return getCommandDetail()?[AssuranceConstants.PluginFakeEvent.TYPE] as? String
+    }
+
+    var eventSource: String? {
+        return getCommandDetail()?[AssuranceConstants.PluginFakeEvent.SOURCE] as? String
+    }
+
+    var eventData: [String: Any]? {
+        return getCommandDetail()?[AssuranceConstants.PluginFakeEvent.SOURCE] as? [String: Any]
+    }
 }

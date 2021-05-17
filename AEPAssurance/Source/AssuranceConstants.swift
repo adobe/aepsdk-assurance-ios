@@ -111,7 +111,7 @@ enum AssuranceConstants {
 
     enum CommandType {
         static let START_EVENT_FORWARDING  = "startEventForwarding"
-        static let UPDATE_CONFIG  = "configUpdate"
+        static let CONFIG_UPDATE  = "configUpdate"
         static let FAKE_EVENT  = "fakeEvent"
         static let SCREENSHOT  = "screenshot"
         static let LOG_FORWARDING = "logForwarding"
