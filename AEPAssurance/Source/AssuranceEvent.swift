@@ -81,7 +81,7 @@ struct AssuranceEvent: Codable {
     ///  They are usually events generated from the Griffon UI demanding a specific action at the mobile client.
     ///
     /// - Returns: a string value representing the command (or) control type
-    func getCommandType() -> String? {
+    var commandType: String? {
         if AssuranceConstants.EventType.CONTROL != type {
             return nil
         }
@@ -99,7 +99,7 @@ struct AssuranceEvent: Codable {
     /// They are usually events generated from the Griffon UI demanding a specific action at the mobile client.
     ///
     /// - Returns: a dictionary representing the command details
-    func getCommandDetail() -> [String: Any]? {
+    var commandDetails: [String: Any]? {
         if AssuranceConstants.EventType.CONTROL != type {
             return nil
         }

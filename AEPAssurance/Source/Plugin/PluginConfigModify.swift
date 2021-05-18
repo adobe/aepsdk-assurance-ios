@@ -45,13 +45,13 @@ struct PluginConfigModify: AssurancePlugin {
     /// Delegate method called when a command is received to modify the configuration of Mobile SDK
     /// - Parameter event  An `AssuranceEvent` that contains the details about the configuration that need to be modified
     func receiveEvent(_ event: AssuranceEvent) {
-        guard let controlDetails = event.getCommandDetail() else {
+        guard let commandDetails = event.commandDetails else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "PluginConfigUpdate - Command details empty. Assurance SDK is ignoring the command to update configuration.")
             return
         }
 
-        MobileCore.updateConfigurationWith(configDict: controlDetails)
-        saveModifiedConfigKeys(controlDetails)
+        MobileCore.updateConfigurationWith(configDict: commandDetails)
+        saveModifiedConfigKeys(commandDetails)
     }
 
     /// Delegate method called when assurance session from this mobile device is terminated

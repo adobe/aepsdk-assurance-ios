@@ -35,25 +35,25 @@ struct PluginFakeEvent: AssurancePlugin {
 
         // extract the details of the fake event from the Assurance event's payload
         // 1. Read the event name
-        guard let eventName = event.eventName else {
+        guard let eventName = event.commandFakeEventName else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "PluginFakeEvent - Event name is null or not a valid string. Assurance SDK is ignoring the fake event command.")
             return
         }
 
         // 2. Read event source
-        guard let eventSource = event.eventSource else {
+        guard let eventSource = event.commandFakeEventSource else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "PluginFakeEvent -  Event source is null or not a string in the payload. Assurance SDK is ignoring the fake event command.")
             return
         }
 
         // 3. Read event type
-        guard let eventType = event.eventType else {
+        guard let eventType = event.commandFakeEventType else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "PluginFakeEvent - Event type is null or not a string in the payload. Assurance SDK is ignoring the fake event command.")
             return
         }
 
         // make and dispatch a fake event to eventHub
-        let fakeEvent = Event(name: eventName, type: eventType, source: eventSource, data: event.eventData)
+        let fakeEvent = Event(name: eventName, type: eventType, source: eventSource, data: event.commandFakeEventData)
         MobileCore.dispatch(event: fakeEvent)
     }
 
@@ -71,19 +71,19 @@ struct PluginFakeEvent: AssurancePlugin {
 /// AssuranceEvent extension to simplify reading of command detail keys for PluginFakeEvent
 private extension AssuranceEvent {
 
-    var eventName: String? {
-        return getCommandDetail()?[AssuranceConstants.PluginFakeEvent.NAME] as? String
+    var commandFakeEventName: String? {
+        return commandDetails?[AssuranceConstants.PluginFakeEvent.NAME] as? String
     }
 
-    var eventType: String? {
-        return getCommandDetail()?[AssuranceConstants.PluginFakeEvent.TYPE] as? String
+    var commandFakeEventType: String? {
+        return commandDetails?[AssuranceConstants.PluginFakeEvent.TYPE] as? String
     }
 
-    var eventSource: String? {
-        return getCommandDetail()?[AssuranceConstants.PluginFakeEvent.SOURCE] as? String
+    var commandFakeEventSource: String? {
+        return commandDetails?[AssuranceConstants.PluginFakeEvent.SOURCE] as? String
     }
 
-    var eventData: [String: Any]? {
-        return getCommandDetail()?[AssuranceConstants.PluginFakeEvent.SOURCE] as? [String: Any]
+    var commandFakeEventData: [String: Any]? {
+        return commandDetails?[AssuranceConstants.PluginFakeEvent.SOURCE] as? [String: Any]
     }
 }
