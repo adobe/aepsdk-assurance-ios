@@ -64,12 +64,14 @@ class PluginHubTests: XCTestCase {
         XCTAssertFalse(pluginBlue.eventReceived)
         XCTAssertFalse(pluginGreen.eventReceived)
         XCTAssertTrue(pluginTaco.eventReceived)
+        XCTAssertFalse(pluginColorWildCard.eventReceived)
 
         // test
         pluginHub.notifyPluginsOfEvent(blueEvent)
 
         // verify pluginBlue is notified about the event
         XCTAssertTrue(pluginBlue.eventReceived)
+        XCTAssertTrue(pluginColorWildCard.eventReceived)
     }
 
     func test_notifyPluginsOfEvent_WildcardPlugin() {

@@ -39,7 +39,7 @@ class PluginHub {
         plugin.onRegistered(session)
     }
 
-    /// Notifies all the registered plugin's about the successful connection establishment with Assurance session.
+    /// Notifies all the registered plugins about the successful connection establishment with Assurance session.
     func notifyPluginsOfEvent(_ event: AssuranceEvent) {
         guard let pluginsForVendor = pluginCollection[event.vendor.hash] else {
             return
@@ -55,14 +55,14 @@ class PluginHub {
         }
     }
 
-    /// Notifies all the registered plugin's about the successful connection establishment with Assurance session.
+    /// Notifies all the registered plugins about the successful connection establishment with Assurance session.
     func notifyPluginsOnConnect() {
         getEachRegisteredPlugin({ plugin in
             plugin.onSessionConnected()
         })
     }
 
-    /// Notifies all the registered plugin's about disconnection with Assurance session.
+    /// Notifies all the registered plugins about disconnection with Assurance session.
     /// - Parameter :
     ///     - closeCode: Integer representing the reason for socket disconnection
     func notifyPluginsOnDisconnect(withCloseCode closeCode: Int) {
@@ -71,7 +71,7 @@ class PluginHub {
         })
     }
 
-    /// Notifies all the registered plugin's about connection termination with Assurance session.
+    /// Notifies all the registered plugins about connection termination with Assurance session.
     func notifyPluginsOnSessionTerminated() {
         getEachRegisteredPlugin({ plugin in
             plugin.onSessionTerminated()
@@ -80,7 +80,8 @@ class PluginHub {
 
     // MARK: Private methods
 
-    /// Iterates through the pluginCollection dictionary and calls the callback with each registered plugin
+    /// Helper function to iterate through all the registered plugins.
+    /// The callback is called multiple times with each registered plugin.
     private func getEachRegisteredPlugin(_ callback: (AssurancePlugin) -> Void) {
         for pluginVendor in pluginCollection.keys {
             guard let threadSafePluginsArray = pluginCollection[pluginVendor] else {
