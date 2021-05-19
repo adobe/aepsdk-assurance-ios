@@ -13,6 +13,11 @@
 import Foundation
 
 /// The protocol that needs to be adopted by a class to receive and respond to Assurance commands
+///
+/// What is an AssurancePlugin ?
+/// You can define an AssurancePlugin with a vendor name and command type. These plugins can then be used to handle the commands from the Griffon UI directed towards them.
+///  An Inbound command with a specified vendor and command type will invoke the  plugin.
+///  WildCardPlugin : `AssurancePlugin` with commandType "wildcard" will listen all the command for its defined vendor.
 protocol AssurancePlugin {
 
     /// the vendor name for the Assurance plugin
