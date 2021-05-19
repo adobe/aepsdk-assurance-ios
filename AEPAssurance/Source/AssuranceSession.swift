@@ -15,7 +15,7 @@ import Foundation
 
 class AssuranceSession {
     let assuranceExtension: Assurance
-    var pinCodeScreen: SessionAuthorizable?
+    var pinCodeScreen: SessionAuthorizing?
 
     /// Initializer with instance of  `Assurance` extension
     init(_ assuranceExtension: Assurance) {
