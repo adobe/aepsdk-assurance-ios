@@ -10,29 +10,29 @@
  governing permissions and limitations under the License.
  */
 
-import XCTest
 @testable import AEPAssurance
+import XCTest
 
 class ThreadSafeQueueTests: XCTestCase {
 
     func test_enqueue() throws {
         // setup
         let queue = ThreadSafeQueue<String>(withLimit: 10)
-        
+
         // test
         queue.enqueue(newElement: "One")
-        
+
         // verify
         XCTAssertEqual(1, queue.size())
     }
-    
+
     func test_dequeue() throws {
         // setup
         let queue = ThreadSafeQueue<String>(withLimit: 10)
         queue.enqueue(newElement: "One")
         queue.enqueue(newElement: "Two")
         queue.enqueue(newElement: "Three")
-        
+
         // test and verify
         XCTAssertEqual(3, queue.size())
         XCTAssertEqual("One", queue.dequeue())
@@ -40,52 +40,52 @@ class ThreadSafeQueueTests: XCTestCase {
         XCTAssertEqual("Three", queue.dequeue())
         XCTAssertEqual(0, queue.size())
     }
-    
+
     func test_size() throws {
         // setup
         let queue = ThreadSafeQueue<Int>(withLimit: 1000)
         for number in 1...100 {
             queue.enqueue(newElement: number)
         }
-            
+
         // test and verify
         XCTAssertEqual(100, queue.size())
     }
-    
+
     func test_clear() throws {
         // setup
         let queue = ThreadSafeQueue<Int>(withLimit: 10)
         for number in 1...5 {
             queue.enqueue(newElement: number)
         }
-        
+
         // test and verify
         XCTAssertEqual(5, queue.size())
         queue.clear()
         XCTAssertEqual(0, queue.size())
     }
-        
+
     func test_limit() throws {
         // setup
         let queue = ThreadSafeQueue<Int>(withLimit: 5)
         for number in 1...15 {
             queue.enqueue(newElement: number)
         }
-            
+
         // test and verify
         XCTAssertEqual(5, queue.size())
-        
+
         // dequeueing only gets the last entered elements
         for number in 11...15 {
             XCTAssertEqual(number, queue.dequeue())
         }
     }
-    
+
     func test_threadSafety() throws {
         let queue = ThreadSafeQueue<String>(withLimit: 1000)
         let group = DispatchGroup()
         for _ in 0...10 {
-            
+
             // Spawning threads for enqueue task
             group.enter()
             DispatchQueue.global().async {
@@ -94,40 +94,38 @@ class ThreadSafeQueueTests: XCTestCase {
                 queue.enqueue(newElement: "data")
                 group.leave()
             }
-            
+
             // Spawning threads for dequeue task
             group.enter()
             DispatchQueue.global().async {
                 let sleepVal = arc4random() % 1000
                 usleep(sleepVal)
-                let _ = queue.dequeue()
+                _ = queue.dequeue()
                 group.leave()
             }
-            
-            
+
             // Spawning threads for size check task
             group.enter()
             DispatchQueue.global().async {
                 let sleepVal = arc4random() % 1000
                 usleep(sleepVal)
-                let _ = queue.size()
+                _ = queue.size()
                 group.leave()
             }
-            
+
             // Spawning threads for size clear task
             group.enter()
             DispatchQueue.global().async {
                 let sleepVal = arc4random() % 1000
                 usleep(sleepVal)
-                let _ = queue.clear()
+                _ = queue.clear()
                 group.leave()
             }
         }
-        
+
         // verify that all the asynchronous operations are completed without crashing
         let result = group.wait(timeout: DispatchTime.now() + 3)
         XCTAssert(result == .success)
     }
 
 }
-
