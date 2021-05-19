@@ -39,7 +39,7 @@
 		B6AB2DF326337BE700FE8AEA /* AssuranceStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB2DF226337BE700FE8AEA /* AssuranceStateTests.swift */; };
 		B6AFD589263403EB00C63608 /* AssuranceEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AFD588263403EB00C63608 /* AssuranceEvent.swift */; };
 		B6AFD58E2634041E00C63608 /* AssuranceEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AFD58D2634041E00C63608 /* AssuranceEventTests.swift */; };
-		B6B0E2C9263C674F00EF5E21 /* SessionAuthorizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B0E2C8263C674F00EF5E21 /* SessionAuthorizable.swift */; };
+		B6B0E2C9263C674F00EF5E21 /* SessionAuthorizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B0E2C8263C674F00EF5E21 /* SessionAuthorizing.swift */; };
 		B6B0E2CD263C709100EF5E21 /* iOSPinCodeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B0E2CC263C709100EF5E21 /* iOSPinCodeScreen.swift */; };
 		B6B0E2D3263C7E5300EF5E21 /* MockUIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B0E2D2263C7E5300EF5E21 /* MockUIService.swift */; };
 		B6B0E2D7263C7FAB00EF5E21 /* AssuranceSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B0E2D6263C7FAB00EF5E21 /* AssuranceSession.swift */; };
@@ -138,7 +138,7 @@
 		B6AB2DF226337BE700FE8AEA /* AssuranceStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStateTests.swift; sourceTree = "<group>"; };
 		B6AFD588263403EB00C63608 /* AssuranceEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEvent.swift; sourceTree = "<group>"; };
 		B6AFD58D2634041E00C63608 /* AssuranceEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEventTests.swift; sourceTree = "<group>"; };
-		B6B0E2C8263C674F00EF5E21 /* SessionAuthorizable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionAuthorizable.swift; sourceTree = "<group>"; };
+		B6B0E2C8263C674F00EF5E21 /* SessionAuthorizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionAuthorizing.swift; sourceTree = "<group>"; };
 		B6B0E2CC263C709100EF5E21 /* iOSPinCodeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSPinCodeScreen.swift; sourceTree = "<group>"; };
 		B6B0E2D2263C7E5300EF5E21 /* MockUIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUIService.swift; sourceTree = "<group>"; };
 		B6B0E2D6263C7FAB00EF5E21 /* AssuranceSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceSession.swift; sourceTree = "<group>"; };
@@ -370,7 +370,7 @@
 		B6B0E2B6263A737600EF5E21 /* PincodeEntry */ = {
 			isa = PBXGroup;
 			children = (
-				B6B0E2C8263C674F00EF5E21 /* SessionAuthorizable.swift */,
+				B6B0E2C8263C674F00EF5E21 /* SessionAuthorizing.swift */,
 				B6B23ACC26414C5E00EE8153 /* iOS */,
 			);
 			path = PincodeEntry;
@@ -764,7 +764,7 @@
 				B6407223262CEBC600C43183 /* URL+Parser.swift in Sources */,
 				B640722B262CF06100C43183 /* AssuranceEnvironment.swift in Sources */,
 				B6FEB8B2263A18F500F0F240 /* ActiveIcon.swift in Sources */,
-				B6B0E2C9263C674F00EF5E21 /* SessionAuthorizable.swift in Sources */,
+				B6B0E2C9263C674F00EF5E21 /* SessionAuthorizing.swift in Sources */,
 				B6FEB8B1263A18F500F0F240 /* InactiveIcon.swift in Sources */,
 				B60BAC0C26434ED90054CD21 /* AssuranceSocketError.swift in Sources */,
 				B6B0E2CD263C709100EF5E21 /* iOSPinCodeScreen.swift in Sources */,

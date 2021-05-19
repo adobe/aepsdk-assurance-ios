@@ -12,7 +12,7 @@
 
 import Foundation
 
-protocol SessionAuthorizable {
+protocol SessionAuthorizing {
     typealias authorizedURLCallback = (String) -> Void
 
     init(withExtension: Assurance)
