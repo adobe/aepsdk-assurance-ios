@@ -209,10 +209,9 @@ class AssuranceEventTests: XCTestCase {
 
         // test
         let event = AssuranceEvent.from(jsonData: data)
-        let commandType = event?.getCommandType()
 
         // verify
-        XCTAssertEqual("screenshot", commandType, "Inaccurate command type")
+        XCTAssertEqual("screenshot", event?.commandType, "Inaccurate command type")
     }
 
     func test_getCommandEventType_whenNotACommand() throws {
@@ -229,10 +228,9 @@ class AssuranceEventTests: XCTestCase {
 
         // test
         let event = AssuranceEvent.from(jsonData: data)
-        let commandType = event?.getCommandType()
 
         // verify
-        XCTAssertNil(commandType, "Command type should be nil")
+        XCTAssertNil(event?.commandType, "Command type should be nil")
     }
 
     func test_getCommandEventType_whenTypeUnavailable() throws {
@@ -249,10 +247,9 @@ class AssuranceEventTests: XCTestCase {
 
         // test
         let event = AssuranceEvent.from(jsonData: data)
-        let commandType = event?.getCommandType()
 
         // verify
-        XCTAssertNil(commandType, "command type should be nil")
+        XCTAssertNil(event?.commandType, "command type should be nil")
     }
 
     func test_getCommandEventType_whenTypeNotAString() throws {
@@ -271,10 +268,9 @@ class AssuranceEventTests: XCTestCase {
 
         // test
         let event = AssuranceEvent.from(jsonData: data)
-        let commandType = event?.getCommandType()
 
         // verify
-        XCTAssertNil(commandType, "Command type should be nil")
+        XCTAssertNil(event?.commandType, "Command type should be nil")
     }
 
     /*--------------------------------------------------
@@ -298,10 +294,9 @@ class AssuranceEventTests: XCTestCase {
 
         // test
         let event = AssuranceEvent.from(jsonData: data)
-        let commandDetail = event?.getCommandDetail()
 
         // verify
-        XCTAssertEqual("value", commandDetail!["key"] as? String, "Inaccurate command type")
+        XCTAssertEqual("value", event?.commandDetails!["key"] as? String, "Inaccurate command type")
     }
 
     func test_getCommandEventDetail_whenNotACommand() throws {
@@ -321,10 +316,9 @@ class AssuranceEventTests: XCTestCase {
 
         // test
         let event = AssuranceEvent.from(jsonData: data)
-        let commandDetail = event?.getCommandDetail()
 
         // verify
-        XCTAssertNil(commandDetail, "command details should be nil")
+        XCTAssertNil(event?.commandDetails, "command details should be nil")
     }
 
     func test_getCommandEventDetail_whenDetailNotADictionary() throws {
@@ -341,9 +335,8 @@ class AssuranceEventTests: XCTestCase {
 
         // test
         let event = AssuranceEvent.from(jsonData: data)
-        let commandDetail = event?.getCommandDetail()
 
         // verify
-        XCTAssertNil(commandDetail, "command details should be nil")
+        XCTAssertNil(event?.commandDetails, "command details should be nil")
     }
 }

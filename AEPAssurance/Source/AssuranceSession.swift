@@ -13,7 +13,7 @@
 import AEPServices
 import Foundation
 
-struct AssuranceSession {
+class AssuranceSession {
     let assuranceExtension: Assurance
     var pinCodeScreen: SessionAuthorizable?
 
@@ -26,7 +26,7 @@ struct AssuranceSession {
     /// Calling this method will attempt to display the pincode screen for session authentication
     ///
     /// Thread : Listener thread from EventHub
-    mutating func startSession() {
+    func startSession() {
         let pinCodeScreen = iOSPinCodeScreen.init(withExtension: assuranceExtension)
         self.pinCodeScreen = pinCodeScreen
 
