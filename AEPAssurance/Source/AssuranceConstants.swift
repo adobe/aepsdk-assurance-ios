@@ -17,6 +17,7 @@ enum AssuranceConstants {
     static let FRIENDLY_NAME = "Assurance"
     static let EXTENSION_VERSION = "2.0.0"
     static let LOG_TAG = FRIENDLY_NAME
+    static let DEFAULT_ENVIRONMENT = AssuranceEnvironment.prod
 
     static let BASE_SOCKET_URL = "wss://connect%@.griffon.adobe.com/client/v1?sessionId=%@&token=%@&orgId=%@&clientId=%@"
 
@@ -72,6 +73,7 @@ enum AssuranceConstants {
         static let SESSION_ID = "assurance.session.Id"
         static let CLIENT_ID = "assurance.client.Id"
         static let ENVIRONMENT = "assurance.environment"
+        static let SOCKETURL = "assurance.socketurl"
         static let CONFIG_MODIFIED_KEYS = "assurance.control.modifiedConfigKeys"
     }
 
@@ -100,6 +102,7 @@ enum AssuranceConstants {
     enum HTMLURLPath {
         static let CANCEL   = "cancel"
         static let CONFIRM  = "confirm"
+        static let DISCONNECT  = "disconnect"
     }
 
     enum ClientInfoKeys {
@@ -116,5 +119,14 @@ enum AssuranceConstants {
         static let SCREENSHOT  = "screenshot"
         static let LOG_FORWARDING = "logForwarding"
         static let WILDCARD = "wildcard"
+    }
+
+    enum SocketCloseCode {
+        static let NORMAL_CLOSURE = 1000
+        static let ABNORMAL_CLOSURE = 1006
+        static let ORG_MISMATCH = 4900
+        static let CONNECTION_LIMIT = 4901
+        static let EVENTS_LIMIT = 4902
+        static let CLIENT_ERROR = 4400
     }
 }
