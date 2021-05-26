@@ -16,6 +16,17 @@ import Foundation
 
 struct AssuranceClientInfo {
 
+    static let PLATFORM_NAME = "Canonical platform name"
+    static let DEVICE_NAME = "Device name"
+    static let OPERATING_SYSTEM = "Operating system"
+    static let DEVICE_TYPE = "Device type"
+    static let MODEL = "Model"
+    static let SCREEN_SIZE = "Screen size"
+    static let LOCATION_SERVICE_ENABLED = "Location service enabled"
+    static let LOCATION_AUTHORIZATION_STATUS = "Location authorization status"
+    static let LOW_POWER_BATTERY_ENABLED = "Low power mode enabled"
+    static let BATTERY_LEVEL = "Battery Level"
+
     /// Provides a `Dictionary` containing the client information required for the Assurance client event
     /// Client information includes
     /// 1. AppSetting Data  - Information from the info.plist
@@ -44,16 +55,16 @@ struct AssuranceClientInfo {
     private static func readDeviceInfo() -> [String: Any] {
         let screenSize = ServiceProvider.shared.systemInfoService.getDisplayInformation()
         var deviceInfo: [String: Any] = [:]
-        deviceInfo["Canonical platform name"] = "iOS"
-        deviceInfo["Device name"] = UIDevice.current.name
-        deviceInfo["Operating system"] = ("\(ServiceProvider.shared.systemInfoService.getOperatingSystemName()) \(ServiceProvider.shared.systemInfoService.getOperatingSystemVersion())")
-        deviceInfo["Device type"] = getDeviceType()
-        deviceInfo["Model"] = ServiceProvider.shared.systemInfoService.getDeviceModelNumber
-        deviceInfo["Screen size"] = "\(screenSize.width)x\(screenSize.height)"
-        deviceInfo["Location service enabled"] = Bool(CLLocationManager.locationServicesEnabled())
-        deviceInfo["Location authorization status"] = getAuthStatusString(authStatus: CLLocationManager.authorizationStatus())
-        deviceInfo["Low power mode enabled"] = ProcessInfo.processInfo.isLowPowerModeEnabled
-        deviceInfo["Battery Level"] = getBatteryLevel()
+        deviceInfo[PLATFORM_NAME] = "iOS"
+        deviceInfo[DEVICE_NAME] = UIDevice.current.name
+        deviceInfo[OPERATING_SYSTEM] = ("\(ServiceProvider.shared.systemInfoService.getOperatingSystemName()) \(ServiceProvider.shared.systemInfoService.getOperatingSystemVersion())")
+        deviceInfo[DEVICE_TYPE] = getDeviceType()
+        deviceInfo[MODEL] = ServiceProvider.shared.systemInfoService.getDeviceModelNumber
+        deviceInfo[SCREEN_SIZE] = "\(screenSize.width)x\(screenSize.height)"
+        deviceInfo[LOCATION_SERVICE_ENABLED] = Bool(CLLocationManager.locationServicesEnabled())
+        deviceInfo[LOCATION_AUTHORIZATION_STATUS] = getAuthStatusString(authStatus: CLLocationManager.authorizationStatus())
+        deviceInfo[LOW_POWER_BATTERY_ENABLED] = ProcessInfo.processInfo.isLowPowerModeEnabled
+        deviceInfo[BATTERY_LEVEL] = getBatteryLevel()
         return deviceInfo
     }
 
