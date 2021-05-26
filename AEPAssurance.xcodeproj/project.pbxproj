@@ -52,6 +52,8 @@
 		B6CECC5B26545829000D517F /* MockAssurance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC5926545829000D517F /* MockAssurance.swift */; };
 		B6CECC5E26545834000D517F /* MockAssuranceSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC5C26545834000D517F /* MockAssuranceSession.swift */; };
 		B6CECC6026545857000D517F /* PluginHubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC5726544747000D517F /* PluginHubTests.swift */; };
+		B6CECC652655A8D3000D517F /* ThreadSafeQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC642655A8D3000D517F /* ThreadSafeQueue.swift */; };
+		B6CECC682655A94F000D517F /* ThreadSafeQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC662655A925000D517F /* ThreadSafeQueueTests.swift */; };
 		B6D2A91026322D6D0062AC5E /* AssuranceEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D2A90B26322D1C0062AC5E /* AssuranceEnvironmentTests.swift */; };
 		B6D2A91F2632B7640062AC5E /* MockExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D2A91E2632B7640062AC5E /* MockExtension.swift */; };
 		B6FEB8AC263A18E600F0F240 /* SocketScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FEB8AB263A18E600F0F240 /* SocketScript.swift */; };
@@ -151,6 +153,8 @@
 		B6CECC5726544747000D517F /* PluginHubTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginHubTests.swift; sourceTree = "<group>"; };
 		B6CECC5926545829000D517F /* MockAssurance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAssurance.swift; sourceTree = "<group>"; };
 		B6CECC5C26545834000D517F /* MockAssuranceSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAssuranceSession.swift; sourceTree = "<group>"; };
+		B6CECC642655A8D3000D517F /* ThreadSafeQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadSafeQueue.swift; sourceTree = "<group>"; };
+		B6CECC662655A925000D517F /* ThreadSafeQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadSafeQueueTests.swift; sourceTree = "<group>"; };
 		B6D2A90B26322D1C0062AC5E /* AssuranceEnvironmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEnvironmentTests.swift; sourceTree = "<group>"; };
 		B6D2A91E2632B7640062AC5E /* MockExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockExtension.swift; sourceTree = "<group>"; };
 		B6D2A92626334A3D0062AC5E /* Assurance+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Assurance+State.swift"; sourceTree = "<group>"; };
@@ -232,6 +236,7 @@
 		B640719B262C313E00C43183 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				B6CECC632655A8A7000D517F /* Primitives */,
 				B64FDF6C264F33CD00D33192 /* Plugin */,
 				B670E67D26393300000FCB96 /* BuiltResources */,
 				B6407221262CEACE00C43183 /* Extensions */,
@@ -265,6 +270,7 @@
 				B6CECC5726544747000D517F /* PluginHubTests.swift */,
 				B64FDF71264F384400D33192 /* PluginFakeEventTests.swift */,
 				B6CECC4D26531F5D000D517F /* PluginConfigModifyTests.swift */,
+				B6CECC662655A925000D517F /* ThreadSafeQueueTests.swift */,
 				B64071A9262C313E00C43183 /* Info.plist */,
 			);
 			name = UnitTests;
@@ -383,6 +389,14 @@
 				B6B23ACD26414C8100EE8153 /* iOSPinCodeScreen+FullScreenDelegate.swift */,
 			);
 			path = iOS;
+			sourceTree = "<group>";
+		};
+		B6CECC632655A8A7000D517F /* Primitives */ = {
+			isa = PBXGroup;
+			children = (
+				B6CECC642655A8D3000D517F /* ThreadSafeQueue.swift */,
+			);
+			path = Primitives;
 			sourceTree = "<group>";
 		};
 		B6D2A91D2632B7290062AC5E /* Mocks */ = {
@@ -753,6 +767,7 @@
 				B64071D3262C368C00C43183 /* Assurance.swift in Sources */,
 				B6B23ACE26414C8100EE8153 /* iOSPinCodeScreen+FullScreenDelegate.swift in Sources */,
 				B64071D7262C376A00C43183 /* AssuranceConstants.swift in Sources */,
+				B6CECC652655A8D3000D517F /* ThreadSafeQueue.swift in Sources */,
 				B6AFD589263403EB00C63608 /* AssuranceEvent.swift in Sources */,
 				B6FEB8AC263A18E600F0F240 /* SocketScript.swift in Sources */,
 				B6B0E2D3263C7E5300EF5E21 /* MockUIService.swift in Sources */,
@@ -783,6 +798,7 @@
 				B6D2A91F2632B7640062AC5E /* MockExtension.swift in Sources */,
 				B64071A8262C313E00C43183 /* AssurancePublicAPITests.swift in Sources */,
 				B66D3C5B263752EE0076108B /* URL+ParserTests.swift in Sources */,
+				B6CECC682655A94F000D517F /* ThreadSafeQueueTests.swift in Sources */,
 				B6AFD58E2634041E00C63608 /* AssuranceEventTests.swift in Sources */,
 				B6AB2DF326337BE700FE8AEA /* AssuranceStateTests.swift in Sources */,
 				B6D2A91026322D6D0062AC5E /* AssuranceEnvironmentTests.swift in Sources */,
