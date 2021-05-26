@@ -16,7 +16,7 @@ import Foundation
 
 struct AssuranceClientInfo {
 
-    /// Retrieves a `Dictionary` containing the client information required for the Assurance client event
+    /// Provides a `Dictionary` containing the client information required for the Assurance client event
     /// Client information includes
     /// 1. AppSetting Data  - Information from the info.plist
     /// 2. Device Information - Information like (Device Name, Device type, Battery level, OS Info, Location Auth status, etc.. )
@@ -31,7 +31,7 @@ struct AssuranceClientInfo {
     }
 
     // MARK: - Private helper methods
-    /// - Returns: A `Dictionary` containing plist data
+    /// - Returns: A `Dictionary` containing the app's Info.plist data
     private static func readAppSettingData() -> NSDictionary {
         var appSettingsInDictionary: NSDictionary = [:]
         if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
@@ -40,7 +40,7 @@ struct AssuranceClientInfo {
         return appSettingsInDictionary
     }
 
-    ///- Returns: A `Dictionary` representing the battery level of the device
+    ///- Returns: A `Dictionary` with the required device information
     private static func readDeviceInfo() -> [String: Any] {
         let screenSize = ServiceProvider.shared.systemInfoService.getDisplayInformation()
         var deviceInfo: [String: Any] = [:]
@@ -85,7 +85,7 @@ struct AssuranceClientInfo {
         }
     }
 
-    /// - Returns: A `String` representing the Apple device type
+    /// - Returns: A `String` representing the Apple's device type
     private static func getDeviceType() -> String {
         switch UIDevice.current.userInterfaceIdiom {
         case .unspecified:
