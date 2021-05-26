@@ -25,13 +25,15 @@ struct AssuranceClientInfo {
     static let LOCATION_SERVICE_ENABLED = "Location service enabled"
     static let LOCATION_AUTHORIZATION_STATUS = "Location authorization status"
     static let LOW_POWER_BATTERY_ENABLED = "Low power mode enabled"
-    static let BATTERY_LEVEL = "Battery Level"
+    static let BATTERY_LEVEL = "Battery level"
+
+    static let PLATFORM_IOS = "iOS"
 
     /// Provides a `Dictionary` containing the client information required for the Assurance client event
     /// Client information includes
     /// 1. AppSetting Data  - Information from the info.plist
     /// 2. Device Information - Information like (Device Name, Device type, Battery level, OS Info, Location Auth status, etc.. )
-    /// 3. Assurance extension's current verison
+    /// 3. Assurance extension's current version
     ///
     /// - Returns- A `Dictionary` containing the above mentioned data
     static func getData() -> [String: AnyCodable] {
@@ -53,13 +55,15 @@ struct AssuranceClientInfo {
 
     ///- Returns: A `Dictionary` with the required device information
     private static func readDeviceInfo() -> [String: Any] {
-        let screenSize = ServiceProvider.shared.systemInfoService.getDisplayInformation()
+        let systemInfoService = ServiceProvider.shared.systemInfoService
+
+        let screenSize = systemInfoService.getDisplayInformation()
         var deviceInfo: [String: Any] = [:]
-        deviceInfo[PLATFORM_NAME] = "iOS"
+        deviceInfo[PLATFORM_NAME] = PLATFORM_IOS
         deviceInfo[DEVICE_NAME] = UIDevice.current.name
-        deviceInfo[OPERATING_SYSTEM] = ("\(ServiceProvider.shared.systemInfoService.getOperatingSystemName()) \(ServiceProvider.shared.systemInfoService.getOperatingSystemVersion())")
+        deviceInfo[OPERATING_SYSTEM] = ("\(systemInfoService.getOperatingSystemName()) \(systemInfoService.getOperatingSystemVersion())")
         deviceInfo[DEVICE_TYPE] = getDeviceType()
-        deviceInfo[MODEL] = ServiceProvider.shared.systemInfoService.getDeviceModelNumber
+        deviceInfo[MODEL] = systemInfoService.getDeviceModelNumber
         deviceInfo[SCREEN_SIZE] = "\(screenSize.width)x\(screenSize.height)"
         deviceInfo[LOCATION_SERVICE_ENABLED] = Bool(CLLocationManager.locationServicesEnabled())
         deviceInfo[LOCATION_AUTHORIZATION_STATUS] = getAuthStatusString(authStatus: CLLocationManager.authorizationStatus())

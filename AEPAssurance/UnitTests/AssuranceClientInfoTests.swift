@@ -31,15 +31,15 @@ class AssuranceClientInfoTests: XCTestCase {
         // verify device info
         let deviceInfo = try XCTUnwrap(clientInfo[AssuranceConstants.ClientInfoKeys.DEVICE_INFO]?.dictionaryValue)
         XCTAssertEqual(10, deviceInfo.count)
-        XCTAssertEqual("iOS", try XCTUnwrap(deviceInfo["Canonical platform name"] as? String))
-        XCTAssertNotNil(try XCTUnwrap(deviceInfo["Battery Level"] as? Int))
-        XCTAssertNotNil(try XCTUnwrap(deviceInfo["Device name"] as? String))
-        XCTAssertNotNil(try XCTUnwrap(deviceInfo["Operating system"] as? String))
-        XCTAssertNotNil(try XCTUnwrap(deviceInfo["Device type"] as? String))
-        XCTAssertNotNil(try XCTUnwrap(deviceInfo["Screen size"] as? String))
-        XCTAssertNotNil(try XCTUnwrap(deviceInfo["Location authorization status"] as? String))
-        XCTAssertNotNil(try XCTUnwrap(deviceInfo["Low power mode enabled"] as? Bool))
-        XCTAssertNotNil(try XCTUnwrap(deviceInfo["Location service enabled"] as? Bool))
+        XCTAssertEqual("iOS", deviceInfo["Canonical platform name"] as? String)
+        XCTAssertNotNil(deviceInfo["Battery level"] as? Int)
+        XCTAssertNotNil(deviceInfo["Device name"] as? String)
+        XCTAssertNotNil(deviceInfo["Operating system"] as? String)
+        XCTAssertNotNil(deviceInfo["Device type"] as? String)
+        XCTAssertNotNil(deviceInfo["Screen size"] as? String)
+        XCTAssertNotNil(deviceInfo["Location authorization status"] as? String)
+        XCTAssertNotNil(deviceInfo["Low power mode enabled"] as? Bool)
+        XCTAssertNotNil(deviceInfo["Location service enabled"] as? Bool)
     }
 
 }
