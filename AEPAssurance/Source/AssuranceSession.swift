@@ -37,4 +37,8 @@ class AssuranceSession {
 
     }
 
+    func sendEvent(_ assuranceEvent: AssuranceEvent) {
+        // coming soon
+    }
+
 }
