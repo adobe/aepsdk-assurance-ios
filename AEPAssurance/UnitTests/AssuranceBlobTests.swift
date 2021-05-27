@@ -106,4 +106,20 @@ class AssuranceBlobTests: XCTestCase {
         // verify
         mockNetworkService.completionHandler!(mockConnection)
     }
+
+    func test_sendBlob_WhenNot200ResponseCode() throws {
+        // setup
+        let expectation = XCTestExpectation(description: "On Error SendBlob should call the callback with nil")
+        let errorResponse = HTTPURLResponse(url: URL(string: "https://fakeURL.com")!, statusCode: 404, httpVersion: nil, headerFields: [:])
+        let mockConnection = HttpConnection.init(data: invalidJSON, response: errorResponse, error: nil)
+
+        // test
+        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", blobResult: {blobId in
+            XCTAssertNil(blobId)
+            expectation.fulfill()
+        })
+
+        // verify
+        mockNetworkService.completionHandler!(mockConnection)
+    }
 }

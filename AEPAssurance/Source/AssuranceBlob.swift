@@ -23,6 +23,9 @@ struct AssuranceBlob {
     static let HTTP_HEADER_KEY_FILE_CONTENT_TYPE = "File-Content-Type"
     static let HTTP_HEADER_VALUE_OCTET_STREAM = "application/octet-stream"
 
+    static let HTTP_STATUS_CODE_OK = 200
+    static let HTTP_STATUS_CODE_ACCEPTED = 202
+
     static let CONNECTION_TIMEOUT = 30.0
 
     typealias BlobResultCallback = (_ blobId: String?) -> Void
@@ -62,7 +65,7 @@ struct AssuranceBlob {
                                             connectTimeout: CONNECTION_TIMEOUT,
                                             readTimeout: CONNECTION_TIMEOUT)
 
-        Log.debug(label: AssuranceConstants.LOG_TAG, "Uploading blob data to URL : \(components.url!)")
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Uploading blob data to URL : \(components.url!.absoluteString)")
         ServiceProvider.shared.networkService.connectAsync(networkRequest: networkRequest, completionHandler: { connection in
             handleNetworkResponse(connection: connection, blobResult: blobResult)
         })
@@ -76,6 +79,13 @@ struct AssuranceBlob {
     ///   - connection: the connection returned after we make the network request
     ///   - blobResult: a completion block to invoke after the have handled the network response
     private static func handleNetworkResponse(connection: HttpConnection, blobResult: @escaping BlobResultCallback) {
+        // bail out if we get any responseCode other than 200 or 202
+        if !(connection.responseCode == HTTP_STATUS_CODE_OK || connection.responseCode == HTTP_STATUS_CODE_ACCEPTED) {
+            Log.warning(label: AssuranceConstants.LOG_TAG, "Blob upload failed. Connection status code : \(connection.responseCode ?? -1) and error \(connection.responseMessage ?? "Unknown error")")
+            blobResult(nil)
+            return
+        }
+
         if let data = connection.data, let blobDict = try? JSONDecoder().decode([String: AnyCodable].self, from: data) {
             guard let blobID = blobDict["id"]?.stringValue else {
                 Log.warning(label: AssuranceConstants.LOG_TAG, "Blob upload failed with error : \(blobDict["error"] ?? "Unknown Error")")
