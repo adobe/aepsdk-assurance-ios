@@ -28,14 +28,14 @@ struct AssuranceBlob {
     typealias BlobResultCallback = (_ blobId: String?) -> Void
     typealias HttpConstants = HttpConnectionConstants.Header
 
-    /// Sends a binary blob of data to Assurance server to be recorded as an 'asset' for the current session
-    /// Posts the binary blob to Assurance with the given contentType.  Expects server to respond with a JSON object
+    /// Sends a binary blob data to Assurance server to be recorded as an 'asset' for the current session.
+    /// Posts the binary blob to Assurance with the given contentType. Expects server to respond with a JSON object
     /// containing at one of the following keys (both will have string values):
     ///    'asset' - contains asset ID of the newly stored asset
     ///    'error' - description of an error that occurred
     ///
     /// The callback `BlobResult` is called with valid blobID string if the upload of the binary data was successful.
-    /// In any other error scenarios the callback is called with nil blobID
+    /// In any other error scenarios the callback is called with nil blobID.
     ///
     /// - Parameters:
     ///     - blob: The binary data to transmit.
@@ -71,10 +71,10 @@ struct AssuranceBlob {
     // MARK: Helpers
 
     /// Handles the network response of a blob upload request
-    /// The callback blobResult is invoked with the
+    /// The callback blobResult is invoked with the `blobID` if the upload was successful. Nil otherwise.
     /// - Parameters:
     ///   - connection: the connection returned after we make the network request
-    ///   - blobResult: a completion block to invoke after we have handled the network response
+    ///   - blobResult: a completion block to invoke after the have handled the network response
     private static func handleNetworkResponse(connection: HttpConnection, blobResult: @escaping BlobResultCallback) {
         if let data = connection.data, let blobDict = try? JSONDecoder().decode([String: AnyCodable].self, from: data) {
             guard let blobID = blobDict["id"]?.stringValue else {

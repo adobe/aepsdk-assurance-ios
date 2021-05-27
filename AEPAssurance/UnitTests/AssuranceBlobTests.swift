@@ -92,7 +92,7 @@ class AssuranceBlobTests: XCTestCase {
         mockNetworkService.completionHandler!(mockConnection)
     }
 
-    func test_sendBlob_WhenInvalidErrorResponse() throws {
+    func test_sendBlob_WhenInvalidResponse() throws {
         // setup
         let expectation = XCTestExpectation(description: "On Error SendBlob should call the callback with nil")
         let mockConnection = HttpConnection.init(data: invalidJSON, response: HTTPURLResponse.init(), error: nil)
