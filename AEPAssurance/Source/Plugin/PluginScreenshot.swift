@@ -20,27 +20,27 @@ import UIKit
 /// - vendor  : "com.adobe.griffon.mobile"
 /// - command type   : "screenshot"
 ///
-/// This plugin gets registered with `PluginHub`during the registration of Assurance extension.
-/// Once a command to capture screenshot is received. This plugin uses the `AssuranceBlob` service to upload the screenshot data
-/// the AssuranceBlob service then responds with the blobID of the stored screenshot image. This blobID is forwarded to the ongoing assurance session.
-/// Failure to upload the screenshot will result in not sending any event to assurance session.
+/// This plugin gets registered with `PluginHub` during the registration of Assurance extension.
+/// Once the command to capture a screenshot is received. This plugin uses the `AssuranceBlob` service to upload the screenshot data.
+/// The ` AssuranceBlob` service then responds with the blobID of the uploaded screenshot image. This blobID is then forwarded to the ongoing assurance session.
+/// Failure to upload the screenshot, will result in not sending any event to assurance session.
 class PluginScreenshot: AssurancePlugin {
 
-    var uiUtil = AssuranceUIUtil()
     weak var session: AssuranceSession?
     var vendor: String = AssuranceConstants.Vendor.MOBILE
     var commandType: String = AssuranceConstants.CommandType.SCREENSHOT
 
     /// this protocol method is called from `PluginHub` to handle screenshot command
     func receiveEvent(_ event: AssuranceEvent) {
-        uiUtil.takeScreenshot({ imageData in
-            guard let imageData = imageData else {
-                Log.debug(label: AssuranceConstants.LOG_TAG, "Unable to capture screenshot from the device. Ignoring the ScreenShot request.")
+        AssuranceUIUtil().takeScreenshot({ imageData in
+
+            guard let session = self.session else {
+                Log.debug(label: AssuranceConstants.LOG_TAG, "Unable to get the session instance. Ignoring the screenShot request.")
                 return
             }
 
-            guard let session = self.session else {
-                Log.debug(label: AssuranceConstants.LOG_TAG, "Unable to capture screenshot from the device. Ignoring the ScreenShot request.")
+            guard let imageData = imageData else {
+                Log.debug(label: AssuranceConstants.LOG_TAG, "Unable to capture screenshot from the device. Ignoring the screenShot request.")
                 return
             }
 
@@ -48,6 +48,8 @@ class PluginScreenshot: AssurancePlugin {
                 if blobID != nil {
                     let assuranceEvent = AssuranceEvent(type: AssuranceConstants.EventType.BLOB, payload: ["blobId": AnyCodable(blobID), "mimeType": "image/png"])
                     self.session?.sendEvent(assuranceEvent)
+                } else {
+                    Log.debug(label: AssuranceConstants.LOG_TAG, "Uploading the screenshot failed. Ignoring the screenShot request.")
                 }
             })
         })

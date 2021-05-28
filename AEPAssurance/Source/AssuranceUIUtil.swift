@@ -15,14 +15,13 @@ import UIKit
 
 class AssuranceUIUtil {
 
-    /// Captures the screenshot of the mobile-device.
+    /// Captures the screenshot of the mobile device.
     /// Callback is called with nil data if there is any failure in capturing a screenshot.
     /// - Parameters:
     ///     - callback: callback  called with image `Data` of screenshot
     func takeScreenshot(_ callback :@escaping (Data?) -> Void) {
         // use main thread to capture the screenshot
         DispatchQueue.main.async {
-            var screenshotImage: UIImage?
             guard let layer = UIApplication.shared.assuranceGetKeyWindow()?.layer else {
                 callback(nil)
                 return
@@ -35,7 +34,7 @@ class AssuranceUIUtil {
                 return
             }
             layer.render(in: context)
-            screenshotImage = UIGraphicsGetImageFromCurrentImageContext()
+            let screenshotImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             let data = screenshotImage?.jpegData(compressionQuality: 0.9)
             callback(data)
