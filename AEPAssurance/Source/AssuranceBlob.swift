@@ -28,7 +28,6 @@ struct AssuranceBlob {
 
     static let CONNECTION_TIMEOUT = 30.0
 
-    typealias BlobResultCallback = (_ blobId: String?) -> Void
     typealias HttpConstants = HttpConnectionConstants.Header
 
     /// Sends a binary blob data to Assurance server to be recorded as an 'asset' for the current session.
@@ -45,7 +44,7 @@ struct AssuranceBlob {
     ///     - session: The connected `AssuranceSession` to which the data belongs
     ///     - contentType:String containing the MIME type of the blob.
     ///     - blobResult : A callback to be executed once upload has completed (either successfully or with an error)
-    static func sendBlob(_ blob: Data, forSession session: AssuranceSession, contentType: String, blobResult : @escaping BlobResultCallback) {
+    static func sendBlob(_ blob: Data, forSession session: AssuranceSession, contentType: String, callback : @escaping (String?) -> Void) {
 
         var components = URLComponents()
         components.scheme = HTTPS_SCHEME
@@ -67,7 +66,7 @@ struct AssuranceBlob {
 
         Log.debug(label: AssuranceConstants.LOG_TAG, "Uploading blob data to URL : \(components.url!.absoluteString)")
         ServiceProvider.shared.networkService.connectAsync(networkRequest: networkRequest, completionHandler: { connection in
-            handleNetworkResponse(connection: connection, blobResult: blobResult)
+            handleNetworkResponse(connection: connection, callback: callback)
         })
     }
 
@@ -77,27 +76,27 @@ struct AssuranceBlob {
     /// The callback blobResult is invoked with the `blobID` if the upload was successful. Nil otherwise.
     /// - Parameters:
     ///   - connection: the connection returned after we make the network request
-    ///   - blobResult: a completion block to invoke after the have handled the network response
-    private static func handleNetworkResponse(connection: HttpConnection, blobResult: @escaping BlobResultCallback) {
+    ///   - callback: a completion block to be invoke with the blobID
+    private static func handleNetworkResponse(connection: HttpConnection, callback: @escaping (String?) -> Void) {
         // bail out if we get any responseCode other than 200 or 202
         if !(connection.responseCode == HTTP_STATUS_CODE_OK || connection.responseCode == HTTP_STATUS_CODE_ACCEPTED) {
             Log.warning(label: AssuranceConstants.LOG_TAG, "Blob upload failed. Connection status code : \(connection.responseCode ?? -1) and error \(connection.responseMessage ?? "Unknown error")")
-            blobResult(nil)
+            callback(nil)
             return
         }
 
         if let data = connection.data, let blobDict = try? JSONDecoder().decode([String: AnyCodable].self, from: data) {
             guard let blobID = blobDict["id"]?.stringValue else {
                 Log.warning(label: AssuranceConstants.LOG_TAG, "Blob upload failed with error : \(blobDict["error"] ?? "Unknown Error")")
-                blobResult(nil)
+                callback(nil)
                 return
             }
-            // on successful retrieval of blobID, call the blobResult block
-            blobResult(blobID)
+            // on successful retrieval, invoke the callback with blobID
+            callback(blobID)
 
         } else {
             Log.warning(label: AssuranceConstants.LOG_TAG, "Failed to upload blob with status code \(connection.responseCode ?? -1) and error : \(connection.error?.localizedDescription ?? "Unknown error")")
-            blobResult(nil)
+            callback(nil)
         }
     }
 }
