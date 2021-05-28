@@ -76,7 +76,7 @@ struct AssuranceBlob {
     /// The callback blobResult is invoked with the `blobID` if the upload was successful. Nil otherwise.
     /// - Parameters:
     ///   - connection: the connection returned after we make the network request
-    ///   - callback: a completion block to be invoke with the blobID
+    ///   - callback: a completion block to be invoked with the blobID
     private static func handleNetworkResponse(connection: HttpConnection, callback: @escaping (String?) -> Void) {
         // bail out if we get any responseCode other than 200 or 202
         if !(connection.responseCode == HTTP_STATUS_CODE_OK || connection.responseCode == HTTP_STATUS_CODE_ACCEPTED) {
