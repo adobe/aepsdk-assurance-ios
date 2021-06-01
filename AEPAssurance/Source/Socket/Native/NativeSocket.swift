@@ -22,14 +22,13 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
             socketListener.webSocket(self, didChangeState: self.socketState)
         }
     }
-    
-    
-    // MARK:- Private properties
-    
+
+    // MARK: - Private properties
+
     private var session: URLSession?
     private var socketTask: URLSessionWebSocketTask?
-    
-    // MARK:- SocketConnectable Interfaces
+
+    // MARK: - SocketConnectable Interfaces
 
     /// Initialization of native socket connection.
     /// - Parameters:
@@ -70,9 +69,9 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
             }
         })
     }
-    
-    // MARK:- URLSessionWebSocketDelegate methods
-    
+
+    // MARK: - URLSessionWebSocketDelegate methods
+
     func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
         socketState = .OPEN
         self.socketListener.webSocketDidConnect(self)
@@ -83,8 +82,8 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
         self.socketListener.webSocketDidDisconnectConnect(self, closeCode.rawValue, reason?.base64EncodedString() ?? "", true)
     }
 
-    // MARK:- Private methods
-    
+    // MARK: - Private methods
+
     private func registerCallbacks() {
         socketTask?.receive {[weak self] result in
             switch result {
