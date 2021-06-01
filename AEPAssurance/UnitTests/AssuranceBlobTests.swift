@@ -50,7 +50,7 @@ class AssuranceBlobTests: XCTestCase {
 
     func test_sendBlob_makesNetworkRequest() throws {
         // test
-        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", blobResult: {_ in })
+        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", callback: {_ in })
 
         // verify
         XCTAssertTrue(mockNetworkService.connectAsyncCalled)
@@ -68,7 +68,7 @@ class AssuranceBlobTests: XCTestCase {
         let mockConnection = HttpConnection.init(data: sampleResponse, response: HTTPURLResponse.init(), error: nil)
 
         // test
-        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", blobResult: {blobId in
+        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", callback: {blobId in
             XCTAssertEqual("mockBlobId", blobId)
             expectation.fulfill()
         })
@@ -83,7 +83,7 @@ class AssuranceBlobTests: XCTestCase {
         let mockConnection = HttpConnection.init(data: errorResponse, response: HTTPURLResponse.init(), error: nil)
 
         // test
-        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", blobResult: {blobId in
+        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", callback: {blobId in
             XCTAssertNil(blobId)
             expectation.fulfill()
         })
@@ -98,7 +98,7 @@ class AssuranceBlobTests: XCTestCase {
         let mockConnection = HttpConnection.init(data: invalidJSON, response: HTTPURLResponse.init(), error: nil)
 
         // test
-        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", blobResult: {blobId in
+        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", callback: {blobId in
             XCTAssertNil(blobId)
             expectation.fulfill()
         })
@@ -114,7 +114,7 @@ class AssuranceBlobTests: XCTestCase {
         let mockConnection = HttpConnection.init(data: invalidJSON, response: errorResponse, error: nil)
 
         // test
-        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", blobResult: {blobId in
+        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", callback: {blobId in
             XCTAssertNil(blobId)
             expectation.fulfill()
         })

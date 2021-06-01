@@ -19,5 +19,12 @@ class MockAssuranceSession: AssuranceSession {
         super.init(assuranceExtension)
     }
 
+    var sendEventCalled = false
+    var sentEvent: AssuranceEvent?
+    override func sendEvent(_ assuranceEvent: AssuranceEvent) {
+        sendEventCalled = true
+        sentEvent = assuranceEvent
+    }
+
     // More mocking's and assertion helpers will be coded soon
 }

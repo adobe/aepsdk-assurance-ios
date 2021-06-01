@@ -18,7 +18,7 @@ import XCTest
 
 class PluginConfigModifyTest: XCTestCase {
 
-    var plugin: PluginConfigModify?
+    var plugin: PluginConfigModify!
 
     var mockDataStore: MockDataStore {
         return ServiceProvider.shared.namedKeyValueService as! MockDataStore
@@ -36,11 +36,11 @@ class PluginConfigModifyTest: XCTestCase {
     }
 
     func test_vendor() {
-        XCTAssertEqual(AssuranceConstants.Vendor.MOBILE, plugin?.vendor)
+        XCTAssertEqual(AssuranceConstants.Vendor.MOBILE, plugin.vendor)
     }
 
     func test_commandType() {
-        XCTAssertEqual(AssuranceConstants.CommandType.CONFIG_UPDATE, plugin?.commandType)
+        XCTAssertEqual(AssuranceConstants.CommandType.CONFIG_UPDATE, plugin.commandType)
     }
 
     func test_commandConfigModify() {
@@ -58,7 +58,7 @@ class PluginConfigModifyTest: XCTestCase {
 
         // test
         let payload  = ["detail": AnyCodable.init(sampleConfigDetails)]
-        plugin?.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
+        plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
 
         // assert on expectation
         wait(for: [expectation], timeout: 0.2)
@@ -71,7 +71,7 @@ class PluginConfigModifyTest: XCTestCase {
     func test_onSessionTerminated() {
         // setup
         let payload  = ["detail": AnyCodable.init(sampleConfigDetails)]
-        plugin?.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
+        plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
         let configKeys = mockDataStore.dict[AssuranceConstants.DataStoreKeys.CONFIG_MODIFIED_KEYS] as? [String]
         XCTAssertEqual(3, configKeys?.count)
 
@@ -88,10 +88,10 @@ class PluginConfigModifyTest: XCTestCase {
         }
 
         // test
-        plugin?.onSessionTerminated()
+        plugin.onSessionTerminated()
 
         // verify that the modified config keys in the persistence are removed
-        XCTAssertNil(mockDataStore.dict[AssuranceConstants.DataStoreKeys.CONFIG_MODIFIED_KEYS])
+        XCTAssertEqual(0, mockDataStore.dict.count)
 
         // assert on expectation
         wait(for: [expectation], timeout: 0.2)
