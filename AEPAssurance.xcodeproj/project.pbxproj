@@ -65,6 +65,12 @@
 		B6D6A027265F9F32005042BE /* AssuranceUIUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A025265F9F14005042BE /* AssuranceUIUtil.swift */; };
 		B6D6A029265FA0EE005042BE /* MockAssuranceUIUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A028265FA0EE005042BE /* MockAssuranceUIUtil.swift */; };
 		B6D6A02A265FAAA6005042BE /* MockUIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B0E2D2263C7E5300EF5E21 /* MockUIService.swift */; };
+		B6D6A02F2660CFF5005042BE /* Event+Assurance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A02E2660CFF5005042BE /* Event+Assurance.swift */; };
+		B6D6A0382660ECBD005042BE /* SocketConnectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A0332660ECBC005042BE /* SocketConnectable.swift */; };
+		B6D6A0392660ECBD005042BE /* SocketState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A0342660ECBC005042BE /* SocketState.swift */; };
+		B6D6A03A2660ECBD005042BE /* SocketEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A0352660ECBC005042BE /* SocketEventListener.swift */; };
+		B6D6A03F2660ED4D005042BE /* WebViewSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A03E2660ED4D005042BE /* WebViewSocket.swift */; };
+		B6D6A0412660ED56005042BE /* NativeSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A0402660ED56005042BE /* NativeSocket.swift */; };
 		B6FEB8AC263A18E600F0F240 /* SocketScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FEB8AB263A18E600F0F240 /* SocketScript.swift */; };
 		B6FEB8B1263A18F500F0F240 /* InactiveIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FEB8AF263A18F500F0F240 /* InactiveIcon.swift */; };
 		B6FEB8B2263A18F500F0F240 /* ActiveIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FEB8B0263A18F500F0F240 /* ActiveIcon.swift */; };
@@ -176,6 +182,12 @@
 		B6D6A023265F91CE005042BE /* PluginScreenShotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginScreenShotTests.swift; sourceTree = "<group>"; };
 		B6D6A025265F9F14005042BE /* AssuranceUIUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceUIUtil.swift; sourceTree = "<group>"; };
 		B6D6A028265FA0EE005042BE /* MockAssuranceUIUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAssuranceUIUtil.swift; sourceTree = "<group>"; };
+		B6D6A02E2660CFF5005042BE /* Event+Assurance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+Assurance.swift"; sourceTree = "<group>"; };
+		B6D6A0332660ECBC005042BE /* SocketConnectable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketConnectable.swift; sourceTree = "<group>"; };
+		B6D6A0342660ECBC005042BE /* SocketState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketState.swift; sourceTree = "<group>"; };
+		B6D6A0352660ECBC005042BE /* SocketEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEventListener.swift; sourceTree = "<group>"; };
+		B6D6A03E2660ED4D005042BE /* WebViewSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewSocket.swift; sourceTree = "<group>"; };
+		B6D6A0402660ED56005042BE /* NativeSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeSocket.swift; sourceTree = "<group>"; };
 		B6FEB8AB263A18E600F0F240 /* SocketScript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketScript.swift; sourceTree = "<group>"; };
 		B6FEB8AF263A18F500F0F240 /* InactiveIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InactiveIcon.swift; sourceTree = "<group>"; };
 		B6FEB8B0263A18F500F0F240 /* ActiveIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveIcon.swift; sourceTree = "<group>"; };
@@ -254,6 +266,7 @@
 		B640719B262C313E00C43183 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				B6D6A0302660EC93005042BE /* Socket */,
 				B6CECC632655A8A7000D517F /* Primitives */,
 				B64FDF6C264F33CD00D33192 /* Plugin */,
 				B670E67D26393300000FCB96 /* BuiltResources */,
@@ -335,6 +348,7 @@
 			isa = PBXGroup;
 			children = (
 				B6407222262CEBC600C43183 /* URL+Parser.swift */,
+				B6D6A02E2660CFF5005042BE /* Event+Assurance.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -437,6 +451,34 @@
 				B6D6A028265FA0EE005042BE /* MockAssuranceUIUtil.swift */,
 			);
 			path = Mocks;
+			sourceTree = "<group>";
+		};
+		B6D6A0302660EC93005042BE /* Socket */ = {
+			isa = PBXGroup;
+			children = (
+				B6D6A03D2660ED23005042BE /* WebView */,
+				B6D6A03C2660ED08005042BE /* Native */,
+				B6D6A0332660ECBC005042BE /* SocketConnectable.swift */,
+				B6D6A0352660ECBC005042BE /* SocketEventListener.swift */,
+				B6D6A0342660ECBC005042BE /* SocketState.swift */,
+			);
+			path = Socket;
+			sourceTree = "<group>";
+		};
+		B6D6A03C2660ED08005042BE /* Native */ = {
+			isa = PBXGroup;
+			children = (
+				B6D6A0402660ED56005042BE /* NativeSocket.swift */,
+			);
+			path = Native;
+			sourceTree = "<group>";
+		};
+		B6D6A03D2660ED23005042BE /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				B6D6A03E2660ED4D005042BE /* WebViewSocket.swift */,
+			);
+			path = WebView;
 			sourceTree = "<group>";
 		};
 		B6FEB88A263A0F0700F0F240 /* Icons */ = {
@@ -791,7 +833,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6D6A03F2660ED4D005042BE /* WebViewSocket.swift in Sources */,
 				B64071D3262C368C00C43183 /* Assurance.swift in Sources */,
+				B6D6A02F2660CFF5005042BE /* Event+Assurance.swift in Sources */,
 				B6B23ACE26414C8100EE8153 /* iOSPinCodeScreen+FullScreenDelegate.swift in Sources */,
 				B64071D7262C376A00C43183 /* AssuranceConstants.swift in Sources */,
 				B6D6A027265F9F32005042BE /* AssuranceUIUtil.swift in Sources */,
@@ -805,6 +849,8 @@
 				B670E72426395954000FCB96 /* StatusInfo.swift in Sources */,
 				B64FDF70264F341600D33192 /* PluginFakeEvent.swift in Sources */,
 				B6407223262CEBC600C43183 /* URL+Parser.swift in Sources */,
+				B6D6A03A2660ECBD005042BE /* SocketEventListener.swift in Sources */,
+				B6D6A0392660ECBD005042BE /* SocketState.swift in Sources */,
 				B6D6A022265F914D005042BE /* PluginScreenshot.swift in Sources */,
 				B640722B262CF06100C43183 /* AssuranceEnvironment.swift in Sources */,
 				B6FEB8B2263A18F500F0F240 /* ActiveIcon.swift in Sources */,
@@ -815,6 +861,8 @@
 				B6407206262C90FA00C43183 /* Assurance+PublicAPI.swift in Sources */,
 				B6B0E2D7263C7FAB00EF5E21 /* AssuranceSession.swift in Sources */,
 				B64FDF6E264F33EF00D33192 /* AssurancePlugin.swift in Sources */,
+				B6D6A0382660ECBD005042BE /* SocketConnectable.swift in Sources */,
+				B6D6A0412660ED56005042BE /* NativeSocket.swift in Sources */,
 				B6D6A01B265F027C005042BE /* AssuranceBlob.swift in Sources */,
 				B6AB2DE6263372AF00FE8AEA /* Assurance+State.swift in Sources */,
 			);
