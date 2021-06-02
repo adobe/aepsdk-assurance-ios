@@ -10,6 +10,7 @@
  governing permissions and limitations under the License.
  */
 
+import AEPCore
 import AEPServices
 import Foundation
 
@@ -19,7 +20,7 @@ struct AssuranceEvent: Codable {
     var type: String
     var payload: [String: AnyCodable]?
     var eventNumber: Int32?
-    var timestamp: Int64  // Todo : verify if this can rewritten as `Date` type
+    var timestamp: Int64?  // Todo : verify if this can rewritten as `Date` type
 
     /// Decodes a JSON data into a `AssuranceEvent`
     ///
@@ -46,7 +47,39 @@ struct AssuranceEvent: Codable {
             return nil
         }
         event.eventNumber = AssuranceEvent.generateEventNumber()
+        if event.timestamp == nil {
+            event.timestamp = Date().getUnixTimeInSeconds() * 1000
+        }
         return event
+    }
+
+    /// Creates an `AssuranceEvent` from `Event` obtained from MobileCore.
+    /// Captures the id, name, type, source, eventData and timestamp into the payload of the AssuranceEvent
+    /// All the `AssuranceEvent` derived from MobileCore events are tagged as `Generic` type.
+    /// All the `AssuranceEvent` derived from MobileCore events are tagged with Vendor `Mobile`
+    ///
+    /// - Parameters:
+    ///     - mobileCoreEvent:An event from MobileCore dispatched by event-hub and captured by wild card listener.
+    /// - Returns: an `AssuranceEvent`
+    static func from(mobileCoreEvent: Event) -> AssuranceEvent {
+        var payload: [String: AnyCodable] = [:]
+        payload[AssuranceConstants.ACPExtensionEventKey.NAME] = AnyCodable.init(mobileCoreEvent.name)
+        payload[AssuranceConstants.ACPExtensionEventKey.TYPE] = AnyCodable.init(mobileCoreEvent.type)
+        payload[AssuranceConstants.ACPExtensionEventKey.SOURCE] = AnyCodable.init(mobileCoreEvent.source)
+        payload[AssuranceConstants.ACPExtensionEventKey.UNIQUE_IDENTIFIER] = AnyCodable.init(mobileCoreEvent.id.uuidString)
+        payload[AssuranceConstants.ACPExtensionEventKey.TIMESTAMP] = AnyCodable.init(mobileCoreEvent.timestamp)
+
+        // if available, add eventData
+        if let eventData = mobileCoreEvent.data {
+            payload[AssuranceConstants.ACPExtensionEventKey.DATA] = AnyCodable.init(eventData)
+        }
+
+        // if available, add responseID
+        if  let responseID = mobileCoreEvent.responseID {
+            payload[AssuranceConstants.ACPExtensionEventKey.RESPONSE_IDENTIFIER] = AnyCodable.init(responseID.uuidString)
+        }
+
+        return AssuranceEvent(type: AssuranceConstants.EventType.GENERIC, payload: payload)
     }
 
     /// Initializer to construct `AssuranceEvent`instance with the given parameters
@@ -111,6 +144,19 @@ struct AssuranceEvent: Codable {
     private static func generateEventNumber() -> Int32 {
         OSAtomicIncrement32(&eventNumberCounter)
         return eventNumberCounter
+    }
+
+    public var description: String {
+        // swiftformat:disable indent
+        return "\n[\n" +
+            "  id: \(eventID)\n" +
+            "  type: \(type)\n" +
+            "  vendor: \(vendor)\n" +
+            "  payload: \(PrettyDictionary.prettify(payload))\n" +
+            "  eventNumber: \(String(describing: eventNumber))\n" +
+            "  timestamp: \(String(describing: timestamp?.description))\n" +
+        "]"
+        // swiftformat:enable indent
     }
 
 }

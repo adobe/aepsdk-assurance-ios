@@ -55,7 +55,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertEqual("generic", event.type, "Inaccurate event type")
         XCTAssertEqual(SAMPLE_PAYLOAD, event.payload, "Inaccurate event payload")
         XCTAssertEqual(AssuranceConstants.Vendor.SDK, event.vendor, "Inaccurate event vendor")
-        XCTAssertEqual((Date().getUnixTimeInSeconds() * 1000), event.timestamp, accuracy: 100, "Timestamp should be close to current date")
+        XCTAssertEqual((Date().getUnixTimeInSeconds() * 1000), event.timestamp as! Int64, accuracy: 100, "Timestamp should be close to current date")
     }
 
     func test_init_withVendorAndTimestamp() throws {
@@ -338,5 +338,32 @@ class AssuranceEventTests: XCTestCase {
 
         // verify
         XCTAssertNil(event?.commandDetails, "command details should be nil")
+    }
+
+    /*--------------------------------------------------
+     fromMobileCoreEvent
+     --------------------------------------------------*/
+    func test_fromMobileCoreEvent() throws {
+        // setup
+        let sampleEventData: Dictionary = ["oneKey": "oneValue"]
+        let coreEvent = Event(name: "coreEvent", type: "coreType", source: "coreSource", data: sampleEventData)
+        let responseCoreEvent = coreEvent.createResponseEvent(name: "responseEvent", type: "responseEventType", source: "responseEventSource", data: nil)
+
+        // test
+        let assuranceEvent = AssuranceEvent.from(mobileCoreEvent: coreEvent)
+        let assuranceEventForResponse = AssuranceEvent.from(mobileCoreEvent: responseCoreEvent)
+
+        // verify
+        XCTAssertEqual(AssuranceConstants.EventType.GENERIC, assuranceEvent.type)
+        XCTAssertEqual(AssuranceConstants.Vendor.MOBILE, assuranceEvent.vendor)
+        XCTAssertEqual("coreEvent", assuranceEvent.payload?[AssuranceConstants.ACPExtensionEventKey.NAME]?.stringValue)
+        XCTAssertEqual("coreSource", assuranceEvent.payload?[AssuranceConstants.ACPExtensionEventKey.SOURCE]?.stringValue)
+        XCTAssertEqual("coreType", assuranceEvent.payload?[AssuranceConstants.ACPExtensionEventKey.TYPE]?.stringValue)
+        XCTAssertEqual(sampleEventData, assuranceEvent.payload?[AssuranceConstants.ACPExtensionEventKey.DATA]?.dictionaryValue as! [String: String])
+        XCTAssertEqual(coreEvent.id.uuidString, assuranceEvent.payload?[AssuranceConstants.ACPExtensionEventKey.UNIQUE_IDENTIFIER]?.stringValue)
+        XCTAssertEqual(coreEvent.timestamp, assuranceEvent.payload?[AssuranceConstants.ACPExtensionEventKey.TIMESTAMP]?.value as! Date)
+
+        // verify if the responseId is captured
+        XCTAssertEqual(responseCoreEvent.responseID?.uuidString, assuranceEventForResponse.payload?[AssuranceConstants.ACPExtensionEventKey.RESPONSE_IDENTIFIER]?.stringValue)
     }
 }
