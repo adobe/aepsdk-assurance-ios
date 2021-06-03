@@ -16,7 +16,7 @@ import Foundation
 
 public class Assurance: NSObject, Extension {
 
-    /// Time before assurance shuts down on the non receipt of start session event.
+    /// Time before assurance shuts down on non receipt of start session event.
     /// Keeping it as a var as opposed to let for testing purposes
     var SHUTDOWN_TIME = 5
 
@@ -244,8 +244,8 @@ public class Assurance: NSObject, Extension {
 
     // MARK: Shutdown timer methods
 
-    /// Start the shutdown timer in the background queue without blocking the current thread
-    /// If the timer get fired, shutdown the assurance extension
+    /// Start the shutdown timer in the background queue without blocking the current thread.
+    /// If the timer get fired, then it shuts down the assurance extension.
     private func startShutDownTimer() {
         let queue = DispatchQueue.init(label: "com.adobe.assurance.shutdowntimer", qos: .background)
         timer = createDispatchTimer(queue: queue, block: {
@@ -261,18 +261,18 @@ public class Assurance: NSObject, Extension {
         invalidateTimer()
     }
 
-    /// Invalidate the ongoing timer and clean it from memory
+    /// Invalidate the ongoing timer and cleans it from memory
     private func invalidateTimer() {
         timer?.cancel()
         timer = nil
     }
 
     /// Creates and returns a new dispatch source object for timer events.
-    /// The timer is set to fire in 5 seconds on the provided block
+    /// The timer is set to fire in 5 seconds on the provided block.
     /// - Parameters:
     ///     - queue: the dispatch queue on which the timer runs
     ///     - block: the block that needs be executed once the timer fires
-    /// - Returns:a configured `DispatchSourceTimer` instance
+    /// - Returns: a configured `DispatchSourceTimer` instance
     private func createDispatchTimer(queue: DispatchQueue, block : @escaping () -> Void) -> DispatchSourceTimer {
         let timer = DispatchSource.makeTimerSource(queue: queue)
         timer.schedule(wallDeadline: .now() + DispatchTimeInterval.seconds(SHUTDOWN_TIME))
