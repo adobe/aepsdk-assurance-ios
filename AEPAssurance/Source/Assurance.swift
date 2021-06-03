@@ -60,6 +60,7 @@ public class Assurance: NSObject, Extension {
 
     public func onRegistered() {
         registerListener(type: AssuranceConstants.SDKEventType.ASSURANCE, source: EventSource.requestContent, listener: handleAssuranceRequestContent)
+        registerListener(type: EventType.wildcard, source: EventSource.wildcard, listener: handleWildcardEvent)
         self.assuranceSession = AssuranceSession(self)
     }
 
@@ -103,5 +104,62 @@ public class Assurance: NSObject, Extension {
         environment = AssuranceEnvironment.init(envString: environmentString)
         self.sessionId = sessionId
         assuranceSession?.startSession()
+    }
+
+    /// Called by the wildcard listener to handle all the events dispatched from MobileCore's event hub.
+    /// Each mobile core event is converted to `AssuranceEvent` and is sent over the socket.
+    /// - Parameters:
+    /// - event - a mobileCore's `Event`
+    private func handleWildcardEvent(event: Event) {
+        if event.isSharedStateEvent {
+            processSharedStateEvent(event: event)
+            return
+        }
+
+        let assuranceEvent = AssuranceEvent.from(event: event)
+        assuranceSession?.sendEvent(assuranceEvent)
+    }
+
+    /// Method to process the sharedState events from the event hub.
+    /// Shared State Change events are special events to Assurance.  On the arrival of which, Assurance extension attempts to
+    /// extract the shared state details associated with the shared state change, and then append them to this event.
+    /// Assurance extension handles both regular and XDM shared state change events.
+    ///
+    /// - Parameters:
+    ///     - event - a mobileCore's `Event`
+    private func processSharedStateEvent(event: Event) {
+        // early bail out if unable to find the stateOwner
+        guard let stateOwner = event.sharedStateOwner else {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Unable to find shared state owner for the shared state change event. Dropping event.")
+            return
+        }
+
+        // Differentiate the type of shared state using the event name and get the state content accordingly
+        // Event Name for XDM shared          = "Shared state content (XDM)"
+        // Event Name for Regular  shared     = "Shared state content"
+        var sharedStateResult: SharedStateResult?
+        var sharedContentKey: String
+
+        if AssuranceConstants.SDKEventName.XDM_SHARED_STATE_CHANGE.lowercased() == event.name.lowercased() {
+            sharedContentKey = AssuranceConstants.PayloadKey.XDM_SHARED_STATE_DATA
+            sharedStateResult = runtime.getXDMSharedState(extensionName: stateOwner, event: nil, barrier: false)
+        } else {
+            sharedContentKey = AssuranceConstants.PayloadKey.SHARED_STATE_DATA
+            sharedStateResult = runtime.getSharedState(extensionName: stateOwner, event: nil, barrier: false)
+        }
+
+        // do not send any sharedState thats empty, this includes Assurance not logging any pending shared states
+        guard let sharedState = sharedStateResult else {
+            return
+        }
+
+        if sharedState.status != .set {
+            return
+        }
+
+        let sharedStatePayload = [sharedContentKey: sharedState.value]
+        var assuranceEvent = AssuranceEvent.from(event: event)
+        assuranceEvent.payload?.updateValue(AnyCodable.init(sharedStatePayload), forKey: AssuranceConstants.PayloadKey.METADATA)
+        assuranceSession?.sendEvent(assuranceEvent)
     }
 }

@@ -10,6 +10,7 @@
  governing permissions and limitations under the License.
  */
 
+import AEPCore
 import AEPServices
 import Foundation
 
@@ -19,7 +20,7 @@ struct AssuranceEvent: Codable {
     var type: String
     var payload: [String: AnyCodable]?
     var eventNumber: Int32?
-    var timestamp: Int64  // Todo : verify if this can rewritten as `Date` type
+    var timestamp: Date?
 
     /// Decodes a JSON data into a `AssuranceEvent`
     ///
@@ -41,12 +42,46 @@ struct AssuranceEvent: Codable {
     ///
     /// - Returns: a `AssuranceEvent` that is represented in the json data, nil if data is not in the correct format
     static func from(jsonData: Data) -> AssuranceEvent? {
-        guard var event = try? JSONDecoder().decode(AssuranceEvent.self, from: jsonData) else {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .millisecondsSince1970
+        guard var event = try? decoder.decode(AssuranceEvent.self, from: jsonData) else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Unable to decode jsonData into an AssuranceEvent.")
             return nil
         }
         event.eventNumber = AssuranceEvent.generateEventNumber()
+        if event.timestamp == nil {
+            event.timestamp = Date()
+        }
         return event
+    }
+
+    /// Creates an `AssuranceEvent` from `Event` obtained from MobileCore.
+    /// Captures the id, name, type, source, eventData and timestamp into the payload of the AssuranceEvent
+    /// All the `AssuranceEvent` derived from MobileCore events are tagged as `Generic` type.
+    /// All the `AssuranceEvent` derived from MobileCore events are tagged with Vendor `Mobile`
+    ///
+    /// - Parameters:
+    ///     - mobileCoreEvent:An event from MobileCore dispatched by event-hub and captured by wild card listener.
+    /// - Returns: an `AssuranceEvent`
+    static func from(event: Event) -> AssuranceEvent {
+        var payload: [String: AnyCodable] = [:]
+        payload[AssuranceConstants.ACPExtensionEventKey.NAME] = AnyCodable.init(event.name)
+        payload[AssuranceConstants.ACPExtensionEventKey.TYPE] = AnyCodable.init(event.type)
+        payload[AssuranceConstants.ACPExtensionEventKey.SOURCE] = AnyCodable.init(event.source)
+        payload[AssuranceConstants.ACPExtensionEventKey.UNIQUE_IDENTIFIER] = AnyCodable.init(event.id.uuidString)
+        payload[AssuranceConstants.ACPExtensionEventKey.TIMESTAMP] = AnyCodable.init(event.timestamp)
+
+        // if available, add eventData
+        if let eventData = event.data {
+            payload[AssuranceConstants.ACPExtensionEventKey.DATA] = AnyCodable.init(eventData)
+        }
+
+        // if available, add responseID
+        if  let responseID = event.responseID {
+            payload[AssuranceConstants.ACPExtensionEventKey.RESPONSE_IDENTIFIER] = AnyCodable.init(responseID.uuidString)
+        }
+
+        return AssuranceEvent(type: AssuranceConstants.EventType.GENERIC, payload: payload)
     }
 
     /// Initializer to construct `AssuranceEvent`instance with the given parameters
@@ -56,7 +91,7 @@ struct AssuranceEvent: Codable {
     ///   - payload: A dictionary representing the payload to be sent wrapped in the event. This will be serialized into JSON in the transportation process
     ///   - timestamp: optional argument representing the time original event was created. If not provided current time is taken
     ///   - vendor: vendor for the created `AssuranceEvent` defaults to "com.adobe.griffon.mobile".
-    init(type: String, payload: [String: AnyCodable]?, timestamp: Int64 = (Date().getUnixTimeInSeconds() * 1000), vendor: String = AssuranceConstants.Vendor.MOBILE) {
+    init(type: String, payload: [String: AnyCodable]?, timestamp: Date = Date(), vendor: String = AssuranceConstants.Vendor.MOBILE) {
         self.type = type
         self.payload = payload
         self.timestamp = timestamp
@@ -111,6 +146,19 @@ struct AssuranceEvent: Codable {
     private static func generateEventNumber() -> Int32 {
         OSAtomicIncrement32(&eventNumberCounter)
         return eventNumberCounter
+    }
+
+    public var description: String {
+        // swiftformat:disable indent
+        return "\n[\n" +
+            "  id: \(eventID)\n" +
+            "  type: \(type)\n" +
+            "  vendor: \(vendor)\n" +
+            "  payload: \(PrettyDictionary.prettify(payload))\n" +
+            "  eventNumber: \(String(describing: eventNumber))\n" +
+            "  timestamp: \(String(describing: timestamp?.description))\n" +
+        "]"
+        // swiftformat:enable indent
     }
 
 }

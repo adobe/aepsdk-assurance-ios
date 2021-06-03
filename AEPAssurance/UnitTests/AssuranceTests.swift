@@ -22,6 +22,7 @@ class AssuranceTests: XCTestCase {
     let mockUIService = MockUIService()
     let mockDataStore = MockDataStore()
     let mockMessage = MockFullscreenMessage()
+    var mockSession: MockAssuranceSession!
     var assurance: Assurance!
 
     override func setUp() {
@@ -30,6 +31,10 @@ class AssuranceTests: XCTestCase {
         mockUIService.fullscreenMessage = mockMessage
         assurance = Assurance(runtime: runtime)
         assurance.onRegistered()
+
+        // mock the interaction with AssuranceSession class
+        mockSession = MockAssuranceSession(assurance)
+        assurance.assuranceSession = mockSession
     }
 
     override func tearDown() {
@@ -108,6 +113,108 @@ class AssuranceTests: XCTestCase {
         // verify
         verify_PinCodeScreen_isNotShown()
         verify_sessionIdAndEnvironmentId_notSetInDatastore()
+    }
+
+    //--------------------------------------------------*/
+    // MARK: - handleWildCardEvent
+    //--------------------------------------------------*/
+
+    func test_handleWildCardEvent_withNilEventData() throws {
+        // setup
+        let event = Event(name: "Any SDK Event",
+                          type: EventType.analytics,
+                          source: EventSource.requestContent,
+                          data: nil)
+
+        // test
+        runtime.simulateComingEvent(event: event)
+
+        // verify that the event is sent to the session
+        XCTAssertTrue(mockSession.sendEventCalled)
+        XCTAssertEqual("Any SDK Event", mockSession.sentEvent?.payload?[AssuranceConstants.ACPExtensionEventKey.NAME]?.stringValue)
+    }
+
+    //--------------------------------------------------*/
+    // MARK: - handleSharedStateEvent
+    //--------------------------------------------------*/
+
+    func test_handleSharedStateEvent_Regular() throws {
+        // setup
+        let sampleConfiguration = ["configkey": "value"]
+        let configStateChangeEvent = Event(name: AssuranceConstants.SDKEventName.SHARED_STATE_CHANGE,
+                                           type: EventType.hub,
+                                           source: EventSource.sharedState,
+                                           data: [AssuranceConstants.EventDataKey.SHARED_STATE_OWNER: AssuranceConstants.SharedStateName.CONFIGURATION])
+        runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, data: (value: sampleConfiguration, status: .set))
+
+        // test
+        runtime.simulateComingEvent(event: configStateChangeEvent)
+
+        // verify that the event is sent to the session
+        XCTAssertTrue(mockSession.sendEventCalled)
+        let metadata = mockSession.sentEvent?.payload?[AssuranceConstants.PayloadKey.METADATA]?.dictionaryValue
+        XCTAssertEqual(sampleConfiguration, metadata?["state.data"] as! Dictionary)
+    }
+
+    func test_handleSharedStateEvent_XDM() throws {
+        // setup
+        let sampleConsent = ["consent": "yes"]
+        let consentStateChangeEvent = Event(name: AssuranceConstants.SDKEventName.XDM_SHARED_STATE_CHANGE,
+                                            type: EventType.hub,
+                                            source: EventSource.sharedState,
+                                            data: [AssuranceConstants.EventDataKey.SHARED_STATE_OWNER: "consentExtension"])
+        runtime.simulateXDMSharedState(for: "consentExtension", data: (value: sampleConsent, status: .set))
+
+        // test
+        runtime.simulateComingEvent(event: consentStateChangeEvent)
+
+        // verify that the event is sent to the session
+        XCTAssertTrue(mockSession.sendEventCalled)
+        let metadata = mockSession.sentEvent?.payload?[AssuranceConstants.PayloadKey.METADATA]?.dictionaryValue
+        XCTAssertEqual(sampleConsent, try XCTUnwrap(metadata?["xdm.state.data"]) as! Dictionary)
+    }
+
+    func test_handleSharedStateEvent_WhenSharedStatePending() throws {
+        // setup
+        let configStateChangeEvent = Event(name: AssuranceConstants.SDKEventName.SHARED_STATE_CHANGE,
+                                           type: EventType.hub,
+                                           source: EventSource.sharedState,
+                                           data: [AssuranceConstants.EventDataKey.SHARED_STATE_OWNER: AssuranceConstants.SharedStateName.CONFIGURATION])
+        runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, data: (value: nil, status: .pending))
+
+        // test
+        runtime.simulateComingEvent(event: configStateChangeEvent)
+
+        // verify that the pending shared state are not sent
+        XCTAssertFalse(mockSession.sendEventCalled)
+    }
+
+    func test_handleSharedStateEvent_WhenSharedStateNotAvailable() throws {
+        // setup
+        let configStateChangeEvent = Event(name: AssuranceConstants.SDKEventName.SHARED_STATE_CHANGE,
+                                           type: EventType.hub,
+                                           source: EventSource.sharedState,
+                                           data: [AssuranceConstants.EventDataKey.SHARED_STATE_OWNER: AssuranceConstants.SharedStateName.CONFIGURATION])
+
+        // test
+        runtime.simulateComingEvent(event: configStateChangeEvent)
+
+        // verify that the pending shared state are not sent
+        XCTAssertFalse(mockSession.sendEventCalled)
+    }
+
+    func test_handleSharedStateEvent_WhenStateOwnerNil() throws {
+        // setup
+        let configStateChangeEvent = Event(name: AssuranceConstants.SDKEventName.SHARED_STATE_CHANGE,
+                                           type: EventType.hub,
+                                           source: EventSource.sharedState,
+                                           data: [:]) // no stateOwner in data
+
+        // test
+        runtime.simulateComingEvent(event: configStateChangeEvent)
+
+        // verify that the pending shared state are not sent
+        XCTAssertFalse(mockSession.sendEventCalled)
     }
 
     // MARK: Private methods

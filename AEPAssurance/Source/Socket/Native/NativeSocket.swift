@@ -61,7 +61,9 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
     }
 
     func sendEvent(_ event: AssuranceEvent) {
-        let jsonData = (try? JSONEncoder().encode(event)) ?? Data()
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .millisecondsSince1970
+        let jsonData = (try? encoder.encode(event)) ?? Data()
         let dataString = jsonData.base64EncodedString(options: .endLineWithLineFeed)
         socketTask?.send(URLSessionWebSocketTask.Message.string(dataString), completionHandler: { [weak self] error in
             if let error = error {
