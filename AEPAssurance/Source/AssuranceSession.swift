@@ -41,4 +41,8 @@ class AssuranceSession {
         // coming soon
     }
 
+    func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
+        // coming soon
+    }
+
 }

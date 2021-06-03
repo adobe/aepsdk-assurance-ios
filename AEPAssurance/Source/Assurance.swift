@@ -59,7 +59,6 @@ public class Assurance: NSObject, Extension {
     }()
 
     public func onRegistered() {
-        registerListener(type: AssuranceConstants.SDKEventType.ASSURANCE, source: EventSource.requestContent, listener: handleAssuranceRequestContent)
         registerListener(type: EventType.wildcard, source: EventSource.wildcard, listener: handleWildcardEvent)
         self.assuranceSession = AssuranceSession(self)
     }
@@ -72,6 +71,31 @@ public class Assurance: NSObject, Extension {
 
     public func readyForEvent(_ event: Event) -> Bool {
         return true
+    }
+
+    // MARK: - Event handlers
+
+    /// Called by the wildcard listener to handle all the events dispatched from MobileCore's event hub.
+    /// Each mobile core event is converted to `AssuranceEvent` and is sent over the socket.
+    /// - Parameters:
+    /// - event - a mobileCore's `Event`
+    private func handleWildcardEvent(event: Event) {
+        if event.isSharedStateEvent {
+            processSharedStateEvent(event: event)
+            return
+        }
+
+        if event.isPlacesRequestEvent {
+            handlePlacesRequest(event: event)
+        } else if event.isPlacesResponseEvent {
+            handlePlacesResponse(event: event)
+        } else if event.isAssuranceRequestContent {
+            handleAssuranceRequestContent(event: event)
+        }
+
+        // forward all the event to Assurance session
+        let assuranceEvent = AssuranceEvent.from(event: event)
+        assuranceSession?.sendEvent(assuranceEvent)
     }
 
     private func handleAssuranceRequestContent(event: Event) {
@@ -106,18 +130,37 @@ public class Assurance: NSObject, Extension {
         assuranceSession?.startSession()
     }
 
-    /// Called by the wildcard listener to handle all the events dispatched from MobileCore's event hub.
-    /// Each mobile core event is converted to `AssuranceEvent` and is sent over the socket.
-    /// - Parameters:
-    /// - event - a mobileCore's `Event`
-    private func handleWildcardEvent(event: Event) {
-        if event.isSharedStateEvent {
-            processSharedStateEvent(event: event)
-            return
-        }
+    // MARK: Places event handlers
 
-        let assuranceEvent = AssuranceEvent.from(event: event)
-        assuranceSession?.sendEvent(assuranceEvent)
+    /// Handle places request events and log them in the client statusUI.
+    ///
+    /// - Parameters:
+    ///     - event - a mobileCore's places request event
+    private func handlePlacesRequest(event: Event) {
+        if event.isRequestNearByPOIEvent {
+            assuranceSession?.addClientLog("Places - Requesting \(event.poiCount) nearby POIs from (\(event.latitude), \(event.longitude))", visibility: .normal)
+        } else if event.isRequestResetEvent {
+            assuranceSession?.addClientLog("Places - Resetting location", visibility: .normal)
+        }
+    }
+
+    /// Handle places response events and log them in the client statusUI.
+    ///
+    /// - Parameters:
+    ///     - event - a mobileCore's places response event
+    private func handlePlacesResponse(event: Event) {
+        if event.isResponseRegionEvent {
+            assuranceSession?.addClientLog("Places - Processed \(event.regionEventType) for region \(event.regionName).", visibility: .normal)
+        } else if event.isResponseNearByEvent {
+            let nearByPOIs = event.nearByPOIs
+            for poi in nearByPOIs {
+                guard let poiDictionary = poi as? [String: Any] else {
+                    return
+                }
+                assuranceSession?.addClientLog("\t  \(poiDictionary["regionname"] as? String ?? "Unknown")", visibility: .high)
+            }
+            assuranceSession?.addClientLog("Places - Found \(nearByPOIs.count) nearby POIs\(nearByPOIs.count > 0 ? " :" : ".")", visibility: .high)
+        }
     }
 
     /// Method to process the sharedState events from the event hub.
@@ -125,8 +168,7 @@ public class Assurance: NSObject, Extension {
     /// extract the shared state details associated with the shared state change, and then append them to this event.
     /// Assurance extension handles both regular and XDM shared state change events.
     ///
-    /// - Parameters:
-    ///     - event - a mobileCore's `Event`
+    /// - Parameter event - a mobileCore's `Event`
     private func processSharedStateEvent(event: Event) {
         // early bail out if unable to find the stateOwner
         guard let stateOwner = event.sharedStateOwner else {

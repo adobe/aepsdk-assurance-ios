@@ -129,4 +129,25 @@ enum AssuranceConstants {
         static let EVENTS_LIMIT = 4902
         static let CLIENT_ERROR = 4400
     }
+
+    enum Places {
+
+        enum EventName {
+            static let REQUEST_NEARBY_POI = "requestgetnearbyplaces"
+            static let REQUEST_RESET = "requestreset"
+            static let RESPONSE_REGION_EVENT = "responseprocessregionevent"
+            static let RESPONSE_NEARBY_POI_EVENT = "responsegetnearbyplaces"
+        }
+
+        enum EventDataKeys {
+            static let COUNT = "count"
+            static let LATITUDE = "latitude"
+            static let LONGITUDE = "longitude"
+            static let REGION_NAME = "regionname"
+            static let USER_IS_WITHIN = "useriswithin"
+            static let TRIGGERING_REGION = "triggeringregion"
+            static let REGION_EVENT_TYPE = "regioneventtype"
+            static let NEARBY_POI = "nearbypois"
+        }
+    }
 }
