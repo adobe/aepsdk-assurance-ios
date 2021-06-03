@@ -262,6 +262,60 @@ class AssuranceTests: XCTestCase {
         XCTAssertEqual("Places - Found 0 nearby POIs.", mockSession.addClientLogMessage)
     }
 
+    /*--------------------------------------------------
+     shutdown timer tests
+     --------------------------------------------------*/
+
+    func test_shutDownTimer() {
+        // setup properties
+        assurance.SHUTDOWN_TIME = 1
+        assurance.webSocketURL = nil
+
+        // test
+        assurance.onRegistered()
+
+        // verify assurance listens to event before shut down
+        XCTAssertTrue(assurance.readyForEvent(regionEvent))
+
+        // wait for assurance to shut down
+        sleep(2)
+
+        // verify assurance is shutdown after timer
+        XCTAssertFalse(assurance.readyForEvent(regionEvent))
+    }
+
+    func test_shutDownTimer_invalidated_whenSessionStarted() {
+        // setup properties
+        assurance.SHUTDOWN_TIME = 1
+        assurance.webSocketURL = nil
+
+        // test
+        assurance.onRegistered()
+
+        // verify assurance listens to event before shut down
+        XCTAssertTrue(assurance.readyForEvent(regionEvent))
+        runtime.simulateComingEvent(event: assuranceStartEvent)
+
+        // wait for assurance shutdown timer to run out
+        sleep(2)
+
+        // verify shutdown timer is invalidated and assurance keeps running
+        XCTAssertTrue(assurance.readyForEvent(regionEvent))
+    }
+
+    func test_shutDownTimer_invalidedIfAssuranceReconnecting() {
+        // setup properties
+        assurance.SHUTDOWN_TIME = 1
+        assurance.webSocketURL = "wss://sampleSocketURL"
+
+        // test
+        assurance.onRegistered()
+        sleep(2)
+
+        // verify
+        XCTAssertTrue(assurance.readyForEvent(regionEvent))
+    }
+
     // MARK: Private methods
     private func verify_PinCodeScreen_isNotShown() {
         XCTAssertFalse(mockUIService.createFullscreenMessageCalled)
@@ -320,4 +374,14 @@ class AssuranceTests: XCTestCase {
                         AssuranceConstants.Places.EventDataKeys.NEARBY_POI: []
         ])
     }
+
+    var assuranceStartEvent: Event {
+        return Event(name: "Start Session",
+                     type: AssuranceConstants.SDKEventType.ASSURANCE,
+                     source: EventSource.requestContent,
+                     data: [
+                        AssuranceConstants.EventDataKey.START_SESSION_URL: "griffon://?adb_validation_sessionid=28f4a622-d34f-4036-c81a-d21352144b57&env=stage"
+        ])
+    }
+
 }
