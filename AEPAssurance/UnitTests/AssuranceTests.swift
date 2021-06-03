@@ -217,6 +217,51 @@ class AssuranceTests: XCTestCase {
         XCTAssertFalse(mockSession.sendEventCalled)
     }
 
+    func test_handlePlacesRequest_GetNearByPlaces() throws {
+        // test
+        runtime.simulateComingEvent(event: getNearbyPlacesRequestEvent)
+
+        // verify that the client log is displayed
+        XCTAssertTrue(mockSession.addClientLogCalled)
+        XCTAssertEqual("Places - Requesting 7 nearby POIs from (12.340000, 23.455489)", mockSession.addClientLogMessage)
+    }
+
+    func test_handlePlacesRequest_PlacesReset() throws {
+        // test
+        runtime.simulateComingEvent(event: placesResetEvent)
+
+        // verify that the client log is displayed
+        XCTAssertTrue(mockSession.addClientLogCalled)
+        XCTAssertEqual("Places - Resetting location", mockSession.addClientLogMessage)
+    }
+
+    func test_handlePlacesResponse_RegionEvent() throws {
+        // test
+        runtime.simulateComingEvent(event: regionEvent)
+
+        // verify that the client log is displayed
+        XCTAssertTrue(mockSession.addClientLogCalled)
+        XCTAssertEqual("Places - Processed entry for region Green house.", mockSession.addClientLogMessage)
+    }
+
+    func test_handlePlacesResponse_nearbyPOIResponse() throws {
+        // test
+        runtime.simulateComingEvent(event: nearbyPOIResponse)
+
+        // verify that the client log is displayed
+        XCTAssertTrue(mockSession.addClientLogCalled)
+        XCTAssertEqual("Places - Found 2 nearby POIs :", mockSession.addClientLogMessage)
+    }
+
+    func test_handlePlacesResponse_nearbyPOIResponseNoPOI() throws {
+        // test
+        runtime.simulateComingEvent(event: nearbyPOIResponseNoPOI)
+
+        // verify that the client log is displayed
+        XCTAssertTrue(mockSession.addClientLogCalled)
+        XCTAssertEqual("Places - Found 0 nearby POIs.", mockSession.addClientLogMessage)
+    }
+
     // MARK: Private methods
     private func verify_PinCodeScreen_isNotShown() {
         XCTAssertFalse(mockUIService.createFullscreenMessageCalled)
@@ -227,5 +272,52 @@ class AssuranceTests: XCTestCase {
         // verify that sessionID and environment are set in datastore
         XCTAssertNil(mockDataStore.dict[AssuranceConstants.DataStoreKeys.SESSION_ID] ?? nil)
         XCTAssertNil(mockDataStore.dict[AssuranceConstants.DataStoreKeys.ENVIRONMENT] ?? nil)
+    }
+
+    var getNearbyPlacesRequestEvent: Event {
+        return Event(name: AssuranceConstants.Places.EventName.REQUEST_NEARBY_POI,
+                     type: EventType.places,
+                     source: EventSource.requestContent,
+                     data: [
+                        AssuranceConstants.Places.EventDataKeys.LATITUDE: 12.34,
+                        AssuranceConstants.Places.EventDataKeys.LONGITUDE: 23.4554888443,
+                        AssuranceConstants.Places.EventDataKeys.COUNT: 7
+        ])
+    }
+
+    var placesResetEvent: Event {
+        return Event(name: AssuranceConstants.Places.EventName.REQUEST_RESET,
+                     type: EventType.places,
+                     source: EventSource.requestContent,
+                     data: [:])
+    }
+
+    var regionEvent: Event {
+        return Event(name: AssuranceConstants.Places.EventName.RESPONSE_REGION_EVENT,
+                     type: EventType.places,
+                     source: EventSource.responseContent,
+                     data: [
+                        AssuranceConstants.Places.EventDataKeys.REGION_EVENT_TYPE: "entry",
+                        AssuranceConstants.Places.EventDataKeys.TRIGGERING_REGION: [AssuranceConstants.Places.EventDataKeys.REGION_NAME: "Green house"]
+        ])
+    }
+
+    var nearbyPOIResponse: Event {
+        return Event(name: AssuranceConstants.Places.EventName.RESPONSE_NEARBY_POI_EVENT,
+                     type: EventType.places,
+                     source: EventSource.responseContent,
+                     data: [
+                        AssuranceConstants.Places.EventDataKeys.NEARBY_POI: [["regionName": "Golden Gate"],
+                                                                             ["regionName": "Bay bridge"]]
+        ])
+    }
+
+    var nearbyPOIResponseNoPOI: Event {
+        return Event(name: AssuranceConstants.Places.EventName.RESPONSE_NEARBY_POI_EVENT,
+                     type: EventType.places,
+                     source: EventSource.responseContent,
+                     data: [
+                        AssuranceConstants.Places.EventDataKeys.NEARBY_POI: []
+        ])
     }
 }

@@ -10,21 +10,16 @@
  governing permissions and limitations under the License.
  */
 
+@testable import AEPAssurance
 import Foundation
+import XCTest
 
-struct AssuranceClientLogMessage {
-    var visibility: AssuranceClientLogVisibility
-    var message: String
+class AssuranceClientLogMessageTests: XCTestCase {
 
-    init(withVisibility visibility: AssuranceClientLogVisibility, andMessage message: String) {
-        self.visibility = visibility
-        self.message = message
+    func test_clientLogMessage_init() throws {
+        let message = AssuranceClientLogMessage.init(withVisibility: .critical, andMessage: "something to log")
+        XCTAssertEqual(.critical, message.visibility)
+        XCTAssertEqual("something to log", message.message)
     }
-}
 
-enum AssuranceClientLogVisibility: Int {
-    case low = 0
-    case normal
-    case high
-    case critical
 }
