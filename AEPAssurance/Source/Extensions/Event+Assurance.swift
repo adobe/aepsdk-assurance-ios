@@ -21,7 +21,7 @@ extension Event {
         return type == EventType.hub && source == EventSource.sharedState
     }
 
-    /// A boolean value that determines whether event is a places request content event.
+    /// A boolean value that determines whether event is assurance request content event.
     var isAssuranceRequestContent: Bool {
         return type == AssuranceConstants.SDKEventType.ASSURANCE && source == EventSource.requestContent
     }

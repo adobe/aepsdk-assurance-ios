@@ -81,7 +81,7 @@ public class Assurance: NSObject, Extension {
     }
 
     public func onRegistered() {
-        registerListener(type: EventType.wildcard, source: EventSource.wildcard, listener: listenWildcardEvent)
+        registerListener(type: EventType.wildcard, source: EventSource.wildcard, listener: handleWildcardEvent)
         self.assuranceSession = AssuranceSession(self)
 
         /// if the Assurance session was already connected in the previous app session, go ahead and reconnect socket
@@ -111,7 +111,7 @@ public class Assurance: NSObject, Extension {
     /// Each mobile core event is converted to `AssuranceEvent` and is sent over the socket.
     /// - Parameters:
     /// - event - a mobileCore's `Event`
-    private func listenWildcardEvent(event: Event) {
+    private func handleWildcardEvent(event: Event) {
         if event.isSharedStateEvent {
             processSharedStateEvent(event: event)
             return
@@ -205,8 +205,7 @@ public class Assurance: NSObject, Extension {
     /// extract the shared state details associated with the shared state change, and then append them to this event.
     /// Assurance extension handles both regular and XDM shared state change events.
     ///
-    /// - Parameters:
-    ///     - event - a mobileCore's `Event`
+    /// - Parameter event - a mobileCore's `Event`
     private func processSharedStateEvent(event: Event) {
         // early bail out if unable to find the stateOwner
         guard let stateOwner = event.sharedStateOwner else {
