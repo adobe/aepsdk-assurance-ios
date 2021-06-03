@@ -16,6 +16,10 @@ import Foundation
 
 public class Assurance: NSObject, Extension {
 
+    /// Time before assurance shuts down on the non receipt of start session event.
+    /// Keeping it as a var as opposed to let for testing purposes
+    var SHUTDOWN_TIME = 5
+
     public var name = AssuranceConstants.EXTENSION_NAME
     public var friendlyName = AssuranceConstants.FRIENDLY_NAME
     public static var extensionVersion = AssuranceConstants.EXTENSION_VERSION
@@ -24,6 +28,8 @@ public class Assurance: NSObject, Extension {
 
     let datastore = NamedCollectionDataStore(name: AssuranceConstants.EXTENSION_NAME)
     var assuranceSession: AssuranceSession?
+    var shouldProcessEvents: Bool = true
+    var timer: DispatchSourceTimer?
 
     var sessionId: String? {
         get {
@@ -58,9 +64,35 @@ public class Assurance: NSObject, Extension {
 
     }()
 
+    /// property representing the webSocket URL of the ongoing Assurance session
+    /// A valid value on this property represents that a assurance session is currently running.
+    /// A nil value on this property represents there is no ongoing assurance session.
+    var webSocketURL: String? {
+        get {
+            datastore.getString(key: AssuranceConstants.DataStoreKeys.SOCKETURL)
+        }
+        set {
+            if let newValue = newValue {
+                datastore.set(key: AssuranceConstants.DataStoreKeys.SOCKETURL, value: newValue)
+            } else {
+                datastore.remove(key: AssuranceConstants.DataStoreKeys.SOCKETURL)
+            }
+        }
+    }
+
     public func onRegistered() {
         registerListener(type: EventType.wildcard, source: EventSource.wildcard, listener: listenWildcardEvent)
         self.assuranceSession = AssuranceSession(self)
+
+        /// if the Assurance session was already connected in the previous app session, go ahead and reconnect socket
+        /// and do not turn on the unregister timer
+        if let _ = self.webSocketURL {
+            assuranceSession?.startSession()
+            return
+        }
+
+        /// if the Assurance session is not previously connected, turn on 5 sec timer to wait for Assurance deeplink
+        startShutDownTimer()
     }
 
     public func onUnregistered() {}
@@ -70,7 +102,7 @@ public class Assurance: NSObject, Extension {
     }
 
     public func readyForEvent(_ event: Event) -> Bool {
-        return true
+        return shouldProcessEvents
     }
 
     // MARK: - Event handlers
@@ -124,9 +156,14 @@ public class Assurance: NSObject, Extension {
         // Read the environment query parameter from the deeplink url
         let environmentString = deeplinkURL?.params[AssuranceConstants.Deeplink.ENVIRONMENT_KEY] ?? ""
 
+        // invalidate the timer
+        invalidateTimer()
+
         // save the environment and sessionID
         environment = AssuranceEnvironment.init(envString: environmentString)
         self.sessionId = sessionId
+        shareState()
+        shouldProcessEvents = true
         assuranceSession?.startSession()
     }
 
@@ -204,5 +241,44 @@ public class Assurance: NSObject, Extension {
         var assuranceEvent = AssuranceEvent.from(event: event)
         assuranceEvent.payload?.updateValue(AnyCodable.init(sharedStatePayload), forKey: AssuranceConstants.PayloadKey.METADATA)
         assuranceSession?.sendEvent(assuranceEvent)
+    }
+
+    // MARK: Shutdown timer methods
+
+    /// Start the shutdown timer in the background queue without blocking the current thread
+    /// If the timer get fired, shutdown the assurance extension
+    private func startShutDownTimer() {
+        let queue = DispatchQueue.init(label: "com.adobe.assurance.shutdowntimer", qos: .background)
+        timer = createDispatchTimer(queue: queue, block: {
+            self.shutDownAssurance()
+        })
+    }
+
+    /// Shuts down the assurance extension by setting the `shouldProcessEvents` to false. On which no more events
+    /// are listened by assurance extension
+    /// @see readyForEvent
+    private func shutDownAssurance() {
+        shouldProcessEvents = false
+        invalidateTimer()
+    }
+
+    /// Invalidate the ongoing timer and clean it from memory
+    private func invalidateTimer() {
+        timer?.cancel()
+        timer = nil
+    }
+
+    /// Creates and returns a new dispatch source object for timer events.
+    /// The timer is set to fire in 5 seconds on the provided block
+    /// - Parameters:
+    ///     - queue: the dispatch queue on which the timer runs
+    ///     - block: the block that needs be executed once the timer fires
+    /// - Returns:a configured `DispatchSourceTimer` instance
+    private func createDispatchTimer(queue: DispatchQueue, block : @escaping () -> Void) -> DispatchSourceTimer {
+        let timer = DispatchSource.makeTimerSource(queue: queue)
+        timer.schedule(wallDeadline: .now() + DispatchTimeInterval.seconds(SHUTDOWN_TIME))
+        timer.setEventHandler(handler: block)
+        timer.resume()
+        return timer
     }
 }
