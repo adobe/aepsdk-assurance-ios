@@ -113,7 +113,9 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     ///     - event : the event to be sent to Assurance session
     func sendEvent(_ event: AssuranceEvent) {
         socketQueue.async {
-            let jsonData = (try? JSONEncoder().encode(event)) ?? Data()
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .millisecondsSince1970
+            let jsonData = (try? encoder.encode(event)) ?? Data()
             let dataString = jsonData.base64EncodedString(options: .endLineWithLineFeed)
             let jsCommand = String(format: "sendData(\"%@\");", dataString)
             self.runJavascriptCommand(jsCommand, { error in

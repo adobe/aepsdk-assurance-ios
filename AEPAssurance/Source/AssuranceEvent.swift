@@ -20,7 +20,7 @@ struct AssuranceEvent: Codable {
     var type: String
     var payload: [String: AnyCodable]?
     var eventNumber: Int32?
-    var timestamp: Int64?  // Todo : verify if this can rewritten as `Date` type
+    var timestamp: Date?
 
     /// Decodes a JSON data into a `AssuranceEvent`
     ///
@@ -42,13 +42,15 @@ struct AssuranceEvent: Codable {
     ///
     /// - Returns: a `AssuranceEvent` that is represented in the json data, nil if data is not in the correct format
     static func from(jsonData: Data) -> AssuranceEvent? {
-        guard var event = try? JSONDecoder().decode(AssuranceEvent.self, from: jsonData) else {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .millisecondsSince1970
+        guard var event = try? decoder.decode(AssuranceEvent.self, from: jsonData) else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Unable to decode jsonData into an AssuranceEvent.")
             return nil
         }
         event.eventNumber = AssuranceEvent.generateEventNumber()
         if event.timestamp == nil {
-            event.timestamp = Date().getUnixTimeInSeconds() * 1000
+            event.timestamp = Date()
         }
         return event
     }
@@ -89,7 +91,7 @@ struct AssuranceEvent: Codable {
     ///   - payload: A dictionary representing the payload to be sent wrapped in the event. This will be serialized into JSON in the transportation process
     ///   - timestamp: optional argument representing the time original event was created. If not provided current time is taken
     ///   - vendor: vendor for the created `AssuranceEvent` defaults to "com.adobe.griffon.mobile".
-    init(type: String, payload: [String: AnyCodable]?, timestamp: Int64 = (Date().getUnixTimeInSeconds() * 1000), vendor: String = AssuranceConstants.Vendor.MOBILE) {
+    init(type: String, payload: [String: AnyCodable]?, timestamp: Date = Date(), vendor: String = AssuranceConstants.Vendor.MOBILE) {
         self.type = type
         self.payload = payload
         self.timestamp = timestamp
