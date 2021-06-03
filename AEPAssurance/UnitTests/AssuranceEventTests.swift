@@ -55,7 +55,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertEqual("generic", event.type, "Inaccurate event type")
         XCTAssertEqual(SAMPLE_PAYLOAD, event.payload, "Inaccurate event payload")
         XCTAssertEqual(AssuranceConstants.Vendor.SDK, event.vendor, "Inaccurate event vendor")
-        XCTAssertEqual((Date().getUnixTimeInSeconds() * 1000), event.timestamp as! Int64, accuracy: 100, "Timestamp should be close to current date")
+        XCTAssertEqual((Date().getUnixTimeInSeconds() * 1000), event.timestamp ?? 0, accuracy: 100, "Timestamp should be close to current date")
     }
 
     func test_init_withVendorAndTimestamp() throws {
@@ -188,7 +188,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertNil(event3)
         XCTAssertNil(event4)
         XCTAssertNil(event5)
-        XCTAssertNil(event6)
+        XCTAssertNotNil(event6)
     }
 
     /*--------------------------------------------------
@@ -350,8 +350,8 @@ class AssuranceEventTests: XCTestCase {
         let responseCoreEvent = coreEvent.createResponseEvent(name: "responseEvent", type: "responseEventType", source: "responseEventSource", data: nil)
 
         // test
-        let assuranceEvent = AssuranceEvent.from(mobileCoreEvent: coreEvent)
-        let assuranceEventForResponse = AssuranceEvent.from(mobileCoreEvent: responseCoreEvent)
+        let assuranceEvent = AssuranceEvent.from(event: coreEvent)
+        let assuranceEventForResponse = AssuranceEvent.from(event: responseCoreEvent)
 
         // verify
         XCTAssertEqual(AssuranceConstants.EventType.GENERIC, assuranceEvent.type)

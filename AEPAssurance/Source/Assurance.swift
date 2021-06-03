@@ -116,7 +116,7 @@ public class Assurance: NSObject, Extension {
             return
         }
 
-        let assuranceEvent = AssuranceEvent.from(mobileCoreEvent: event)
+        let assuranceEvent = AssuranceEvent.from(event: event)
         assuranceSession?.sendEvent(assuranceEvent)
     }
 
@@ -158,7 +158,7 @@ public class Assurance: NSObject, Extension {
         }
 
         let sharedStatePayload = [sharedContentKey: sharedState.value]
-        var assuranceEvent = AssuranceEvent.from(mobileCoreEvent: event)
+        var assuranceEvent = AssuranceEvent.from(event: event)
         assuranceEvent.payload?.updateValue(AnyCodable.init(sharedStatePayload), forKey: AssuranceConstants.PayloadKey.METADATA)
         assuranceSession?.sendEvent(assuranceEvent)
     }

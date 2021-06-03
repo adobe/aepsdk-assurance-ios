@@ -61,21 +61,21 @@ struct AssuranceEvent: Codable {
     /// - Parameters:
     ///     - mobileCoreEvent:An event from MobileCore dispatched by event-hub and captured by wild card listener.
     /// - Returns: an `AssuranceEvent`
-    static func from(mobileCoreEvent: Event) -> AssuranceEvent {
+    static func from(event: Event) -> AssuranceEvent {
         var payload: [String: AnyCodable] = [:]
-        payload[AssuranceConstants.ACPExtensionEventKey.NAME] = AnyCodable.init(mobileCoreEvent.name)
-        payload[AssuranceConstants.ACPExtensionEventKey.TYPE] = AnyCodable.init(mobileCoreEvent.type)
-        payload[AssuranceConstants.ACPExtensionEventKey.SOURCE] = AnyCodable.init(mobileCoreEvent.source)
-        payload[AssuranceConstants.ACPExtensionEventKey.UNIQUE_IDENTIFIER] = AnyCodable.init(mobileCoreEvent.id.uuidString)
-        payload[AssuranceConstants.ACPExtensionEventKey.TIMESTAMP] = AnyCodable.init(mobileCoreEvent.timestamp)
+        payload[AssuranceConstants.ACPExtensionEventKey.NAME] = AnyCodable.init(event.name)
+        payload[AssuranceConstants.ACPExtensionEventKey.TYPE] = AnyCodable.init(event.type)
+        payload[AssuranceConstants.ACPExtensionEventKey.SOURCE] = AnyCodable.init(event.source)
+        payload[AssuranceConstants.ACPExtensionEventKey.UNIQUE_IDENTIFIER] = AnyCodable.init(event.id.uuidString)
+        payload[AssuranceConstants.ACPExtensionEventKey.TIMESTAMP] = AnyCodable.init(event.timestamp)
 
         // if available, add eventData
-        if let eventData = mobileCoreEvent.data {
+        if let eventData = event.data {
             payload[AssuranceConstants.ACPExtensionEventKey.DATA] = AnyCodable.init(eventData)
         }
 
         // if available, add responseID
-        if  let responseID = mobileCoreEvent.responseID {
+        if  let responseID = event.responseID {
             payload[AssuranceConstants.ACPExtensionEventKey.RESPONSE_IDENTIFIER] = AnyCodable.init(responseID.uuidString)
         }
 
