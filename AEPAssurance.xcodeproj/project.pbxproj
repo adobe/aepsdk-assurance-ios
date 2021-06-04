@@ -36,6 +36,7 @@
 		B670E72526395954000FCB96 /* PinDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B670E72326395954000FCB96 /* PinDialog.swift */; };
 		B670E74A26395F27000FCB96 /* AEPAssurance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6407199262C313E00C43183 /* AEPAssurance.framework */; };
 		B670E74B26395F27000FCB96 /* AEPAssurance.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B6407199262C313E00C43183 /* AEPAssurance.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B6A80BFE266ACBB60089C564 /* AssuranceShutDownTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A80BFD266ACBB50089C564 /* AssuranceShutDownTimerTests.swift */; };
 		B6AB2DE6263372AF00FE8AEA /* Assurance+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D2A92626334A3D0062AC5E /* Assurance+State.swift */; };
 		B6AB2DEE26337BB700FE8AEA /* MockDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB2DED26337BB700FE8AEA /* MockDataStore.swift */; };
 		B6AB2DF326337BE700FE8AEA /* AssuranceStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB2DF226337BE700FE8AEA /* AssuranceStateTests.swift */; };
@@ -155,6 +156,7 @@
 		B670E67926393284000FCB96 /* inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = inactive.png; sourceTree = "<group>"; };
 		B670E72226395954000FCB96 /* StatusInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusInfo.swift; sourceTree = "<group>"; };
 		B670E72326395954000FCB96 /* PinDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinDialog.swift; sourceTree = "<group>"; };
+		B6A80BFD266ACBB50089C564 /* AssuranceShutDownTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceShutDownTimerTests.swift; sourceTree = "<group>"; };
 		B6AB2DED26337BB700FE8AEA /* MockDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataStore.swift; sourceTree = "<group>"; };
 		B6AB2DF226337BE700FE8AEA /* AssuranceStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStateTests.swift; sourceTree = "<group>"; };
 		B6AFD588263403EB00C63608 /* AssuranceEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEvent.swift; sourceTree = "<group>"; };
@@ -310,6 +312,7 @@
 				B64071A7262C313E00C43183 /* AssurancePublicAPITests.swift */,
 				B6AB2DF226337BE700FE8AEA /* AssuranceStateTests.swift */,
 				B6B23AD72641EF6500EE8153 /* AssuranceTests.swift */,
+				B6A80BFD266ACBB50089C564 /* AssuranceShutDownTimerTests.swift */,
 				B6D2A90B26322D1C0062AC5E /* AssuranceEnvironmentTests.swift */,
 				B6AFD58D2634041E00C63608 /* AssuranceEventTests.swift */,
 				B66D3C5A263752EE0076108B /* URL+ParserTests.swift */,
@@ -890,6 +893,7 @@
 				B6D6A029265FA0EE005042BE /* MockAssuranceUIUtil.swift in Sources */,
 				B6B23B3B264269A800EE8153 /* iOSPinCodeScreenTests.swift in Sources */,
 				B6D2A91F2632B7640062AC5E /* MockExtension.swift in Sources */,
+				B6A80BFE266ACBB60089C564 /* AssuranceShutDownTimerTests.swift in Sources */,
 				B6D6A024265F91CF005042BE /* PluginScreenShotTests.swift in Sources */,
 				B64071A8262C313E00C43183 /* AssurancePublicAPITests.swift in Sources */,
 				B66D3C5B263752EE0076108B /* URL+ParserTests.swift in Sources */,

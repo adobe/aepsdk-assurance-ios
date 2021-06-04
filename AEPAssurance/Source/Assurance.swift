@@ -17,8 +17,7 @@ import Foundation
 public class Assurance: NSObject, Extension {
 
     /// Time before assurance shuts down on non receipt of start session event.
-    /// Keeping it as a var as opposed to let for testing purposes
-    var SHUTDOWN_TIME = 5
+    let shutdownTime: Int
 
     public var name = AssuranceConstants.EXTENSION_NAME
     public var friendlyName = AssuranceConstants.FRIENDLY_NAME
@@ -99,6 +98,13 @@ public class Assurance: NSObject, Extension {
 
     public required init?(runtime: ExtensionRuntime) {
         self.runtime = runtime
+        self.shutdownTime = AssuranceConstants.SHUTDOWN_TIME
+    }
+
+    /// Initializer for testing purposes to mock the shut down time .
+    init?(runtime: ExtensionRuntime, shutdownTime: Int) {
+        self.runtime = runtime
+        self.shutdownTime = shutdownTime
     }
 
     public func readyForEvent(_ event: Event) -> Bool {
@@ -275,7 +281,7 @@ public class Assurance: NSObject, Extension {
     /// - Returns: a configured `DispatchSourceTimer` instance
     private func createDispatchTimer(queue: DispatchQueue, block : @escaping () -> Void) -> DispatchSourceTimer {
         let timer = DispatchSource.makeTimerSource(queue: queue)
-        timer.schedule(wallDeadline: .now() + DispatchTimeInterval.seconds(SHUTDOWN_TIME))
+        timer.schedule(wallDeadline: .now() + DispatchTimeInterval.seconds(shutdownTime))
         timer.setEventHandler(handler: block)
         timer.resume()
         return timer
