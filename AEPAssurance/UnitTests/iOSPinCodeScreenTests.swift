@@ -35,6 +35,10 @@ class iOSPinCodeScreenTests: XCTestCase {
         assurance.onRegistered()
         pinCodeScreen = iOSPinCodeScreen.init(withExtension: assurance)
         pinCodeScreen.fullscreenWebView = mockWebView
+
+        // mock the orgID in configuration
+        let config = [AssuranceConstants.EventDataKey.CONFIG_ORG_ID: "mockorg@adobe.com"]
+        runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, data: (config as [String: Any], .set))
     }
 
     override func tearDown() {
@@ -42,11 +46,11 @@ class iOSPinCodeScreenTests: XCTestCase {
     }
 
     /*--------------------------------------------------
-     getSocketURL
+     show
      --------------------------------------------------*/
-    func test_iOSPinCodeScreen_getSocketURL() throws {
+    func test_iOSPinCodeScreen_show() throws {
         // setup
-        pinCodeScreen.getSocketURL(callback: { _ in })
+        pinCodeScreen.show(callback: { _, _ in })
 
         // verify that the fullscreen message is displayed
         XCTAssertTrue(mockUIService.createFullscreenMessageCalled)
@@ -59,14 +63,13 @@ class iOSPinCodeScreenTests: XCTestCase {
     func test_iOSPinCodeScreen_connectClicked() throws {
         // setup
         assurance.sessionId =  "mockSessionID"
-        let config = [AssuranceConstants.EventDataKey.CONFIG_ORG_ID: "mockorg@adobe.com"]
-        runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, data: (config as [String: Any], .set))
 
         // verify that the correct socket url is created
         let expectation = XCTestExpectation(description: "Correct webSocket url should be created")
         expectation.assertForOverFulfill = true
-        pinCodeScreen.getSocketURL(callback: { socketURL in
-            XCTAssertTrue(socketURL.contains("wss://connect.griffon.adobe.com/client/v1?sessionId=mockSessionID&token=4444&orgId=mockorg@adobe.com&clientId="))
+        pinCodeScreen.show(callback: { socketURL, _ in
+
+            XCTAssertTrue(socketURL!.absoluteString.contains("wss://connect.griffon.adobe.com/client/v1?sessionId=mockSessionID&token=4444&orgId=mockorg@adobe.com&clientId="))
             expectation.fulfill()
         })
 
@@ -84,12 +87,17 @@ class iOSPinCodeScreenTests: XCTestCase {
     func test_iOSPinCodeScreen_connectClicked_whenNotConfigured() throws {
         // setup
         assurance.sessionId =  "mockSessionID"
+        runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, data: (nil, .none))
+
+        // verify
+        let expectation = XCTestExpectation(description: "No OrgID error should be returned")
+        pinCodeScreen.show(callback: { _, error in
+            XCTAssertEqual(error, AssuranceSocketError.NO_ORG_ID)
+            expectation.fulfill()
+        })
 
         // test
         _ = pinCodeScreen.overrideUrlLoad(message: mockMessage, url: "adbinapp://confirm?code=4444")
-
-        // verify that the javascript to show error is called
-        XCTAssertEqual(String(format: "showError('%@','%@', 1);", AssuranceSocketError.NO_ORG_ID.info.name, AssuranceSocketError.NO_ORG_ID.info.description), mockWebView.javaScriptStringReceived)
     }
 
     /*--------------------------------------------------
@@ -99,11 +107,16 @@ class iOSPinCodeScreenTests: XCTestCase {
         // setup
         assurance.sessionId =  "mockSessionID"
 
+        // verify
+        let expectation = XCTestExpectation(description: "No Pincode error should be returned")
+        pinCodeScreen.show(callback: { _, error in
+            XCTAssertEqual(error, AssuranceSocketError.NO_PINCODE)
+            expectation.fulfill()
+        })
+
         // test
         _ = pinCodeScreen.overrideUrlLoad(message: mockMessage, url: "adbinapp://confirm?nodata")
 
-        // verify that the javascript to show error is called
-        XCTAssertEqual(String(format: "showError('%@','%@', 1);", AssuranceSocketError.NO_PINCODE.info.name, AssuranceSocketError.NO_PINCODE.info.description), mockWebView.javaScriptStringReceived)
     }
 
     /*--------------------------------------------------

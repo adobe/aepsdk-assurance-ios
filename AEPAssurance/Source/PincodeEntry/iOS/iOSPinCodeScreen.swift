@@ -14,11 +14,12 @@ import AEPServices
 import Foundation
 import WebKit
 
-class iOSPinCodeScreen: SessionAuthorizing {
+class iOSPinCodeScreen: SessionAuthorizingUI {
+    var isDisplayed: Bool = false
     var assuranceExtension: Assurance
     var fullscreenMessage: FullscreenPresentable?
     var fullscreenWebView: WKWebView?
-    var authorizedURLCallback: authorizedURLCallback?
+    var pinCodeCallback: PinCodeCallback?
 
     /// Initializer
     required init(withExtension assuranceExtension: Assurance) {
@@ -26,8 +27,8 @@ class iOSPinCodeScreen: SessionAuthorizing {
     }
 
     /// Invoke this during start session to display the pinCode screen.
-    func getSocketURL(callback: @escaping authorizedURLCallback) {
-        self.authorizedURLCallback = callback
+    func show(callback: @escaping PinCodeCallback) {
+        self.pinCodeCallback = callback
         showPincodeScreen()
     }
 

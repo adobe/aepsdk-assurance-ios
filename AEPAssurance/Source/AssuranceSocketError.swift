@@ -17,37 +17,45 @@ enum AssuranceSocketError {
     case NO_ORG_ID
     case NO_SESSION_ID
     case NO_PINCODE
+    case NO_URL
     case ORGID_MISMATCH
     case CONNECTION_LIMIT
     case EVENT_LIMIT
     case CLIENT_ERROR
+    case USER_CANCELLED
 
-    var info: (name: String, description: String) {
+    var info: (name: String, description: String, shouldRetry: Bool) {
         switch self {
         case .GENERIC_ERROR:
             return ("Connection Error",
-                    "The connection may be failing due to a network issue or an incorrect PIN. Please verify internet connectivity or the PIN and try again.")
+                    "The connection may be failing due to a network issue or an incorrect PIN. Please verify internet connectivity or the PIN and try again.", true)
         case .NO_SESSION_ID:
             return ("Invalid SessionID",
-                    "Unable to extract valid Assurance sessionID from deeplink URL. Please try re-connecting to the session with a valid deeplink URL")
+                    "Unable to extract valid Assurance sessionID from deeplink URL. Please try re-connecting to the session with a valid deeplink URL", false)
         case .NO_PINCODE:
             return ("HTML Error",
-                    "Unable to extract the pincode entered.")
+                    "Unable to extract the pincode entered.", true)
+        case .NO_URL:
+            return ("Socket Connection Error",
+                    "Unable to form a valid socket URL for connection.", true)
         case .NO_ORG_ID:
             return ("Invalid Launch & SDK Configuration",
-                    "The Experience Cloud Org identifier is unavailable from SDK configuration. Please ensure the Launch mobile property is properly configured.")
+                    "The Experience Cloud Org identifier is unavailable from SDK configuration. Please ensure the Launch mobile property is properly configured.", true)
         case .ORGID_MISMATCH:
             return ("Unauthorized Access",
-                    "The Experience Cloud organization for this Launch Property does not match that of the AEP Assurance session")
+                    "The Experience Cloud organization for this Launch Property does not match that of the AEP Assurance session", false)
         case .CONNECTION_LIMIT:
             return ("Connection Limit Reached",
-                    "You have reached the maximum number of connected device (50) allowed to a session.")
+                    "You have reached the maximum number of connected device (50) allowed to a session.", false)
         case .EVENT_LIMIT:
             return ("Event Limit Reached",
-                    "You have reached the maximum number of events (10k) that can be sent per minute.")
+                    "You have reached the maximum number of events (10k) that can be sent per minute.", false)
         case .CLIENT_ERROR:
             return ("Client Disconnected",
-                    "This client has been disconnected due to an unexpected error. Error Code 4400.")
+                    "This client has been disconnected due to an unexpected error. Error Code 4400.", false)
+        case .USER_CANCELLED:
+            return ("Assurance session connection cancelled.",
+                    "User has chosen to cancel the socket connection. To start again, please open the app with an assurance deeplink url.", false)
         }
     }
 }

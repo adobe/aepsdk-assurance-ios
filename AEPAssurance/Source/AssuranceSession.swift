@@ -15,7 +15,7 @@ import Foundation
 
 class AssuranceSession {
     let assuranceExtension: Assurance
-    var pinCodeScreen: SessionAuthorizing?
+    var pinCodeScreen: SessionAuthorizingUI?
 
     /// Initializer with instance of  `Assurance` extension
     init(_ assuranceExtension: Assurance) {
@@ -30,14 +30,28 @@ class AssuranceSession {
         let pinCodeScreen = iOSPinCodeScreen.init(withExtension: assuranceExtension)
         self.pinCodeScreen = pinCodeScreen
 
-        pinCodeScreen.getSocketURL(callback: { socketUrl in
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to make a socket connection with URL : \(socketUrl)")
+        pinCodeScreen.show(callback: { [weak self] socketURL, error in
+            if let error = error {
+                self?.handleConnectionError(error: error, closeCode: nil)
+                return
+            }
+
+            guard let socketURL = socketURL else {
+                Log.debug(label: AssuranceConstants.LOG_TAG, "SocketURL to connect to session is empty. Ignoring to start Assurance session.")
+                return
+            }
+
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to make a socket connection with URL : \(socketURL.absoluteString)")
+            //self?.socket.connect(withUrl: socketUrl)
             pinCodeScreen.connectionInitialized()
         })
-
     }
 
     func sendEvent(_ assuranceEvent: AssuranceEvent) {
+        // coming soon
+    }
+
+    func handleConnectionError(error: AssuranceSocketError, closeCode: Int?) {
         // coming soon
     }
 

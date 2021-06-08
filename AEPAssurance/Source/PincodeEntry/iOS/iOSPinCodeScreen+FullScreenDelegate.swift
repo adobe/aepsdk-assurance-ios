@@ -20,6 +20,7 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
     /// - Parameters:
     ///     - message: Fullscreen message which is currently shown
     func onShow(message: FullscreenMessage) {
+        isDisplayed = true
         fullscreenWebView = message.webView as? WKWebView
     }
 
@@ -27,6 +28,7 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
     /// - Parameters:
     ///     - message: Fullscreen message which is dismissed
     func onDismiss(message: FullscreenMessage) {
+        isDisplayed = false
         fullscreenWebView = nil
         fullscreenMessage = nil
     }
@@ -47,6 +49,7 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
         // when the user hits "Cancel" on the iOS pinpad screen. Dismiss the fullscreen message
         // return false, to indicate that the URL has been handled
         if host == AssuranceConstants.HTMLURLPath.CANCEL {
+            self.pinCodeCallback?(nil, AssuranceSocketError.USER_CANCELLED)
             message.dismiss()
             return false
         }
@@ -56,17 +59,17 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
         if host == AssuranceConstants.HTMLURLPath.CONFIRM {
             // get the entered 4 digit code from url
             guard let passcode = URL(string: url ?? "")?.params["code"] else {
-                connectionFailedWithError(AssuranceSocketError.NO_PINCODE, shouldShowRetry: true)
+                self.pinCodeCallback?(nil, AssuranceSocketError.NO_PINCODE)
                 return false
             }
 
             guard let sessionId = assuranceExtension.sessionId else {
-                connectionFailedWithError(AssuranceSocketError.NO_SESSION_ID, shouldShowRetry: false)
+                self.pinCodeCallback?(nil, AssuranceSocketError.NO_SESSION_ID)
                 return false
             }
 
             guard let orgID = getURLEncodedOrgID() else {
-                connectionFailedWithError(AssuranceSocketError.NO_ORG_ID, shouldShowRetry: true)
+                self.pinCodeCallback?(nil, AssuranceSocketError.NO_ORG_ID)
                 return false
             }
 
@@ -78,8 +81,13 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
                                    orgID,
                                    assuranceExtension.clientID)
 
+            guard let url = URL(string: socketURL) else {
+                self.pinCodeCallback?(nil, AssuranceSocketError.NO_URL)
+                return false
+            }
+
             self.connectionInitialized()
-            self.authorizedURLCallback?(socketURL)
+            self.pinCodeCallback?(url, nil)
         }
 
         return false
