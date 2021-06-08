@@ -21,9 +21,19 @@ class MockAssuranceSession: AssuranceSession {
 
     var sendEventCalled = false
     var sentEvent: AssuranceEvent?
+
     override func sendEvent(_ assuranceEvent: AssuranceEvent) {
         sendEventCalled = true
         sentEvent = assuranceEvent
+    }
+
+    var addClientLogCalled = false
+    var addClientLogMessage: String?
+    var addClientLogVisibility: AssuranceClientLogVisibility?
+    override func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
+        addClientLogCalled = true
+        addClientLogMessage = message
+        addClientLogVisibility = visibility
     }
 
     // More mocking's and assertion helpers will be coded soon

@@ -54,5 +54,9 @@ class AssuranceSession {
     func handleConnectionError(error: AssuranceSocketError, closeCode: Int?) {
         // coming soon
     }
+    
+    func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
+        // coming soon
+    }
 
 }

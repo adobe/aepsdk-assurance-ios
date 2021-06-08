@@ -22,6 +22,7 @@ class AssuranceTests: XCTestCase {
     let mockUIService = MockUIService()
     let mockDataStore = MockDataStore()
     let mockMessagePresentable = MockFullscreenMessagePresentable()
+    var mockSession: MockAssuranceSession!
     var assurance: Assurance!
 
     override func setUp() {
@@ -30,6 +31,10 @@ class AssuranceTests: XCTestCase {
         mockUIService.fullscreenMessage = mockMessagePresentable
         assurance = Assurance(runtime: runtime)
         assurance.onRegistered()
+
+        // mock the interaction with AssuranceSession class
+        mockSession = MockAssuranceSession(assurance)
+        assurance.assuranceSession = mockSession
     }
 
     override func tearDown() {
@@ -110,6 +115,153 @@ class AssuranceTests: XCTestCase {
         verify_sessionIdAndEnvironmentId_notSetInDatastore()
     }
 
+    //--------------------------------------------------*/
+    // MARK: - handleWildCardEvent
+    //--------------------------------------------------*/
+
+    func test_handleWildCardEvent_withNilEventData() throws {
+        // setup
+        let event = Event(name: "Any SDK Event",
+                          type: EventType.analytics,
+                          source: EventSource.requestContent,
+                          data: nil)
+
+        // test
+        runtime.simulateComingEvent(event: event)
+
+        // verify that the event is sent to the session
+        XCTAssertTrue(mockSession.sendEventCalled)
+        XCTAssertEqual("Any SDK Event", mockSession.sentEvent?.payload?[AssuranceConstants.ACPExtensionEventKey.NAME]?.stringValue)
+    }
+
+    //--------------------------------------------------*/
+    // MARK: - handleSharedStateEvent
+    //--------------------------------------------------*/
+
+    func test_handleSharedStateEvent_Regular() throws {
+        // setup
+        let sampleConfiguration = ["configkey": "value"]
+        let configStateChangeEvent = Event(name: AssuranceConstants.SDKEventName.SHARED_STATE_CHANGE,
+                                           type: EventType.hub,
+                                           source: EventSource.sharedState,
+                                           data: [AssuranceConstants.EventDataKey.SHARED_STATE_OWNER: AssuranceConstants.SharedStateName.CONFIGURATION])
+        runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, data: (value: sampleConfiguration, status: .set))
+
+        // test
+        runtime.simulateComingEvent(event: configStateChangeEvent)
+
+        // verify that the event is sent to the session
+        XCTAssertTrue(mockSession.sendEventCalled)
+        let metadata = mockSession.sentEvent?.payload?[AssuranceConstants.PayloadKey.METADATA]?.dictionaryValue
+        XCTAssertEqual(sampleConfiguration, metadata?["state.data"] as! Dictionary)
+    }
+
+    func test_handleSharedStateEvent_XDM() throws {
+        // setup
+        let sampleConsent = ["consent": "yes"]
+        let consentStateChangeEvent = Event(name: AssuranceConstants.SDKEventName.XDM_SHARED_STATE_CHANGE,
+                                            type: EventType.hub,
+                                            source: EventSource.sharedState,
+                                            data: [AssuranceConstants.EventDataKey.SHARED_STATE_OWNER: "consentExtension"])
+        runtime.simulateXDMSharedState(for: "consentExtension", data: (value: sampleConsent, status: .set))
+
+        // test
+        runtime.simulateComingEvent(event: consentStateChangeEvent)
+
+        // verify that the event is sent to the session
+        XCTAssertTrue(mockSession.sendEventCalled)
+        let metadata = mockSession.sentEvent?.payload?[AssuranceConstants.PayloadKey.METADATA]?.dictionaryValue
+        XCTAssertEqual(sampleConsent, try XCTUnwrap(metadata?["xdm.state.data"]) as! Dictionary)
+    }
+
+    func test_handleSharedStateEvent_WhenSharedStatePending() throws {
+        // setup
+        let configStateChangeEvent = Event(name: AssuranceConstants.SDKEventName.SHARED_STATE_CHANGE,
+                                           type: EventType.hub,
+                                           source: EventSource.sharedState,
+                                           data: [AssuranceConstants.EventDataKey.SHARED_STATE_OWNER: AssuranceConstants.SharedStateName.CONFIGURATION])
+        runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, data: (value: nil, status: .pending))
+
+        // test
+        runtime.simulateComingEvent(event: configStateChangeEvent)
+
+        // verify that the pending shared state are not sent
+        XCTAssertFalse(mockSession.sendEventCalled)
+    }
+
+    func test_handleSharedStateEvent_WhenSharedStateNotAvailable() throws {
+        // setup
+        let configStateChangeEvent = Event(name: AssuranceConstants.SDKEventName.SHARED_STATE_CHANGE,
+                                           type: EventType.hub,
+                                           source: EventSource.sharedState,
+                                           data: [AssuranceConstants.EventDataKey.SHARED_STATE_OWNER: AssuranceConstants.SharedStateName.CONFIGURATION])
+
+        // test
+        runtime.simulateComingEvent(event: configStateChangeEvent)
+
+        // verify that the pending shared state are not sent
+        XCTAssertFalse(mockSession.sendEventCalled)
+    }
+
+    func test_handleSharedStateEvent_WhenStateOwnerNil() throws {
+        // setup
+        let configStateChangeEvent = Event(name: AssuranceConstants.SDKEventName.SHARED_STATE_CHANGE,
+                                           type: EventType.hub,
+                                           source: EventSource.sharedState,
+                                           data: [:]) // no stateOwner in data
+
+        // test
+        runtime.simulateComingEvent(event: configStateChangeEvent)
+
+        // verify that the pending shared state are not sent
+        XCTAssertFalse(mockSession.sendEventCalled)
+    }
+
+    func test_handlePlacesRequest_GetNearByPlaces() throws {
+        // test
+        runtime.simulateComingEvent(event: getNearbyPlacesRequestEvent)
+
+        // verify that the client log is displayed
+        XCTAssertTrue(mockSession.addClientLogCalled)
+        XCTAssertEqual("Places - Requesting 7 nearby POIs from (12.340000, 23.455489)", mockSession.addClientLogMessage)
+    }
+
+    func test_handlePlacesRequest_PlacesReset() throws {
+        // test
+        runtime.simulateComingEvent(event: placesResetEvent)
+
+        // verify that the client log is displayed
+        XCTAssertTrue(mockSession.addClientLogCalled)
+        XCTAssertEqual("Places - Resetting location", mockSession.addClientLogMessage)
+    }
+
+    func test_handlePlacesResponse_RegionEvent() throws {
+        // test
+        runtime.simulateComingEvent(event: regionEvent)
+
+        // verify that the client log is displayed
+        XCTAssertTrue(mockSession.addClientLogCalled)
+        XCTAssertEqual("Places - Processed entry for region Green house.", mockSession.addClientLogMessage)
+    }
+
+    func test_handlePlacesResponse_nearbyPOIResponse() throws {
+        // test
+        runtime.simulateComingEvent(event: nearbyPOIResponse)
+
+        // verify that the client log is displayed
+        XCTAssertTrue(mockSession.addClientLogCalled)
+        XCTAssertEqual("Places - Found 2 nearby POIs :", mockSession.addClientLogMessage)
+    }
+
+    func test_handlePlacesResponse_nearbyPOIResponseNoPOI() throws {
+        // test
+        runtime.simulateComingEvent(event: nearbyPOIResponseNoPOI)
+
+        // verify that the client log is displayed
+        XCTAssertTrue(mockSession.addClientLogCalled)
+        XCTAssertEqual("Places - Found 0 nearby POIs.", mockSession.addClientLogMessage)
+    }
+
     // MARK: Private methods
     private func verify_PinCodeScreen_isNotShown() {
         XCTAssertFalse(mockUIService.createFullscreenMessageCalled)
@@ -121,4 +273,52 @@ class AssuranceTests: XCTestCase {
         XCTAssertNil(mockDataStore.dict[AssuranceConstants.DataStoreKeys.SESSION_ID] ?? nil)
         XCTAssertNil(mockDataStore.dict[AssuranceConstants.DataStoreKeys.ENVIRONMENT] ?? nil)
     }
+
+    var getNearbyPlacesRequestEvent: Event {
+        return Event(name: AssuranceConstants.Places.EventName.REQUEST_NEARBY_POI,
+                     type: EventType.places,
+                     source: EventSource.requestContent,
+                     data: [
+                        AssuranceConstants.Places.EventDataKeys.LATITUDE: 12.34,
+                        AssuranceConstants.Places.EventDataKeys.LONGITUDE: 23.4554888443,
+                        AssuranceConstants.Places.EventDataKeys.COUNT: 7
+        ])
+    }
+
+    var placesResetEvent: Event {
+        return Event(name: AssuranceConstants.Places.EventName.REQUEST_RESET,
+                     type: EventType.places,
+                     source: EventSource.requestContent,
+                     data: [:])
+    }
+
+    var regionEvent: Event {
+        return Event(name: AssuranceConstants.Places.EventName.RESPONSE_REGION_EVENT,
+                     type: EventType.places,
+                     source: EventSource.responseContent,
+                     data: [
+                        AssuranceConstants.Places.EventDataKeys.REGION_EVENT_TYPE: "entry",
+                        AssuranceConstants.Places.EventDataKeys.TRIGGERING_REGION: [AssuranceConstants.Places.EventDataKeys.REGION_NAME: "Green house"]
+        ])
+    }
+
+    var nearbyPOIResponse: Event {
+        return Event(name: AssuranceConstants.Places.EventName.RESPONSE_NEARBY_POI_EVENT,
+                     type: EventType.places,
+                     source: EventSource.responseContent,
+                     data: [
+                        AssuranceConstants.Places.EventDataKeys.NEARBY_POI: [["regionName": "Golden Gate"],
+                                                                             ["regionName": "Bay bridge"]]
+        ])
+    }
+
+    var nearbyPOIResponseNoPOI: Event {
+        return Event(name: AssuranceConstants.Places.EventName.RESPONSE_NEARBY_POI_EVENT,
+                     type: EventType.places,
+                     source: EventSource.responseContent,
+                     data: [
+                        AssuranceConstants.Places.EventDataKeys.NEARBY_POI: []
+        ])
+    }
+
 }
