@@ -320,4 +320,5 @@ class AssuranceTests: XCTestCase {
                         AssuranceConstants.Places.EventDataKeys.NEARBY_POI: []
         ])
     }
+
 }

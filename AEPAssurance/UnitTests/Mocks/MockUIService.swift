@@ -27,13 +27,17 @@ class MockFullscreenMessage: FullscreenPresentable {
 }
 
 class MockFloatingButton: FloatingButtonPresentable {
+    init() {}
+
     var setButtonImageCalled = false
     func setButtonImage(imageData: Data) {
         setButtonImageCalled = true
     }
     var setInitialPositionCalled = false
-    func setInitialPosition(position: FloatingButtonPosition) {
+    var initialPositionValue: FloatingButtonPosition?
+    func setInitial(position: FloatingButtonPosition) {
         setInitialPositionCalled = true
+        initialPositionValue = position
     }
 
     var showCalled = false
