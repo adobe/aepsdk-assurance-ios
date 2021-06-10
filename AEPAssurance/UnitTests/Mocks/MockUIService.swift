@@ -49,6 +49,7 @@ class MockFloatingButton: FloatingButtonPresentable {
     func dismiss() {
         dismissCalled = true
     }
+    
 }
 
 class MockUIService: UIService {
@@ -87,6 +88,11 @@ class MockFullScreenMessage: FullscreenMessage {
     var dismissCalled = false
     override func dismiss() {
         dismissCalled = true
+    }
+    
+    var hideCalled = false
+    override func hide() {
+        hideCalled = true
     }
 
 }

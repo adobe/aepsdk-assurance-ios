@@ -35,6 +35,11 @@ class MockAssuranceSession: AssuranceSession {
         addClientLogMessage = message
         addClientLogVisibility = visibility
     }
+    
+    var terminateSessionCalled = false
+    override func terminateSession() {
+        terminateSessionCalled = true
+    }
 
     // More mocking's and assertion helpers will be coded soon
 }
