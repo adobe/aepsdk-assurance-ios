@@ -10,7 +10,7 @@
 		07BEA3EDD4D94F0947A81DBF /* Pods_AEPAssurance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA7C4770EBD136D41B82A7A1 /* Pods_AEPAssurance.framework */; };
 		3FF4F5C8E96A31D0A6E896C4 /* Pods_TestApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96C170474540581D23D5C489 /* Pods_TestApp.framework */; };
 		4A3445E6430F2FDC93CD6A1F /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F7044D49EBAEA4F53647EF2 /* Pods_UnitTests.framework */; };
-		B60BAC0C26434ED90054CD21 /* AssuranceSocketError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60BAC0B26434ED90054CD21 /* AssuranceSocketError.swift */; };
+		B60BAC0C26434ED90054CD21 /* AssuranceConnectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60BAC0B26434ED90054CD21 /* AssuranceConnectionError.swift */; };
 		B63ADA8C266F700C00A1281A /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADA8B266F700C00A1281A /* ErrorView.swift */; };
 		B63ADA8E266F718900A1281A /* ErrorViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADA8D266F718900A1281A /* ErrorViewTests.swift */; };
 		B63ADAB12672629700A1281A /* iOSStatusUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADAB02672629700A1281A /* iOSStatusUI.swift */; };
@@ -130,7 +130,7 @@
 		0F7044D49EBAEA4F53647EF2 /* Pods_UnitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		493D855458BBA67C6F19F468 /* Pods-AEPAssurance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AEPAssurance.release.xcconfig"; path = "Target Support Files/Pods-AEPAssurance/Pods-AEPAssurance.release.xcconfig"; sourceTree = "<group>"; };
 		96C170474540581D23D5C489 /* Pods_TestApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B60BAC0B26434ED90054CD21 /* AssuranceSocketError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceSocketError.swift; sourceTree = "<group>"; };
+		B60BAC0B26434ED90054CD21 /* AssuranceConnectionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceConnectionError.swift; sourceTree = "<group>"; };
 		B63ADA8B266F700C00A1281A /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		B63ADA8D266F718900A1281A /* ErrorViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewTests.swift; sourceTree = "<group>"; };
 		B63ADAB02672629700A1281A /* iOSStatusUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSStatusUI.swift; sourceTree = "<group>"; };
@@ -330,7 +330,7 @@
 				B6AFD588263403EB00C63608 /* AssuranceEvent.swift */,
 				B640722A262CF06100C43183 /* AssuranceEnvironment.swift */,
 				B64071D6262C376A00C43183 /* AssuranceConstants.swift */,
-				B60BAC0B26434ED90054CD21 /* AssuranceSocketError.swift */,
+				B60BAC0B26434ED90054CD21 /* AssuranceConnectionError.swift */,
 				B6D6A014265D8836005042BE /* AssuranceClientInfo.swift */,
 				B6D6A01A265F027C005042BE /* AssuranceBlob.swift */,
 				B6D6A025265F9F14005042BE /* AssuranceUIUtil.swift */,
@@ -913,7 +913,7 @@
 				B6FEB8B2263A18F500F0F240 /* ActiveIcon.swift in Sources */,
 				B6B0E2C9263C674F00EF5E21 /* SessionAuthorizingUI.swift in Sources */,
 				B6FEB8B1263A18F500F0F240 /* InactiveIcon.swift in Sources */,
-				B60BAC0C26434ED90054CD21 /* AssuranceSocketError.swift in Sources */,
+				B60BAC0C26434ED90054CD21 /* AssuranceConnectionError.swift in Sources */,
 				B6B0E2CD263C709100EF5E21 /* iOSPinCodeScreen.swift in Sources */,
 				B6407206262C90FA00C43183 /* Assurance+PublicAPI.swift in Sources */,
 				B63ADAB5267262F600A1281A /* iOSStatusUI+FullScreenDelegate.swift in Sources */,

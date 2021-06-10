@@ -49,7 +49,7 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
         // when the user hits "Cancel" on the iOS pinpad screen. Dismiss the fullscreen message
         // return false, to indicate that the URL has been handled
         if host == AssuranceConstants.HTMLURLPath.CANCEL {
-            self.pinCodeCallback?(nil, AssuranceSocketError.USER_CANCELLED)
+            self.pinCodeCallback?(nil, AssuranceConnectionError.userCancelled)
             message.dismiss()
             return false
         }
@@ -59,17 +59,17 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
         if host == AssuranceConstants.HTMLURLPath.CONFIRM {
             // get the entered 4 digit code from url
             guard let passcode = URL(string: url ?? "")?.params["code"] else {
-                self.pinCodeCallback?(nil, AssuranceSocketError.NO_PINCODE)
+                self.pinCodeCallback?(nil, AssuranceConnectionError.noPincode)
                 return false
             }
 
             guard let sessionId = assuranceExtension.sessionId else {
-                self.pinCodeCallback?(nil, AssuranceSocketError.NO_SESSION_ID)
+                self.pinCodeCallback?(nil, AssuranceConnectionError.noSessionID)
                 return false
             }
 
             guard let orgID = getURLEncodedOrgID() else {
-                self.pinCodeCallback?(nil, AssuranceSocketError.NO_ORG_ID)
+                self.pinCodeCallback?(nil, AssuranceConnectionError.noOrgId)
                 return false
             }
 
@@ -82,15 +82,16 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
                                    assuranceExtension.clientID)
 
             guard let url = URL(string: socketURL) else {
-                self.pinCodeCallback?(nil, AssuranceSocketError.NO_URL)
+                self.pinCodeCallback?(nil, AssuranceConnectionError.noURL)
                 return false
             }
 
             self.connectionInitialized()
             self.pinCodeCallback?(url, nil)
+            return false
         }
 
-        return false
+        return true
     }
     ///
     /// Invoked when the FullscreenMessage failed to be displayed

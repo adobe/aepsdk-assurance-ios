@@ -27,7 +27,7 @@ class ErrorViewTests: XCTestCase {
     override func setUp() {
         ServiceProvider.shared.uiService = mockUIService
         mockUIService.fullscreenMessage = mockMessage
-        errorView = ErrorView(.CLIENT_ERROR)
+        errorView = ErrorView(.clientError)
         errorView.fullscreenWebView = mockWebView
     }
 
@@ -46,10 +46,10 @@ class ErrorViewTests: XCTestCase {
 
     func test_errorView_loadsCorrectMessage() throws {
         // test
-        errorView.webViewHasCompletedLoading()
+        errorView.webViewDidFinishInitialLoading(webView: mockWebView)
 
         // verify that the javascript to show error is called
-        XCTAssertEqual(String(format: "showError('%@','%@', 0);", AssuranceSocketError.CLIENT_ERROR.info.name, AssuranceSocketError.CLIENT_ERROR.info.description), mockWebView.javaScriptStringReceived)
+        XCTAssertEqual(String(format: "showError('%@','%@', 0);", AssuranceConnectionError.clientError.info.name, AssuranceConnectionError.clientError.info.description), mockWebView.javaScriptStringReceived)
     }
 
     func test_errorView_cancelClicked() throws {

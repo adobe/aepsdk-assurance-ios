@@ -16,12 +16,12 @@ import WebKit
 
 class ErrorView: FullscreenMessageDelegate {
 
-    var error: AssuranceSocketError
+    var error: AssuranceConnectionError
     var fullscreenMessage: FullscreenPresentable?
     var fullscreenWebView: WKWebView?
 
     /// Initializer
-    init(_ error: AssuranceSocketError) {
+    init(_ error: AssuranceConnectionError) {
         self.error = error
     }
 
@@ -53,10 +53,10 @@ class ErrorView: FullscreenMessageDelegate {
             return false
         }
 
-        return false
+        return true
     }
 
-    func webViewHasCompletedLoading() {
+    func webViewDidFinishInitialLoading(webView: WKWebView) {
         loadError()
     }
 

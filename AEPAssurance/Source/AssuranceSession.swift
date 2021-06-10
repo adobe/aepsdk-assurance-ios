@@ -45,7 +45,8 @@ class AssuranceSession {
             }
 
             Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to make a socket connection with URL : \(socketURL.absoluteString)")
-            //self?.socket.connect(withUrl: socketUrl)
+            // todo
+            //self?.socket.connect(withUrl: socketURL)
             pinCodeScreen.connectionInitialized()
         })
     }
@@ -54,10 +55,10 @@ class AssuranceSession {
         // coming soon
     }
 
-    func handleConnectionError(error: AssuranceSocketError, closeCode: Int?) {
+    func handleConnectionError(error: AssuranceConnectionError, closeCode: Int?) {
         // coming soon
     }
-    
+
     func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
         // coming soon
     }
