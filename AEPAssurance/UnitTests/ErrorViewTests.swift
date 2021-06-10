@@ -46,7 +46,7 @@ class ErrorViewTests: XCTestCase {
 
     func test_errorView_loadsCorrectMessage() throws {
         // test
-        errorView.webViewHasCompletedLoading()
+        errorView.webViewDidFinishInitialLoading?(webView: mockWebView)
 
         // verify that the javascript to show error is called
         XCTAssertEqual(String(format: "showError('%@','%@', 0);", AssuranceSocketError.CLIENT_ERROR.info.name, AssuranceSocketError.CLIENT_ERROR.info.description), mockWebView.javaScriptStringReceived)

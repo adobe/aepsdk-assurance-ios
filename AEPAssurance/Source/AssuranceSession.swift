@@ -42,7 +42,8 @@ class AssuranceSession {
             }
 
             Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to make a socket connection with URL : \(socketURL.absoluteString)")
-            //self?.socket.connect(withUrl: socketUrl)
+            // todo
+            //self?.socket.connect(withUrl: socketURL)
             pinCodeScreen.connectionInitialized()
         })
     }

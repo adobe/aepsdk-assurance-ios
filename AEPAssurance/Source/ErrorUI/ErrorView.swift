@@ -53,10 +53,10 @@ class ErrorView: FullscreenMessageDelegate {
             return false
         }
 
-        return false
+        return true
     }
-
-    func webViewHasCompletedLoading() {
+    
+    func webViewDidFinishInitialLoading(webView: WKWebView) {
         loadError()
     }
 

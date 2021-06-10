@@ -37,7 +37,7 @@ enum AssuranceSocketError {
                     "Unable to extract the pincode entered.", true)
         case .NO_URL:
             return ("Socket Connection Error",
-                    "Unable to form a valid socket URL for connection.", true)
+                    "Unable to form a valid socket URL for connection.", false)
         case .NO_ORG_ID:
             return ("Invalid Launch & SDK Configuration",
                     "The Experience Cloud Org identifier is unavailable from SDK configuration. Please ensure the Launch mobile property is properly configured.", true)
