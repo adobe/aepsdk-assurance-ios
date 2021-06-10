@@ -12,6 +12,7 @@
 
 import Foundation
 
+// todo later: For better clarity separate out into two enums .. socketError vs clientSideError for socket connection
 enum AssuranceConnectionError {
     case genericError
     case noOrgId
@@ -40,7 +41,7 @@ enum AssuranceConnectionError {
                     "Unable to form a valid socket URL for connection.", false)
         case .noOrgId:
             return ("Invalid Launch & SDK Configuration",
-                    "The Experience Cloud Org identifier is unavailable from SDK configuration. Please ensure the Launch mobile property is properly configured.", true)
+                    "The Experience Cloud Org identifier is unavailable from SDK configuration. Please ensure the Launch mobile property is properly configured.", false)
         case .orgIDMismatch:
             return ("Unauthorized Access",
                     "The Experience Cloud organization for this Launch Property does not match that of the AEP Assurance session", false)
@@ -50,8 +51,8 @@ enum AssuranceConnectionError {
         case .eventLimit:
             return ("Event Limit Reached",
                     "You have reached the maximum number of events (10k) that can be sent per minute.", false)
-            // todo immediate:  check with the team on better description.
-            // todo later:  have griffon server return error description and how to solve... Same for connection & event limit errors
+        // todo immediate:  check with the team on better description.
+        // todo later:  have griffon server return error description and how to solve... Same for connection & event limit errors
         case .clientError:
             return ("Client Disconnected",
                     "This client has been disconnected due to an unexpected error. Error Code 4400.", false)
