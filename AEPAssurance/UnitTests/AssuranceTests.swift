@@ -282,7 +282,7 @@ class AssuranceTests: XCTestCase {
                         AssuranceConstants.Places.EventDataKeys.LATITUDE: 12.34,
                         AssuranceConstants.Places.EventDataKeys.LONGITUDE: 23.4554888443,
                         AssuranceConstants.Places.EventDataKeys.COUNT: 7
-        ])
+                     ])
     }
 
     var placesResetEvent: Event {
@@ -299,7 +299,7 @@ class AssuranceTests: XCTestCase {
                      data: [
                         AssuranceConstants.Places.EventDataKeys.REGION_EVENT_TYPE: "entry",
                         AssuranceConstants.Places.EventDataKeys.TRIGGERING_REGION: [AssuranceConstants.Places.EventDataKeys.REGION_NAME: "Green house"]
-        ])
+                     ])
     }
 
     var nearbyPOIResponse: Event {
@@ -309,7 +309,7 @@ class AssuranceTests: XCTestCase {
                      data: [
                         AssuranceConstants.Places.EventDataKeys.NEARBY_POI: [["regionName": "Golden Gate"],
                                                                              ["regionName": "Bay bridge"]]
-        ])
+                     ])
     }
 
     var nearbyPOIResponseNoPOI: Event {
@@ -318,7 +318,7 @@ class AssuranceTests: XCTestCase {
                      source: EventSource.responseContent,
                      data: [
                         AssuranceConstants.Places.EventDataKeys.NEARBY_POI: []
-        ])
+                     ])
     }
 
 }

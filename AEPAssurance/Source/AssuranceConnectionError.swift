@@ -12,48 +12,50 @@
 
 import Foundation
 
-enum AssuranceSocketError {
-    case GENERIC_ERROR
-    case NO_ORG_ID
-    case NO_SESSION_ID
-    case NO_PINCODE
-    case NO_URL
-    case ORGID_MISMATCH
-    case CONNECTION_LIMIT
-    case EVENT_LIMIT
-    case CLIENT_ERROR
-    case USER_CANCELLED
+enum AssuranceConnectionError {
+    case genericError
+    case noOrgId
+    case noSessionID
+    case noPincode
+    case noURL
+    case orgIDMismatch
+    case connectionLimit
+    case eventLimit
+    case clientError
+    case userCancelled
 
     var info: (name: String, description: String, shouldRetry: Bool) {
         switch self {
-        case .GENERIC_ERROR:
+        case .genericError:
             return ("Connection Error",
                     "The connection may be failing due to a network issue or an incorrect PIN. Please verify internet connectivity or the PIN and try again.", true)
-        case .NO_SESSION_ID:
+        case .noSessionID:
             return ("Invalid SessionID",
                     "Unable to extract valid Assurance sessionID from deeplink URL. Please try re-connecting to the session with a valid deeplink URL", false)
-        case .NO_PINCODE:
+        case .noPincode:
             return ("HTML Error",
                     "Unable to extract the pincode entered.", true)
-        case .NO_URL:
+        case .noURL:
             return ("Socket Connection Error",
                     "Unable to form a valid socket URL for connection.", false)
-        case .NO_ORG_ID:
+        case .noOrgId:
             return ("Invalid Launch & SDK Configuration",
                     "The Experience Cloud Org identifier is unavailable from SDK configuration. Please ensure the Launch mobile property is properly configured.", true)
-        case .ORGID_MISMATCH:
+        case .orgIDMismatch:
             return ("Unauthorized Access",
                     "The Experience Cloud organization for this Launch Property does not match that of the AEP Assurance session", false)
-        case .CONNECTION_LIMIT:
+        case .connectionLimit:
             return ("Connection Limit Reached",
                     "You have reached the maximum number of connected device (50) allowed to a session.", false)
-        case .EVENT_LIMIT:
+        case .eventLimit:
             return ("Event Limit Reached",
                     "You have reached the maximum number of events (10k) that can be sent per minute.", false)
-        case .CLIENT_ERROR:
+            // todo immediate:  check with the team on better description.
+            // todo later:  have griffon server return error description and how to solve... Same for connection & event limit errors
+        case .clientError:
             return ("Client Disconnected",
                     "This client has been disconnected due to an unexpected error. Error Code 4400.", false)
-        case .USER_CANCELLED:
+        case .userCancelled:
             return ("Assurance session connection cancelled.",
                     "User has chosen to cancel the socket connection. To start again, please open the app with an assurance deeplink url.", false)
         }

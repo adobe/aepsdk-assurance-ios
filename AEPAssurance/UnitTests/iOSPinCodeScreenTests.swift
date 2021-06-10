@@ -92,7 +92,7 @@ class iOSPinCodeScreenTests: XCTestCase {
         // verify
         let expectation = XCTestExpectation(description: "No OrgID error should be returned")
         pinCodeScreen.show(callback: { _, error in
-            XCTAssertEqual(error, AssuranceSocketError.NO_ORG_ID)
+            XCTAssertEqual(error, AssuranceConnectionError.noOrgId)
             expectation.fulfill()
         })
 
@@ -110,7 +110,7 @@ class iOSPinCodeScreenTests: XCTestCase {
         // verify
         let expectation = XCTestExpectation(description: "No Pincode error should be returned")
         pinCodeScreen.show(callback: { _, error in
-            XCTAssertEqual(error, AssuranceSocketError.NO_PINCODE)
+            XCTAssertEqual(error, AssuranceConnectionError.noPincode)
             expectation.fulfill()
         })
 
