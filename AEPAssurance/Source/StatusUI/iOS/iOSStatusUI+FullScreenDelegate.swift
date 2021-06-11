@@ -50,7 +50,7 @@ extension iOSStatusUI: FullscreenMessageDelegate {
         }
 
         // when the user hits "Disconnect" on statusUI screen. Dismiss the fullscreen message
-        // Notify the AssuranceSession instance to disconnect. And remove the floating buttonxe
+        // Notify the AssuranceSession instance to disconnect. And remove the floating button
         // return false, to indicate that the URL has been handled
         if host == AssuranceConstants.HTMLURLPath.DISCONNECT {
             message.dismiss()
