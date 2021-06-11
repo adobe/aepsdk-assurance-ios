@@ -101,7 +101,7 @@ class iOSStatusUI {
                 let logCommand = String(format: "addLog(\"%d\", \"%@\");", logMessage.visibility.rawValue, logMessage.message)
                 webView.evaluateJavaScript(logCommand, completionHandler: { _, error in
                     if let error = error {
-                        print("Error Happened \(error.localizedDescription)")
+                        print("An error occurred while displaying client logs. Error Description: \(error.localizedDescription)")
                     }
 
                 })
