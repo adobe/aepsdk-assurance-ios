@@ -28,7 +28,7 @@ class iOSStatusUI {
 
     /// Displays the Assurance Status UI on the customers application.
     /// This method will initialize the FloatingButton and the FullScreen webView required for the displaying Assurance status.
-    /// On calling this method Floating button is appears on the screen showing the current connection status.
+    /// On calling this method Floating button appears on the screen showing the current connection status.
     func display() {
         if let _ = floatingButton {
             return
@@ -44,7 +44,7 @@ class iOSStatusUI {
     }
 
     ///
-    /// Removes the Assurance Status UI from the customers application
+    /// Removes Assurance Status UI from the customers application
     ///
     func remove() {
         self.floatingButton?.dismiss()
@@ -54,7 +54,7 @@ class iOSStatusUI {
     }
 
     ///
-    /// Updates the Assurance Status UI to denote socket is currently connected.
+    /// Updates Assurance Status UI to denote socket is currently connected.
     ///
     func updateForSocketConnected() {
         addClientLog("Assurance connection established.", visibility: .low)
@@ -62,7 +62,7 @@ class iOSStatusUI {
     }
 
     ///
-    /// Updates the Assurance Status UI to denote socket connection is currently inactive.
+    /// Updates Assurance Status UI to denote socket connection is currently inactive.
     ///
     func updateForSocketInActive() {
         addClientLog("Assurance disconnected. Attempting to reconnect..", visibility: .low)
