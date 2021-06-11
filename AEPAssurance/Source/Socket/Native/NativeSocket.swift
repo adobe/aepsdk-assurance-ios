@@ -83,7 +83,7 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
 
     func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
         socketState = .CLOSED
-        self.delegate.webSocketDidDisconnectConnect(self, closeCode.rawValue, reason?.base64EncodedString() ?? "", true)
+        self.delegate.webSocketDidDisconnect(self, closeCode.rawValue, reason?.base64EncodedString() ?? "", true)
     }
 
     // MARK: - Private methods

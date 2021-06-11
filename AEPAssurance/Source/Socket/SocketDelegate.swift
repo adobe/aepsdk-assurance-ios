@@ -26,7 +26,7 @@ protocol SocketDelegate {
     ///     - closeCode:An `Int` representing the reason for socket disconnection. Reference : https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
     ///     - reason: A `String` description for the reason of disconnection
     ///     - wasClean: A boolean representing if the connection has been terminated successfully. A false value represents the socket connection can be attempted to reconnected.
-    func webSocketDidDisconnectConnect(_ socket: SocketConnectable, _ closeCode: Int, _ reason: String, _ wasClean: Bool)
+    func webSocketDidDisconnect(_ socket: SocketConnectable, _ closeCode: Int, _ reason: String, _ wasClean: Bool)
 
     /// Tells the delegate when there is any error in socket connection
     /// - Parameters:

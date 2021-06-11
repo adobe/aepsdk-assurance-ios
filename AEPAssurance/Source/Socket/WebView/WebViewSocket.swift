@@ -177,7 +177,7 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
             let closeCode = messageBody["closeCode"] as? Int ?? -1
             let reason = messageBody["reason"] as? String ?? ""
             let wasClean = messageBody["wasClean"] as? Bool ?? false
-            self.delegate.webSocketDidDisconnectConnect(self, closeCode, reason, wasClean)
+            self.delegate.webSocketDidDisconnect(self, closeCode, reason, wasClean)
         })
 
         registerSocketCallback("onmessage", with: { message in

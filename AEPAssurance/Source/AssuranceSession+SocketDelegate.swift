@@ -19,7 +19,7 @@ extension AssuranceSession: SocketDelegate {
         self.sendClientInfoEvent()
     }
 
-    func webSocketDidDisconnectConnect(_ socket: SocketConnectable, _ closeCode: Int, _ reason: String, _ wasClean: Bool) {
+    func webSocketDidDisconnect(_ socket: SocketConnectable, _ closeCode: Int, _ reason: String, _ wasClean: Bool) {
         // coming soon
     }
 
