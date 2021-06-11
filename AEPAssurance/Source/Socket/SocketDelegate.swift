@@ -15,12 +15,12 @@ import Foundation
 /// Methods for adopted by the object to manage the events from the web-socket connection
 protocol SocketDelegate {
 
-    /// Tells the listener when the socket connection has been successfully made
+    /// Tells the delegate when the socket connection has been successfully made
     /// - Parameters:
     ///     - socket:the instance of `SocketConnectable` that is connected.
     func webSocketDidConnect(_ socket: SocketConnectable)
 
-    /// Tells the listener when the socket is disconnected
+    /// Tells the delegate when the socket is disconnected
     /// - Parameters:
     ///     - socket: the instance of `SocketConnectable` that is disconnected
     ///     - closeCode:An `Int` representing the reason for socket disconnection. Reference : https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
@@ -28,7 +28,7 @@ protocol SocketDelegate {
     ///     - wasClean: A boolean representing if the connection has been terminated successfully. A false value represents the socket connection can be attempted to reconnected.
     func webSocketDidDisconnectConnect(_ socket: SocketConnectable, _ closeCode: Int, _ reason: String, _ wasClean: Bool)
 
-    /// Tells the listener when there is any error in socket connection
+    /// Tells the delegate when there is any error in socket connection
     /// - Parameters:
     ///     - socket: the instance of `SocketConnectable`
     func webSocketOnError(_ socket: SocketConnectable)

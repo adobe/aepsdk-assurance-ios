@@ -30,7 +30,7 @@ extension AssuranceSession: SocketDelegate {
     /// Invoked when an `AssuranceEvent` is received from web socket connection
     func webSocket(_ socket: SocketConnectable, didReceiveEvent event: AssuranceEvent) {
         Log.trace(label: AssuranceConstants.LOG_TAG, "Received event from assurance session - \(event.description)")
-       
+
         // add the incoming event to inboundQueue and process them
         inboundQueue.enqueue(newElement: event)
         inboundSource.add(data: 1)
