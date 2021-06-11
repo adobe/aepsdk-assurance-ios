@@ -58,7 +58,7 @@ extension iOSStatusUI: FullscreenMessageDelegate {
             return false
         }
 
-        return false
+        return true
     }
 
     /// Invoked when the fullscreen message finished loading its first content on the webView.
