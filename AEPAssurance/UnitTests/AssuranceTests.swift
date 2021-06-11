@@ -21,14 +21,14 @@ class AssuranceTests: XCTestCase {
     let runtime = TestableExtensionRuntime()
     let mockUIService = MockUIService()
     let mockDataStore = MockDataStore()
-    let mockMessage = MockFullscreenMessage()
+    let mockMessagePresentable = MockFullscreenMessagePresentable()
     var mockSession: MockAssuranceSession!
     var assurance: Assurance!
 
     override func setUp() {
         ServiceProvider.shared.uiService = mockUIService
         ServiceProvider.shared.namedKeyValueService = mockDataStore
-        mockUIService.fullscreenMessage = mockMessage
+        mockUIService.fullscreenMessage = mockMessagePresentable
         assurance = Assurance(runtime: runtime)
         assurance.onRegistered()
 
@@ -57,7 +57,7 @@ class AssuranceTests: XCTestCase {
 
         // verify
         XCTAssertTrue(mockUIService.createFullscreenMessageCalled)
-        XCTAssertTrue(mockMessage.showCalled)
+        XCTAssertTrue(mockMessagePresentable.showCalled)
 
         // verify that sessionID and environment are set in datastore
         XCTAssertEqual("28f4a622-d34f-4036-c81a-d21352144b57", mockDataStore.dict[AssuranceConstants.DataStoreKeys.SESSION_ID] as! String)
@@ -265,7 +265,7 @@ class AssuranceTests: XCTestCase {
     // MARK: Private methods
     private func verify_PinCodeScreen_isNotShown() {
         XCTAssertFalse(mockUIService.createFullscreenMessageCalled)
-        XCTAssertFalse(mockMessage.showCalled)
+        XCTAssertFalse(mockMessagePresentable.showCalled)
     }
 
     private func verify_sessionIdAndEnvironmentId_notSetInDatastore() {
@@ -282,7 +282,7 @@ class AssuranceTests: XCTestCase {
                         AssuranceConstants.Places.EventDataKeys.LATITUDE: 12.34,
                         AssuranceConstants.Places.EventDataKeys.LONGITUDE: 23.4554888443,
                         AssuranceConstants.Places.EventDataKeys.COUNT: 7
-        ])
+                     ])
     }
 
     var placesResetEvent: Event {
@@ -299,7 +299,7 @@ class AssuranceTests: XCTestCase {
                      data: [
                         AssuranceConstants.Places.EventDataKeys.REGION_EVENT_TYPE: "entry",
                         AssuranceConstants.Places.EventDataKeys.TRIGGERING_REGION: [AssuranceConstants.Places.EventDataKeys.REGION_NAME: "Green house"]
-        ])
+                     ])
     }
 
     var nearbyPOIResponse: Event {
@@ -309,7 +309,7 @@ class AssuranceTests: XCTestCase {
                      data: [
                         AssuranceConstants.Places.EventDataKeys.NEARBY_POI: [["regionName": "Golden Gate"],
                                                                              ["regionName": "Bay bridge"]]
-        ])
+                     ])
     }
 
     var nearbyPOIResponseNoPOI: Event {
@@ -318,7 +318,7 @@ class AssuranceTests: XCTestCase {
                      source: EventSource.responseContent,
                      data: [
                         AssuranceConstants.Places.EventDataKeys.NEARBY_POI: []
-        ])
+                     ])
     }
 
 }

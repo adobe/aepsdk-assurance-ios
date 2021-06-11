@@ -157,7 +157,7 @@ struct AssuranceEvent: Codable {
             "  payload: \(PrettyDictionary.prettify(payload))\n" +
             "  eventNumber: \(String(describing: eventNumber))\n" +
             "  timestamp: \(String(describing: timestamp?.description))\n" +
-        "]"
+            "]"
         // swiftformat:enable indent
     }
 

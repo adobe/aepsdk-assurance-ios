@@ -93,7 +93,7 @@ class AssuranceShutDownTimerTests: XCTestCase {
                      source: EventSource.requestContent,
                      data: [
                         AssuranceConstants.EventDataKey.START_SESSION_URL: "griffon://?adb_validation_sessionid=28f4a622-d34f-4036-c81a-d21352144b57&env=stage"
-        ])
+                     ])
     }
 
     var testEvent: Event {

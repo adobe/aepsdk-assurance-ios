@@ -14,11 +14,12 @@ import AEPServices
 import Foundation
 import WebKit
 
-class iOSPinCodeScreen: SessionAuthorizing {
+class iOSPinCodeScreen: SessionAuthorizingUI {
+    var isDisplayed: Bool = false
     var assuranceExtension: Assurance
     var fullscreenMessage: FullscreenPresentable?
     var fullscreenWebView: WKWebView?
-    var authorizedURLCallback: authorizedURLCallback?
+    var pinCodeCallback: PinCodeCallback?
 
     /// Initializer
     required init(withExtension assuranceExtension: Assurance) {
@@ -26,8 +27,8 @@ class iOSPinCodeScreen: SessionAuthorizing {
     }
 
     /// Invoke this during start session to display the pinCode screen.
-    func getSocketURL(callback: @escaping authorizedURLCallback) {
-        self.authorizedURLCallback = callback
+    func show(callback: @escaping PinCodeCallback) {
+        self.pinCodeCallback = callback
         showPincodeScreen()
     }
 
@@ -50,7 +51,7 @@ class iOSPinCodeScreen: SessionAuthorizing {
     /// - Parameters
     ///     - error - an `AssuranceSocketError` explaining the reason why the connection failed
     ///     - shouldShowRetry - boolean indication if the retry button on the pinpad button should still be shown
-    func connectionFailedWithError(_ error: AssuranceSocketError, shouldShowRetry: Bool) {
+    func connectionFailedWithError(_ error: AssuranceConnectionError, shouldShowRetry: Bool) {
         Log.debug(label: AssuranceConstants.LOG_TAG, String(format: "Assurance connection establishment failed. Error : %@, Description : %@", error.info.name, error.info.description))
         let jsFunctionCall = String(format: "showError('%@','%@', %d);", error.info.name, error.info.description, shouldShowRetry)
         fullscreenWebView?.evaluateJavaScript(jsFunctionCall, completionHandler: nil)

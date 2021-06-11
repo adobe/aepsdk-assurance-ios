@@ -132,7 +132,6 @@ enum AssuranceConstants {
     }
 
     enum Places {
-
         enum EventName {
             static let REQUEST_NEARBY_POI = "requestgetnearbyplaces"
             static let REQUEST_RESET = "requestreset"

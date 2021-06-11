@@ -14,7 +14,7 @@
 import Foundation
 import WebKit
 
-class MockFullscreenMessage: FullscreenPresentable {
+class MockFullscreenMessagePresentable: FullscreenPresentable {
     var showCalled = false
     func show() {
         showCalled = true
@@ -60,7 +60,7 @@ class MockUIService: UIService {
     public func createFullscreenMessage(payload _: String, listener _: FullscreenMessageDelegate?, isLocalImageUsed _: Bool) -> FullscreenPresentable {
         createFullscreenMessageCalled = true
         createFullscreenMessageCallCount += 1
-        return fullscreenMessage ?? MockFullscreenMessage()
+        return fullscreenMessage ?? MockFullscreenMessagePresentable()
     }
 
     var createFloatingButtonCalled = false
