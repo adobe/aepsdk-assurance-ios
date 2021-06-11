@@ -14,5 +14,22 @@
 @testable import AEPCore
 import Foundation
 
-class MockAssurance: Assurance {
+class MockSocket: SocketConnectable {
+    var socketListener: SocketEventListener
+    var socketState: SocketState
+
+    required init(withListener listener: SocketEventListener) {
+        self.socketListener = listener
+        self.socketState = .CLOSED
+    }
+
+    func connect(withUrl url: URL) {}
+
+    func disconnect() {}
+
+    func sendEvent(_ event: AssuranceEvent) {}
+
+    func mockSocketState(state: SocketState) {
+        self.socketState = state
+    }
 }

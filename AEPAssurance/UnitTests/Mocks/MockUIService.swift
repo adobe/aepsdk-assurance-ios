@@ -13,6 +13,7 @@
 @testable import AEPServices
 import Foundation
 import WebKit
+import XCTest
 
 class MockFullscreenMessagePresentable: FullscreenPresentable {
     var showCalled = false
@@ -30,8 +31,10 @@ class MockFloatingButton: FloatingButtonPresentable {
     init() {}
 
     var setButtonImageCalled = false
+    var buttonImageValue: Data?
     func setButtonImage(imageData: Data) {
         setButtonImageCalled = true
+        buttonImageValue = imageData
     }
     var setInitialPositionCalled = false
     var initialPositionValue: FloatingButtonPosition?
@@ -41,14 +44,17 @@ class MockFloatingButton: FloatingButtonPresentable {
     }
 
     var showCalled = false
+    var showCallCount = 0
     func show() {
         showCalled = true
+        showCallCount += 1
     }
 
     var dismissCalled = false
     func dismiss() {
         dismissCalled = true
     }
+
 }
 
 class MockUIService: UIService {
@@ -89,6 +95,11 @@ class MockFullScreenMessage: FullscreenMessage {
         dismissCalled = true
     }
 
+    var hideCalled = false
+    override func hide() {
+        hideCalled = true
+    }
+
 }
 
 class MockMessageMonitor: MessageMonitoring {
@@ -112,8 +123,24 @@ class MockMessageMonitor: MessageMonitoring {
 }
 
 class MockWebView: WKWebView {
+    var expectation: XCTestExpectation?
+    var expectationCounter = 1
     var javaScriptStringReceived = ""
+    var javaScriptMethodInvokeCount = 0
+    var throwJavascriptError = false
+
     override func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)? = nil) {
+        if throwJavascriptError {
+            completionHandler?(nil, MockError.error("mockError"))
+        }
+        javaScriptMethodInvokeCount += 1
         javaScriptStringReceived = javaScriptString
+        if javaScriptMethodInvokeCount == expectationCounter {
+            expectation?.fulfill()
+        }
     }
+}
+
+enum MockError: Error {
+    case error(String)
 }
