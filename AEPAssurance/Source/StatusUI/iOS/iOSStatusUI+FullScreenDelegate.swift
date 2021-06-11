@@ -15,7 +15,7 @@ import Foundation
 import WebKit
 
 extension iOSStatusUI: FullscreenMessageDelegate {
-    
+
     /// Invoked when statusUI fullscreen message is displayed
     /// - Parameters:
     ///     - message: statusUI fullscreen message
@@ -60,7 +60,7 @@ extension iOSStatusUI: FullscreenMessageDelegate {
 
         return false
     }
-    
+
     /// Invoked when the fullscreen message finished loading its first content on the webView.
     /// - Parameter webView - the `WKWebView` instance that completed loading its initial content.
     func webViewDidFinishInitialLoading(webView: WKWebView) {

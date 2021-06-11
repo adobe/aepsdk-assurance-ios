@@ -16,23 +16,21 @@ extension AssuranceSession: SocketEventListener {
     func webSocketDidConnect(_ socket: SocketConnectable) {
         // coming soon
     }
-    
+
     func webSocketDidDisconnectConnect(_ socket: SocketConnectable, _ closeCode: Int, _ reason: String, _ wasClean: Bool) {
         // coming soon
     }
-    
+
     func webSocketOnError(_ socket: SocketConnectable) {
         // coming soon
     }
-    
+
     func webSocket(_ socket: SocketConnectable, didReceiveEvent event: AssuranceEvent) {
         // coming soon
     }
-    
+
     func webSocket(_ socket: SocketConnectable, didChangeState state: SocketState) {
         //coming soon
     }
-    
-    
-}
 
+}

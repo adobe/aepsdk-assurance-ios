@@ -17,7 +17,7 @@ class AssuranceSession {
     let assuranceExtension: Assurance
     var pinCodeScreen: SessionAuthorizingUI?
     lazy var socket: SocketConnectable  = {
-            return WebViewSocket(withListener: self)
+        return WebViewSocket(withListener: self)
     }()
 
     /// Initializer with instance of  `Assurance` extension
@@ -62,7 +62,7 @@ class AssuranceSession {
     func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
         // coming soon
     }
-    
+
     func terminateSession() {
         // coming soon
     }

@@ -36,5 +36,3 @@ extension iOSStatusUI: FloatingButtonDelegate {
     /// Invoked when the floating button is removed
     func onDismiss() {}
 }
-
-

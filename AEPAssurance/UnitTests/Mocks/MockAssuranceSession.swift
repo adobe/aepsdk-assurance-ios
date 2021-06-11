@@ -11,9 +11,40 @@
 //
 
 @testable import AEPAssurance
-@testable import AEPCore
 import Foundation
 
-class MockAssurance: Assurance {
-    // More mocking's and assertion helpers will be coded soon
+class MockAssuranceSession: AssuranceSession {
+
+    override init(_ assuranceExtension: Assurance) {
+        super.init(assuranceExtension)
+        self.socket = MockSocket(withListener: self)
+    }
+
+    var sendEventCalled = false
+    var sentEvent: AssuranceEvent?
+
+    override func sendEvent(_ assuranceEvent: AssuranceEvent) {
+        sendEventCalled = true
+        sentEvent = assuranceEvent
+    }
+
+    var addClientLogCalled = false
+    var addClientLogMessage: String?
+    var addClientLogVisibility: AssuranceClientLogVisibility?
+    override func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
+        addClientLogCalled = true
+        addClientLogMessage = message
+        addClientLogVisibility = visibility
+    }
+
+    var terminateSessionCalled = false
+    override func terminateSession() {
+        terminateSessionCalled = true
+    }
+
+    func mockSocketState(state: SocketState) {
+        if let mockSocket = socket as? MockSocket {
+            mockSocket.mockSocketState(state: state)
+        }
+    }
 }

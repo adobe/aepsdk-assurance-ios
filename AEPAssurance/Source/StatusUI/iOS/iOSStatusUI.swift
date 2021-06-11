@@ -26,6 +26,9 @@ class iOSStatusUI {
         self.clientLogQueue = ThreadSafeQueue(withLimit: 100)
     }
 
+    /// Displays the Assurance Status UI on the customers application.
+    /// This method will initialize the FloatingButton and the FullScreen webView required for the displaying Assurance status.
+    /// On calling this method Floating button is appears on the screen showing the current connection status.
     func display() {
         if let _ = floatingButton {
             return
@@ -40,6 +43,9 @@ class iOSStatusUI {
         floatingButton?.show()
     }
 
+    ///
+    /// Removes the Assurance Status UI from the customers application
+    ///
     func remove() {
         self.floatingButton?.dismiss()
         self.floatingButton = nil
@@ -47,21 +53,36 @@ class iOSStatusUI {
         self.webView = nil
     }
 
+    ///
+    /// Updates the Assurance Status UI to denote socket is currently connected.
+    ///
     func updateForSocketConnected() {
         addClientLog("Assurance connection established.", visibility: .low)
         floatingButton?.setButtonImage(imageData: Data(bytes: ActiveIcon.content, count: ActiveIcon.content.count))
     }
 
+    ///
+    /// Updates the Assurance Status UI to denote socket connection is currently inactive.
+    ///
     func updateForSocketInActive() {
         addClientLog("Assurance disconnected. Attempting to reconnect..", visibility: .low)
         floatingButton?.setButtonImage(imageData: Data(bytes: InactiveIcon.content, count: InactiveIcon.content.count))
     }
-    
+
+    ///
+    /// Appends the logs to Assurance Status UI
+    /// - Parameters:
+    ///     - message: `String` log message.
+    ///     - visibility: an `AssuranceClientLogVisibility` determining the importance of the log message.
+    ///
     func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
         clientLogQueue.enqueue(newElement: AssuranceClientLogMessage(withVisibility: visibility, andMessage: message))
         updateLogUI()
     }
 
+    ///
+    /// Load and display all the pending log messages on Assurance Status UI.
+    ///
     func updateLogUI() {
         guard let webView = webView else {
             return
@@ -86,7 +107,6 @@ class iOSStatusUI {
                 })
             }
         }
-
     }
 
 }
