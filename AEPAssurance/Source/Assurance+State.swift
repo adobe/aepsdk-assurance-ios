@@ -43,7 +43,7 @@ extension Assurance {
         var shareStateData: [String: String] = [:]
         shareStateData[AssuranceConstants.SharedStateKeys.CLIENT_ID] = clientID
         shareStateData[AssuranceConstants.SharedStateKeys.SESSION_ID] = sessionId
-        shareStateData[AssuranceConstants.SharedStateKeys.INTEGRATION_ID] = clientID + "|" + sessionId
+        shareStateData[AssuranceConstants.SharedStateKeys.INTEGRATION_ID] = sessionId + "|" + clientID
         return shareStateData
     }
 
