@@ -57,14 +57,14 @@ class ErrorView: FullscreenMessageDelegate {
     }
 
     func webViewDidFinishInitialLoading(webView: WKWebView) {
-        loadError()
+        loadErrorView()
     }
 
     func onShowFailure() {
         Log.debug(label: AssuranceConstants.LOG_TAG, "Unable to display Assurance error screen. Assurance session terminated.")
     }
 
-    private func loadError() {
+    private func loadErrorView() {
         Log.debug(label: AssuranceConstants.LOG_TAG, String(format: "Assurance connection establishment failed. Error : %@, Description : %@", error.info.name, error.info.description))
         let jsFunctionCall = String(format: "showError('%@','%@', %d);", error.info.name, error.info.description, false)
         fullscreenWebView?.evaluateJavaScript(jsFunctionCall, completionHandler: nil)
