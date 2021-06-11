@@ -16,12 +16,13 @@ import WebKit
 
 class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScriptMessageHandler {
 
-    var socketListener: SocketEventListener
+    weak var delegate: SocketDelegate
+    var socketURL: URL?
 
     /// variable tracking the current socket status
     var socketState: SocketState = .UNKNOWN {
         didSet {
-            socketListener.webSocket(self, didChangeState: self.socketState)
+            delegate.webSocket(self, didChangeState: self.socketState)
         }
     }
 
@@ -38,7 +39,6 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
 
     private var webView: WKWebView?
     private var loadNav: WKNavigation?
-    private var socketURL: URL?
     private var socketEventHandlers = ThreadSafeDictionary<String, messageHandlerBlock>(identifier: "com.adobe.assurance.socketEventHandler")
     private let socketQueue = DispatchQueue(label: "com.adobe.assurance.WebViewSocketConnection") // serial queue
     private let pageContent = "<HTML><HEAD></HEAD><BODY></BODY></HTML>"
@@ -48,9 +48,9 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
 
     /// Initialization of webView socket connection.
     /// - Parameters:
-    ///     - listener: the listener instance to get notified on essential socket events
-    required init(withListener listener: SocketEventListener) {
-        socketListener = listener
+    ///     - delegate: the delegate instance to get notified on essential socket events
+    required init(withDelegate delegate: SocketDelegate) {
+        self.delegate = delegate
         super.init()
         // read the webSocket javascript from the built resources
         let socketJavascript = String(bytes: SocketScript.content, encoding: .utf8)!
@@ -68,8 +68,8 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
 
     /// Makes a socket connection with the provided URL
     /// Sets the socket state to `CONNECTING` and attempts to make a connection.
-    /// On successful connection the socketListeners `webSocketDidConnect` delegate method is invoked.
-    /// On any error,  the socketListeners `webSocketOnError` delegate method is invoked.
+    /// On successful connection the SocketDelegate's `webSocketDidConnect` method is invoked.
+    /// On any error,  the SocketDelegate's `webSocketOnError` method is invoked.
     /// - Parameters :
     ///     - url : the webSocket `URL`
     func connect(withUrl url: URL) {
@@ -92,9 +92,9 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
 
     /// Disconnect the ongoing socket connection.
     /// Sets the socket state to `CLOSING` and attempts for disconnection
-    /// On successful disconnection  the socketListeners `webSocketDidDisconnect` delegate method is invoked.
+    /// On successful disconnection  the SocketDelegate's `webSocketDidDisconnect` method is invoked.
     /// And the socket state is set to `CLOSED`.
-    /// On any error,  the socketListeners `webSocketOnError` delegate method is invoked.
+    /// On any error,  the SocketDelegate's `webSocketOnError` method is invoked.
     func disconnect() {
         self.socketState = .CLOSING
         socketQueue.async {
@@ -108,7 +108,7 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
 
     /// Sends the `AssuranceEvent` over the socket connection.
     /// Make sure you have the socket connection established before calling this API.
-    /// On any error,  the socketListeners `webSocketOnError` delegate method is invoked.
+    /// On any error,  the SocketDelegate's `webSocketOnError` method is invoked.
     /// - Parameters :
     ///     - event : the event to be sent to Assurance session
     func sendEvent(_ event: AssuranceEvent) {
@@ -156,15 +156,28 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
 
         registerSocketCallback("onopen", with: { _ in
             self.socketState = .OPEN
-            self.socketListener.webSocketDidConnect(self)
+            self.delegate.webSocketDidConnect(self)
         })
 
         registerSocketCallback("onerror", with: { _ in
-            self.socketListener.webSocketOnError(self)
+            self.delegate.webSocketOnError(self)
         })
 
-        registerSocketCallback("onclose", with: { _ in
+        registerSocketCallback("onclose", with: { message in
             self.socketState = .CLOSED
+            self.socketURL = nil
+            // message body obtained from on close call has the following keys
+            // 1. closeCode   - an Integer representing closeCode for the socket
+            // 2. reason      - a string value representing the reason for socket closure
+            // 3. wasClean    - a boolean that Indicates whether or not the connection was cleanly closed.
+            guard let messageBody = message.body as? [String: Any] else {
+                return
+            }
+
+            let closeCode = messageBody["closeCode"] as? Int ?? -1
+            let reason = messageBody["reason"] as? String ?? ""
+            let wasClean = messageBody["wasClean"] as? Bool ?? false
+            self.delegate.webSocketDidDisconnectConnect(self, closeCode, reason, wasClean)
         })
 
         registerSocketCallback("onmessage", with: { message in
@@ -181,7 +194,7 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
                 return
             }
 
-            self.socketListener.webSocket(self, didReceiveEvent: receivedEvent)
+            self.delegate.webSocket(self, didReceiveEvent: receivedEvent)
         })
 
     }

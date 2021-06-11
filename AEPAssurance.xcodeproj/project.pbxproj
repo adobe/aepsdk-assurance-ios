@@ -16,9 +16,10 @@
 		B63ADAB12672629700A1281A /* iOSStatusUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADAB02672629700A1281A /* iOSStatusUI.swift */; };
 		B63ADAB3267262DF00A1281A /* iOSStatusUI+FloatingButtonDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADAB2267262DF00A1281A /* iOSStatusUI+FloatingButtonDelegate.swift */; };
 		B63ADAB5267262F600A1281A /* iOSStatusUI+FullScreenDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADAB4267262F600A1281A /* iOSStatusUI+FullScreenDelegate.swift */; };
-		B63ADAB72672653200A1281A /* AssuranceSession+SocketEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADAB62672653200A1281A /* AssuranceSession+SocketEventListener.swift */; };
+		B63ADAB72672653200A1281A /* AssuranceSession+SocketDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADAB62672653200A1281A /* AssuranceSession+SocketDelegate.swift */; };
 		B63ADABA26726CD700A1281A /* iOSStatusUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADAB826726B9B00A1281A /* iOSStatusUITests.swift */; };
 		B63ADABC26731A0400A1281A /* MockSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADABB26731A0400A1281A /* MockSocket.swift */; };
+		B63ADABE26732C8100A1281A /* AssuranceSession+EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADABD26732C8100A1281A /* AssuranceSession+EventHandler.swift */; };
 		B63EB79B2668C67A005BE2C5 /* AssuranceClientLogVisibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63EB79A2668C67A005BE2C5 /* AssuranceClientLogVisibility.swift */; };
 		B63EB79D2668D524005BE2C5 /* AssuranceClientLogMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63EB79C2668D524005BE2C5 /* AssuranceClientLogMessageTests.swift */; };
 		B64071A3262C313E00C43183 /* AEPAssurance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6407199262C313E00C43183 /* AEPAssurance.framework */; };
@@ -79,7 +80,7 @@
 		B6D6A02F2660CFF5005042BE /* Event+Assurance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A02E2660CFF5005042BE /* Event+Assurance.swift */; };
 		B6D6A0382660ECBD005042BE /* SocketConnectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A0332660ECBC005042BE /* SocketConnectable.swift */; };
 		B6D6A0392660ECBD005042BE /* SocketState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A0342660ECBC005042BE /* SocketState.swift */; };
-		B6D6A03A2660ECBD005042BE /* SocketEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A0352660ECBC005042BE /* SocketEventListener.swift */; };
+		B6D6A03A2660ECBD005042BE /* SocketDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A0352660ECBC005042BE /* SocketDelegate.swift */; };
 		B6D6A03F2660ED4D005042BE /* WebViewSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A03E2660ED4D005042BE /* WebViewSocket.swift */; };
 		B6D6A0412660ED56005042BE /* NativeSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A0402660ED56005042BE /* NativeSocket.swift */; };
 		B6FEB8AC263A18E600F0F240 /* SocketScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FEB8AB263A18E600F0F240 /* SocketScript.swift */; };
@@ -137,9 +138,10 @@
 		B63ADAB02672629700A1281A /* iOSStatusUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSStatusUI.swift; sourceTree = "<group>"; };
 		B63ADAB2267262DF00A1281A /* iOSStatusUI+FloatingButtonDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "iOSStatusUI+FloatingButtonDelegate.swift"; sourceTree = "<group>"; };
 		B63ADAB4267262F600A1281A /* iOSStatusUI+FullScreenDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "iOSStatusUI+FullScreenDelegate.swift"; sourceTree = "<group>"; };
-		B63ADAB62672653200A1281A /* AssuranceSession+SocketEventListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssuranceSession+SocketEventListener.swift"; sourceTree = "<group>"; };
+		B63ADAB62672653200A1281A /* AssuranceSession+SocketDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssuranceSession+SocketDelegate.swift"; sourceTree = "<group>"; };
 		B63ADAB826726B9B00A1281A /* iOSStatusUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSStatusUITests.swift; sourceTree = "<group>"; };
 		B63ADABB26731A0400A1281A /* MockSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSocket.swift; sourceTree = "<group>"; };
+		B63ADABD26732C8100A1281A /* AssuranceSession+EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssuranceSession+EventHandler.swift"; sourceTree = "<group>"; };
 		B63EB79A2668C67A005BE2C5 /* AssuranceClientLogVisibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceClientLogVisibility.swift; sourceTree = "<group>"; };
 		B63EB79C2668D524005BE2C5 /* AssuranceClientLogMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceClientLogMessageTests.swift; sourceTree = "<group>"; };
 		B6407199262C313E00C43183 /* AEPAssurance.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AEPAssurance.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -207,7 +209,7 @@
 		B6D6A02E2660CFF5005042BE /* Event+Assurance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+Assurance.swift"; sourceTree = "<group>"; };
 		B6D6A0332660ECBC005042BE /* SocketConnectable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketConnectable.swift; sourceTree = "<group>"; };
 		B6D6A0342660ECBC005042BE /* SocketState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketState.swift; sourceTree = "<group>"; };
-		B6D6A0352660ECBC005042BE /* SocketEventListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEventListener.swift; sourceTree = "<group>"; };
+		B6D6A0352660ECBC005042BE /* SocketDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketDelegate.swift; sourceTree = "<group>"; };
 		B6D6A03E2660ED4D005042BE /* WebViewSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewSocket.swift; sourceTree = "<group>"; };
 		B6D6A0402660ED56005042BE /* NativeSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeSocket.swift; sourceTree = "<group>"; };
 		B6FEB8AB263A18E600F0F240 /* SocketScript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketScript.swift; sourceTree = "<group>"; };
@@ -328,7 +330,8 @@
 				B64071D2262C368C00C43183 /* Assurance.swift */,
 				B6D2A92626334A3D0062AC5E /* Assurance+State.swift */,
 				B6B0E2D6263C7FAB00EF5E21 /* AssuranceSession.swift */,
-				B63ADAB62672653200A1281A /* AssuranceSession+SocketEventListener.swift */,
+				B63ADABD26732C8100A1281A /* AssuranceSession+EventHandler.swift */,
+				B63ADAB62672653200A1281A /* AssuranceSession+SocketDelegate.swift */,
 				B6AFD588263403EB00C63608 /* AssuranceEvent.swift */,
 				B640722A262CF06100C43183 /* AssuranceEnvironment.swift */,
 				B64071D6262C376A00C43183 /* AssuranceConstants.swift */,
@@ -516,7 +519,7 @@
 				B6D6A03D2660ED23005042BE /* WebView */,
 				B6D6A03C2660ED08005042BE /* Native */,
 				B6D6A0332660ECBC005042BE /* SocketConnectable.swift */,
-				B6D6A0352660ECBC005042BE /* SocketEventListener.swift */,
+				B6D6A0352660ECBC005042BE /* SocketDelegate.swift */,
 				B6D6A0342660ECBC005042BE /* SocketState.swift */,
 			);
 			path = Socket;
@@ -900,7 +903,7 @@
 				B6D6A015265D8836005042BE /* AssuranceClientInfo.swift in Sources */,
 				B6AFD589263403EB00C63608 /* AssuranceEvent.swift in Sources */,
 				B6FEB8AC263A18E600F0F240 /* SocketScript.swift in Sources */,
-				B63ADAB72672653200A1281A /* AssuranceSession+SocketEventListener.swift in Sources */,
+				B63ADAB72672653200A1281A /* AssuranceSession+SocketDelegate.swift in Sources */,
 				B63ADA8C266F700C00A1281A /* ErrorView.swift in Sources */,
 				B6CECC5626544700000D517F /* PluginHub.swift in Sources */,
 				B63EB79B2668C67A005BE2C5 /* AssuranceClientLogVisibility.swift in Sources */,
@@ -909,7 +912,7 @@
 				B670E72426395954000FCB96 /* StatusInfo.swift in Sources */,
 				B64FDF70264F341600D33192 /* PluginFakeEvent.swift in Sources */,
 				B6407223262CEBC600C43183 /* URL+Parser.swift in Sources */,
-				B6D6A03A2660ECBD005042BE /* SocketEventListener.swift in Sources */,
+				B6D6A03A2660ECBD005042BE /* SocketDelegate.swift in Sources */,
 				B6D6A0392660ECBD005042BE /* SocketState.swift in Sources */,
 				B6D6A022265F914D005042BE /* PluginScreenshot.swift in Sources */,
 				B640722B262CF06100C43183 /* AssuranceEnvironment.swift in Sources */,
@@ -921,6 +924,7 @@
 				B6407206262C90FA00C43183 /* Assurance+PublicAPI.swift in Sources */,
 				B63ADAB5267262F600A1281A /* iOSStatusUI+FullScreenDelegate.swift in Sources */,
 				B6B0E2D7263C7FAB00EF5E21 /* AssuranceSession.swift in Sources */,
+				B63ADABE26732C8100A1281A /* AssuranceSession+EventHandler.swift in Sources */,
 				B64FDF6E264F33EF00D33192 /* AssurancePlugin.swift in Sources */,
 				B6D6A0382660ECBD005042BE /* SocketConnectable.swift in Sources */,
 				B63ADAB12672629700A1281A /* iOSStatusUI.swift in Sources */,

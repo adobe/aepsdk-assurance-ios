@@ -13,7 +13,7 @@
 import Foundation
 
 /// Methods for adopted by the object to manage the events from the web-socket connection
-protocol SocketEventListener {
+protocol SocketDelegate {
 
     /// Tells the listener when the socket connection has been successfully made
     /// - Parameters:

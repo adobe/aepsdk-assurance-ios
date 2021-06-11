@@ -42,7 +42,7 @@ class AssuranceShutDownTimerTests: XCTestCase {
 
     func test_shutDownTimer() {
         // setup properties
-        assurance.webSocketURL = nil
+        assurance.connectedWebSocketURL = nil
 
         // test
         assurance.onRegistered()
@@ -59,7 +59,7 @@ class AssuranceShutDownTimerTests: XCTestCase {
 
     func test_shutDownTimer_invalidated_whenSessionStarted() {
         // setup properties
-        assurance.webSocketURL = nil
+        assurance.connectedWebSocketURL = nil
 
         // test
         assurance.onRegistered()
@@ -77,7 +77,7 @@ class AssuranceShutDownTimerTests: XCTestCase {
 
     func test_shutDownTimer_invalidedIfAssuranceReconnecting() {
         // setup properties
-        assurance.webSocketURL = "wss://sampleSocketURL"
+        assurance.connectedWebSocketURL = "wss://sampleSocketURL"
 
         // test
         assurance.onRegistered()

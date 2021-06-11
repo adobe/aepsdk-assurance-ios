@@ -15,11 +15,12 @@
 import Foundation
 
 class MockSocket: SocketConnectable {
-    var socketListener: SocketEventListener
+    var socketURL: URL?
+    weak var delegate: SocketDelegate
     var socketState: SocketState
 
-    required init(withListener listener: SocketEventListener) {
-        self.socketListener = listener
+    required init(withDelegate delegate: SocketDelegate) {
+        self.delegate = delegate
         self.socketState = .CLOSED
     }
 
