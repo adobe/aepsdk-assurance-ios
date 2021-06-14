@@ -34,10 +34,10 @@ class AssuranceSession {
     // MARK: - boolean flags
 
     /// indicates if the session is currently attempting to reconnect. This flag is set when the session disconnects due to some retry-able reason,
-    /// This flag is reset when the session is connected
+    /// This flag is reset when the session is connected or successfully terminated
     var isAttemptingToReconnect: Bool = false
 
-    /// indicates if Assurance SDK can start forwarding events to the session. This flag is set when a command  `startForwarding` is received from the socket.
+    /// indicates if Assurance SDK can start forwarding events to the session. This flag is set when a command `startForwarding` is received from the socket.
     var canStartForwarding: Bool = false
 
     /// true indicates Assurance SDK has timeout and shutdown after non-reception of deep link URL because of which it  has cleared all the queued initial SDK events from memory.
@@ -119,7 +119,7 @@ class AssuranceSession {
 
     ///
     /// Clears all the data related to the current Assurance Session.
-    /// Call this method when user terminates the Assurance session or if occurred is any non-recoverable socket error.
+    /// Call this method when user terminates the Assurance session or when non-recoverable socket error occurs.
     ///
     func clearSessionData() {
         assuranceExtension.clearState()
@@ -134,7 +134,7 @@ class AssuranceSession {
     // MARK: - Private methods
 
     ///
-    /// Registers all the available internal plugin with the PluginHub.
+    /// Registers all the available internal plugin with PluginHub.
     ///
     private func registerInternalPlugins() {
         pluginHub.registerPlugin(PluginFakeEvent(), toSession: self)

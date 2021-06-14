@@ -314,8 +314,8 @@ public class Assurance: NSObject, Extension {
     ///
     /// Gets the friendly name for an extension from EventHub's shared state.
     /// - Parameters:
-    ///     - extensionMap:An eventHub's shared state dictionary containing details of the registered extension
-    ///     - extensionName:the extension's name for which the friendly name has to be retrieved
+    ///     - extensionMap: an eventHub's shared state dictionary containing details of the registered extension
+    ///     - extensionName: the extension's name for which the friendly name has to be retrieved
     /// - Returns:A `String` representing the friendly name of the extension.
     private func getFriendlyExtensionName(extensionMap: [String: Any], extensionName: String) -> String {
         if let extensionDetails = extensionMap[extensionName] as? [String: Any] {
@@ -329,8 +329,8 @@ public class Assurance: NSObject, Extension {
     ///
     /// Fetches the Regular and XDM shared state data for the provided extension and prepares an  `Array` of  `AssuranceEvents`
     /// - Parameters:
-    ///     - stateOwner:the state owner for which the shared state has to be fetched
-    ///     - friendlyName:the friendly name for the extension
+    ///     - stateOwner: the state owner for which the shared state has to be fetched
+    ///     - friendlyName: the friendly name for the extension
     /// - Returns: An array of Assurance Events containing shared state details.
     ///
     private func getStateForExtension(stateOwner: String, friendlyName: String) -> [AssuranceEvent] {
@@ -355,7 +355,7 @@ public class Assurance: NSObject, Extension {
     ///     - owner: the shared state owner
     ///     - eventName : the event name for Assurance shared state event
     ///     - stateContent: the shared state contents
-    ///     - stateType:type of shared state. Regular or XDM
+    ///     - stateType: type of shared state. Regular or XDM
     /// - Returns: An `AssuranceEvent` containing shared state data.
     ///
     private func prepareShareStateEvent(owner: String, eventName: String, stateContent: [String: Any], stateType: String) -> AssuranceEvent {

@@ -16,7 +16,7 @@ import Foundation
 extension AssuranceSession {
 
     ///
-    /// Sends a client Info event to the connection session.
+    /// Sends a clientInfo event to the connection session.
     ///
     func sendClientInfoEvent() {
         Log.debug(label: AssuranceConstants.LOG_TAG, "Sending client info event to Assurance")
@@ -25,7 +25,7 @@ extension AssuranceSession {
     }
 
     ///
-    /// Handles the queuing and forwarding of out bound session events.
+    /// Handles the queuing and forwarding of outbound session events.
     ///
     func handleOutBoundEvents() {
         outboundSource.setEventHandler(handler: {
@@ -50,7 +50,7 @@ extension AssuranceSession {
     }
 
     ///
-    /// Handles the queuing and receiving of in bound Assurance session events.
+    /// Handles the queuing and receiving of inbound Assurance session events.
     ///
     func handleInBoundEvents() {
         inboundSource.setEventHandler(handler: {
