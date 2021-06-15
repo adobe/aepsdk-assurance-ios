@@ -226,7 +226,7 @@ class iOSStatusUITests: XCTestCase {
     func test_floatingButtonShow_whenSocketConnected() throws {
         // setup
         statusUI.display()
-        mockSession.mockSocketState(state: .OPEN)
+        mockSession.mockSocketState(state: .open)
 
         // test
         statusUI.onShow() // onShow is a Floating button delegate method
@@ -239,7 +239,7 @@ class iOSStatusUITests: XCTestCase {
     func test_floatingButtonShow_whenSocketNotConnected() throws {
         // setup
         statusUI.display()
-        mockSession.mockSocketState(state: .CLOSED)
+        mockSession.mockSocketState(state: .closed)
 
         // test
         statusUI.onShow() // onShow is a Floating button delegate method

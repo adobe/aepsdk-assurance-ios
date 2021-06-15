@@ -19,7 +19,7 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
     var socketURL: URL?
 
     var delegate: SocketDelegate
-    var socketState: SocketState = .UNKNOWN {
+    var socketState: SocketState = .unknown {
         didSet {
             delegate.webSocket(self, didChangeState: self.socketState)
         }
@@ -50,7 +50,7 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
         socketTask = session?.webSocketTask(with: url)
         socketTask?.resume()
         registerCallbacks()
-        socketState = .CONNECTING
+        socketState = .connecting
     }
 
     /// Disconnect the ongoing socket connection.
@@ -58,7 +58,7 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
     /// On successful disconnection  the socketDelegate's `webSocketDidDisconnect`method is invoked. And the socket state is set to`CLOSED`.
     /// On any error,  the socketDelegate's `webSocketOnError`method is invoked.
     func disconnect() {
-        socketState = .CLOSING
+        socketState = .closing
         socketTask?.cancel(with: .normalClosure, reason: nil)
     }
 
@@ -77,12 +77,12 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
     // MARK: - URLSessionWebSocketDelegate methods
 
     func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
-        socketState = .OPEN
+        socketState = .open
         self.delegate.webSocketDidConnect(self)
     }
 
     func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
-        socketState = .CLOSED
+        socketState = .closed
         self.delegate.webSocketDidDisconnect(self, closeCode.rawValue, reason?.base64EncodedString() ?? "", true)
     }
 

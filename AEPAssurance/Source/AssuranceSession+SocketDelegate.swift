@@ -134,18 +134,9 @@ extension AssuranceSession: SocketDelegate {
     ///     - socket - the socket instance
     ///     - state - the present socket state
     func webSocket(_ socket: SocketConnectable, didChangeState state: SocketState) {
-        Log.debug(label: AssuranceConstants.LOG_TAG, "AssuranceSession: Socket state changed \(socket.socketState)")
-        switch state {
-        case .CONNECTING:
-            break
-        case .OPEN:
+        Log.debug(label: AssuranceConstants.LOG_TAG, "AssuranceSession: Socket state changed \(socket.socketState)")        
+        if (state == .open) {
             assuranceExtension.connectedWebSocketURL = socket.socketURL?.absoluteString
-        case .CLOSING:
-            break
-        case .CLOSED:
-            break
-        case .UNKNOWN:
-            break
         }
     }
 

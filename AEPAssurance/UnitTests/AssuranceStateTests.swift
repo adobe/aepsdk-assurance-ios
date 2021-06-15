@@ -90,7 +90,7 @@ class AssuranceStateTests: XCTestCase {
         XCTAssertNotNil(runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.INTEGRATION_ID])
         XCTAssertEqual(assurance.clientID, runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.CLIENT_ID] as? String)
         XCTAssertEqual(assurance.sessionId, runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.SESSION_ID] as? String)
-        XCTAssertEqual("\(assurance.clientID)" + "|" + "\(assurance.sessionId!)", runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.INTEGRATION_ID] as? String)
+        XCTAssertEqual("\(assurance.sessionId!)" + "|" + "\(assurance.clientID)", runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.INTEGRATION_ID] as? String)
     }
 
     func test_assuranceState_clearState() throws {

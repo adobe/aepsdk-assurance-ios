@@ -85,7 +85,7 @@ public class Assurance: NSObject, Extension {
 
         /// if the Assurance session was already connected in the previous app session, go ahead and reconnect socket
         /// and do not turn on the unregister timer
-        if let _ = self.connectedWebSocketURL {
+        if connectedWebSocketURL != nil {
             assuranceSession?.startSession()
             return
         }
@@ -338,12 +338,12 @@ public class Assurance: NSObject, Extension {
 
         let regularSharedState = runtime.getSharedState(extensionName: stateOwner, event: nil, barrier: false)
         if regularSharedState?.status == .set, let stateValue = regularSharedState?.value {
-            stateEvents.append(prepareShareStateEvent(owner: stateOwner, eventName: "\(friendlyName) State", stateContent: stateValue, stateType: AssuranceConstants.PayloadKey.SHARED_STATE_DATA))
+            stateEvents.append(prepareSharedStateEvent(owner: stateOwner, eventName: "\(friendlyName) State", stateContent: stateValue, stateType: AssuranceConstants.PayloadKey.SHARED_STATE_DATA))
         }
 
         let xdmSharedState = runtime.getXDMSharedState(extensionName: stateOwner, event: nil, barrier: false)
         if xdmSharedState?.status == .set, let xdmStateValue = xdmSharedState?.value {
-            stateEvents.append(prepareShareStateEvent(owner: stateOwner, eventName: "\(friendlyName) XDM State", stateContent: xdmStateValue, stateType: AssuranceConstants.PayloadKey.XDM_SHARED_STATE_DATA))
+            stateEvents.append(prepareSharedStateEvent(owner: stateOwner, eventName: "\(friendlyName) XDM State", stateContent: xdmStateValue, stateType: AssuranceConstants.PayloadKey.XDM_SHARED_STATE_DATA))
         }
 
         return stateEvents
@@ -358,7 +358,7 @@ public class Assurance: NSObject, Extension {
     ///     - stateType: type of shared state. Regular or XDM
     /// - Returns: An `AssuranceEvent` containing shared state data.
     ///
-    private func prepareShareStateEvent(owner: String, eventName: String, stateContent: [String: Any], stateType: String) -> AssuranceEvent {
+    private func prepareSharedStateEvent(owner: String, eventName: String, stateContent: [String: Any], stateType: String) -> AssuranceEvent {
         var payload: [String: AnyCodable] = [:]
         payload[AssuranceConstants.ACPExtensionEventKey.NAME] = AnyCodable.init(eventName)
         payload[AssuranceConstants.ACPExtensionEventKey.TYPE] = AnyCodable.init(EventType.hub.lowercased)

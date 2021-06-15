@@ -23,7 +23,7 @@ class MockSocket: SocketConnectable {
 
     required init(withDelegate delegate: SocketDelegate) {
         self.delegate = delegate
-        self.socketState = .CLOSED
+        self.socketState = .closed
     }
 
     func connect(withUrl url: URL) {}
