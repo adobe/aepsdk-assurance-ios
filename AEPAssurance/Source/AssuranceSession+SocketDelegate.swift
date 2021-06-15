@@ -33,7 +33,80 @@ extension AssuranceSession: SocketDelegate {
     ///     - reason: A `String` description for the reason of disconnection
     ///     - wasClean: A boolean representing if the connection has been terminated successfully. A false value represents the socket connection can be attempted to reconnected.
     func webSocketDidDisconnect(_ socket: SocketConnectable, _ closeCode: Int, _ reason: String, _ wasClean: Bool) {
-        // coming soon
+        // this will happen when user disconnects hitting the disconnect button in Status UI
+        // notify plugin on normal closure
+        if closeCode == AssuranceConstants.SocketCloseCode.NORMAL_CLOSURE {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected successfully with close code \(closeCode). Normal closure of websocket.")
+            pinCodeScreen?.connectionFinished()
+            statusUI.remove()
+            pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
+        }
+
+            // Close code 4900, happens when there is an orgId mismatch
+            // This is a non-retry error. Display the error back to user and close the connection.
+        else if closeCode == AssuranceConstants.SocketCloseCode.ORG_MISMATCH {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with close code \(closeCode). OrgID Mismatch.")
+            handleConnectionError(error: AssuranceConnectionError.orgIDMismatch, closeCode: closeCode)
+        }
+
+            // Close code 4901, happens when the number of connections per session exceeds the limit
+            // Configurable value and its default value is 200
+            // This is a non-retry error. Display the error back to user and close the connection.
+        else if closeCode == AssuranceConstants.SocketCloseCode.CONNECTION_LIMIT {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with close code \(closeCode). Connection Limit reached (200 devices per session).")
+            handleConnectionError(error: AssuranceConnectionError.connectionLimit, closeCode: closeCode)
+        }
+
+            // Close code 4902, happens when the clients exceeds the number of Griffon events that can be sent per minute
+            // Configurable value : default value is 10k events per minute
+            // This is a non-retry error. Display the error back to user and close the connection.
+        else if closeCode == AssuranceConstants.SocketCloseCode.EVENTS_LIMIT {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with close code \(closeCode). Event Limit reached (10k events per minute for a client).")
+            handleConnectionError(error: AssuranceConnectionError.eventLimit, closeCode: closeCode)
+        }
+
+            // Close code 4400, happens when there is a something wrong with the client during socket connection.
+            // This error is generically thrown if the client doesn't adhere to the rules of the socket connection.
+            // Example:
+            // If clientInfoEvent is not the first event to socket
+            // If there are any missing parameters in the socket URL
+        else if closeCode == AssuranceConstants.SocketCloseCode.CLIENT_ERROR {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with close code \(closeCode). Client Error occurred.")
+            handleConnectionError(error: AssuranceConnectionError.clientError, closeCode: closeCode)
+        }
+
+            // for all other abnormal closures, display error back to UI and attempt to reconnect
+        else {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Abnormal closure of webSocket. Reason - \(reason) and closeCode - \(closeCode)")
+            pinCodeScreen?.connectionFailedWithError(AssuranceConnectionError.genericError)
+
+            // do the reconnect logic only if session is already connected
+            guard let _ = assuranceExtension.connectedWebSocketURL else {
+                return
+            }
+
+            // immediately attempt to reconnect if the disconnect happens for the first time
+            // then forth make an reconnect attempt every 5 seconds
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to reconnect....")
+            let delayBeforeReconnect = isAttemptingToReconnect ? RECONNECT_TIMEOUT : 0
+
+            // If the disconnect happens because of abnormal close code. And if we are attempting to reconnect for the first time then,
+            // 1. Make an appropriate UI log.
+            // 2. Change the button graphics to gray out.
+            // 3. Notify plugins on disconnect with abnormal close code.
+            // 4. Attempt to reconnect with appropriate time delay.
+            if !isAttemptingToReconnect {
+                isAttemptingToReconnect = true
+                canStartForwarding = false //set this to false so that all the events are held up until client event is sent after successful reconnect
+                statusUI.updateForSocketInActive()
+                pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
+            }
+
+            let delay = DispatchTimeInterval.seconds(delayBeforeReconnect)
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                self.startSession()
+            }
+        }
     }
 
     ///

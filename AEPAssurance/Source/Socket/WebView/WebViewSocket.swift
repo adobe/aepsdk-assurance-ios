@@ -16,7 +16,7 @@ import WebKit
 
 class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScriptMessageHandler {
 
-    weak var delegate: SocketDelegate
+    var delegate: SocketDelegate
     var socketURL: URL?
 
     /// variable tracking the current socket status

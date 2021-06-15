@@ -60,6 +60,7 @@ class AssuranceSession {
         self.pinCodeScreen = pinCodeScreen
 
         pinCodeScreen.show(callback: { [weak self] socketURL, error in
+            // Thread : main thread (this callback is called from `overrideUrlLoad` method of WKWebView)
             if let error = error {
                 self?.handleConnectionError(error: error, closeCode: nil)
                 return
@@ -71,8 +72,7 @@ class AssuranceSession {
             }
 
             Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to make a socket connection with URL : \(socketURL.absoluteString)")
-            // todo
-            //self?.socket.connect(withUrl: socketURL)
+            self?.socket.connect(withUrl: socketURL)
             pinCodeScreen.connectionInitialized()
         })
     }

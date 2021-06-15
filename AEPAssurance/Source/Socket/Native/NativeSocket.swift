@@ -18,7 +18,7 @@ import WebKit
 class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionWebSocketDelegate {
     var socketURL: URL?
 
-    weak var delegate: SocketDelegate
+    var delegate: SocketDelegate
     var socketState: SocketState = .UNKNOWN {
         didSet {
             delegate.webSocket(self, didChangeState: self.socketState)
