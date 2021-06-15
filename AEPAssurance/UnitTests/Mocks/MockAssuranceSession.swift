@@ -17,7 +17,7 @@ class MockAssuranceSession: AssuranceSession {
 
     override init(_ assuranceExtension: Assurance) {
         super.init(assuranceExtension)
-        self.socket = MockSocket(withListener: self)
+        self.socket = MockSocket(withDelegate: self)
     }
 
     var sendEventCalled = false

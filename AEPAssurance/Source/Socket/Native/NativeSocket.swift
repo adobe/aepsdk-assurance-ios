@@ -16,10 +16,12 @@ import WebKit
 
 @available(iOS 13.0, *)
 class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionWebSocketDelegate {
-    var socketListener: SocketEventListener
-    var socketState: SocketState = .UNKNOWN {
+    var socketURL: URL?
+
+    weak var delegate: SocketDelegate
+    var socketState: SocketState = .unknown {
         didSet {
-            socketListener.webSocket(self, didChangeState: self.socketState)
+            delegate.webSocket(self, didChangeState: self.socketState)
         }
     }
 
@@ -32,15 +34,15 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
 
     /// Initialization of native socket connection.
     /// - Parameters:
-    ///     - listener: the listener instance to get notified on essential socket events
-    required init(withListener listener: SocketEventListener) {
-        socketListener = listener
+    ///     - delegate: the delegate instance to get notified on essential socket events
+    required init(withDelegate delegate: SocketDelegate) {
+        self.delegate = delegate
     }
 
     /// Makes a socket connection with the provided URL
     /// Sets the socket state to `CONNECTING` and attempts to make a connection.
-    /// On successful connection the socketListeners `webSocketDidConnect` delegate method is invoked. And the socket state is set to `OPEN`.
-    /// On any error,  the socketListeners `webSocketOnError` delegate method is invoked.
+    /// On successful connection the socketDelegate's `webSocketDidConnect` method is invoked. And the socket state is set to `OPEN`.
+    /// On any error,  the socketDelegate `webSocketOnError` method is invoked.
     /// - Parameters :
     ///     - url : the socket `URL`
     func connect(withUrl url: URL) {
@@ -48,15 +50,15 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
         socketTask = session?.webSocketTask(with: url)
         socketTask?.resume()
         registerCallbacks()
-        socketState = .CONNECTING
+        socketState = .connecting
     }
 
     /// Disconnect the ongoing socket connection.
     /// Sets the socket state to `CLOSING` and attempts for disconnection
-    /// On successful disconnection  the socketListeners `webSocketDidDisconnect` delegate method is invoked. And the socket state is set to`CLOSED`.
-    /// On any error,  the socketListeners `webSocketOnError` delegate method is invoked.
+    /// On successful disconnection  the socketDelegate's `webSocketDidDisconnect`method is invoked. And the socket state is set to`CLOSED`.
+    /// On any error,  the socketDelegate's `webSocketOnError`method is invoked.
     func disconnect() {
-        socketState = .CLOSING
+        socketState = .closing
         socketTask?.cancel(with: .normalClosure, reason: nil)
     }
 
@@ -75,13 +77,13 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
     // MARK: - URLSessionWebSocketDelegate methods
 
     func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
-        socketState = .OPEN
-        self.socketListener.webSocketDidConnect(self)
+        socketState = .open
+        self.delegate.webSocketDidConnect(self)
     }
 
     func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
-        socketState = .CLOSED
-        self.socketListener.webSocketDidDisconnectConnect(self, closeCode.rawValue, reason?.base64EncodedString() ?? "", true)
+        socketState = .closed
+        self.delegate.webSocketDidDisconnect(self, closeCode.rawValue, reason?.base64EncodedString() ?? "", true)
     }
 
     // MARK: - Private methods
@@ -106,7 +108,7 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
 
     /// Handle the error from socket connection
     private func didReceiveError(_ error: Error) {
-        self.socketListener.webSocketOnError(self)
+        self.delegate.webSocketOnError(self)
     }
 
     /// Handle the incoming string message from socket
@@ -118,7 +120,7 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
         guard let receivedEvent = AssuranceEvent.from(jsonData: data) else {
             return
         }
-        self.socketListener.webSocket(self, didReceiveEvent: receivedEvent)
+        self.delegate.webSocket(self, didReceiveEvent: receivedEvent)
     }
 
     /// Handle the incoming binary data from socket

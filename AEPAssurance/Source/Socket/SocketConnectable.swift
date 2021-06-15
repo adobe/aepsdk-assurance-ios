@@ -14,13 +14,16 @@ import Foundation
 
 /// protocol that needs to be followed by the class that implements the socket connection
 protocol SocketConnectable {
-    ///
-    var socketListener: SocketEventListener { get }
+    /// the web socket URL
+    var socketURL: URL? {get}
+
+    /// the delegate that gets notified on socket events.
+    var delegate: SocketDelegate { get }
 
     /// Initializes a socketConnectable with a listener
     /// - Parameters:
     /// - listener : A `SocketEventListener` to manage the socket events
-    init(withListener listener: SocketEventListener)
+    init(withDelegate delegate: SocketDelegate)
 
     /// A property that holds the current state of socket connection.
     var socketState: SocketState { get }

@@ -13,21 +13,31 @@
 @testable import AEPAssurance
 @testable import AEPCore
 import Foundation
+import XCTest
 
 class MockSocket: SocketConnectable {
-    var socketListener: SocketEventListener
+    var expectation: XCTestExpectation?
+    var socketURL: URL?
+    weak var delegate: SocketDelegate
     var socketState: SocketState
 
-    required init(withListener listener: SocketEventListener) {
-        self.socketListener = listener
-        self.socketState = .CLOSED
+    required init(withDelegate delegate: SocketDelegate) {
+        self.delegate = delegate
+        self.socketState = .closed
     }
 
     func connect(withUrl url: URL) {}
 
-    func disconnect() {}
+    var disconnectCalled = false
+    func disconnect() {
+        disconnectCalled = true
+    }
 
-    func sendEvent(_ event: AssuranceEvent) {}
+    var sendEventCalled = false
+    func sendEvent(_ event: AssuranceEvent) {
+        expectation?.fulfill()
+        sendEventCalled = true
+    }
 
     func mockSocketState(state: SocketState) {
         self.socketState = state

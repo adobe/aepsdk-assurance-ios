@@ -64,9 +64,9 @@ public class Assurance: NSObject, Extension {
     }()
 
     /// property representing the webSocket URL of the ongoing Assurance session
-    /// A valid value on this property represents that a assurance session is currently running.
+    /// A valid value on this property represents that an assurance session is currently running.
     /// A nil value on this property represents there is no ongoing assurance session.
-    var webSocketURL: String? {
+    var connectedWebSocketURL: String? {
         get {
             datastore.getString(key: AssuranceConstants.DataStoreKeys.SOCKETURL)
         }
@@ -85,7 +85,7 @@ public class Assurance: NSObject, Extension {
 
         /// if the Assurance session was already connected in the previous app session, go ahead and reconnect socket
         /// and do not turn on the unregister timer
-        if let _ = self.webSocketURL {
+        if connectedWebSocketURL != nil {
             assuranceSession?.startSession()
             return
         }
@@ -109,6 +109,28 @@ public class Assurance: NSObject, Extension {
 
     public func readyForEvent(_ event: Event) -> Bool {
         return shouldProcessEvents
+    }
+
+    /// Returns an Array of `AssuranceEvent`s containing regular and XDM shared state details of all the registered extensions.
+    /// - Returns: an array of `AssuranceEvent`
+    func getAllExtensionStateData() -> [AssuranceEvent] {
+        var stateEvents: [AssuranceEvent] = []
+
+        let eventHubState = runtime.getSharedState(extensionName: AssuranceConstants.SharedStateName.EVENT_HUB, event: nil, barrier: false)
+        guard eventHubState?.status == .set, let registeredExtension = eventHubState?.value else {
+            return stateEvents
+        }
+
+        guard let extensionsMap = registeredExtension[AssuranceConstants.EventDataKey.EXTENSIONS] as? [String: Any] else {
+            return stateEvents
+        }
+
+        for (extensionName, _) in extensionsMap {
+            let friendlyName = getFriendlyExtensionName(extensionMap: extensionsMap, extensionName: extensionName)
+            stateEvents.append(contentsOf: getStateForExtension(stateOwner: extensionName, friendlyName: friendlyName))
+        }
+
+        return stateEvents
     }
 
     // MARK: - Event handlers
@@ -285,5 +307,64 @@ public class Assurance: NSObject, Extension {
         timer.setEventHandler(handler: block)
         timer.resume()
         return timer
+    }
+
+    // MARK: Helper methods to prepare shared state status events
+
+    ///
+    /// Gets the friendly name for an extension from EventHub's shared state.
+    /// - Parameters:
+    ///     - extensionMap: an eventHub's shared state dictionary containing details of the registered extension
+    ///     - extensionName: the extension's name for which the friendly name has to be retrieved
+    /// - Returns:A `String` representing the friendly name of the extension.
+    private func getFriendlyExtensionName(extensionMap: [String: Any], extensionName: String) -> String {
+        if let extensionDetails = extensionMap[extensionName] as? [String: Any] {
+            if let friendlyName = extensionDetails[AssuranceConstants.EventDataKey.FRIENDLY_NAME] as? String {
+                return friendlyName
+            }
+        }
+        return extensionName
+    }
+
+    ///
+    /// Fetches the Regular and XDM shared state data for the provided extension and prepares an  `Array` of  `AssuranceEvents`
+    /// - Parameters:
+    ///     - stateOwner: the state owner for which the shared state has to be fetched
+    ///     - friendlyName: the friendly name for the extension
+    /// - Returns: An array of Assurance Events containing shared state details.
+    ///
+    private func getStateForExtension(stateOwner: String, friendlyName: String) -> [AssuranceEvent] {
+        var stateEvents: [AssuranceEvent] = []
+
+        let regularSharedState = runtime.getSharedState(extensionName: stateOwner, event: nil, barrier: false)
+        if regularSharedState?.status == .set, let stateValue = regularSharedState?.value {
+            stateEvents.append(prepareSharedStateEvent(owner: stateOwner, eventName: "\(friendlyName) State", stateContent: stateValue, stateType: AssuranceConstants.PayloadKey.SHARED_STATE_DATA))
+        }
+
+        let xdmSharedState = runtime.getXDMSharedState(extensionName: stateOwner, event: nil, barrier: false)
+        if xdmSharedState?.status == .set, let xdmStateValue = xdmSharedState?.value {
+            stateEvents.append(prepareSharedStateEvent(owner: stateOwner, eventName: "\(friendlyName) XDM State", stateContent: xdmStateValue, stateType: AssuranceConstants.PayloadKey.XDM_SHARED_STATE_DATA))
+        }
+
+        return stateEvents
+    }
+
+    ///
+    /// Prepares the shared state assurance event with  given details.
+    /// - Parameters:
+    ///     - owner: the shared state owner
+    ///     - eventName : the event name for Assurance shared state event
+    ///     - stateContent: the shared state contents
+    ///     - stateType: type of shared state. Regular or XDM
+    /// - Returns: An `AssuranceEvent` containing shared state data.
+    ///
+    private func prepareSharedStateEvent(owner: String, eventName: String, stateContent: [String: Any], stateType: String) -> AssuranceEvent {
+        var payload: [String: AnyCodable] = [:]
+        payload[AssuranceConstants.ACPExtensionEventKey.NAME] = AnyCodable.init(eventName)
+        payload[AssuranceConstants.ACPExtensionEventKey.TYPE] = AnyCodable.init(EventType.hub.lowercased)
+        payload[AssuranceConstants.ACPExtensionEventKey.SOURCE] = AnyCodable.init(EventSource.sharedState.lowercased)
+        payload[AssuranceConstants.ACPExtensionEventKey.DATA] = [AssuranceConstants.EventDataKey.SHARED_STATE_OWNER: owner]
+        payload[AssuranceConstants.PayloadKey.METADATA] = [stateType: stateContent]
+        return AssuranceEvent(type: AssuranceConstants.EventType.GENERIC, payload: payload)
     }
 }

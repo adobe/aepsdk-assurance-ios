@@ -26,7 +26,7 @@ extension iOSStatusUI: FloatingButtonDelegate {
 
     /// Invoked when the floating button is displayed
     func onShow() {
-        if assuranceSession.socket.socketState == .OPEN {
+        if assuranceSession.socket.socketState == .open {
             floatingButton?.setButtonImage(imageData: Data(bytes: ActiveIcon.content, count: ActiveIcon.content.count))
         } else {
             floatingButton?.setButtonImage(imageData: Data(bytes: InactiveIcon.content, count: InactiveIcon.content.count))

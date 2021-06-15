@@ -240,6 +240,7 @@ class PluginColorWildCard: AssurancePlugin {
 
 class PluginTaco: AssurancePlugin {
 
+    var expectation: XCTestExpectation?
     var vendor: String = "Food"
     var commandType: String = "Taco"
 
@@ -250,6 +251,7 @@ class PluginTaco: AssurancePlugin {
 
     var eventReceived = false
     func receiveEvent(_ event: AssuranceEvent) {
+        expectation?.fulfill()
         eventReceived = true
     }
 

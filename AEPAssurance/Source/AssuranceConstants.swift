@@ -29,6 +29,7 @@ enum AssuranceConstants {
 
     enum SharedStateName {
         static let CONFIGURATION = "com.adobe.module.configuration"
+        static let EVENT_HUB = "com.adobe.module.eventhub"
     }
 
     enum Vendor {
@@ -68,6 +69,8 @@ enum AssuranceConstants {
         static let START_SESSION_URL = "startSessionURL"
         static let CONFIG_ORG_ID = "experienceCloud.org"
         static let SHARED_STATE_OWNER = "stateowner"
+        static let EXTENSIONS = "extensions"
+        static let FRIENDLY_NAME = "friendlyName"
     }
 
     enum DataStoreKeys {

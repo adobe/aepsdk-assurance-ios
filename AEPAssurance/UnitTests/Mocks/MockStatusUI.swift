@@ -13,10 +13,13 @@
 @testable import AEPAssurance
 @testable import AEPCore
 import Foundation
+import XCTest
 
-class MockAssurance: Assurance {
-    required init?(runtime: ExtensionRuntime) {
-        super.init(runtime: runtime)
+class MockStatusUI: iOSStatusUI {
+
+    var addClientLogCalled = false
+    override func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
+        addClientLogCalled = true
     }
 
 }
