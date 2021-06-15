@@ -11,17 +11,183 @@
  */
 
 import AEPAssurance
+import AEPCore
+import AEPPlaces
+import AEPUserProfile
+import CoreLocation
 import SwiftUI
+
+let HEADING_FONT_SIZE: CGFloat = 25.0
 
 struct ContentView: View {
     var body: some View {
-        Text("Assurance Version: v" + Assurance.extensionVersion)
-            .padding()
+        ScrollView(.vertical) {
+            AssuranceCard()
+            AnalyticsCard()
+            UserProfileCard()
+            ConsentCard()
+            PlacesCard()
+
+        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+struct YellowButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack {
+            Spacer()
+            configuration.label.foregroundColor(.black)
+            Spacer()
+        }
+        .padding()
+        .background(Color.yellow.cornerRadius(8))
+        .scaleEffect(configuration.isPressed ? 0.95 : 1)
+    }
+}
+
+struct AssuranceCard: View {
+    @State private var assuranceURL: String = ""
+    var body: some View {
+        VStack {
+            HStack {
+
+                Text("Assurance: v" + Assurance.extensionVersion).padding(.leading).font(.system(size: HEADING_FONT_SIZE, weight: .heavy, design: .default))
+                Spacer()
+            }
+
+            HStack {
+                TextField("Copy Assurance Session URL to here", text: $assuranceURL).background(Color(.systemGray6)).cornerRadius(5.0).frame(height: 100).frame(height: 50).padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+            }
+
+            HStack {
+                Button(action: {
+                    if let url = URL(string: self.assuranceURL) {
+                        Assurance.startSession(url: url as NSURL)
+                    }
+                }, label: {
+                    Text("Connect")
+                }).buttonStyle(YellowButtonStyle()).padding()
+            }
+        }
+    }
+}
+
+struct UserProfileCard: View {
+    var body: some View {
+        VStack {
+            HStack {
+                Text("UserProfile").padding(.leading).font(.system(size: HEADING_FONT_SIZE, weight: .heavy, design: .default))
+                Spacer()
+            }
+
+            HStack {
+                Button(action: {
+                    let userProfile: [String: Any] = [
+                        "type": "HardCore Gamer",
+                        "age": 16
+                    ]
+                    UserProfile.updateUserAttributes(attributeDict: userProfile)
+                }, label: {
+                    Text("Update")
+                }).buttonStyle(YellowButtonStyle()).padding()
+
+                Button(action: {
+                    UserProfile.removeUserAttributes(attributeNames: ["type"])
+                }, label: {
+                    Text("Remove ")
+                }).buttonStyle(YellowButtonStyle()).padding()
+            }
+        }
+    }
+}
+
+struct AnalyticsCard: View {
+    var body: some View {
+        VStack {
+            HStack {
+                Text("Analytics").padding(.leading).font(.system(size: HEADING_FONT_SIZE, weight: .heavy, design: .default))
+                Spacer()
+            }
+            HStack {
+                Button(action: {
+                    MobileCore.track(state: "Fabulous action", data: nil)
+                }, label: {
+                    Text("Track Action")
+                }).buttonStyle(YellowButtonStyle()).padding()
+
+                Button(action: {
+                    MobileCore.track(state: "Amazing state", data: nil)
+                }, label: {
+                    Text("Track State")
+                }).buttonStyle(YellowButtonStyle()).padding()
+            }
+        }
+    }
+}
+
+struct ConsentCard: View {
+    var body: some View {
+        VStack {
+            HStack {
+                Text("Consent").padding(.leading).font(.system(size: HEADING_FONT_SIZE, weight: .heavy, design: .default))
+                Spacer()
+            }
+
+            HStack {
+                Button(action: {
+
+                }, label: {
+                    Text("Consent Yes")
+                }).buttonStyle(YellowButtonStyle()).padding()
+
+                Button(action: {
+
+                }, label: {
+                    Text("Consent No")
+                }).buttonStyle(YellowButtonStyle()).padding()
+            }
+        }
+    }
+}
+
+struct PlacesCard: View {
+    var body: some View {
+        VStack {
+            HStack {
+                Text("Places").padding(.leading).font(.system(size: HEADING_FONT_SIZE, weight: .heavy, design: .default))
+                Spacer()
+            }
+
+            HStack {
+                Button(action: {
+                    let location = CLLocation(latitude: 37.335480, longitude: -121.893028)
+                    Places.getNearbyPointsOfInterest(forLocation: location, withLimit: 10) { nearbyPois, responseCode in
+                        print("responseCode: \(responseCode.rawValue) \nnearbyPois: \(nearbyPois)")
+                    }
+                }, label: {
+                    Text("Get POIs")
+                }).buttonStyle(YellowButtonStyle())
+
+                Button(action: {
+                    let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: 37.3255196, longitude: -121.9458237), radius: 100, identifier: "dfb81b5a-1027-431a-917d-41292916d575")
+                    Places.processRegionEvent(PlacesRegionEvent.entry, forRegion: region)
+                }, label: {
+                    Text("Entry")
+                }).buttonStyle(YellowButtonStyle())
+
+                Button(action: {
+                    let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: 37.3255196, longitude: -121.9458237), radius: 100, identifier: "dfb81b5a-1027-431a-917d-41292916d575")
+                    Places.processRegionEvent(PlacesRegionEvent.exit, forRegion: region)
+                }, label: {
+                    Text("Exit")
+                }).buttonStyle(YellowButtonStyle())
+            }
+        }
     }
 }
