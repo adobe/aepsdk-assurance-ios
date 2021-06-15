@@ -10,8 +10,18 @@
  governing permissions and limitations under the License.
  */
 
+import AEPAnalytics
 import AEPAssurance
 import AEPCore
+import AEPEdge
+import AEPEdgeConsent
+import AEPEdgeIdentity
+import AEPIdentity
+import AEPLifecycle
+import AEPPlaces
+import AEPSignal
+import AEPTarget
+import AEPUserProfile
 import UIKit
 
 @main
@@ -20,7 +30,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         MobileCore.setLogLevel(.trace)
-        MobileCore.registerExtensions([Assurance.self], {
+        let extensions = [AEPIdentity.Identity.self,
+                          Lifecycle.self,
+                          Signal.self,
+                          Edge.self,
+                          Consent.self,
+                          Analytics.self,
+                          AEPEdgeIdentity.Identity.self,
+                          Target.self,
+                          Consent.self,
+                          UserProfile.self,
+                          Assurance.self,
+                          Places.self
+        ]
+        MobileCore.registerExtensions(extensions, {
             MobileCore.configureWith(appId: "")
         })
 
