@@ -71,7 +71,7 @@ class AssuranceSessionTests: XCTestCase {
 
     func test_session_outBoundEventsAreQueued_until_socketConnected() throws {
         // setup
-        mockSocket.socketState = .CLOSED
+        mockSocket.socketState = .closed
 
         // test
         session.sendEvent(sampleAssuranceEvent())
@@ -83,7 +83,7 @@ class AssuranceSessionTests: XCTestCase {
 
     func test_session_outBoundEventsAreQueued_until_startForwardingEventReceived() throws {
         // setup
-        mockSocket.socketState = .OPEN
+        mockSocket.socketState = .open
         session.canStartForwarding = false
 
         // test
@@ -97,7 +97,7 @@ class AssuranceSessionTests: XCTestCase {
     func test_session_outBoundEventsAreSent_after_startForwardingEventReceived() throws {
         // setup
         mockSocket.expectation = XCTestExpectation(description: "sends outbound event to socket")
-        mockSocket.socketState = .OPEN
+        mockSocket.socketState = .open
         session.canStartForwarding = true
 
         // test

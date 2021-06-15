@@ -20,7 +20,7 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     var socketURL: URL?
 
     /// variable tracking the current socket status
-    var socketState: SocketState = .UNKNOWN {
+    var socketState: SocketState = .unknown {
         didSet {
             delegate.webSocket(self, didChangeState: self.socketState)
         }
@@ -73,7 +73,7 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     /// - Parameters :
     ///     - url : the webSocket `URL`
     func connect(withUrl url: URL) {
-        self.socketState = .CONNECTING
+        self.socketState = .connecting
         self.socketURL = url
         if !isWebViewLoaded {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Waiting for webView to be loaded open socket connection.")
@@ -96,7 +96,7 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     /// And the socket state is set to `CLOSED`.
     /// On any error,  the SocketDelegate's `webSocketOnError` method is invoked.
     func disconnect() {
-        self.socketState = .CLOSING
+        self.socketState = .closing
         socketQueue.async {
             self.runJavascriptCommand("disconnect();", { error in
                 if error != nil {
@@ -155,7 +155,7 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
         })
 
         registerSocketCallback("onopen", with: { _ in
-            self.socketState = .OPEN
+            self.socketState = .open
             self.delegate.webSocketDidConnect(self)
         })
 
@@ -164,7 +164,7 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
         })
 
         registerSocketCallback("onclose", with: { message in
-            self.socketState = .CLOSED
+            self.socketState = .closed
             self.socketURL = nil
             // message body obtained from on close call has the following keys
             // 1. closeCode   - an Integer representing closeCode for the socket

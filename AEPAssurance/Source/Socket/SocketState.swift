@@ -15,17 +15,17 @@ import Foundation
 ///Constants that indicate the states of the socket connection
 enum SocketState {
     /// The socket connection is initiated and it is in progress.
-    case CONNECTING
+    case connecting
 
     /// Socket connection state is established and currently receiving and forwarding events.
-    case OPEN
+    case open
 
     /// Socket connection disconnect has been initiated but has not completely disconnected yet.
-    case CLOSING
+    case closing
 
     /// Socket connection is completely terminated and is no more receiving or forwarding events.
-    case CLOSED
+    case closed
 
     /// Current state of the socket is unknown
-    case UNKNOWN
+    case unknown
 }

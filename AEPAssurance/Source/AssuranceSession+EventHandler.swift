@@ -29,7 +29,7 @@ extension AssuranceSession {
     ///
     func handleOutBoundEvents() {
         outboundSource.setEventHandler(handler: {
-            if SocketState.OPEN != self.socket.socketState {
+            if self.socket.socketState != .open {
                 Log.trace(label: AssuranceConstants.LOG_TAG, "Queuing event before connection has been initialized(waiting for deep link to initialize connection with pin code entry)")
                 return
             }
@@ -39,7 +39,7 @@ extension AssuranceSession {
                 return
             }
 
-            while self.outboundQueue.size() >= 0 {
+            while self.outboundQueue.size() > 0 {
                 let event = self.outboundQueue.dequeue()
                 if let event = event {
                     self.socket.sendEvent(event)
@@ -54,7 +54,7 @@ extension AssuranceSession {
     ///
     func handleInBoundEvents() {
         inboundSource.setEventHandler(handler: {
-            while self.inboundQueue.size() >= 0 {
+            while self.inboundQueue.size() > 0 {
                 guard let event = self.inboundQueue.dequeue() else {
                     Log.trace(label: AssuranceConstants.LOG_TAG, "Unable to read a valid event from inbound event queue. Ignoring to process the Inbound event from the Assurance Session.")
                     return
