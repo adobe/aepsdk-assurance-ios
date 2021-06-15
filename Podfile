@@ -18,4 +18,14 @@ end
 target 'TestApp' do
   pod 'AEPCore'
   pod 'AEPServices'
+  pod 'AEPLifecycle'
+  pod 'AEPIdentity'
+  pod 'AEPSignal'
+  pod 'AEPEdge'
+  pod 'AEPEdgeConsent'
+  pod 'AEPEdgeIdentity'
+  pod 'AEPUserProfile'
+  pod 'AEPTarget'
+  pod 'AEPAnalytics'
+  pod 'AEPPlaces'
 end
