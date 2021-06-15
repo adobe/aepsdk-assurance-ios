@@ -15,31 +15,11 @@
 import Foundation
 import XCTest
 
-class MockSocket: SocketConnectable {
-    var expectation: XCTestExpectation?
-    var socketURL: URL?
-    weak var delegate: SocketDelegate
-    var socketState: SocketState
+class MockStatusUI: iOSStatusUI {
 
-    required init(withDelegate delegate: SocketDelegate) {
-        self.delegate = delegate
-        self.socketState = .CLOSED
+    var addClientLogCalled = false
+    override func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
+        addClientLogCalled = true
     }
 
-    func connect(withUrl url: URL) {}
-
-    var disconnectCalled = false
-    func disconnect() {
-        disconnectCalled = true
-    }
-
-    var sendEventCalled = false
-    func sendEvent(_ event: AssuranceEvent) {
-        expectation?.fulfill()
-        sendEventCalled = true
-    }
-
-    func mockSocketState(state: SocketState) {
-        self.socketState = state
-    }
 }

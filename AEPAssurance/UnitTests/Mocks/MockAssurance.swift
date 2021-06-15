@@ -15,4 +15,8 @@
 import Foundation
 
 class MockAssurance: Assurance {
+    required init?(runtime: ExtensionRuntime) {
+        super.init(runtime: runtime)
+    }
+
 }

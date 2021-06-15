@@ -56,7 +56,7 @@ extension AssuranceSession: SocketDelegate {
         inboundSource.add(data: 1)
     }
 
-    /// Invoked when an socket connection state changes.
+    /// Invoked when a socket connection state changes.
     /// - Parameters:
     ///     - socket - the socket instance
     ///     - state - the present socket state
