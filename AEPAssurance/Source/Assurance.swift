@@ -108,7 +108,7 @@ public class Assurance: NSObject, Extension {
     }
 
     public func readyForEvent(_ event: Event) -> Bool {
-        return shouldProcessEvents
+        return true
     }
 
     /// Returns an Array of `AssuranceEvent`s containing regular and XDM shared state details of all the registered extensions.
@@ -140,22 +140,28 @@ public class Assurance: NSObject, Extension {
     /// - Parameters:
     /// - event - a mobileCore's `Event`
     private func handleWildcardEvent(event: Event) {
+        if event.isAssuranceRequestContent {
+            handleAssuranceRequestContent(event: event)
+        }
+        
+        if !shouldProcessEvents {
+            return
+        }
+        
         if event.isSharedStateEvent {
             processSharedStateEvent(event: event)
             return
         }
+        
+        // forward all the event to Assurance session
+        let assuranceEvent = AssuranceEvent.from(event: event)
+        assuranceSession?.sendEvent(assuranceEvent)
 
         if event.isPlacesRequestEvent {
             handlePlacesRequest(event: event)
         } else if event.isPlacesResponseEvent {
             handlePlacesResponse(event: event)
-        } else if event.isAssuranceRequestContent {
-            handleAssuranceRequestContent(event: event)
         }
-
-        // forward all the event to Assurance session
-        let assuranceEvent = AssuranceEvent.from(event: event)
-        assuranceSession?.sendEvent(assuranceEvent)
     }
 
     private func handleAssuranceRequestContent(event: Event) {
