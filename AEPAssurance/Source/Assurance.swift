@@ -143,16 +143,16 @@ public class Assurance: NSObject, Extension {
         if event.isAssuranceRequestContent {
             handleAssuranceRequestContent(event: event)
         }
-        
+
         if !shouldProcessEvents {
             return
         }
-        
+
         if event.isSharedStateEvent {
             processSharedStateEvent(event: event)
             return
         }
-        
+
         // forward all the event to Assurance session
         let assuranceEvent = AssuranceEvent.from(event: event)
         assuranceSession?.sendEvent(assuranceEvent)
