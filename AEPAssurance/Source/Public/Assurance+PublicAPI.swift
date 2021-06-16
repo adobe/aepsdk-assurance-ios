@@ -23,10 +23,8 @@ import Foundation
     ///
     /// - Parameter url: a valid AEPAssurance URL to start a session
     ///
-    static func startSession(url: NSURL) {
-        guard let urlString = url.absoluteString else {
-            return
-        }
+    static func startSession(url: URL) {
+        let urlString = url.absoluteString
 
         if !urlString.contains(AssuranceConstants.Deeplink.SESSIONID_KEY) {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Not a valid Assurance deeplink, ignorning start session API call for URL : \(urlString)")

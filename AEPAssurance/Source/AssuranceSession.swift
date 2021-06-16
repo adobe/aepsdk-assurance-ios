@@ -53,7 +53,8 @@ class AssuranceSession {
 
     ///
     /// Called this method to start an Assurance session.
-    /// If the sessui
+    /// If the session was already connected, It will resume the connection.
+    /// Otherwise PinCode screen is presented for establishing a new connection.
     ///
     func startSession() {
         if (socket.socketState == .open || socket.socketState == .connecting) {

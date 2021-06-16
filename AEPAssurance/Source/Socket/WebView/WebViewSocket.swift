@@ -53,7 +53,12 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
         self.delegate = delegate
         super.init()
         // read the webSocket javascript from the built resources
-        let socketJavascript = String(bytes: SocketScript.content, encoding: .utf8)!
+        
+        
+        guard let socketJavascript = String(bytes: SocketScript.content, encoding: .utf8) else {
+            Log.warning(label: AssuranceConstants.LOG_TAG, "Unable to load javascript string for webView socket connection.")
+            return
+        }
 
         // grab the main queue to set up webView for socket connection
         // WebView Initialization should be run on main thread
