@@ -133,6 +133,7 @@ class AssuranceSession {
         // since we don't give retry option for these errors and UI will be dismissed anyway, hence notify plugins for onSessionTerminated
         if !error.info.shouldRetry {
             clearSessionData()
+            pluginHub.notifyPluginsOnSessionTerminated()
         }
     }
 
