@@ -41,13 +41,13 @@ class AEPAssuranceTests: XCTestCase {
         }
 
         // test
-        Assurance.startSession(url: NSURL(string: validSessionURL)!)
+        Assurance.startSession(url: URL(string: validSessionURL)!)
 
         // verify
         wait(for: [expectation], timeout: 1)
     }
 
-    func test_startSession_emptyOrInvalidURL() {
+    func test_startSession_withoutSessionID() {
         // setup
         let expectation = XCTestExpectation(description: "Start session with invalid assurance deeplink URL should not dispatch an event")
         expectation.isInverted = true
@@ -58,8 +58,7 @@ class AEPAssuranceTests: XCTestCase {
         }
 
         // test invalid URL's
-        Assurance.startSession(url: NSURL(string: "")!)
-        Assurance.startSession(url: NSURL(string: "invalid")!)
+        Assurance.startSession(url: URL(string: "griffon://?no_sessionid=nothing")!)
 
         // verify
         wait(for: [expectation], timeout: 1)

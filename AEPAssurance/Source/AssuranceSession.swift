@@ -51,15 +51,38 @@ class AssuranceSession {
         registerInternalPlugins()
     }
 
+    ///
+    /// Called this method to start an Assurance session.
+    /// If the session was already connected, It will resume the connection.
+    /// Otherwise PinCode screen is presented for establishing a new connection.
+    ///
+    func startSession() {
+        if socket.socketState == .open || socket.socketState == .connecting {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "There is already an ongoing Assurance session. Ignoring to start new session.")
+            return
+        }
+
+        // if there is a socket URL already connected in the previous session, reuse it.
+        if let socketURL = assuranceExtension.connectedWebSocketURL {
+            self.statusUI.display()
+            socket.connect(withUrl: URL(string: socketURL)!)
+            return
+        }
+
+        // if there were no previous connected URL then start a new session
+        beginNewSession()
+    }
+
     /// Called when a valid assurance deep link url is received from the startSession API
     /// Calling this method will attempt to display the pinCode screen for session authentication
     ///
     /// Thread : Listener thread from EventHub
-    func startSession() {
+    func beginNewSession() {
         let pinCodeScreen = iOSPinCodeScreen.init(withExtension: assuranceExtension)
         self.pinCodeScreen = pinCodeScreen
 
-        pinCodeScreen.show(callback: { [weak self] socketURL, error in
+        // invoke the pinpad screen and create a socketURL with the pincode and other essential parameters
+        pinCodeScreen.show(callback: { [weak self]  socketURL, error in
             if let error = error {
                 self?.handleConnectionError(error: error, closeCode: nil)
                 return
@@ -70,9 +93,9 @@ class AssuranceSession {
                 return
             }
 
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to make a socket connection with URL : \(socketURL.absoluteString)")
-            // todo
-            //self?.socket.connect(withUrl: socketURL)
+            // Thread : main thread (this callback is called from `overrideUrlLoad` method of WKWebView)
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to make a socket connection with URL : \(socketURL)")
+            self?.socket.connect(withUrl: socketURL)
             pinCodeScreen.connectionInitialized()
         })
     }
@@ -95,7 +118,24 @@ class AssuranceSession {
     }
 
     func handleConnectionError(error: AssuranceConnectionError, closeCode: Int?) {
-        // coming soon
+        // if the pinCode screen is still being displayed. Then use the same webView to display error
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with error :\(error.info.name) \n description : \(error.info.description) \n close code: \(closeCode ?? -1)")
+        if pinCodeScreen?.isDisplayed == true {
+            pinCodeScreen?.connectionFailedWithError(error)
+        } else {
+            let errorView = ErrorView.init(AssuranceConnectionError.clientError)
+            errorView.display()
+        }
+
+        if let closeCode = closeCode {
+            pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
+        }
+
+        // since we don't give retry option for these errors and UI will be dismissed anyway, hence notify plugins for onSessionTerminated
+        if !error.info.shouldRetry {
+            clearSessionData()
+            pluginHub.notifyPluginsOnSessionTerminated()
+        }
     }
 
     ///

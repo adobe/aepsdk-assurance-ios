@@ -68,7 +68,7 @@ struct AssuranceCard: View {
             HStack {
                 Button(action: {
                     if let url = URL(string: self.assuranceURL) {
-                        Assurance.startSession(url: url as NSURL)
+                        Assurance.startSession(url: url)
                     }
                 }, label: {
                     Text("Connect")
