@@ -153,7 +153,7 @@ public class Assurance: NSObject, Extension {
             return
         }
 
-        // forward all the event to Assurance session
+        // forward all events to Assurance session
         let assuranceEvent = AssuranceEvent.from(event: event)
         assuranceSession?.sendEvent(assuranceEvent)
 

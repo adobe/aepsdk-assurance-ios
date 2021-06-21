@@ -119,6 +119,7 @@ class AssuranceSession {
 
     func handleConnectionError(error: AssuranceConnectionError, closeCode: Int?) {
         // if the pinCode screen is still being displayed. Then use the same webView to display error
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with error :\(error.info.name) \n description : \(error.info.description) \n close code: \(closeCode ?? -1)")
         if pinCodeScreen?.isDisplayed == true {
             pinCodeScreen?.connectionFailedWithError(error)
         } else {

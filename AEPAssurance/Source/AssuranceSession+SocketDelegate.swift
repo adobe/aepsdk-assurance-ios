@@ -33,53 +33,56 @@ extension AssuranceSession: SocketDelegate {
     ///     - reason: A `String` description for the reason of disconnection
     ///     - wasClean: A boolean representing if the connection has been terminated successfully. A false value represents the socket connection can be attempted to reconnected.
     func webSocketDidDisconnect(_ socket: SocketConnectable, _ closeCode: Int, _ reason: String, _ wasClean: Bool) {
-        // this will happen when user disconnects hitting the disconnect button in Status UI
+        
+        switch closeCode {
+        
+        // Normal Closure : Close code 4900
+        // Happens when user disconnects hitting the disconnect button in Status UI.
         // notify plugin on normal closure
-        if closeCode == AssuranceConstants.SocketCloseCode.NORMAL_CLOSURE {
+        case AssuranceConstants.SocketCloseCode.NORMAL_CLOSURE:
             Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected successfully with close code \(closeCode). Normal closure of websocket.")
             pinCodeScreen?.connectionFinished()
             statusUI.remove()
             pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
-        }
-
-        // Close code 4900, happens when there is an orgId mismatch
+            break
+            
+        // ORG Mismatch : Close code 4900
+        // Happens when there is an orgId mismatch between the griffon session and configured mobile SDK.
         // This is a non-retry error. Display the error back to user and close the connection.
-        else if closeCode == AssuranceConstants.SocketCloseCode.ORG_MISMATCH {
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with close code \(closeCode). OrgID Mismatch.")
+        case AssuranceConstants.SocketCloseCode.ORG_MISMATCH:            
             handleConnectionError(error: AssuranceConnectionError.orgIDMismatch, closeCode: closeCode)
-        }
-
-        // Close code 4901, happens when the number of connections per session exceeds the limit
-        // Configurable value and its default value is 200
+            break
+        
+        // Connection Limit : Close code 4901
+        // Happens when the number of connections per session exceeds the limit
+        // Configurable value and its default value is 200.
         // This is a non-retry error. Display the error back to user and close the connection.
-        else if closeCode == AssuranceConstants.SocketCloseCode.CONNECTION_LIMIT {
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with close code \(closeCode). Connection Limit reached (200 devices per session).")
+        case AssuranceConstants.SocketCloseCode.CONNECTION_LIMIT:
             handleConnectionError(error: AssuranceConnectionError.connectionLimit, closeCode: closeCode)
-        }
-
-        // Close code 4902, happens when the clients exceeds the number of Griffon events that can be sent per minute
+            break
+        
+        // Events Limit : Close code 4902
+        // Happens when the clients exceeds the number of Griffon events that can be sent per minute.
         // Configurable value : default value is 10k events per minute
         // This is a non-retry error. Display the error back to user and close the connection.
-        else if closeCode == AssuranceConstants.SocketCloseCode.EVENTS_LIMIT {
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with close code \(closeCode). Event Limit reached (10k events per minute for a client).")
+        case AssuranceConstants.SocketCloseCode.EVENTS_LIMIT:
             handleConnectionError(error: AssuranceConnectionError.eventLimit, closeCode: closeCode)
-        }
-
-        // Close code 4400, happens when there is a something wrong with the client during socket connection.
-        // This error is generically thrown if the client doesn't adhere to the rules of the socket connection.
-        // Example:
-        // If clientInfoEvent is not the first event to socket
-        // If there are any missing parameters in the socket URL
-        else if closeCode == AssuranceConstants.SocketCloseCode.CLIENT_ERROR {
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with close code \(closeCode). Client Error occurred.")
+            break
+            
+        // Events Limit : Close code 4400
+        // This error is generically thrown if the client doesn't adhere to the protocol of the socket connection.
+        // For example:
+        // - If clientInfoEvent is not the first event to socket.
+        // - If there are any missing parameters in the socket URL.
+        case AssuranceConstants.SocketCloseCode.CLIENT_ERROR:
             handleConnectionError(error: AssuranceConnectionError.clientError, closeCode: closeCode)
-        }
-
-        // for all other abnormal closures, display error back to UI and attempt to reconnect
-        else {
+            break
+            
+        // For all other abnormal closures, display error back to UI and attempt to reconnect.
+        default:
             Log.debug(label: AssuranceConstants.LOG_TAG, "Abnormal closure of webSocket. Reason - \(reason) and closeCode - \(closeCode)")
             pinCodeScreen?.connectionFailedWithError(AssuranceConnectionError.genericError)
-
+           
             // do the reconnect logic only if session is already connected
             guard let _ = assuranceExtension.connectedWebSocketURL else {
                 return
@@ -101,7 +104,7 @@ extension AssuranceSession: SocketDelegate {
                 statusUI.updateForSocketInActive()
                 pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
             }
-
+            
             let delay = DispatchTimeInterval.seconds(delayBeforeReconnect)
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 self.startSession()
