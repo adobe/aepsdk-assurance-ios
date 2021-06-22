@@ -25,6 +25,7 @@ import Foundation
     ///
     static func startSession(url: URL?) {
         guard let urlString = url?.absoluteString else {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Not a valid Assurance deeplink, ignorning start session API call.")
             return
         }
 

@@ -14,32 +14,31 @@
 @testable import AEPCore
 @testable import AEPServices
 import Foundation
-import XCTest
 import os
+import XCTest
 
 class PluginLogForwardingTests: XCTestCase {
-    
-    
+
     var plugin = PluginLogForwarder()
     let runtime = TestableExtensionRuntime()
     var assuranceExtension: MockAssurance?
     var mockSession: MockAssuranceSession!
-    
+
     override func setUpWithError() throws {
         assuranceExtension = MockAssurance(runtime: runtime)
         assuranceExtension?.environment = .dev
         assuranceExtension?.sessionId = "mocksessionId"
         mockSession = MockAssuranceSession(assuranceExtension!)
     }
-    
+
     func test_vendor() {
         XCTAssertEqual(AssuranceConstants.Vendor.MOBILE, plugin.vendor)
     }
-    
+
     func test_commandType() {
         XCTAssertEqual(AssuranceConstants.CommandType.LOG_FORWARDING, plugin.commandType)
     }
-    
+
     func test_commandLogForward_whenSessionNotAvailable() {
         plugin.session = nil
         let data = """
@@ -54,15 +53,15 @@ class PluginLogForwardingTests: XCTestCase {
                       }
                     }
                    """.data(using: .utf8)!
-                        
+
         // test
         plugin.receiveEvent(AssuranceEvent.from(jsonData: data)!)
-        
+
         // verify
         XCTAssertFalse(plugin.currentlyRunning)
 
     }
-    
+
     func test_commandLogForward_emptyPayload() {
         // setup
         plugin.onRegistered(mockSession)
@@ -74,15 +73,15 @@ class PluginLogForwardingTests: XCTestCase {
                       }
                     }
                    """.data(using: .utf8)!
-                        
+
         // test
         plugin.receiveEvent(AssuranceEvent.from(jsonData: data)!)
-        
+
         // verify
         XCTAssertFalse(plugin.currentlyRunning)
 
     }
-    
+
     func test_commandLogForward_emptyDetails() {
         // setup
         plugin.onRegistered(mockSession)
@@ -97,15 +96,14 @@ class PluginLogForwardingTests: XCTestCase {
                       }
                     }
                    """.data(using: .utf8)!
-                        
+
         // test
         plugin.receiveEvent(AssuranceEvent.from(jsonData: data)!)
 
-        
         // verify
         XCTAssertFalse(plugin.currentlyRunning)
     }
-    
+
     func test_commandLogForward_enableKeyNotBoolean() {
         // setup
         plugin.onRegistered(mockSession)
@@ -121,14 +119,14 @@ class PluginLogForwardingTests: XCTestCase {
                       }
                     }
                    """.data(using: .utf8)!
-                        
+
         // test
         plugin.receiveEvent(AssuranceEvent.from(jsonData: data)!)
-        
+
         // verify
         XCTAssertFalse(plugin.currentlyRunning)
     }
-    
+
     func test_commandLogForwarding_completeWorkflow() {
         // setup
         mockSession.expectation = XCTestExpectation(description: "Sends log event to connected session.")
@@ -138,7 +136,7 @@ class PluginLogForwardingTests: XCTestCase {
         plugin.receiveEvent(logForwardingEvent(start: true))
         sleep(1)
         XCTAssertTrue(plugin.currentlyRunning)
-        
+
         // add a log statement
         os_log("secret log message")
 
@@ -146,37 +144,37 @@ class PluginLogForwardingTests: XCTestCase {
         wait(for: [mockSession.expectation!], timeout: 2.0)
         XCTAssertTrue(mockSession.sendEventCalled)
         let logEvent = mockSession.sentEvent
-        XCTAssertEqual(AssuranceConstants.EventType.LOG , logEvent?.type)
-        XCTAssertEqual(AssuranceConstants.Vendor.MOBILE , logEvent?.vendor)
+        XCTAssertEqual(AssuranceConstants.EventType.LOG, logEvent?.type)
+        XCTAssertEqual(AssuranceConstants.Vendor.MOBILE, logEvent?.vendor)
         let logMessage = logEvent?.payload?["logline"]?.stringValue
         XCTAssertNotNil(logMessage)
         XCTAssertTrue(logMessage!.contains("secret log message"))
-        
+
         sleep(1)
         mockSession.sendEventCalled = false
-        
+
         // now send event to stop forwarding
         plugin.receiveEvent(logForwardingEvent(start: false))
-        
+
         // add log statement
         os_log("another secret log message")
-        
+
         // verify
         XCTAssertFalse(plugin.currentlyRunning)
         XCTAssertFalse(mockSession.sendEventCalled)
     }
-    
+
     func test_commandLogForwarding_stopForwarding_whenNeverStarted() {
         // setup
         plugin.onRegistered(mockSession)
 
         // test
         plugin.receiveEvent(logForwardingEvent(start: false))
-        
+
         // verify
         XCTAssertFalse(plugin.currentlyRunning)
     }
-    
+
     func test_commandLogForwarding_when_startForwardingReceivedTwice() {
         // setup
         mockSession.expectation = XCTestExpectation(description: "Sends log event to connected session.")
@@ -185,20 +183,19 @@ class PluginLogForwardingTests: XCTestCase {
         // test
         plugin.receiveEvent(logForwardingEvent(start: true))
         plugin.receiveEvent(logForwardingEvent(start: true))
-        
+
         // verify
         os_log("secret log message")
         wait(for: [mockSession.expectation!], timeout: 2.0)
         XCTAssertTrue(mockSession.sendEventCalled)
     }
-    
-    
+
     func test_unusedProtocolMethod() {
         XCTAssertNoThrow(plugin.onSessionConnected())
         XCTAssertNoThrow(plugin.onSessionTerminated())
         XCTAssertNoThrow(plugin.onSessionDisconnectedWithCloseCode(-1))
     }
-    
+
     private func logForwardingEvent(start: Bool) -> AssuranceEvent {
         let data = """
                     {
@@ -212,8 +209,8 @@ class PluginLogForwardingTests: XCTestCase {
                       }
                     }
                    """.data(using: .utf8)!
-        
+
         return AssuranceEvent.from(jsonData: data)!
     }
-    
+
 }
