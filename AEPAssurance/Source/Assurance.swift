@@ -14,6 +14,7 @@ import AEPCore
 import AEPServices
 import Foundation
 
+@objc(AEPMobileAssurance)
 public class Assurance: NSObject, Extension {
 
     /// Time before assurance shuts down on non receipt of start session event.
