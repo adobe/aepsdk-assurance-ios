@@ -12,6 +12,7 @@
 
 import SwiftUI
 import UIKit
+import AEPAssurance
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -20,6 +21,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Create the SwiftUI view that provides the window contents.
         let contentView = ContentView()
+        
+        // Called when the app launches with the deep link
+        if let deepLinkURL = connectionOptions.urlContexts.first?.url {
+            Assurance.startSession(url: deepLinkURL)
+        }
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
@@ -30,19 +36,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
 
-    func sceneDidDisconnect(_ scene: UIScene) {
-    }
-
-    func sceneDidBecomeActive(_ scene: UIScene) {
-    }
-
-    func sceneWillResignActive(_ scene: UIScene) {
-    }
-
-    func sceneWillEnterForeground(_ scene: UIScene) {
-    }
-
-    func sceneDidEnterBackground(_ scene: UIScene) {
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        // This method is called when the app in background is opened with a deep link.
+        // https://developer.apple.com/documentation/uikit/uiscenedelegate/3238059-scene
+        if let deepLinkURL = URLContexts.first?.url {
+            Assurance.startSession(url: deepLinkURL)
+        }
     }
 
 }
