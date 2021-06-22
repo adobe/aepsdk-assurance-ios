@@ -14,6 +14,7 @@ import AEPAssurance
 import AEPCore
 import AEPPlaces
 import AEPUserProfile
+import AEPEdgeConsent
 import CoreLocation
 import SwiftUI
 
@@ -116,13 +117,13 @@ struct AnalyticsCard: View {
             }
             HStack {
                 Button(action: {
-                    MobileCore.track(state: "Fabulous action", data: nil)
+                    MobileCore.track(state: "Car Purchased", data: nil)
                 }, label: {
                     Text("Track Action")
                 }).buttonStyle(YellowButtonStyle()).padding()
 
                 Button(action: {
-                    MobileCore.track(state: "Amazing state", data: nil)
+                    MobileCore.track(state: "Home Page", data: nil)
                 }, label: {
                     Text("Track State")
                 }).buttonStyle(YellowButtonStyle()).padding()
@@ -141,13 +142,17 @@ struct ConsentCard: View {
 
             HStack {
                 Button(action: {
-
+                    let collectConsent = ["collect": ["val": "y"]]
+                       let currentConsents = ["consents": collectConsent]
+                       Consent.update(with: currentConsents)
                 }, label: {
                     Text("Consent Yes")
                 }).buttonStyle(YellowButtonStyle()).padding()
 
                 Button(action: {
-
+                    let collectConsent = ["collect": ["val": "n"]]
+                    let currentConsents = ["consents": collectConsent]
+                    Consent.update(with: currentConsents)
                 }, label: {
                     Text("Consent No")
                 }).buttonStyle(YellowButtonStyle()).padding()
