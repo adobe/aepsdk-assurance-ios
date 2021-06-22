@@ -59,6 +59,7 @@ struct AssuranceBlob {
                        HTTP_HEADER_KEY_FILE_CONTENT_TYPE: contentType]
 
         let networkRequest = NetworkRequest(url: components.url!,
+                                            httpMethod: HttpMethod.post,
                                             connectPayloadData: blob,
                                             httpHeaders: headers,
                                             connectTimeout: CONNECTION_TIMEOUT,

@@ -51,7 +51,7 @@ class PluginScreenshot: AssurancePlugin {
                     let assuranceEvent = AssuranceEvent(type: AssuranceConstants.EventType.BLOB, payload: ["blobId": AnyCodable(blobID), "mimeType": "image/png"])
                     self.session?.sendEvent(assuranceEvent)
                 } else {
-                    Log.debug(label: AssuranceConstants.LOG_TAG, "Uploading the screenshot failed. Ignoring the screenShot request.")
+                    Log.debug(label: AssuranceConstants.LOG_TAG, "Uploading screenshot failed. Ignoring the screenShot request.")
                 }
             })
         })

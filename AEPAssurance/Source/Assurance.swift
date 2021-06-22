@@ -87,6 +87,7 @@ public class Assurance: NSObject, Extension {
         /// if the Assurance session was already connected in the previous app session, go ahead and reconnect socket
         /// and do not turn on the unregister timer
         if connectedWebSocketURL != nil {
+            shareState()
             assuranceSession?.startSession()
             return
         }
