@@ -1,4 +1,4 @@
-# AEPCampaign Documentation
+# AEPAssurance Documentation
 
 Click a link below to learn more.
 
