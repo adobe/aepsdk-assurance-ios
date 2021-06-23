@@ -56,7 +56,7 @@ class AssuranceBlobTests: XCTestCase {
         XCTAssertTrue(mockNetworkService.connectAsyncCalled)
         XCTAssertEqual("https://blob-dev.griffon.adobe.com/api/FileUpload?validationSessionId=mocksessionId", mockNetworkService.networkRequest?.url.absoluteString)
         XCTAssertEqual(sampleData, mockNetworkService.networkRequest?.connectPayload)
-        XCTAssertEqual(HttpMethod.get, mockNetworkService.networkRequest?.httpMethod)
+        XCTAssertEqual(HttpMethod.post, mockNetworkService.networkRequest?.httpMethod)
         XCTAssertEqual("application/octet-stream", mockNetworkService.networkRequest?.httpHeaders["Content-Type"])
         XCTAssertEqual("png", mockNetworkService.networkRequest?.httpHeaders["File-Content-Type"])
         XCTAssertEqual(30, mockNetworkService.networkRequest?.connectTimeout)
