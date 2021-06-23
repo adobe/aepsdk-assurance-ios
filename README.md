@@ -36,7 +36,7 @@ Replace `YOUR_TARGET_NAME` and then, in the `Podfile` directory, type:
 $ pod install
 ```
 
-### [Swift Package Manager](https://github.com/apple/swift-package-manager)
+### 3. [Swift Package Manager](https://github.com/apple/swift-package-manager)
 
 To add the AEPAssurance Package to your application, from the Xcode menu select:
 
@@ -98,6 +98,7 @@ make test
 ## Contributing
 
 Contributions are welcomed! Read the [Contributing Guide](./.github/CONTRIBUTING.md) for more information.
+We look forward to working with you!
 
 ## Licensing
 
