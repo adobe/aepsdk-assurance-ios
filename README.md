@@ -2,10 +2,11 @@
 
 ## About this project
 
+Assurance/Project Griffon is a new, innovative beta product from [Adobe Experience Cloud](https://business.adobe.com/) to help you inspect, proof, simulate, and validate how you collect data or serve experiences in your mobile app. For more information on what Project Griffon can do for you, see [here](https://aep-sdks.gitbook.io/docs/beta/project-griffon#what-can-project-griffon-do-for-you).
+
 ## Requirements
 - Xcode 12 or newer
 - Swift 5.1 or newer
-
 
 ## Installation
 
@@ -59,6 +60,9 @@ targets: [
 ]
 ```
 
+## TestApps
+Two sample apps are provided (one each for Swift and Objective-c) which demonstrate setting up and getting started with Assurance extension. Their targets are in `AEPAssurance.xcodeproj`, runnable in `AEPAssurance.xcworkspace`. Sample app source code can be found in the `TestApps` directory. Here is the documentation to help you get started with test application 
+
 ## Development
 
 The first time you clone or download the project, you should run the following from the root directory to setup the environment:
@@ -89,17 +93,18 @@ make test
 ~~~
 
 ## Related Projects
-
 | Project                                                      | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [AEPCore Extensions](https://github.com/adobe/aepsdk-core-ios) | The AEPCore and AEPServices represent the foundation of the Adobe Experience Platform SDK. |
 | [AEP SDK Sample App for iOS](https://github.com/adobe/aepsdk-sample-app-ios) | Contains iOS sample apps for the AEP SDK. Apps are provided for both Objective-C and Swift implementations. |
 
-## Contributing
 
+## Documentation
+Additional documentation for configuration and SDK usage can be found under the [Documentation](Documentation/README.md) directory.
+
+## Contributing
 Contributions are welcomed! Read the [Contributing Guide](./.github/CONTRIBUTING.md) for more information.
 We look forward to working with you!
 
 ## Licensing
-
 This project is licensed under the Apache V2 License. See [LICENSE](LICENSE) for more information.
