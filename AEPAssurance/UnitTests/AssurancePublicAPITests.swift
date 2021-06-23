@@ -64,6 +64,23 @@ class AEPAssuranceTests: XCTestCase {
         wait(for: [expectation], timeout: 1)
     }
 
+    func test_startSession_nilURL() {
+        // setup
+        let expectation = XCTestExpectation(description: "Start session with nil assurance deeplink URL should not dispatch an event")
+        expectation.isInverted = true
+
+        // event dispatch verification
+        EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: AssuranceConstants.SDKEventType.ASSURANCE, source: EventSource.requestContent) { _ in
+            expectation.fulfill()
+        }
+
+        // test invalid URL's
+        Assurance.startSession(url: nil)
+
+        // verify
+        wait(for: [expectation], timeout: 1)
+    }
+
     //********************************************************************
     // Private methods
     //********************************************************************

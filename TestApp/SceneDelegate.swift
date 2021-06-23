@@ -10,9 +10,9 @@
  governing permissions and limitations under the License.
  */
 
+import AEPAssurance
 import SwiftUI
 import UIKit
-import AEPAssurance
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Create the SwiftUI view that provides the window contents.
         let contentView = ContentView()
-        
+
         // Called when the app launches with the deep link
         if let deepLinkURL = connectionOptions.urlContexts.first?.url {
             Assurance.startSession(url: deepLinkURL)

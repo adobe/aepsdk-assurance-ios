@@ -134,6 +134,11 @@ enum AssuranceConstants {
         static let CLIENT_ERROR = 4400
     }
 
+    enum LogForwarding {
+        static let LOG_LINE = "logline"
+        static let ENABLE = "enable"
+    }
+
     enum Places {
         enum EventName {
             static let REQUEST_NEARBY_POI = "requestgetnearbyplaces"

@@ -42,7 +42,7 @@ class AssuranceSessionTests: XCTestCase {
 
     func test_session_RegistersPlugins() throws {
         // verify that 3 internal plugins are registered
-        XCTAssertEqual(3, session.pluginHub.pluginCollection[AssuranceConstants.Vendor.MOBILE.hash]?.count)
+        XCTAssertEqual(4, session.pluginHub.pluginCollection[AssuranceConstants.Vendor.MOBILE.hash]?.count)
     }
 
     func test_assuranceSession_queuesOutBoundEvents() throws {

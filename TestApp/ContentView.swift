@@ -12,9 +12,9 @@
 
 import AEPAssurance
 import AEPCore
+import AEPEdgeConsent
 import AEPPlaces
 import AEPUserProfile
-import AEPEdgeConsent
 import CoreLocation
 import SwiftUI
 
@@ -143,8 +143,8 @@ struct ConsentCard: View {
             HStack {
                 Button(action: {
                     let collectConsent = ["collect": ["val": "y"]]
-                       let currentConsents = ["consents": collectConsent]
-                       Consent.update(with: currentConsents)
+                    let currentConsents = ["consents": collectConsent]
+                    Consent.update(with: currentConsents)
                 }, label: {
                     Text("Consent Yes")
                 }).buttonStyle(YellowButtonStyle()).padding()

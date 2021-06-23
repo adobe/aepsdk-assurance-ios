@@ -33,9 +33,9 @@ extension AssuranceSession: SocketDelegate {
     ///     - reason: A `String` description for the reason of disconnection
     ///     - wasClean: A boolean representing if the connection has been terminated successfully. A false value represents the socket connection can be attempted to reconnected.
     func webSocketDidDisconnect(_ socket: SocketConnectable, _ closeCode: Int, _ reason: String, _ wasClean: Bool) {
-        
+
         switch closeCode {
-        
+
         // Normal Closure : Close code 4900
         // Happens when user disconnects hitting the disconnect button in Status UI.
         // notify plugin on normal closure
@@ -45,14 +45,14 @@ extension AssuranceSession: SocketDelegate {
             statusUI.remove()
             pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
             break
-            
+
         // ORG Mismatch : Close code 4900
         // Happens when there is an orgId mismatch between the griffon session and configured mobile SDK.
         // This is a non-retry error. Display the error back to user and close the connection.
-        case AssuranceConstants.SocketCloseCode.ORG_MISMATCH:            
+        case AssuranceConstants.SocketCloseCode.ORG_MISMATCH:
             handleConnectionError(error: AssuranceConnectionError.orgIDMismatch, closeCode: closeCode)
             break
-        
+
         // Connection Limit : Close code 4901
         // Happens when the number of connections per session exceeds the limit
         // Configurable value and its default value is 200.
@@ -60,7 +60,7 @@ extension AssuranceSession: SocketDelegate {
         case AssuranceConstants.SocketCloseCode.CONNECTION_LIMIT:
             handleConnectionError(error: AssuranceConnectionError.connectionLimit, closeCode: closeCode)
             break
-        
+
         // Events Limit : Close code 4902
         // Happens when the clients exceeds the number of Griffon events that can be sent per minute.
         // Configurable value : default value is 10k events per minute
@@ -68,7 +68,7 @@ extension AssuranceSession: SocketDelegate {
         case AssuranceConstants.SocketCloseCode.EVENTS_LIMIT:
             handleConnectionError(error: AssuranceConnectionError.eventLimit, closeCode: closeCode)
             break
-            
+
         // Events Limit : Close code 4400
         // This error is generically thrown if the client doesn't adhere to the protocol of the socket connection.
         // For example:
@@ -77,12 +77,12 @@ extension AssuranceSession: SocketDelegate {
         case AssuranceConstants.SocketCloseCode.CLIENT_ERROR:
             handleConnectionError(error: AssuranceConnectionError.clientError, closeCode: closeCode)
             break
-            
+
         // For all other abnormal closures, display error back to UI and attempt to reconnect.
         default:
             Log.debug(label: AssuranceConstants.LOG_TAG, "Abnormal closure of webSocket. Reason - \(reason) and closeCode - \(closeCode)")
             pinCodeScreen?.connectionFailedWithError(AssuranceConnectionError.genericError)
-           
+
             // do the reconnect logic only if session is already connected
             guard let _ = assuranceExtension.connectedWebSocketURL else {
                 return
@@ -104,7 +104,7 @@ extension AssuranceSession: SocketDelegate {
                 statusUI.updateForSocketInActive()
                 pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
             }
-            
+
             let delay = DispatchTimeInterval.seconds(delayBeforeReconnect)
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 self.startSession()

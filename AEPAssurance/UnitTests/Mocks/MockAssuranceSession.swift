@@ -12,9 +12,11 @@
 
 @testable import AEPAssurance
 import Foundation
+import XCTest
 
 class MockAssuranceSession: AssuranceSession {
 
+    var expectation: XCTestExpectation?
     override init(_ assuranceExtension: Assurance) {
         super.init(assuranceExtension)
         self.socket = MockSocket(withDelegate: self)
@@ -24,6 +26,7 @@ class MockAssuranceSession: AssuranceSession {
     var sentEvent: AssuranceEvent?
 
     override func sendEvent(_ assuranceEvent: AssuranceEvent) {
+        expectation?.fulfill()
         sendEventCalled = true
         sentEvent = assuranceEvent
     }

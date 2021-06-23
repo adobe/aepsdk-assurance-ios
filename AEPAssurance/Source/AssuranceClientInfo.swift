@@ -63,7 +63,7 @@ struct AssuranceClientInfo {
         deviceInfo[DEVICE_NAME] = UIDevice.current.name
         deviceInfo[OPERATING_SYSTEM] = ("\(systemInfoService.getOperatingSystemName()) \(systemInfoService.getOperatingSystemVersion())")
         deviceInfo[DEVICE_TYPE] = getDeviceType()
-        deviceInfo[MODEL] = systemInfoService.getDeviceModelNumber
+        deviceInfo[MODEL] = systemInfoService.getDeviceModelNumber()
         deviceInfo[SCREEN_SIZE] = "\(screenSize.width)x\(screenSize.height)"
         deviceInfo[LOCATION_SERVICE_ENABLED] = Bool(CLLocationManager.locationServicesEnabled())
         deviceInfo[LOCATION_AUTHORIZATION_STATUS] = getAuthStatusString(authStatus: CLLocationManager.authorizationStatus())

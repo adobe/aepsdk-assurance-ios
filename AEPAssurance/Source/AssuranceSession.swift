@@ -180,6 +180,7 @@ class AssuranceSession {
         pluginHub.registerPlugin(PluginFakeEvent(), toSession: self)
         pluginHub.registerPlugin(PluginConfigModify(), toSession: self)
         pluginHub.registerPlugin(PluginScreenshot(), toSession: self)
+        pluginHub.registerPlugin(PluginLogForwarder(), toSession: self)
     }
 
 }
