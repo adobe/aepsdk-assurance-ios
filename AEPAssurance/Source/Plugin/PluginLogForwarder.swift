@@ -24,7 +24,6 @@ import Foundation
 /// Once the command to forward logs is received, this plugin interrupts the logs by creating a Pipe and replacing the STDERR file descriptor to pipe's file descriptor.
 /// Plugin then reads the input to the pipe and forwards the logs to the connected assurance session.
 class PluginLogForwarder: AssurancePlugin {
-
     weak var session: AssuranceSession?
     var vendor: String = AssuranceConstants.Vendor.MOBILE
     var commandType: String = AssuranceConstants.CommandType.LOG_FORWARDING
@@ -34,15 +33,15 @@ class PluginLogForwarder: AssurancePlugin {
     private var consoleRedirectPipe = Pipe() /// outputs the log message back to STDERR
     private var logQueue: DispatchQueue = DispatchQueue(label: "com.adobe.assurance.log.forwarder")
 
-    lazy var savedStdError: Int32 = dup(fileno(stderr))
+    lazy var savedStdError: Int32 = dup(STDERR_FILENO)
 
     init() {
         /// Set up a read handler which fires when data is written into `logPipe`
         /// This handler intercepts the log, sends to assurance session and then redirects back to the console.
         logPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
             let data = fileHandle.availableData
-            if let logLine = String(data: data, encoding: String.Encoding.utf8) {
-                self?.session?.sendEvent(AssuranceEvent(type: AssuranceConstants.EventType.LOG, payload: ["logline": AnyCodable.init(logLine)]))
+            if let logLine = String(data: data, encoding: .utf8) {
+                self?.session?.sendEvent(AssuranceEvent(type: AssuranceConstants.EventType.LOG, payload: [AssuranceConstants.LogForwarding.LOG_LINE: AnyCodable.init(logLine)]))
             }
 
             /// writes log back to stderr
@@ -50,21 +49,16 @@ class PluginLogForwarder: AssurancePlugin {
         }
     }
 
-    /// this protocol method is called from `PluginHub` to handle screenshot command
+    /// this protocol method is called from `PluginHub` to handle log forwarding command
     func receiveEvent(_ event: AssuranceEvent) {
         // quick bail, if you cannot read the session instance
-        guard let _ = self.session else {
+        guard self.session != nil else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Unable to get the session instance. Assurance SDK is ignoring the command to start/stop forwarding logs.")
             return
         }
 
-        guard let commandDetails = event.commandDetails else {
-            Log.debug(label: AssuranceConstants.LOG_TAG, "PluginLogForwarder - Command details empty. Assurance SDK is ignoring the command to start/stop forwarding logs.")
-            return
-        }
-
-        guard let forwardingEnabled = commandDetails["enable"] as? Bool else {
-            Log.debug(label: AssuranceConstants.LOG_TAG, "PluginLogForwarder - Unable to read the enable key for log forwarding request. Ignoring the command to start/stop forwarding logs.")
+        guard let forwardingEnabled = event.commandLogForwardingEnable else {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Unable to read the enable key for log forwarding request. Ignoring the command to start/stop forwarding logs.")
             return
         }
 
@@ -87,31 +81,45 @@ class PluginLogForwarder: AssurancePlugin {
     func startForwarding() {
         logQueue.async {
             if self.currentlyRunning {
-                Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance SDK is already forwarding logs. Log forwarding start command is ignored.")
+                Log.trace(label: AssuranceConstants.LOG_TAG, "Assurance SDK is already forwarding logs. Log forwarding start command is ignored.")
                 return
             }
 
             self.currentlyRunning = true
-            self.savedStdError = dup(fileno(stderr))
+
+            /// File Descriptors (FD) are non-negative integers (0, 1, 2, ...) that are associated with files that are opened.
+            /// Standard Error STDERR  FileDescriptor value is always  2
+            /// The dup() system call allocates a new file descriptor that refers
+            /// to the same open file description as the descriptor provided parameter
+            /// with the execution of the below code. A new lowest possible int value of fileDescription is created for savedStdError and it refers to stderr file descriptor.
+            /// now we can use `savedStdError` and `STDERR_FILENO` interchangeably  Since the two file descriptors refer to
+            /// the same open file description, they share file offset and file status flags
+            self.savedStdError = dup(STDERR_FILENO)
 
             /// manual page for dup2 : https://man7.org/linux/man-pages/man2/dup.2.html
             /// syntax : int dup2(int oldfd, int newfd);
-            dup2(fileno(stderr), self.consoleRedirectPipe.fileHandleForWriting.fileDescriptor)
-            dup2(self.logPipe.fileHandleForWriting.fileDescriptor, fileno(stderr))
+            dup2(STDERR_FILENO, self.consoleRedirectPipe.fileHandleForWriting.fileDescriptor)
+            dup2(self.logPipe.fileHandleForWriting.fileDescriptor, STDERR_FILENO)
         }
     }
 
     func stopForwarding() {
         logQueue.async {
             if !self.currentlyRunning {
-                Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance SDK is currently not forwarding logs. Log forwarding stop command is ignored.")
+                Log.trace(label: AssuranceConstants.LOG_TAG, "Assurance SDK is currently not forwarding logs. Log forwarding stop command is ignored.")
                 return
             }
 
-            dup2(self.savedStdError, fileno(stderr))
+            /// the following dup2() makes STDERR_FILENO be the copy of  savedStdError descriptor, closing STDERR_FILENO first if necessary.
+            dup2(self.savedStdError, STDERR_FILENO)
             close(self.savedStdError)
             self.currentlyRunning = false
         }
     }
+}
 
+private extension AssuranceEvent {
+    var commandLogForwardingEnable: Bool? {
+        return commandDetails?[AssuranceConstants.LogForwarding.ENABLE] as? Bool
+    }
 }

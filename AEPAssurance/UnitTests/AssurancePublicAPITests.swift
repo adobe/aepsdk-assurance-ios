@@ -63,7 +63,7 @@ class AEPAssuranceTests: XCTestCase {
         // verify
         wait(for: [expectation], timeout: 1)
     }
-    
+
     func test_startSession_nilURL() {
         // setup
         let expectation = XCTestExpectation(description: "Start session with nil assurance deeplink URL should not dispatch an event")
