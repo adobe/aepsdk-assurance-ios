@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "AEPAssurance"
-  s.version          = "2.0.0-Alpha"
+  s.version          = "3.0.0"
   s.summary          = "AEPAssurance SDK for Adobe Experience Platform Mobile SDK. Written and maintained by Adobe."
 
   s.description      = <<-DESC
@@ -16,6 +16,7 @@ Pod::Spec.new do |s|
 
   s.pod_target_xcconfig = { 'BUILD_LIBRARY_FOR_DISTRIBUTION' => 'YES' }
   s.dependency 'AEPCore', '>= 3.1.0'
+  s.dependency 'AEPServices', '>= 3.1.0'
 
   s.source_files = 'AEPAssurance/Source/**/*.swift'
 end
