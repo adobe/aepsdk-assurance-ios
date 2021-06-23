@@ -1,27 +1,32 @@
-# Adobe Experience Platform Assurance Mobile Extension
+# Adobe Experience Platform - Assurance extension for iOS
 
 ## About this project
 
-
 ## Requirements
-- Xcode 11.0 (or newer)
-- Swift 5.1 (or newer)
+- Xcode 12 or newer
+- Swift 5.1 or newer
 
 
 ## Installation
 
-These are currently the supported installation options:
+### 1. Binaries
 
-### [CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html)
+To generate an `AEPAssurance.xcframework`, run the following command:
+
+```ruby
+$ make archive
+```
+
+This generates the xcframework under the `build` folder. Drag and drop all the `.xcframeworks` to your app target in Xcode.
+
+### 2. [CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html)
 
 ```ruby
 # Podfile
 use_frameworks!
 
-# for app development, include all the following pods
 target 'YOUR_TARGET_NAME' do
-    pod 'AEPCore'
-    pod 'AEPAssurance'
+    pod 'AEPAssurance', '~> 3.0.0'
 end
 ```
 
@@ -37,7 +42,7 @@ To add the AEPAssurance Package to your application, from the Xcode menu select:
 
 `File > Swift Packages > Add Package Dependency...`
 
-Enter the URL for the AEPAssurance package repository: `https://github.com/adobe/aepsdk-assurance-ios`.
+Enter the URL for the AEPAssurance package repository: `https://github.com/adobe/aepsdk-assurance-ios.git`.
 
 When prompted, make sure you change the branch to `main`. (Once the repo is public, we will reference specific tags/versions instead of a branch)
 
@@ -45,24 +50,14 @@ Alternatively, if your project has a `Package.swift` file, you can add AEPAssura
 
 ```
 dependencies: [
-	.package(url: "https://github.com/adobe/aepsdk-assurance-ios", .branch: "main"),
+	.package(url: "https://github.com/adobe/aepsdk-assurance-ios.git", from: "3.0.0")
 targets: [
    	.target(name: "YourTarget",
     				dependencies: ["AEPAssurance"],
-          	path: "your/path"),
+          	path: "your/path")
     ]
 ]
 ```
-
-### Binaries
-
-To generate an `AEPAssurance.xcframework`, run the following command:
-
-```ruby
-$ make archive
-```
-
-This generates the xcframework under the `build` folder. Drag and drop all the `.xcframeworks` to your app target in Xcode.
 
 ## Development
 
