@@ -15,7 +15,6 @@ Open the `Podfile` of your application and make the following changes.
 
 Then run `pod install` and build the project, now the project will be using the latest AEPCore and AEPAssurance SDK.
 
-
 ##  1.b. Manual Install
 Please ignore this section if you are using CocoaPods or Swift Package Manager to manage dependencies.
 - Remove the existing `AEPAssurance.xcframework` from your project.
@@ -44,7 +43,7 @@ The following changes should be made in your AppDelegate's `didFinishLaunchingWi
 
 ## 3. Migrate startSession API
 
-Make the following change to all occurances of Assurance's startSession API call in your application. Here is an example :
+Make the following change to all occurrences of Assurance's startSession API call in your application. Here is an example :
 ```diff
  - (void)scene:(UIScene *)scene openURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts {
       NSURL *url = URLContexts.allObjects.firstObject.URL;

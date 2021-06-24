@@ -4,15 +4,14 @@
 
 ---
 
-If you are in the process of migration or already migrated to AEPCore from ACPCore then you must use AEPAssurance 3.x.x in your application. For more information see [Migrate to Swift SDK](https://aep-sdks.gitbook.io/docs/resources/migrate-to-swift) documentation.
+If you are in the process of migration or already migrated to AEPCore from ACPCore then you must use AEPAssurance 3.x.x in your application. For more information see [Migrate to Swift SDK](https://aep-sdks.gitbook.io/docs/resources/migrate-to-swift).
 
-Following table shows the core compatability with AEPAssurance. 
-
+Following table shows the SDK Core's compatibility with AEPAssurance.
 
 | SDK Core | Assurance Version | Pod Installation | Manual Install |
 | ----------- | -------- | ---------- | ------- |
 | ACPCore | AEPAssurance 1.x | pod 'AEPAssurance', '~> 1.0' | [Available Here](https://github.com/Adobe-Marketing-Cloud/acp-sdks/tree/master/iOS/AEPAssurance)|
-| AEPCore | AEPAssurance 3.x | pod 'AEPAssurance', '~> 3.0' | [Follow this command]() |
+| AEPCore | AEPAssurance 3.x | pod 'AEPAssurance', '~> 3.0' | [Follow this command](../#1-binaries) |
 
 ---
 
@@ -29,7 +28,7 @@ The class name containing public APIs is different depending on which SDK and la
 | AEPAssurance 3.x | Objective-C | `AEPMobileAssurance` | `[AEPMobileAssurance startSessionWithUrl:url];` |
 | AEPAssurance 3.x | Swift | `Assurance` | `Assurance.startSession(url)` |
 
-## Public APIs 
+## Public APIs
 
 ---
 
@@ -65,7 +64,7 @@ static var extensionVersion: String
 
 **AEPAssurance 3.x  (Objective-C)**
 
-Not Available. Please see the [migration steps documentation (Objective C)](MIGRATIONObjC.md) to learn how to register AEPAssurance with AEPCore
+Not Available. Please see the [migration steps documentation (Objective C)](MIGRATIONObjC.md) to learn how to register AEPAssurance with AEPCore.
 
 **AEPAssurance 3.x (Swift)**
 
@@ -101,6 +100,3 @@ Click a link below for step by step migration guide to AEPAssurance 3.x.
 
 - [Migration steps for Swift Application](MIGRATIONSWIFT.md)
 - [Migration steps for ObjectiveC Application](MIGRATIONObjC.md)
-
-
-

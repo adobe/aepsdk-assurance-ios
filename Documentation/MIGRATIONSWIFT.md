@@ -44,7 +44,7 @@ Make the following changes in your AppDelegate's `didFinishLaunchingWithOptions`
 
 ## 3. Migrate startSession API
 
-Make the following change to all occurances of Assurance's startSession API call in your application. Here is an example
+Make the following change to all occurrences of Assurance's startSession API call in your application. Here is an example :
 ```diff
 func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {  
      guard let urlContexts = URLContexts.first else { return }
