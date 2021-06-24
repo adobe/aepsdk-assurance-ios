@@ -18,6 +18,7 @@ import XCTest
 
 class AssuranceTests: XCTestCase {
 
+    let CONSENT_SHARED_STATE_NAME = "com.adobe.edge.consent"
     let runtime = TestableExtensionRuntime()
     let mockUIService = MockUIService()
     let mockDataStore = MockDataStore()
@@ -100,6 +101,22 @@ class AssuranceTests: XCTestCase {
         verify_sessionIdAndEnvironmentId_notSetInDatastore()
     }
 
+    func test_startSession_whenDeepLinkNotAString() throws {
+        // setup
+        let eventData = [AssuranceConstants.EventDataKey.START_SESSION_URL: 235663]
+        let event = Event(name: "Test Request Identifiers",
+                          type: AssuranceConstants.SDKEventType.ASSURANCE,
+                          source: EventSource.requestContent,
+                          data: eventData)
+
+        // test
+        runtime.simulateComingEvent(event: event)
+
+        // verify
+        verify_PinCodeScreen_isNotShown()
+        verify_sessionIdAndEnvironmentId_notSetInDatastore()
+    }
+
     func test_startSession_withNilEventData() throws {
         // setup
         let event = Event(name: "Test Request Identifiers",
@@ -132,6 +149,21 @@ class AssuranceTests: XCTestCase {
         // verify that the event is sent to the session
         XCTAssertTrue(mockSession.sendEventCalled)
         XCTAssertEqual("Any SDK Event", mockSession.sentEvent?.payload?[AssuranceConstants.ACPExtensionEventKey.NAME]?.stringValue)
+    }
+
+    func test_handleWildCardEvent_whenAssuranceShutDown() throws {
+        // setup
+        let event = Event(name: "Any SDK Event",
+                          type: EventType.analytics,
+                          source: EventSource.requestContent,
+                          data: nil)
+        assurance.shouldProcessEvents = false
+
+        // test
+        runtime.simulateComingEvent(event: event)
+
+        // verify that the event is not forwarded to session
+        XCTAssertFalse(mockSession.sendEventCalled)
     }
 
     //--------------------------------------------------*/
@@ -262,6 +294,41 @@ class AssuranceTests: XCTestCase {
         XCTAssertEqual("Places - Found 0 nearby POIs.", mockSession.addClientLogMessage)
     }
 
+    func test_getAllExtensionStateData() throws {
+        // setup
+        runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.EVENT_HUB, event: nil, data: (sampleEventHubState, .set))
+        runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, data: (sampleConfigurationState, .set))
+        runtime.simulateXDMSharedState(for: CONSENT_SHARED_STATE_NAME, data: (sampleConsentState, .set))
+
+        // test
+        let resultEvents = assurance.getAllExtensionStateData()
+
+        // verify that the required shared state events are generated
+        XCTAssertEqual(2, resultEvents.count)
+        XCTAssertTrue(resultEvents.hasEventWithName("Configuration State"))
+        XCTAssertTrue(resultEvents.hasEventWithName("\(CONSENT_SHARED_STATE_NAME) XDM State"))
+    }
+
+    func test_getAllExtensionStateData_WhenNoExtensionRegistered() throws {
+        // setup
+        runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.EVENT_HUB, event: nil, data: ([:], .set))
+
+        // test
+        let resultEvents = assurance.getAllExtensionStateData()
+
+        // verify that the required shared state events are generated
+        XCTAssertEqual(0, resultEvents.count)
+    }
+
+    func test_readyForEvent() {
+        // should always return true
+        XCTAssertTrue(assurance.readyForEvent(regionEvent))
+    }
+
+    func test_onUnregistered() {
+        XCTAssertNoThrow(assurance.onUnregistered())
+    }
+
     // MARK: Private methods
     private func verify_PinCodeScreen_isNotShown() {
         XCTAssertFalse(mockUIService.createFullscreenMessageCalled)
@@ -321,4 +388,59 @@ class AssuranceTests: XCTestCase {
                      ])
     }
 
+    var sampleEventHubState: [String: Any] {
+        let data = """
+                   {
+                     "extensions": {
+                       "com.adobe.module.configuration": {
+                         "version": "1.8.0",
+                         "friendlyName": "Configuration"
+                       },
+                       "com.adobe.edge.consent": {
+                         "version": "1.0.0"
+                       }
+                     },
+                     "version": "1.8.0"
+                   }
+                   """.data(using: .utf8)!
+
+        return try! (JSONSerialization.jsonObject(with: data, options: []) as? [String: Any])!
+    }
+
+    var sampleConfigurationState: [String: Any] {
+        let data = """
+                   {
+                     "global.privacy" :  "optedin",
+                     "target.timout" :  5,
+                     "analytics.rsid": "rsids"
+                   }
+                   """.data(using: .utf8)!
+
+        return try! (JSONSerialization.jsonObject(with: data, options: []) as? [String: Any])!
+    }
+
+    var sampleConsentState: [String: Any] {
+        let data = """
+                    {
+                      "consents" : {
+                        "collect" : {
+                          "val" : "n"
+                        }
+                      }
+                    }
+                   """.data(using: .utf8)!
+
+        return try! (JSONSerialization.jsonObject(with: data, options: []) as? [String: Any])!
+    }
+}
+
+extension Array where Element == AssuranceEvent {
+    func hasEventWithName(_ stateName: String) -> Bool {
+        for eachElement in self {
+            if stateName == eachElement.payload![AssuranceConstants.ACPExtensionEventKey.NAME]?.stringValue {
+                return true
+            }
+        }
+        return false
+    }
 }

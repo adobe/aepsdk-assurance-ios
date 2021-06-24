@@ -1,4 +1,4 @@
-// swift-tools-version:5.2
+// swift-tools-version:5.1
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 /*
@@ -22,11 +22,11 @@ let package = Package(
         .library(name: "AEPAssurance", targets: ["AEPAssurance"])
     ],
     dependencies: [
-        .package(name: "AEPCore", url: "https://github.com/adobe/aepsdk-core-ios.git", .upToNextMajor(from: "3.1.0"))
+        .package(url: "https://github.com/adobe/aepsdk-core-ios.git", .upToNextMajor(from: "3.1.0"))
     ],
     targets: [
         .target(name: "AEPAssurance",
                 dependencies: ["AEPCore"],
-                path: "AEPAssurance/Sources")
+                path: "AEPAssurance/Source")
     ]
 )

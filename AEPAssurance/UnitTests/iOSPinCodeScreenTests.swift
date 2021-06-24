@@ -178,4 +178,57 @@ class iOSPinCodeScreenTests: XCTestCase {
         XCTAssertTrue(mockMessage.dismissCalled)
     }
 
+    /*--------------------------------------------------
+     onShowFailure
+     --------------------------------------------------*/
+    func test_onShowFailure() throws {
+        // test
+        XCTAssertNoThrow(pinCodeScreen.onShowFailure())
+    }
+
+    /*--------------------------------------------------
+     onShow
+     --------------------------------------------------*/
+    func test_onShow() throws {
+        // setup
+        pinCodeScreen.isDisplayed = false
+
+        // test
+        pinCodeScreen.onShow(message: mockMessage)
+
+        // verify
+        XCTAssertTrue(pinCodeScreen.isDisplayed)
+    }
+
+    /*--------------------------------------------------
+     onDismiss
+     --------------------------------------------------*/
+    func test_onDismiss() throws {
+        // setup
+        pinCodeScreen.fullscreenWebView = mockWebView
+        pinCodeScreen.fullscreenMessage = mockMessage
+        pinCodeScreen.isDisplayed = true
+
+        // test
+        pinCodeScreen.onDismiss(message: mockMessage)
+
+        // verify
+        XCTAssertFalse(pinCodeScreen.isDisplayed)
+        XCTAssertNil(pinCodeScreen.fullscreenMessage)
+        XCTAssertNil(pinCodeScreen.fullscreenWebView)
+    }
+
+    /*--------------------------------------------------
+     connectionFailedWithError
+     --------------------------------------------------*/
+
+    func test_connectionFailedWithError() throws {
+        // test
+        pinCodeScreen.connectionFailedWithError(AssuranceConnectionError.clientError)
+
+        // verify
+        XCTAssertEqual("showError('Client Disconnected','This client has been disconnected due to an unexpected error. Error Code 4400.', 0);",
+                       mockWebView.javaScriptStringReceived)
+    }
+
 }

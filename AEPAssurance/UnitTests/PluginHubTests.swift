@@ -257,6 +257,7 @@ class PluginTaco: AssurancePlugin {
 
     var isSessionConnectedCalled = false
     func onSessionConnected() {
+        expectation?.fulfill()
         isSessionConnectedCalled = true
     }
 
