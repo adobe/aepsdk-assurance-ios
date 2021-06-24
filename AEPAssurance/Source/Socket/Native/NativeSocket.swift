@@ -10,6 +10,8 @@
  governing permissions and limitations under the License.
  */
 
+// NativeSocket will be uncommented and included during Assurance support for TVOS.
+
 //import AEPServices
 //import Foundation
 //import WebKit
