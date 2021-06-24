@@ -6,6 +6,20 @@
 	objectVersion = 51;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		B64212AC2683DB48007343B6 /* AEPAssuranceXCF */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = B64212AD2683DB48007343B6 /* Build configuration list for PBXAggregateTarget "AEPAssuranceXCF" */;
+			buildPhases = (
+			);
+			dependencies = (
+				B64212B12683DB4F007343B6 /* PBXTargetDependency */,
+			);
+			name = AEPAssuranceXCF;
+			productName = AEPAssuranceXCF;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		07BEA3EDD4D94F0947A81DBF /* Pods_AEPAssurance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA7C4770EBD136D41B82A7A1 /* Pods_AEPAssurance.framework */; };
 		337C8C135446B45550172205 /* Pods_TestAppObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FEAA724C29B9FAC154C0556 /* Pods_TestAppObjC.framework */; };
@@ -104,6 +118,13 @@
 
 /* Begin PBXContainerItemProxy section */
 		B64071A4262C313E00C43183 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B6407190262C313E00C43183 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B6407198262C313E00C43183;
+			remoteInfo = AEPAssurance;
+		};
+		B64212B02683DB4F007343B6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B6407190262C313E00C43183 /* Project object */;
 			proxyType = 1;
@@ -780,6 +801,9 @@
 					B64071E3262C8F8A00C43183 = {
 						CreatedOnToolsVersion = 12.4;
 					};
+					B64212AC2683DB48007343B6 = {
+						CreatedOnToolsVersion = 12.5.1;
+					};
 					B6DDFAA5268139B7002D2757 = {
 						CreatedOnToolsVersion = 12.5;
 					};
@@ -802,6 +826,7 @@
 				B64071A1262C313E00C43183 /* UnitTests */,
 				B64071E3262C8F8A00C43183 /* TestApp */,
 				B6DDFAA5268139B7002D2757 /* TestAppObjC */,
+				B64212AC2683DB48007343B6 /* AEPAssuranceXCF */,
 			);
 		};
 /* End PBXProject section */
@@ -1163,6 +1188,11 @@
 			target = B6407198262C313E00C43183 /* AEPAssurance */;
 			targetProxy = B64071A4262C313E00C43183 /* PBXContainerItemProxy */;
 		};
+		B64212B12683DB4F007343B6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B6407198262C313E00C43183 /* AEPAssurance */;
+			targetProxy = B64212B02683DB4F007343B6 /* PBXContainerItemProxy */;
+		};
 		B670E73E26395E00000FCB96 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B6407198262C313E00C43183 /* AEPAssurance */;
@@ -1475,6 +1505,24 @@
 			};
 			name = Release;
 		};
+		B64212AE2683DB48007343B6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B64212AF2683DB48007343B6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		B6DDFABD268139BA002D2757 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5ABE4461A8032C0B29C8BCF6 /* Pods-TestAppObjC.debug.xcconfig */;
@@ -1550,6 +1598,15 @@
 			buildConfigurations = (
 				B64071F6262C8F8D00C43183 /* Debug */,
 				B64071F7262C8F8D00C43183 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B64212AD2683DB48007343B6 /* Build configuration list for PBXAggregateTarget "AEPAssuranceXCF" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B64212AE2683DB48007343B6 /* Debug */,
+				B64212AF2683DB48007343B6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
