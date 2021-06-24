@@ -10,7 +10,7 @@ Assurance/Project Griffon is a new, innovative beta product from [Adobe Experien
 
 ## Installation
 
-### 1. Binaries
+### Binaries
 
 To generate an `AEPAssurance.xcframework`, run the following command:
 
@@ -20,7 +20,7 @@ $ make archive
 
 This generates the xcframework under the `build` folder. Drag and drop all the `.xcframeworks` to your app target in Xcode.
 
-### 2. [CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html)
+### [CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html)
 
 ```ruby
 # Podfile
@@ -37,7 +37,7 @@ Replace `YOUR_TARGET_NAME` and then, in the `Podfile` directory, type:
 $ pod install
 ```
 
-### 3. [Swift Package Manager](https://github.com/apple/swift-package-manager)
+### [Swift Package Manager](https://github.com/apple/swift-package-manager)
 
 To add the AEPAssurance Package to your application, from the Xcode menu select:
 

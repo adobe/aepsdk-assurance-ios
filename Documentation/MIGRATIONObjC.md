@@ -9,7 +9,6 @@ Open the `Podfile` of your application and make the following changes.
 - pod `AEPAssurance`, '~> 1.0'
 
 + pod 'AEPCore'
-+ pod 'AEPServices'
 + pod `AEPAssurance`, '~> 3.0'
 ```
 
@@ -18,7 +17,7 @@ Then run `pod install` and build the project, now the project will be using the 
 ##  1.b. Manual Install
 Please ignore this section if you are using CocoaPods or Swift Package Manager to manage dependencies.
 - Remove the existing `AEPAssurance.xcframework` from your project.
-- Create and Install the latest `AEPAssurance.xcframework` by following [this command]().
+- Create and Install the latest `AEPAssurance.xcframework` by following [this command](../#binaries).
 
 ## 2. Registration of Assurance Extension
 
@@ -35,7 +34,7 @@ The following changes should be made in your AppDelegate's `didFinishLaunchingWi
 + ...
 +
 +  NSArray* extensionsToRegister = @[AEPMobileAssurance.class];
-+  [AEPMobileAssurance registerExtensions:extensionsToRegister completion:^{
++  [AEPMobileCore registerExtensions:extensionsToRegister completion:^{
 +     [AEPMobileCore configureWithAppId: @"Your_AppID"];
 +  }];
 +

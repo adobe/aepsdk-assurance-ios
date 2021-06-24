@@ -8,7 +8,6 @@ Open the `Podfile` of your application and make the following changes.
 - pod `AEPAssurance`, '~> 1.0'
 
 + pod 'AEPCore'
-+ pod 'AEPServices'
 + pod `AEPAssurance`, '~> 3.0'
 ```
 
@@ -17,11 +16,11 @@ Then run `pod install` and build the project, now the project will be using the 
 ##  1.b. Manual Install
 Please ignore this section if you are using CocoaPods or Swift Package Manager to manage dependencies.
 - Remove the existing `AEPAssurance.xcframework` from your project.
-- Create and Install the latest `AEPAssurance.xcframework` by following [this command]().
+- Create and Install the latest `AEPAssurance.xcframework` by following [this command](../#binaries).
 
 ## 2. Registration of Assurance Extension
 
-Make the following changes in your AppDelegate's `didFinishLaunchingWithOptions` method. If you are working with an ObjectiveC application, follow this [document](../MIGRATIONObjC.md).
+Make the following changes in your AppDelegate's `didFinishLaunchingWithOptions` method. If you are working with an Objective-C application, follow this [document](../MIGRATIONObjC.md).
 
 ```diff
 - AEPAssurance.registerExtension()

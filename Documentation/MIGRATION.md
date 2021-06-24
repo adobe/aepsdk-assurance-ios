@@ -6,12 +6,12 @@
 
 If you are in the process of migration or already migrated to AEPCore from ACPCore then you must use AEPAssurance 3.x.x in your application. For more information see [Migrate to Swift SDK](https://aep-sdks.gitbook.io/docs/resources/migrate-to-swift).
 
-Following table shows the SDK Core's compatibility with AEPAssurance.
+The following table shows the SDK Core's compatibility with AEPAssurance:
 
 | SDK Core | Assurance Version | Pod Installation | Manual Install |
 | ----------- | -------- | ---------- | ------- |
 | ACPCore | AEPAssurance 1.x | pod 'AEPAssurance', '~> 1.0' | [Available Here](https://github.com/Adobe-Marketing-Cloud/acp-sdks/tree/master/iOS/AEPAssurance)|
-| AEPCore | AEPAssurance 3.x | pod 'AEPAssurance', '~> 3.0' | [Follow this command](../#1-binaries) |
+| AEPCore | AEPAssurance 3.x | pod 'AEPAssurance', '~> 3.0' | [Follow this command](../#binaries) |
 
 ---
 
