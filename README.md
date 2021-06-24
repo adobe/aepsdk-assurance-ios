@@ -61,7 +61,7 @@ targets: [
 ```
 
 ## TestApps
-Two sample apps are provided (one each for Swift and Objective-c) which demonstrate setting up and getting started with Assurance extension. Their targets are in `AEPAssurance.xcodeproj`, runnable in `AEPAssurance.xcworkspace`. Sample app source code can be found in the `TestApps` directory. Here is the [documentation](Documentation/GETTINGSTARTEDTESTAPP.md) to help you get started with test application.
+Two sample apps are provided (one each for Swift and Objective-c) which demonstrate setting up and getting started with Assurance extension. Their targets are in `AEPAssurance.xcodeproj`, runnable in `AEPAssurance.xcworkspace`. Sample app source code can be found in the `TestApp` and `TestAppObjC` directories.
 
 ## Development
 

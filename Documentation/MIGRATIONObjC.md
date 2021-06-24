@@ -1,26 +1,7 @@
-# Migration from AEPAssurance 1.x to AEPAssurance 3.x (For Objective-C Apps)
+# AEPAssurance 3.x migration steps for Objective-C Apps
 
-## Who should migrate to AEPAssurance 3.x
-- If you are in the process of migration or already migrated to AEPCore from ACPCore then you must use AEPAssurance 3.x.x in your application. For more information see [Migrate to Swift SDK](https://aep-sdks.gitbook.io/docs/resources/migrate-to-swift) documentation.
-
-
-| SDK Core | Assurance Version | Pod Installation | Manual Install |
-| ----------- | -------- | ---------- | ------- |
-| ACPCore | AEPAssurance 1.x | pod 'AEPAssurance', '~> 1.0' | [Available Here](https://github.com/Adobe-Marketing-Cloud/acp-sdks/tree/master/iOS/AEPAssurance)|
-| AEPCore | AEPAssurance 3.x | pod 'AEPAssurance', '~> 3.0' | [Follow this command]() |
-
-
-## Primary class name
-
-The class name containing public APIs is different depending on which SDK is being used.
-
-| SDK Version | Language | Class Name | Example |
-| ----------- | -------- | ---------- | ------- |
-| AEPAssurance 1.x | Objective-C | `AEPAssurance` | `[AEPAssurance startSession:url];`|
-| AEPAssurance 3.x | Objective-C | `AEPMobileAssurance` | `[AEPMobileAssurance startSessionWithUrl:url];` |
-
-## Migration steps
 ##  1.a. Update Podfile
+
 Open the `Podfile` of your application and make the following changes.
 
 ```diff
@@ -63,7 +44,7 @@ The following changes should be made in your AppDelegate's `didFinishLaunchingWi
 
 ## 3. Migrate startSession API
 
-Make the following change to all occurances of Assurance's startSession API call in your application. Here is an example
+Make the following change to all occurances of Assurance's startSession API call in your application. Here is an example :
 ```diff
  - (void)scene:(UIScene *)scene openURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts {
       NSURL *url = URLContexts.allObjects.firstObject.URL;

@@ -1,8 +1,12 @@
 # Migration from AEPAssurance 1.x to AEPAssurance 3.x
 
-
 ## Who should migrate to AEPAssurance 3.x
-- If you are in the process of migration or already migrated to AEPCore from ACPCore then you must use AEPAssurance 3.x.x in your application. For more information see [Migrate to Swift SDK](https://aep-sdks.gitbook.io/docs/resources/migrate-to-swift) documentation.
+
+---
+
+If you are in the process of migration or already migrated to AEPCore from ACPCore then you must use AEPAssurance 3.x.x in your application. For more information see [Migrate to Swift SDK](https://aep-sdks.gitbook.io/docs/resources/migrate-to-swift) documentation.
+
+Following table shows the core compatability with AEPAssurance. 
 
 
 | SDK Core | Assurance Version | Pod Installation | Manual Install |
@@ -10,8 +14,11 @@
 | ACPCore | AEPAssurance 1.x | pod 'AEPAssurance', '~> 1.0' | [Available Here](https://github.com/Adobe-Marketing-Cloud/acp-sdks/tree/master/iOS/AEPAssurance)|
 | AEPCore | AEPAssurance 3.x | pod 'AEPAssurance', '~> 3.0' | [Follow this command]() |
 
+---
 
 ## Primary class name
+
+---
 
 The class name containing public APIs is different depending on which SDK and language combination being used.
 
@@ -22,63 +29,78 @@ The class name containing public APIs is different depending on which SDK and la
 | AEPAssurance 3.x | Objective-C | `AEPMobileAssurance` | `[AEPMobileAssurance startSessionWithUrl:url];` |
 | AEPAssurance 3.x | Swift | `Assurance` | `Assurance.startSession(url)` |
 
-## Migration steps
-##  1.a. Update Podfile
-Open the `Podfile` of your application and make the following changes.
+## Public APIs 
 
-```diff
-- pod 'ACPCore'
-- pod `AEPAssurance`, '~> 1.0'
+---
 
-+ pod 'AEPCore'
-+ pod 'AEPServices'
-+ pod `AEPAssurance`, '~> 3.0'
+### extensionVersion
+
+**AEPAssurance 1.x (Objective-C)**
+
+```objc
++ (nonnull NSString*) extensionVersion;
 ```
 
-Then run `pod install` and build the project, now the project will be using the latest AEPCore and AEPAssurance SDK.
+**AEPAssurance 3.x  (Objective-C)**
 
-##  1.b. Manual Install
-Please ignore this section if you are using CocoaPods or Swift Package Manager to manage dependencies.
-- Remove the existing `AEPAssurance.xcframework` from your project.
-- Create and Install the latest `AEPAssurance.xcframework` by following [this command]().
-
-## 2. Registration of Assurance Extension
-
-Make the following changes in your AppDelegate's `didFinishLaunchingWithOptions` method. If you are working with an ObjectiveC application, follow this [document](../MIGRATIONObjC.md).
-
-```diff
-- AEPAssurance.registerExtension()
-- ACPCore.start {
--    ACPCore.configure(withAppId: "Your_AppID")
-- }
-+
-+ import AEPAssurance
-+ import AEPCore
-+ ...
-+
-+  let extensions =  [
-+                      Assurance.self     /// Also include the other installed extensions to this array
-+                    ]
-+  MobileCore.registerExtensions(extensions, {
-+    MobileCore.configureWith(appId: "your_AppID")
-+ })
-+
+```objc
++ (nonnull NSString*) extensionVersion;
 ```
 
-## 3. Migrate startSession API
+**AEPAssurance 3.x (Swift)**
 
-Make the following change to all occurances of Assurance's startSession API call in your application. Here is an example
-```diff
-func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {  
-     guard let urlContexts = URLContexts.first else { return }
--    AEPAssurance.startSession(urlContexts.url)
-+    Assurance.startSession(url: urlContexts.url)
-}
+```swift
+static var extensionVersion: String
 ```
 
-## 4. Extension Version API
- The API to retrieve the version of Assurance extension should be changed as below.
- ```diff
-- let version = AEPAssurance.extensionVersion()
-+ let version = Assurance.extensionVersion
- ```
+---
+
+### registerExtension
+
+**AEPAssurance 1.x (Objective-C)**
+
+```objc
++ (bool) registerExtension;
+```
+
+**AEPAssurance 3.x  (Objective-C)**
+
+Not Available. Please see the [migration steps documentation (Objective C)](MIGRATIONObjC.md) to learn how to register AEPAssurance with AEPCore
+
+**AEPAssurance 3.x (Swift)**
+
+Not Available. Please see the [migration steps documentation (Swift)](MIGRATIONSWIFT.md) to learn how to register AEPAssurance with AEPCore.
+
+---
+
+### startSession
+
+**AEPAssurance 1.x (Objective-C)**
+
+```objc
++ (void) startSession: (NSURL* _Nonnull) url;
+```
+
+**AEPAssurance 3.x  (Objective-C)**
+
+```objc
++ (void) startSessionWithUrl:(NSURL* _Nonnull) url;
+```
+
+**AEPAssurance 3.x (Swift)**
+
+```swift
+static func startSession(url: URL?)
+```
+
+
+
+## Migration Steps
+
+Click a link below for step by step migration guide to AEPAssurance 3.x.
+
+- [Migration steps for Swift Application](MIGRATIONSWIFT.md)
+- [Migration steps for ObjectiveC Application](MIGRATIONObjC.md)
+
+
+
