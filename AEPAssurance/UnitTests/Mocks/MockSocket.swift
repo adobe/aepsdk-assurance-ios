@@ -18,7 +18,7 @@ import XCTest
 class MockSocket: SocketConnectable {
     var expectation: XCTestExpectation?
     var socketURL: URL?
-    var delegate: SocketDelegate
+    weak var delegate: SocketDelegate
     var socketState: SocketState
 
     required init(withDelegate delegate: SocketDelegate) {
@@ -26,7 +26,13 @@ class MockSocket: SocketConnectable {
         self.socketState = .closed
     }
 
-    func connect(withUrl url: URL) {}
+    var connectCalled = false
+    var connectURL: URL?
+    func connect(withUrl url: URL) {
+        expectation?.fulfill()
+        connectCalled = true
+        connectURL = url
+    }
 
     var disconnectCalled = false
     func disconnect() {
@@ -34,9 +40,11 @@ class MockSocket: SocketConnectable {
     }
 
     var sendEventCalled = false
+    var sentEvent: AssuranceEvent?
     func sendEvent(_ event: AssuranceEvent) {
         expectation?.fulfill()
         sendEventCalled = true
+        sentEvent = event
     }
 
     func mockSocketState(state: SocketState) {

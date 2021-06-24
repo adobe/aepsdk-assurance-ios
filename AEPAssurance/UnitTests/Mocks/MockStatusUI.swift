@@ -16,6 +16,25 @@ import Foundation
 import XCTest
 
 class MockStatusUI: iOSStatusUI {
+    var displayCalled = false
+    override func display() {
+        displayCalled = true
+    }
+
+    var removeCalled = false
+    override func remove() {
+        removeCalled = true
+    }
+
+    var updateForSocketConnectedCalled = false
+    override func updateForSocketConnected() {
+        updateForSocketConnectedCalled = true
+    }
+
+    var updateForSocketInActiveCalled = false
+    override func updateForSocketInActive() {
+        updateForSocketInActiveCalled = true
+    }
 
     var addClientLogCalled = false
     override func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {

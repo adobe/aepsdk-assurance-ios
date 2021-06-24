@@ -13,10 +13,19 @@
 @testable import AEPAssurance
 @testable import AEPCore
 import Foundation
+import XCTest
 
 class MockAssurance: Assurance {
+    var expectation: XCTestExpectation?
     required init?(runtime: ExtensionRuntime) {
         super.init(runtime: runtime)
+    }
+
+    var getAllExtensionStateDataCalled = false
+    override func getAllExtensionStateData() -> [AssuranceEvent] {
+        expectation?.fulfill()
+        getAllExtensionStateDataCalled = true
+        return []
     }
 
 }

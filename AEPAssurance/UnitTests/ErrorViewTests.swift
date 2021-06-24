@@ -72,4 +72,9 @@ class ErrorViewTests: XCTestCase {
         XCTAssertNil(errorView.fullscreenMessage)
         XCTAssertNil(errorView.fullscreenWebView)
     }
+
+    func test_errorView_onShowFailure() throws {
+        // test
+        XCTAssertNoThrow(errorView.onShowFailure())
+    }
 }
