@@ -18,7 +18,7 @@ import XCTest
 class MockSocket: SocketConnectable {
     var expectation: XCTestExpectation?
     var socketURL: URL?
-    weak var delegate: SocketDelegate
+    var delegate: SocketDelegate
     var socketState: SocketState
 
     required init(withDelegate delegate: SocketDelegate) {
