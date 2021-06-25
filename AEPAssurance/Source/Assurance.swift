@@ -192,7 +192,7 @@ public class Assurance: NSObject, Extension {
         // Read the environment query parameter from the deeplink url
         let environmentString = deeplinkURL?.params[AssuranceConstants.Deeplink.ENVIRONMENT_KEY] ?? ""
 
-        // invalidate the timer
+        // invalidate the timer        
         invalidateTimer()
 
         // save the environment and sessionID
@@ -283,6 +283,7 @@ public class Assurance: NSObject, Extension {
     /// Start the shutdown timer in the background queue without blocking the current thread.
     /// If the timer get fired, then it shuts down the assurance extension.
     private func startShutDownTimer() {
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance shutdown timer started. Waiting for 5 seconds to receive assurance session url.");
         let queue = DispatchQueue.init(label: "com.adobe.assurance.shutdowntimer", qos: .background)
         timer = createDispatchTimer(queue: queue, block: {
             self.shutDownAssurance()
@@ -294,7 +295,11 @@ public class Assurance: NSObject, Extension {
     /// @see readyForEvent
     private func shutDownAssurance() {
         shouldProcessEvents = false
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Timeout - Assurance extension did not receive session url. Shutting down from processing any further events.")
         invalidateTimer()
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Clearing the queued events and purging Assurance shared state.")
+        self.assuranceSession?.clearQueueEvents()
+        clearState()
     }
 
     /// Invalidate the ongoing timer and cleans it from memory
@@ -369,8 +374,8 @@ public class Assurance: NSObject, Extension {
     private func prepareSharedStateEvent(owner: String, eventName: String, stateContent: [String: Any], stateType: String) -> AssuranceEvent {
         var payload: [String: AnyCodable] = [:]
         payload[AssuranceConstants.ACPExtensionEventKey.NAME] = AnyCodable.init(eventName)
-        payload[AssuranceConstants.ACPExtensionEventKey.TYPE] = AnyCodable.init(EventType.hub.lowercased)
-        payload[AssuranceConstants.ACPExtensionEventKey.SOURCE] = AnyCodable.init(EventSource.sharedState.lowercased)
+        payload[AssuranceConstants.ACPExtensionEventKey.TYPE] = AnyCodable.init(EventType.hub.lowercased())
+        payload[AssuranceConstants.ACPExtensionEventKey.SOURCE] = AnyCodable.init(EventSource.sharedState.lowercased())
         payload[AssuranceConstants.ACPExtensionEventKey.DATA] = [AssuranceConstants.EventDataKey.SHARED_STATE_OWNER: owner]
         payload[AssuranceConstants.PayloadKey.METADATA] = [stateType: stateContent]
         return AssuranceEvent(type: AssuranceConstants.EventType.GENERIC, payload: payload)
