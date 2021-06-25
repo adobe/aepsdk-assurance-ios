@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,height=device-height, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+        <title></title>
+        <style>
+             * {
+                 padding: 0;
+                 -webkit-appearance:none;
+            }
+             html,body {
+                 margin:0;
+                padding:0;
+                text-align:center;
+                background-color:#1c1f28;
+                color:#ffffff;
+                width:100%;
+                height:100%;
+                 font-family:adobe-clean,Helvetica,Arial,sans-serif;
+                 font-weight: normal;
+                 font-size: .875rem;
+                 -webkit-touch-callout:none;
+                -webkit-user-select:none;
+                -moz-user-select:none;
+                -ms-user-select:none;
+                user-select:none;
+            }
+            .header {
+              text-align:left;
+              margin-top:50px;
+              margin-left:0px;
+              margin-bottom:10px;
+              font-weight: bolder;
+              font-size: 30px;
+            }
+            .subtitle {
+              margin-top:10px;
+              width:100%;
+              text-align:left;
+              margin-bottom:10px;
+              font-weight: bolder;
+              font-size: 20px;
+              color:#aaa;
+            }
+             input[type=button].action {
+                 border-color: #fff;
+                 padding:8px;
+                 border-width: 2px;
+                 border-style: solid;
+                 border-radius: 32px;
+                 display: inline-block;
+                 background-color: #1c1f28;
+                 color:#fff;
+                 font-size: 20px;
+                 font-weight: normal;
+                 -webkit-tap-highlight-color: rgba(0,0,0,0.4);
+                 box-shadow: none;
+                 text-decoration: none;
+                 margin: 8px;
+            }
+             input[type=button].clearLog {
+                 border: none;
+                 background-color: #1c1f28;
+                 color:#fff;
+                 font-size: 12px;
+                 font-weight: normal;
+                 -webkit-tap-highlight-color: rgba(0,0,0,0.4);
+                 box-shadow: none;
+                 text-decoration: none;
+                 margin: 8px;
+            }
+            input[type=button].cancel {
+              border: none;
+              background-color: #1c1f28;
+              color:#fff;
+              font-size: 20px;
+              font-weight: normal;
+              -webkit-tap-highlight-color: rgba(0,0,0,0.4);
+              box-shadow: none;
+              text-decoration: none;
+              margin: 8px;
+            }
+             .actionrow {
+                 width: 100%;
+                 white-space: nowrap;
+            }
+             .container {
+                 position: absolute;
+                 top: 0;
+                 bottom: 0;
+                 left: 0;
+                 width: 100%;
+                 display: flex;
+                 flex-direction: column;
+            }
+             .section {
+                 margin-left: 10px;
+                 margin-right: 10px;
+                 margin-bottom: 40px;
+                 flex-grow: 1;
+                 display: flex;
+                 flex-direction: column;
+                /* for Firefox */
+                 min-height: 0;
+            }
+             .content {
+                 margin: 10px;
+            }
+             .scrollable-content {
+                 background-color: #363942;
+                 border-radius: 5px;
+                 flex-grow: 1;
+                 overflow: auto;
+                /* for Firefox */
+                 min-height: 0;
+            }
+             .logline {
+                 width:100%;
+                 white-space:nowrap;
+            }
+             .logmessage {
+                 width: 100%;
+                 display:inline-block;
+                 text-align:left;
+            }
+             .loglevel0 {
+                 color: #aaa;
+                 font-style: italic;
+            }
+             .loglevel1 {
+                 color: #fff;
+                 font-style: normal;
+            }
+             .loglevel2 {
+                 color: #fff263;
+                 font-style: normal;
+            }
+             .loglevel3 {
+                 color: #ff0033;
+                 font-style: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="section">
+                <div class="header">
+                    Assurance
+                </div>
+                <div class="subtitle">
+                    Logs
+                </div>
+                <div class="scrollable-content" id="divEvents">
+                </div>
+                <div class="actionrow">
+                  <div style="display: inline-block;text-align: left;width:100%;margin-bottom:20px;margin-top:10px;">
+                    <input id="btnClearLog" type="button" class="clearLog" onclick="clearLog();" value="Clear Log" />
+                  </div>
+                </div>
+                <div class="actionrow">
+                  <div style="display: inline-block;text-align: left;width:50%;">
+                    <input id="btnCancel" type="button" class="cancel" onclick="cancel();" value="Cancel" />
+                  </div>
+                  <div style="display: inline-block;text-align: right;width:50%;">
+                    <input id="btnDisconnect" type="button" class="action" style="" onclick="disconnect();" value="Disconnect" />
+                  </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            document.addEventListener("touchstart", function() {}, true);
+
+            function disconnect() {
+                location.href = "adbinapp://disconnect";
+            }
+        
+            function clearLog() {
+                document.getElementById("divEvents").innerHTML = "";
+            }
+            
+            function cancel() {
+              location.href = "adbinapp://cancel";
+            }
+
+            function addLog(level, message) {
+                var logLineStartDiv = "<div class='logline'>";
+                var element = document.getElementById("divEvents");
+                if (element.innerHTML.length > 64000) {
+                    while (element.innerHTML.length > 48000) {
+                        element.innerHTML = element.innerHTML.substr(0, element.innerHTML.lastIndexOf(logLineStartDiv));
+                    }
+                }
+                var messageLines = message.split("<br>"), i = 0, output = "", messagePrefix = "* ";
+                for (; i < messageLines.length; i++) {
+                    output += logLineStartDiv + "<div class='logmessage loglevel" + level + "'>" + messagePrefix + messageLines[i] + "</div></div>";
+                    messagePrefix = "";
+                }
+                
+                element.innerHTML = output + element.innerHTML;
+            }
+        </script>
+    </body>
+</html>
