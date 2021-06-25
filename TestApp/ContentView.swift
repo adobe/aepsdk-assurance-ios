@@ -58,12 +58,19 @@ struct AssuranceCard: View {
         VStack {
             HStack {
 
-                Text("Assurance: v" + Assurance.extensionVersion).padding(.leading).font(.system(size: HEADING_FONT_SIZE, weight: .heavy, design: .default))
+                Text("Assurance: v" + Assurance.extensionVersion)
+                    .padding(.leading)
+                    .font(.system(size: HEADING_FONT_SIZE, weight: .heavy, design: .default))
                 Spacer()
             }
 
             HStack {
-                TextField("Copy Assurance Session URL to here", text: $assuranceURL).background(Color(.systemGray6)).cornerRadius(5.0).frame(height: 100).frame(height: 50).padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+                TextField("Copy Assurance Session URL to here", text: $assuranceURL)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(5.0)
+                    .frame(height: 100)
+                    .frame(height: 50)
+                    .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
             }
 
             HStack {
@@ -180,14 +187,16 @@ struct PlacesCard: View {
                 }).buttonStyle(YellowButtonStyle())
 
                 Button(action: {
-                    let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: 37.3255196, longitude: -121.9458237), radius: 100, identifier: "dfb81b5a-1027-431a-917d-41292916d575")
+                    let regionCenter = CLLocationCoordinate2D(latitude: 37.3255196, longitude: -121.9458237)
+                    let region = CLCircularRegion(center: regionCenter, radius: 100, identifier: "dfb81b5a-1027-431a-917d-41292916d575")
                     Places.processRegionEvent(PlacesRegionEvent.entry, forRegion: region)
                 }, label: {
                     Text("Entry")
                 }).buttonStyle(YellowButtonStyle())
 
                 Button(action: {
-                    let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: 37.3255196, longitude: -121.9458237), radius: 100, identifier: "dfb81b5a-1027-431a-917d-41292916d575")
+                    let regionCenter = CLLocationCoordinate2D(latitude: 37.3255196, longitude: -121.9458237)
+                    let region = CLCircularRegion(center: regionCenter, radius: 100, identifier: "dfb81b5a-1027-431a-917d-41292916d575")
                     Places.processRegionEvent(PlacesRegionEvent.exit, forRegion: region)
                 }, label: {
                     Text("Exit")
