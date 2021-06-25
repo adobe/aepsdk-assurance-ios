@@ -84,6 +84,6 @@ private extension AssuranceEvent {
     }
 
     var commandFakeEventData: [String: Any]? {
-        return commandDetails?[AssuranceConstants.PluginFakeEvent.SOURCE] as? [String: Any]
+        return commandDetails?[AssuranceConstants.PluginFakeEvent.DATA] as? [String: Any]
     }
 }

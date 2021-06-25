@@ -66,8 +66,8 @@ struct AssuranceEvent: Codable {
     static func from(event: Event) -> AssuranceEvent {
         var payload: [String: AnyCodable] = [:]
         payload[AssuranceConstants.ACPExtensionEventKey.NAME] = AnyCodable.init(event.name)
-        payload[AssuranceConstants.ACPExtensionEventKey.TYPE] = AnyCodable.init(event.type)
-        payload[AssuranceConstants.ACPExtensionEventKey.SOURCE] = AnyCodable.init(event.source)
+        payload[AssuranceConstants.ACPExtensionEventKey.TYPE] = AnyCodable.init(event.type.lowercased())
+        payload[AssuranceConstants.ACPExtensionEventKey.SOURCE] = AnyCodable.init(event.source.lowercased())
         payload[AssuranceConstants.ACPExtensionEventKey.UNIQUE_IDENTIFIER] = AnyCodable.init(event.id.uuidString)
         payload[AssuranceConstants.ACPExtensionEventKey.TIMESTAMP] = AnyCodable.init(event.timestamp)
 
