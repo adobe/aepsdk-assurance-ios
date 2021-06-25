@@ -39,21 +39,13 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(name: \"AEPCore\", url: \"https://github.com/adobe/aepsdk-core-ios.git\", .branch(\"main\")),
-        .package(name: \"AEPEdge\", url: \"https://github.com/adobe/aepsdk-edge-ios.git\", .branch(\"main\")),
-        .package(name: \"AEPEdgeConsent\", path: \"../\")
+        .package(name: \"AEPAssurance\", path: \"../\")
     ],
     targets: [
         .target(
             name: \"TestProject\",
             dependencies: [
-                .product(name: \"AEPCore\", package: \"AEPCore\"),
-                .product(name: \"AEPIdentity\", package: \"AEPCore\"),
-                .product(name: \"AEPLifecycle\", package: \"AEPCore\"),
-                .product(name: \"AEPServices\", package: \"AEPCore\"),
-                .product(name: \"AEPSignal\", package: \"AEPCore\"),
-                .product(name: \"AEPEdge\", package: \"AEPEdge\"),
-                .product(name: \"AEPEdgeConsent\", package: \"AEPEdgeConsent\"),
+                .product(name: \"AEPAssurance\", package: \"AEPAssurance\")
             ])
     ]
 )
