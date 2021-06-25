@@ -140,7 +140,7 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     // Called after page is loaded
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if navigation == self.loadNav {
-            Log.debug(label: AssuranceConstants.LOG_TAG, "WKWebView initialization complete with socket connection javascipt.")
+            Log.trace(label: AssuranceConstants.LOG_TAG, "WKWebView initialization complete with socket connection javascipt.")
             isWebViewLoaded = true
         }
     }

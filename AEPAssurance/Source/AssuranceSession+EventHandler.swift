@@ -30,7 +30,7 @@ extension AssuranceSession {
     func handleOutBoundEvents() {
         outboundSource.setEventHandler(handler: {
             if self.socket.socketState != .open {
-                Log.trace(label: AssuranceConstants.LOG_TAG, "Queuing event before connection has been initialized(waiting for deep link to initialize connection with pin code entry)")
+                Log.trace(label: AssuranceConstants.LOG_TAG, "Assurance extension queuing event before socket connection is established.")
                 return
             }
 
@@ -61,7 +61,7 @@ extension AssuranceSession {
                 }
 
                 guard let controlType = event.commandType else {
-                    Log.debug(label: AssuranceConstants.LOG_TAG, "A non control event is received event from assurance session. Ignoring to process event - \(event.description)")
+                    Log.debug(label: AssuranceConstants.LOG_TAG, "A non control event is received from assurance session. Ignoring to process event - \(event.description)")
                     return
                 }
 
@@ -80,9 +80,12 @@ extension AssuranceSession {
                     // If the initial SDK events were cleared because of Assurance shutting down after 5 second timeout
                     // then populate the griffon session with all the available shared state details (Both XDM and Regular)
                     if self.didClearBootEvent {
-                        for event in self.assuranceExtension.getAllExtensionStateData() {
-                            self.outboundQueue.enqueue(newElement: event)
+                        let stateEvents = self.assuranceExtension.getAllExtensionStateData()
+                        Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance extension cleared the initial queued events. Sharing the shared state data of \(stateEvents.count) registered extensions.")
+                        for eachStateEvent in stateEvents {
+                            self.outboundQueue.enqueue(newElement: eachStateEvent)
                         }
+                        self.outboundSource.add(data: 1)
                     }
                     return
                 }
