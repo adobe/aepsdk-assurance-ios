@@ -27,10 +27,10 @@ echo "Target version - ${BLUE}$1${NC}"
 echo "------------------AEPAssurance-------------------"
 PODSPEC_VERSION_IN_AEPAssurance=$(pod ipc spec AEPAssurance.podspec | jq '.version' | tr -d '"')
 echo "Local podspec version - ${BLUE}${PODSPEC_VERSION_IN_AEPAssurance}${NC}"
-SOUCE_CODE_VERSION_IN_AEPAssurance=$(cat ./AEPAssurance/Source/AssuranceConstants.swift | egrep '\s*EXTENSION_VERSION\s*=\s*\"(.*)\"' | ruby -e "puts gets.scan(/\"(.*)\"/)[0] " | tr -d '"')
+SOURCE_CODE_VERSION_IN_AEPAssurance=$(cat ./AEPAssurance/Source/AssuranceConstants.swift | egrep '\s*EXTENSION_VERSION\s*=\s*\"(.*)\"' | ruby -e "puts gets.scan(/\"(.*)\"/)[0] " | tr -d '"')
 echo "Souce code version - ${BLUE}${SOUCE_CODE_VERSION_IN_AEPAssurance}${NC}"
 
-if [[ "$1" == "$PODSPEC_VERSION_IN_AEPAssurance" ]] && [[ "$1" == "$SOUCE_CODE_VERSION_IN_AEPAssurance" ]]; then
+if [[ "$1" == "$PODSPEC_VERSION_IN_AEPAssurance" ]] && [[ "$1" == "$SOURCE_CODE_VERSION_IN_AEPAssurance" ]]; then
     echo "${GREEN}Pass!${NC}"
 else
     echo "${RED}[Error]${NC} Version do not match!"
