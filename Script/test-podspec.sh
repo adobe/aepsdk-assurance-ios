@@ -31,8 +31,7 @@ target '$PROJECT_NAME' do
   pod 'AEPCore', '~> 3.0'
   pod 'AEPServices', '~> 3.0'
   pod 'AEPRulesEngine', '~> 1.0.0'
-  pod 'AEPEdge', '~> 1.0.0'
-  pod 'AEPEdgeConsent', :path => '../AEPEdgeConsent.podspec'
+  pod 'AEPAssurance', :path => '../AEPAssurance.podspec'
 end
 " >>Podfile
 

@@ -24,13 +24,13 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 
 echo "Target version - ${BLUE}$1${NC}"
-echo "------------------AEPEdgeConsent-------------------"
-PODSPEC_VERSION_IN_AEPEdgeConsent=$(pod ipc spec AEPEdgeConsent.podspec | jq '.version' | tr -d '"')
-echo "Local podspec version - ${BLUE}${PODSPEC_VERSION_IN_AEPEdgeConsent}${NC}"
-SOUCE_CODE_VERSION_IN_AEPEdgeConsent=$(cat ./Sources/ConsentConstants.swift | egrep '\s*EXTENSION_VERSION\s*=\s*\"(.*)\"' | ruby -e "puts gets.scan(/\"(.*)\"/)[0] " | tr -d '"')
-echo "Souce code version - ${BLUE}${SOUCE_CODE_VERSION_IN_AEPEdgeConsent}${NC}"
+echo "------------------AEPAssurance-------------------"
+PODSPEC_VERSION_IN_AEPAssurance=$(pod ipc spec AEPAssurance.podspec | jq '.version' | tr -d '"')
+echo "Local podspec version - ${BLUE}${PODSPEC_VERSION_IN_AEPAssurance}${NC}"
+SOUCE_CODE_VERSION_IN_AEPAssurance=$(cat ./AEPAssurance/Source/AssuranceConstants.swift | egrep '\s*EXTENSION_VERSION\s*=\s*\"(.*)\"' | ruby -e "puts gets.scan(/\"(.*)\"/)[0] " | tr -d '"')
+echo "Souce code version - ${BLUE}${SOUCE_CODE_VERSION_IN_AEPAssurance}${NC}"
 
-if [[ "$1" == "$PODSPEC_VERSION_IN_AEPEdgeConsent" ]] && [[ "$1" == "$SOUCE_CODE_VERSION_IN_AEPEdgeConsent" ]]; then
+if [[ "$1" == "$PODSPEC_VERSION_IN_AEPAssurance" ]] && [[ "$1" == "$SOUCE_CODE_VERSION_IN_AEPAssurance" ]]; then
     echo "${GREEN}Pass!${NC}"
 else
     echo "${RED}[Error]${NC} Version do not match!"
