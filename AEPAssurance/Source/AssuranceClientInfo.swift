@@ -13,6 +13,7 @@
 import AEPServices
 import CoreLocation
 import Foundation
+import UIKit
 
 struct AssuranceClientInfo {
 

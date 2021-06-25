@@ -1,5 +1,7 @@
 
 export EXTENSION_NAME = AEPAssurance
+export APP_NAME = TestApp
+export APP_NAME_OBJC = TestAppObjC
 PROJECT_NAME = $(EXTENSION_NAME)
 TARGET_NAME_XCFRAMEWORK = $(EXTENSION_NAME).xcframework
 SCHEME_NAME_XCFRAMEWORK = $(EXTENSION_NAME)XCF
@@ -53,6 +55,13 @@ lint-autocorrect:
 
 lint:
 	(swiftlint lint Sources TestApp/)
+
+build-test-apps:
+	xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme $(APP_NAME) -destination 'platform=iOS Simulator,name=iPhone 8'
+	xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme $(APP_NAME_OBJC) -destination 'platform=iOS Simulator,name=iPhone 8'
+
+swift-build:
+	swift build -Xswiftc "-sdk" -Xswiftc "`xcrun --sdk iphonesimulator --show-sdk-path`" -Xswiftc "-target" -Xswiftc "x86_64-apple-ios10.0-simulator"
 
 check-version:
 	(sh ./Script/version.sh $(VERSION))
