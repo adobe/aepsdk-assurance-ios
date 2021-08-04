@@ -127,6 +127,9 @@ public class Assurance: NSObject, Extension {
             return stateEvents
         }
 
+        // add the eventHub shared state data to the list of shared state events
+        stateEvents.append(prepareSharedStateEvent(owner: AssuranceConstants.SharedStateName.EVENT_HUB, eventName: "EventHub State", stateContent: registeredExtension, stateType: AssuranceConstants.PayloadKey.SHARED_STATE_DATA))
+
         for (extensionName, _) in extensionsMap {
             let friendlyName = getFriendlyExtensionName(extensionMap: extensionsMap, extensionName: extensionName)
             stateEvents.append(contentsOf: getStateForExtension(stateOwner: extensionName, friendlyName: friendlyName))
@@ -192,7 +195,7 @@ public class Assurance: NSObject, Extension {
         // Read the environment query parameter from the deeplink url
         let environmentString = deeplinkURL?.params[AssuranceConstants.Deeplink.ENVIRONMENT_KEY] ?? ""
 
-        // invalidate the timer        
+        // invalidate the timer
         invalidateTimer()
 
         // save the environment and sessionID
@@ -283,7 +286,7 @@ public class Assurance: NSObject, Extension {
     /// Start the shutdown timer in the background queue without blocking the current thread.
     /// If the timer get fired, then it shuts down the assurance extension.
     private func startShutDownTimer() {
-        Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance shutdown timer started. Waiting for 5 seconds to receive assurance session url.");
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance shutdown timer started. Waiting for 5 seconds to receive assurance session url.")
         let queue = DispatchQueue.init(label: "com.adobe.assurance.shutdowntimer", qos: .background)
         timer = createDispatchTimer(queue: queue, block: {
             self.shutDownAssurance()
