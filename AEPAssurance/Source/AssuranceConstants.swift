@@ -131,6 +131,7 @@ enum AssuranceConstants {
         static let ORG_MISMATCH = 4900
         static let CONNECTION_LIMIT = 4901
         static let EVENTS_LIMIT = 4902
+        static let DELETED_SESSSION = 4903
         static let CLIENT_ERROR = 4400
     }
 

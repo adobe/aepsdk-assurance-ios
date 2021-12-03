@@ -22,6 +22,7 @@ enum AssuranceConnectionError {
     case orgIDMismatch
     case connectionLimit
     case eventLimit
+    case deletedSession
     case clientError
     case userCancelled
 
@@ -53,6 +54,9 @@ enum AssuranceConnectionError {
                     "You have reached the maximum number of events (10k) that can be sent per minute.", false)
         // todo immediate:  check with the team on better description.
         // todo later:  have griffon server return error description and how to solve... Same for connection & event limit errors
+        case .deletedSession:
+            return ("Session Deleted",
+                    "You attempted to connect to a deleted session.", false)
         case .clientError:
             return ("Client Disconnected",
                     "This client has been disconnected due to an unexpected error. Error Code 4400.", false)
