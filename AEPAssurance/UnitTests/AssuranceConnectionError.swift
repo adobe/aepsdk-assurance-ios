@@ -66,6 +66,11 @@ class AssuranceConnectionErrorTests: XCTestCase {
         XCTAssertNotNil(AssuranceConnectionError.userCancelled.info.name)
         XCTAssertNotNil(AssuranceConnectionError.userCancelled.info.description)
         XCTAssertFalse(AssuranceConnectionError.userCancelled.info.shouldRetry)
+        
+        // deleted session error
+        XCTAssertNotNil(AssuranceConnectionError.deletedSession.info.name)
+        XCTAssertNotNil(AssuranceConnectionError.deletedSession.info.description)
+        XCTAssertFalse(AssuranceConnectionError.deletedSession.info.shouldRetry)
 
     }
 }
