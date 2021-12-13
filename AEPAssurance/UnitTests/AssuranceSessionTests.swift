@@ -344,6 +344,23 @@ class AssuranceSessionTests: XCTestCase {
         XCTAssertTrue(mockPinPad.connectionFailedWithErrorCalled)
         XCTAssertEqual(AssuranceConnectionError.clientError, mockPinPad.connectionFailedWithErrorValue)
     }
+    
+    
+    func test_session_whenSocketDisconnect_DeletedSession() throws {
+        // setup
+        session.statusUI = mockStatusUI
+        mockPinPad.isDisplayed = true
+        session.pinCodeScreen = mockPinPad
+
+        // test
+        session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.DELETED_SESSSION, "", true)
+
+        // verify
+        XCTAssertTrue(mockStatusUI.removeCalled)
+        XCTAssertTrue(mockPinPad.connectionFailedWithErrorCalled)
+        XCTAssertEqual(AssuranceConnectionError.deletedSession, mockPinPad.connectionFailedWithErrorValue)
+    }
+     
 
     func test_session_whenSocketDisconnect_AbnormalClosure() throws {
         // setup
