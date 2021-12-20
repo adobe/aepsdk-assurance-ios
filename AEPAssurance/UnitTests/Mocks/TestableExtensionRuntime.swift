@@ -89,7 +89,7 @@ class TestableExtensionRuntime: ExtensionRuntime {
     func stopEvents() {}
 }
 
-public extension TestableExtensionRuntime {
+extension TestableExtensionRuntime {
     var firstEvent: Event? {
         dispatchedEvents[0]
     }

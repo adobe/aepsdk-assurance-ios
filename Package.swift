@@ -16,17 +16,17 @@
 import PackageDescription
 
 let package = Package(
-    name: "AEPAssurance",
-    platforms: [.iOS(.v10)],
-    products: [
-        .library(name: "AEPAssurance", targets: ["AEPAssurance"]),
-    ],
-    dependencies: [
-        .package(url: "https://github.com/adobe/aepsdk-core-ios.git", .upToNextMajor(from: "3.1.0")),
-    ],
-    targets: [
-        .target(name: "AEPAssurance",
-                dependencies: ["AEPCore"],
-                path: "AEPAssurance/Source"),
-    ]
+ name: "AEPAssurance",
+ platforms: [.iOS(.v10)],
+ products: [
+  .library(name: "AEPAssurance", targets: ["AEPAssurance"]),
+ ],
+ dependencies: [
+  .package(url: "https://github.com/adobe/aepsdk-core-ios.git", .upToNextMajor(from: "3.1.0")),
+ ],
+ targets: [
+  .target(name: "AEPAssurance",
+          dependencies: ["AEPCore"],
+          path: "AEPAssurance/Source"),
+ ]
 )
