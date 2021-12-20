@@ -19,32 +19,32 @@ class ThreadSafeQueue<T> {
     private var array: ThreadSafeArray<T> = ThreadSafeArray()
 
     /// Initializes the queue with the provide maximum capacity
-    init(withLimit  limit: Int) {
+    init(withLimit limit: Int) {
         self.limit = limit
     }
 
     /// Appends the specified element to the end of this queue.
     /// If the queue has reached its limit then the first element of the queue is removed
     func enqueue(newElement: T) {
-        self.array.append(newElement)
-        if self.limit > 0 && self.array.count > self.limit {
-            _ = self.array.removeFirst()
+        array.append(newElement)
+        if limit > 0 && array.count > limit {
+            _ = array.removeFirst()
         }
     }
 
     /// Retrieves and removes the first element of this queue.
     /// Returns nil if this queue is empty.
     func dequeue() -> T? {
-        return array.removeFirst()
+        array.removeFirst()
     }
 
     /// Returns the current size of the queue
     func size() -> Int {
-        return array.count
+        array.count
     }
 
-    ///Removes all of the elements from this queue.
+    /// Removes all of the elements from this queue.
     func clear() {
-        self.array.clear()
+        array.clear()
     }
 }

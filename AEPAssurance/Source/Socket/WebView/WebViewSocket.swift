@@ -15,14 +15,13 @@ import Foundation
 import WebKit
 
 class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScriptMessageHandler {
-
     var delegate: SocketDelegate
     var socketURL: URL?
 
     /// variable tracking the current socket status
     var socketState: SocketState = .unknown {
         didSet {
-            delegate.webSocket(self, didChangeState: self.socketState)
+            delegate.webSocket(self, didChangeState: socketState)
         }
     }
 
@@ -77,8 +76,8 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     /// - Parameters :
     ///     - url : the webSocket `URL`
     func connect(withUrl url: URL) {
-        self.socketState = .connecting
-        self.socketURL = url
+        socketState = .connecting
+        socketURL = url
         if !isWebViewLoaded {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Waiting for webView to be loaded open socket connection.")
             return
@@ -86,11 +85,11 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
 
         socketQueue.async {
             let connectCommand = String(format: "connect(\"%@\");", url.absoluteString)
-            self.runJavascriptCommand(connectCommand, { error in
+            self.runJavascriptCommand(connectCommand) { error in
                 if error != nil {
                     Log.debug(label: AssuranceConstants.LOG_TAG, "An error occurred while opening connection - \(String(describing: error?.localizedDescription))")
                 }
-            })
+            }
         }
     }
 
@@ -100,13 +99,13 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     /// And the socket state is set to `CLOSED`.
     /// On any error,  the SocketDelegate's `webSocketOnError` method is invoked.
     func disconnect() {
-        self.socketState = .closing
+        socketState = .closing
         socketQueue.async {
-            self.runJavascriptCommand("disconnect();", { error in
+            self.runJavascriptCommand("disconnect();") { error in
                 if error != nil {
                     Log.debug(label: AssuranceConstants.LOG_TAG, "An error occurred while closing connection - \(String(describing: error?.localizedDescription))")
                 }
-            })
+            }
         }
     }
 
@@ -122,31 +121,31 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
             let jsonData = (try? encoder.encode(event)) ?? Data()
             let dataString = jsonData.base64EncodedString(options: .endLineWithLineFeed)
             let jsCommand = String(format: "sendData(\"%@\");", dataString)
-            self.runJavascriptCommand(jsCommand, { error in
+            self.runJavascriptCommand(jsCommand) { error in
                 if error != nil {
                     Log.debug(label: AssuranceConstants.LOG_TAG, "An error occurred while sending data - \(String(describing: error?.localizedDescription))")
                 }
-            })
+            }
         }
     }
 
     // MARK: - WebView Delegate methods
 
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        let block = self.socketEventHandlers[message.name]
+    func userContentController(_: WKUserContentController, didReceive message: WKScriptMessage) {
+        let block = socketEventHandlers[message.name]
         block?(message)
     }
 
     // Called after page is loaded
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        if navigation == self.loadNav {
+    func webView(_: WKWebView, didFinish navigation: WKNavigation!) {
+        if navigation == loadNav {
             Log.trace(label: AssuranceConstants.LOG_TAG, "WKWebView initialization complete with socket connection javascipt.")
             isWebViewLoaded = true
         }
     }
 
-    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        if navigation == self.loadNav {
+    func webView(_: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        if navigation == loadNav {
             Log.debug(label: AssuranceConstants.LOG_TAG, "WKWebView failed to load bundled JS for socket. Error: \(error.localizedDescription)")
         }
     }
@@ -200,22 +199,20 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
 
             self.delegate.webSocket(self, didReceiveEvent: receivedEvent)
         })
-
     }
 
     /// Helper method configure socket event handlers.
-    private func registerSocketCallback(_ name: String, with block : @escaping messageHandlerBlock) {
-        self.webView?.configuration.userContentController.add(self, name: name)
-        self.socketEventHandlers[name] = block
+    private func registerSocketCallback(_ name: String, with block: @escaping messageHandlerBlock) {
+        webView?.configuration.userContentController.add(self, name: name)
+        socketEventHandlers[name] = block
     }
 
     /// Helper method to run javascript commands on webView.
-    private func runJavascriptCommand(_ jsCommand: String, _ callbackError : @escaping (Error?) -> Void) {
+    private func runJavascriptCommand(_ jsCommand: String, _ callbackError: @escaping (Error?) -> Void) {
         DispatchQueue.main.async {
             self.webView?.evaluateJavaScript(jsCommand, completionHandler: { _, error in
                 callbackError(error)
             })
         }
     }
-
 }

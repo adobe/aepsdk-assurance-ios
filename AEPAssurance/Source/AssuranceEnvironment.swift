@@ -25,9 +25,9 @@ import Foundation
 /// Prod : wss://connect
 enum AssuranceEnvironment: String {
     case prod = ""
-    case qa = "qa"
-    case stage = "stage"
-    case dev = "dev"
+    case qa
+    case stage
+    case dev
 
     /// A String that represents the environment URL format to be appending to the host of the url
     /// An empty string is provided for `PRODUCTION` environment
@@ -43,6 +43,7 @@ enum AssuranceEnvironment: String {
             return AssuranceEnvironmentURLFormat.DEV
         }
     }
+
     /// Initializer that converts a `String` to its respective `AssuranceEnvironment`
     /// If `envString` is not a valid `AssuranceEnvironment`, calling this method will return `AssuranceEnvironment.prod`
     /// - Parameter envString: a `String` representation of a `AssuranceEnvironment`
@@ -57,5 +58,4 @@ enum AssuranceEnvironment: String {
         static let STAGE = "-stage"
         static let DEV = "-dev"
     }
-
 }

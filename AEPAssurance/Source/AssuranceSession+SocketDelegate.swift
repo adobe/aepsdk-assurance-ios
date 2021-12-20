@@ -20,9 +20,9 @@ extension AssuranceSession: SocketDelegate {
     /// The server then validates and sends a startForwarding events on the reception of which Assurance should send further events to session.
     /// - Parameter socket - the socket instance
     ///
-    func webSocketDidConnect(_ socket: SocketConnectable) {
+    func webSocketDidConnect(_: SocketConnectable) {
         Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance session successfully connected.")
-        self.sendClientInfoEvent()
+        sendClientInfoEvent()
     }
 
     ///
@@ -32,10 +32,8 @@ extension AssuranceSession: SocketDelegate {
     ///     - closeCode:An `Int` representing the reason for socket disconnection. Reference : https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
     ///     - reason: A `String` description for the reason of disconnection
     ///     - wasClean: A boolean representing if the connection has been terminated successfully. A false value represents the socket connection can be attempted to reconnected.
-    func webSocketDidDisconnect(_ socket: SocketConnectable, _ closeCode: Int, _ reason: String, _ wasClean: Bool) {
-
+    func webSocketDidDisconnect(_: SocketConnectable, _ closeCode: Int, _ reason: String, _: Bool) {
         switch closeCode {
-
         // Normal Closure : Close code 4900
         // Happens when user disconnects hitting the disconnect button in Status UI.
         // notify plugin on normal closure
@@ -44,14 +42,12 @@ extension AssuranceSession: SocketDelegate {
             pinCodeScreen?.connectionFinished()
             statusUI.remove()
             pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
-            break
 
         // ORG Mismatch : Close code 4900
         // Happens when there is an orgId mismatch between the griffon session and configured mobile SDK.
         // This is a non-retry error. Display the error back to user and close the connection.
         case AssuranceConstants.SocketCloseCode.ORG_MISMATCH:
             handleConnectionError(error: AssuranceConnectionError.orgIDMismatch, closeCode: closeCode)
-            break
 
         // Connection Limit : Close code 4901
         // Happens when the number of connections per session exceeds the limit
@@ -59,7 +55,6 @@ extension AssuranceSession: SocketDelegate {
         // This is a non-retry error. Display the error back to user and close the connection.
         case AssuranceConstants.SocketCloseCode.CONNECTION_LIMIT:
             handleConnectionError(error: AssuranceConnectionError.connectionLimit, closeCode: closeCode)
-            break
 
         // Events Limit : Close code 4902
         // Happens when the clients exceeds the number of Griffon events that can be sent per minute.
@@ -67,7 +62,6 @@ extension AssuranceSession: SocketDelegate {
         // This is a non-retry error. Display the error back to user and close the connection.
         case AssuranceConstants.SocketCloseCode.EVENTS_LIMIT:
             handleConnectionError(error: AssuranceConnectionError.eventLimit, closeCode: closeCode)
-            break
 
         // Events Limit : Close code 4400
         // This error is generically thrown if the client doesn't adhere to the protocol of the socket connection.
@@ -76,7 +70,6 @@ extension AssuranceSession: SocketDelegate {
         // - If there are any missing parameters in the socket URL.
         case AssuranceConstants.SocketCloseCode.CLIENT_ERROR:
             handleConnectionError(error: AssuranceConnectionError.clientError, closeCode: closeCode)
-            break
 
         // For all other abnormal closures, display error back to UI and attempt to reconnect.
         default:
@@ -100,7 +93,7 @@ extension AssuranceSession: SocketDelegate {
             // 4. Attempt to reconnect with appropriate time delay.
             if !isAttemptingToReconnect {
                 isAttemptingToReconnect = true
-                canStartForwarding = false //set this to false so that all the events are held up until client event is sent after successful reconnect
+                canStartForwarding = false // set this to false so that all the events are held up until client event is sent after successful reconnect
                 statusUI.updateForSocketInActive()
                 pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
             }
@@ -115,7 +108,7 @@ extension AssuranceSession: SocketDelegate {
     ///
     /// Invoked when there is an error in socket connection.
     /// - Parameter socket - the socket instance
-    func webSocketOnError(_ socket: SocketConnectable) {
+    func webSocketOnError(_: SocketConnectable) {
         Log.debug(label: AssuranceConstants.LOG_TAG, "AssuranceSession: webSocketOnError is called. Error occurred during socket connection.")
     }
 
@@ -124,7 +117,7 @@ extension AssuranceSession: SocketDelegate {
     /// - Parameters:
     ///     - socket - the socket instance
     ///     - event - the `AssuranceEvent` received from socket
-    func webSocket(_ socket: SocketConnectable, didReceiveEvent event: AssuranceEvent) {
+    func webSocket(_: SocketConnectable, didReceiveEvent event: AssuranceEvent) {
         Log.trace(label: AssuranceConstants.LOG_TAG, "Received event from assurance session - \(event.description)")
 
         // add the incoming event to inboundQueue and process them
@@ -142,5 +135,4 @@ extension AssuranceSession: SocketDelegate {
             assuranceExtension.connectedWebSocketURL = socket.socketURL?.absoluteString
         }
     }
-
 }

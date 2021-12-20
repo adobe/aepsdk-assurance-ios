@@ -15,7 +15,6 @@
 import XCTest
 
 class AEPAssuranceTests: XCTestCase {
-
     override func setUpWithError() throws {
         EventHub.shared.start()
         registerMockExtension(MockExtension.self)
@@ -81,11 +80,11 @@ class AEPAssuranceTests: XCTestCase {
         wait(for: [expectation], timeout: 1)
     }
 
-    //********************************************************************
+    // ********************************************************************
     // Private methods
-    //********************************************************************
+    // ********************************************************************
 
-    private func registerMockExtension<T: Extension> (_ type: T.Type) {
+    private func registerMockExtension<T: Extension>(_ type: T.Type) {
         let semaphore = DispatchSemaphore(value: 0)
         EventHub.shared.registerExtension(type) { _ in
             semaphore.signal()
@@ -94,7 +93,7 @@ class AEPAssuranceTests: XCTestCase {
         semaphore.wait()
     }
 
-    private func unregisterMockExtension<T: Extension> (_ type: T.Type) {
+    private func unregisterMockExtension<T: Extension>(_ type: T.Type) {
         let semaphore = DispatchSemaphore(value: 0)
         EventHub.shared.unregisterExtension(type) { _ in
             semaphore.signal()
@@ -102,5 +101,4 @@ class AEPAssuranceTests: XCTestCase {
 
         semaphore.wait()
     }
-
 }

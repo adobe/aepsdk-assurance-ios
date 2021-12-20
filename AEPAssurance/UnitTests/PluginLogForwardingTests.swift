@@ -18,7 +18,6 @@ import os
 import XCTest
 
 class PluginLogForwardingTests: XCTestCase {
-
     var plugin = PluginLogForwarder()
     let runtime = TestableExtensionRuntime()
     var assuranceExtension: MockAssurance?
@@ -59,7 +58,6 @@ class PluginLogForwardingTests: XCTestCase {
 
         // verify
         XCTAssertFalse(plugin.currentlyRunning)
-
     }
 
     func test_commandLogForward_emptyPayload() {
@@ -79,7 +77,6 @@ class PluginLogForwardingTests: XCTestCase {
 
         // verify
         XCTAssertFalse(plugin.currentlyRunning)
-
     }
 
     func test_commandLogForward_emptyDetails() {
@@ -212,5 +209,4 @@ class PluginLogForwardingTests: XCTestCase {
 
         return AssuranceEvent.from(jsonData: data)!
     }
-
 }

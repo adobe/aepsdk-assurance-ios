@@ -17,7 +17,7 @@ public class MockDataStore: NamedCollectionProcessing {
     private var appGroup: String?
 
     public func getAppGroup() -> String? {
-        return appGroup
+        appGroup
     }
 
     public func setAppGroup(_ appGroup: String?) {
@@ -33,7 +33,7 @@ public class MockDataStore: NamedCollectionProcessing {
     }
 
     public func get(collectionName _: String, key: String) -> Any? {
-        return dict[key] as Any?
+        dict[key] as Any?
     }
 
     public func remove(collectionName _: String, key: String) {

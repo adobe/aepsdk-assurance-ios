@@ -17,7 +17,6 @@ import Foundation
 import XCTest
 
 class AssuranceTests: XCTestCase {
-
     let CONSENT_SHARED_STATE_NAME = "com.adobe.edge.consent"
     let runtime = TestableExtensionRuntime()
     let mockUIService = MockUIService()
@@ -103,7 +102,7 @@ class AssuranceTests: XCTestCase {
 
     func test_startSession_whenDeepLinkNotAString() throws {
         // setup
-        let eventData = [AssuranceConstants.EventDataKey.START_SESSION_URL: 235663]
+        let eventData = [AssuranceConstants.EventDataKey.START_SESSION_URL: 235_663]
         let event = Event(name: "Test Request Identifiers",
                           type: AssuranceConstants.SDKEventType.ASSURANCE,
                           source: EventSource.requestContent,
@@ -132,9 +131,11 @@ class AssuranceTests: XCTestCase {
         verify_sessionIdAndEnvironmentId_notSetInDatastore()
     }
 
-    //--------------------------------------------------*/
+    // --------------------------------------------------*/
+
     // MARK: - handleWildCardEvent
-    //--------------------------------------------------*/
+
+    // --------------------------------------------------*/
 
     func test_handleWildCardEvent_withNilEventData() throws {
         // setup
@@ -166,9 +167,11 @@ class AssuranceTests: XCTestCase {
         XCTAssertFalse(mockSession.sendEventCalled)
     }
 
-    //--------------------------------------------------*/
+    // --------------------------------------------------*/
+
     // MARK: - handleSharedStateEvent
-    //--------------------------------------------------*/
+
+    // --------------------------------------------------*/
 
     func test_handleSharedStateEvent_Regular() throws {
         // setup
@@ -330,6 +333,7 @@ class AssuranceTests: XCTestCase {
     }
 
     // MARK: Private methods
+
     private func verify_PinCodeScreen_isNotShown() {
         XCTAssertFalse(mockUIService.createFullscreenMessageCalled)
         XCTAssertFalse(mockMessagePresentable.showCalled)
@@ -342,50 +346,50 @@ class AssuranceTests: XCTestCase {
     }
 
     var getNearbyPlacesRequestEvent: Event {
-        return Event(name: AssuranceConstants.Places.EventName.REQUEST_NEARBY_POI,
-                     type: EventType.places,
-                     source: EventSource.requestContent,
-                     data: [
-                        AssuranceConstants.Places.EventDataKeys.LATITUDE: 12.34,
-                        AssuranceConstants.Places.EventDataKeys.LONGITUDE: 23.4554888443,
-                        AssuranceConstants.Places.EventDataKeys.COUNT: 7
-                     ])
+        Event(name: AssuranceConstants.Places.EventName.REQUEST_NEARBY_POI,
+              type: EventType.places,
+              source: EventSource.requestContent,
+              data: [
+                  AssuranceConstants.Places.EventDataKeys.LATITUDE: 12.34,
+                  AssuranceConstants.Places.EventDataKeys.LONGITUDE: 23.4554888443,
+                  AssuranceConstants.Places.EventDataKeys.COUNT: 7,
+              ])
     }
 
     var placesResetEvent: Event {
-        return Event(name: AssuranceConstants.Places.EventName.REQUEST_RESET,
-                     type: EventType.places,
-                     source: EventSource.requestContent,
-                     data: [:])
+        Event(name: AssuranceConstants.Places.EventName.REQUEST_RESET,
+              type: EventType.places,
+              source: EventSource.requestContent,
+              data: [:])
     }
 
     var regionEvent: Event {
-        return Event(name: AssuranceConstants.Places.EventName.RESPONSE_REGION_EVENT,
-                     type: EventType.places,
-                     source: EventSource.responseContent,
-                     data: [
-                        AssuranceConstants.Places.EventDataKeys.REGION_EVENT_TYPE: "entry",
-                        AssuranceConstants.Places.EventDataKeys.TRIGGERING_REGION: [AssuranceConstants.Places.EventDataKeys.REGION_NAME: "Green house"]
-                     ])
+        Event(name: AssuranceConstants.Places.EventName.RESPONSE_REGION_EVENT,
+              type: EventType.places,
+              source: EventSource.responseContent,
+              data: [
+                  AssuranceConstants.Places.EventDataKeys.REGION_EVENT_TYPE: "entry",
+                  AssuranceConstants.Places.EventDataKeys.TRIGGERING_REGION: [AssuranceConstants.Places.EventDataKeys.REGION_NAME: "Green house"],
+              ])
     }
 
     var nearbyPOIResponse: Event {
-        return Event(name: AssuranceConstants.Places.EventName.RESPONSE_NEARBY_POI_EVENT,
-                     type: EventType.places,
-                     source: EventSource.responseContent,
-                     data: [
-                        AssuranceConstants.Places.EventDataKeys.NEARBY_POI: [["regionName": "Golden Gate"],
-                                                                             ["regionName": "Bay bridge"]]
-                     ])
+        Event(name: AssuranceConstants.Places.EventName.RESPONSE_NEARBY_POI_EVENT,
+              type: EventType.places,
+              source: EventSource.responseContent,
+              data: [
+                  AssuranceConstants.Places.EventDataKeys.NEARBY_POI: [["regionName": "Golden Gate"],
+                                                                       ["regionName": "Bay bridge"]],
+              ])
     }
 
     var nearbyPOIResponseNoPOI: Event {
-        return Event(name: AssuranceConstants.Places.EventName.RESPONSE_NEARBY_POI_EVENT,
-                     type: EventType.places,
-                     source: EventSource.responseContent,
-                     data: [
-                        AssuranceConstants.Places.EventDataKeys.NEARBY_POI: []
-                     ])
+        Event(name: AssuranceConstants.Places.EventName.RESPONSE_NEARBY_POI_EVENT,
+              type: EventType.places,
+              source: EventSource.responseContent,
+              data: [
+                  AssuranceConstants.Places.EventDataKeys.NEARBY_POI: [],
+              ])
     }
 
     var sampleEventHubState: [String: Any] {

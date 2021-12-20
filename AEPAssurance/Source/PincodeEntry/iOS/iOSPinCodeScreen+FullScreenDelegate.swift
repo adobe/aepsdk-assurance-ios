@@ -15,7 +15,6 @@ import Foundation
 import WebKit
 
 extension iOSPinCodeScreen: FullscreenMessageDelegate {
-
     /// Invoked when the fullscreen message is displayed
     /// - Parameters:
     ///     - message: Fullscreen message which is currently shown
@@ -27,7 +26,7 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
     /// Invoked when the fullscreen message is dismissed
     /// - Parameters:
     ///     - message: Fullscreen message which is dismissed
-    func onDismiss(message: FullscreenMessage) {
+    func onDismiss(message _: FullscreenMessage) {
         isDisplayed = false
         fullscreenWebView = nil
         fullscreenMessage = nil
@@ -39,7 +38,6 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
     ///     - url:     String the url being loaded by the message
     /// - Returns: True if the core wants to handle the URL (and not the fullscreen message view implementation)
     func overrideUrlLoad(message: FullscreenMessage, url: String?) -> Bool {
-
         // no operation if we are unable to find the host of the url
         // return true, so force core to handle the URL
         guard let host = URL(string: url ?? "")?.host else {
@@ -49,7 +47,7 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
         // when the user hits "Cancel" on the iOS pinpad screen. Dismiss the fullscreen message
         // return false, to indicate that the URL has been handled
         if host == AssuranceConstants.HTMLURLPath.CANCEL {
-            self.pinCodeCallback?(nil, AssuranceConnectionError.userCancelled)
+            pinCodeCallback?(nil, AssuranceConnectionError.userCancelled)
             message.dismiss()
             return false
         }
@@ -59,21 +57,21 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
         if host == AssuranceConstants.HTMLURLPath.CONFIRM {
             // get the entered 4 digit code from url
             guard let passcode = URL(string: url ?? "")?.params["code"] else {
-                self.pinCodeCallback?(nil, AssuranceConnectionError.noPincode)
+                pinCodeCallback?(nil, AssuranceConnectionError.noPincode)
                 return false
             }
 
             guard let sessionId = assuranceExtension.sessionId else {
-                self.pinCodeCallback?(nil, AssuranceConnectionError.noSessionID)
+                pinCodeCallback?(nil, AssuranceConnectionError.noSessionID)
                 return false
             }
 
             guard let orgID = getURLEncodedOrgID() else {
-                self.pinCodeCallback?(nil, AssuranceConnectionError.noOrgId)
+                pinCodeCallback?(nil, AssuranceConnectionError.noOrgId)
                 return false
             }
 
-            //wss://connect%@.griffon.adobe.com/client/v1?sessionId=%@&token=%@&orgId=%@&clientId=%@
+            // wss://connect%@.griffon.adobe.com/client/v1?sessionId=%@&token=%@&orgId=%@&clientId=%@
             let socketURL = String(format: AssuranceConstants.BASE_SOCKET_URL,
                                    assuranceExtension.environment.urlFormat,
                                    sessionId,
@@ -82,17 +80,18 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
                                    assuranceExtension.clientID)
 
             guard let url = URL(string: socketURL) else {
-                self.pinCodeCallback?(nil, AssuranceConnectionError.noURL)
+                pinCodeCallback?(nil, AssuranceConnectionError.noURL)
                 return false
             }
 
-            self.connectionInitialized()
-            self.pinCodeCallback?(url, nil)
+            connectionInitialized()
+            pinCodeCallback?(url, nil)
             return false
         }
 
         return true
     }
+
     ///
     /// Invoked when the FullscreenMessage failed to be displayed
     ///
@@ -111,5 +110,4 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
         let orgID = configState?.value?[AssuranceConstants.EventDataKey.CONFIG_ORG_ID] as? String
         return orgID?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
     }
-
 }

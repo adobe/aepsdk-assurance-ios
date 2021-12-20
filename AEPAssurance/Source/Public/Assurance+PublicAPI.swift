@@ -15,7 +15,6 @@ import AEPServices
 import Foundation
 
 @objc public extension Assurance {
-
     /// Starts an AEPAssurance session.
     ///
     /// Calling this method when a session has already been started results in a no-op, otherwise it attempts to initiate a new AEPAssurance session.
@@ -42,5 +41,4 @@ import Foundation
 
         MobileCore.dispatch(event: event)
     }
-
 }

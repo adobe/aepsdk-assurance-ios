@@ -14,9 +14,7 @@
 import XCTest
 
 class AssuranceConnectionErrorTests: XCTestCase {
-
     func test_AssuranceConnectionErrorEnum() throws {
-
         // Generic Error
         XCTAssertNotNil(AssuranceConnectionError.genericError.info.name)
         XCTAssertNotNil(AssuranceConnectionError.genericError.info.description)
@@ -66,6 +64,5 @@ class AssuranceConnectionErrorTests: XCTestCase {
         XCTAssertNotNil(AssuranceConnectionError.userCancelled.info.name)
         XCTAssertNotNil(AssuranceConnectionError.userCancelled.info.description)
         XCTAssertFalse(AssuranceConnectionError.userCancelled.info.shouldRetry)
-
     }
 }

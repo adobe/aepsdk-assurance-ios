@@ -15,11 +15,9 @@ import Foundation
 import XCTest
 
 class AssuranceClientLogMessageTests: XCTestCase {
-
     func test_clientLogMessage_init() throws {
-        let message = AssuranceClientLogMessage.init(withVisibility: .critical, andMessage: "something to log")
+        let message = AssuranceClientLogMessage(withVisibility: .critical, andMessage: "something to log")
         XCTAssertEqual(.critical, message.visibility)
         XCTAssertEqual("something to log", message.message)
     }
-
 }

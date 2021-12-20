@@ -14,7 +14,6 @@ import Foundation
 
 /// Methods for adopted by the object to manage the events from the web-socket connection
 protocol SocketDelegate {
-
     /// Tells the delegate when the socket connection has been successfully made
     /// - Parameters:
     ///     - socket:the instance of `SocketConnectable` that is connected.

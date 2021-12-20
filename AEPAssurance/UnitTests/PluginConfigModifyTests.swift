@@ -17,11 +17,10 @@ import Foundation
 import XCTest
 
 class PluginConfigModifyTest: XCTestCase {
-
     var plugin: PluginConfigModify!
 
     var mockDataStore: MockDataStore {
-        return ServiceProvider.shared.namedKeyValueService as! MockDataStore
+        ServiceProvider.shared.namedKeyValueService as! MockDataStore
     }
 
     override func setUpWithError() throws {
@@ -51,14 +50,14 @@ class PluginConfigModifyTest: XCTestCase {
         EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: EventType.configuration, source: EventSource.requestContent) { event in
             let flattenedEventData = event.data?.flattening()
             XCTAssertEqual("value1", flattenedEventData?["config.update.configString"] as? String)
-            XCTAssertEqual( 2, flattenedEventData?["config.update.configInt"] as? Int)
-            XCTAssertEqual( false, flattenedEventData?["config.update.configBool"] as? Bool)
+            XCTAssertEqual(2, flattenedEventData?["config.update.configInt"] as? Int)
+            XCTAssertEqual(false, flattenedEventData?["config.update.configBool"] as? Bool)
             expectation.fulfill()
         }
 
         // test
-        let payload  = ["detail": AnyCodable.init(sampleConfigDetails)]
-        plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
+        let payload = ["detail": AnyCodable(sampleConfigDetails)]
+        plugin.receiveEvent(AssuranceEvent(type: AssuranceConstants.EventType.CONTROL, payload: payload))
 
         // assert on expectation
         wait(for: [expectation], timeout: 0.2)
@@ -70,8 +69,8 @@ class PluginConfigModifyTest: XCTestCase {
 
     func test_onSessionTerminated() {
         // setup
-        let payload  = ["detail": AnyCodable.init(sampleConfigDetails)]
-        plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
+        let payload = ["detail": AnyCodable(sampleConfigDetails)]
+        plugin.receiveEvent(AssuranceEvent(type: AssuranceConstants.EventType.CONTROL, payload: payload))
         let configKeys = mockDataStore.dict[AssuranceConstants.DataStoreKeys.CONFIG_MODIFIED_KEYS] as? [String]
         XCTAssertEqual(3, configKeys?.count)
 
@@ -95,16 +94,15 @@ class PluginConfigModifyTest: XCTestCase {
 
         // assert on expectation
         wait(for: [expectation], timeout: 0.2)
-
     }
 
     // MARK: - Private methods and variables
 
     private var sampleConfigDetails: [String: Any] = {
-        return ["configString": "value1", "configInt": 2, "configBool": false]
+        ["configString": "value1", "configInt": 2, "configBool": false]
     }()
 
-    private func registerMockExtension<T: Extension> (_ type: T.Type) {
+    private func registerMockExtension<T: Extension>(_ type: T.Type) {
         let semaphore = DispatchSemaphore(value: 0)
         EventHub.shared.registerExtension(type) { _ in
             semaphore.signal()
@@ -113,7 +111,7 @@ class PluginConfigModifyTest: XCTestCase {
         semaphore.wait()
     }
 
-    private func unregisterMockExtension<T: Extension> (_ type: T.Type) {
+    private func unregisterMockExtension<T: Extension>(_ type: T.Type) {
         let semaphore = DispatchSemaphore(value: 0)
         EventHub.shared.unregisterExtension(type) { _ in
             semaphore.signal()

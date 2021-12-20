@@ -15,11 +15,10 @@ import Foundation
 import XCTest
 
 class MockAssuranceSession: AssuranceSession {
-
     var expectation: XCTestExpectation?
     override init(_ assuranceExtension: Assurance) {
         super.init(assuranceExtension)
-        self.socket = MockSocket(withDelegate: self)
+        socket = MockSocket(withDelegate: self)
     }
 
     var sendEventCalled = false

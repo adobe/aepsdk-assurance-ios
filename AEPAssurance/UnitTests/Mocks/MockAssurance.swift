@@ -27,5 +27,4 @@ class MockAssurance: Assurance {
         getAllExtensionStateDataCalled = true
         return []
     }
-
 }

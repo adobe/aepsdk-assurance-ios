@@ -38,8 +38,8 @@ enum AssuranceConstants {
     }
 
     enum SDKEventName {
-        static let SHARED_STATE_CHANGE    = "Shared state change"
-        static let XDM_SHARED_STATE_CHANGE    = "Shared state change (XDM)"
+        static let SHARED_STATE_CHANGE = "Shared state change"
+        static let XDM_SHARED_STATE_CHANGE = "Shared state change (XDM)"
     }
 
     enum SDKEventType {
@@ -47,20 +47,20 @@ enum AssuranceConstants {
     }
 
     enum PluginFakeEvent {
-        static let NAME    = "eventName"
-        static let TYPE    = "eventType"
-        static let SOURCE  = "eventSource"
-        static let DATA    = "eventData"
+        static let NAME = "eventName"
+        static let TYPE = "eventType"
+        static let SOURCE = "eventSource"
+        static let DATA = "eventData"
     }
 
     // todo verify the impact of making these keys AEPExtensionEvent*
     enum ACPExtensionEventKey {
-        static let NAME    = "ACPExtensionEventName"
-        static let TYPE    = "ACPExtensionEventType"
-        static let SOURCE  = "ACPExtensionEventSource"
-        static let DATA    = "ACPExtensionEventData"
-        static let TIMESTAMP    = "ACPExtensionEventTimestamp"
-        static let NUMBER    = "ACPExtensionEventNumber"
+        static let NAME = "ACPExtensionEventName"
+        static let TYPE = "ACPExtensionEventType"
+        static let SOURCE = "ACPExtensionEventSource"
+        static let DATA = "ACPExtensionEventData"
+        static let TIMESTAMP = "ACPExtensionEventTimestamp"
+        static let NUMBER = "ACPExtensionEventNumber"
         static let UNIQUE_IDENTIFIER = "ACPExtensionEventUniqueIdentifier"
         static let RESPONSE_IDENTIFIER = "ACPExtensionEventResponseIdentifier" // todo new key introduced : convey to UI team
     }
@@ -104,23 +104,23 @@ enum AssuranceConstants {
     }
 
     enum HTMLURLPath {
-        static let CANCEL   = "cancel"
-        static let CONFIRM  = "confirm"
-        static let DISCONNECT  = "disconnect"
+        static let CANCEL = "cancel"
+        static let CONFIRM = "confirm"
+        static let DISCONNECT = "disconnect"
     }
 
     enum ClientInfoKeys {
-        static let TYPE  = "type"
-        static let VERSION   = "version"
-        static let DEVICE_INFO  = "deviceInfo"
-        static let APP_SETTINGS  = "appSettings"
+        static let TYPE = "type"
+        static let VERSION = "version"
+        static let DEVICE_INFO = "deviceInfo"
+        static let APP_SETTINGS = "appSettings"
     }
 
     enum CommandType {
-        static let START_EVENT_FORWARDING  = "startEventForwarding"
-        static let CONFIG_UPDATE  = "configUpdate"
-        static let FAKE_EVENT  = "fakeEvent"
-        static let SCREENSHOT  = "screenshot"
+        static let START_EVENT_FORWARDING = "startEventForwarding"
+        static let CONFIG_UPDATE = "configUpdate"
+        static let FAKE_EVENT = "fakeEvent"
+        static let SCREENSHOT = "screenshot"
         static let LOG_FORWARDING = "logForwarding"
         static let WILDCARD = "wildcard"
     }

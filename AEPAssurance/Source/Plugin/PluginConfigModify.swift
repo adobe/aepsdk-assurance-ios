@@ -26,7 +26,6 @@ import Foundation
 /// The modified configuration keys are stored in datastore, hence when assurance session is terminated the modified configuration is
 /// reverted back.
 struct PluginConfigModify: AssurancePlugin {
-
     let datastore = NamedCollectionDataStore(name: AssuranceConstants.EXTENSION_NAME)
 
     // property that returns the previously modified configuration keys from datastore
@@ -71,11 +70,11 @@ struct PluginConfigModify: AssurancePlugin {
     }
 
     // no op - protocol methods
-    func onRegistered(_ session: AssuranceSession) {}
+    func onRegistered(_: AssuranceSession) {}
 
     func onSessionConnected() {}
 
-    func onSessionDisconnectedWithCloseCode(_ closeCode: Int) {}
+    func onSessionDisconnectedWithCloseCode(_: Int) {}
 
     // MARK: - Private functions
 
@@ -102,5 +101,4 @@ struct PluginConfigModify: AssurancePlugin {
     private func clearModifiedKeys() {
         datastore.remove(key: AssuranceConstants.DataStoreKeys.CONFIG_MODIFIED_KEYS)
     }
-
 }

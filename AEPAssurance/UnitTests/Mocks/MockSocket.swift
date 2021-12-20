@@ -23,7 +23,7 @@ class MockSocket: SocketConnectable {
 
     required init(withDelegate delegate: SocketDelegate) {
         self.delegate = delegate
-        self.socketState = .closed
+        socketState = .closed
     }
 
     var connectCalled = false
@@ -48,6 +48,6 @@ class MockSocket: SocketConnectable {
     }
 
     func mockSocketState(state: SocketState) {
-        self.socketState = state
+        socketState = state
     }
 }

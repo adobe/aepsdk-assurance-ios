@@ -14,11 +14,10 @@ import AEPServices
 import Foundation
 
 extension iOSStatusUI: FloatingButtonDelegate {
-
     /// Invoked when the floating button is tapped
     func onTapDetected() {
         floatingButton?.dismiss()
-        self.fullScreenMessage?.show()
+        fullScreenMessage?.show()
     }
 
     /// Invoked when the floating button is dragged on the screen

@@ -17,14 +17,13 @@ import Foundation
 import XCTest
 
 class PluginScreenShotTests: XCTestCase {
-
     var plugin = PluginScreenshot()
     let runtime = TestableExtensionRuntime()
     var mockUIUtil = MockAssuranceUIUtil()
     var mockNetworkService = MockNetworkService()
     var assuranceExtension: MockAssurance?
     var mockSession: MockAssuranceSession!
-    var screenShotEvent = AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: nil)
+    var screenShotEvent = AssuranceEvent(type: AssuranceConstants.EventType.CONTROL, payload: nil)
 
     let sampleResponse = """
                 {
@@ -69,7 +68,7 @@ class PluginScreenShotTests: XCTestCase {
         XCTAssertTrue(mockNetworkService.connectAsyncCalled)
 
         // now mock the network response
-        let mockConnection = HttpConnection.init(data: sampleResponse, response: HTTPURLResponse.init(), error: nil)
+        let mockConnection = HttpConnection(data: sampleResponse, response: HTTPURLResponse(), error: nil)
         mockNetworkService.completionHandler!(mockConnection)
 
         // verify that the assurance event is sent to the socket
@@ -114,11 +113,10 @@ class PluginScreenShotTests: XCTestCase {
         XCTAssertTrue(mockNetworkService.connectAsyncCalled)
 
         // now mock error network response
-        let mockConnection = HttpConnection.init(data: errorResponse, response: HTTPURLResponse.init(), error: nil)
+        let mockConnection = HttpConnection(data: errorResponse, response: HTTPURLResponse(), error: nil)
         mockNetworkService.completionHandler!(mockConnection)
 
         // verify that the assurance event is not sent
         XCTAssertFalse(mockSession.sendEventCalled)
     }
-
 }

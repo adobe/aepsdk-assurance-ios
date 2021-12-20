@@ -22,7 +22,8 @@ extension URL {
      */
     var params: [String: String] {
         guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false),
-              let queryItems = components.queryItems else {
+              let queryItems = components.queryItems
+        else {
             return [:]
         }
         var dict: [String: String] = [:]

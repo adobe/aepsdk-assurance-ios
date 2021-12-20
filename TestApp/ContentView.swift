@@ -28,7 +28,6 @@ struct ContentView: View {
             UserProfileCard()
             ConsentCard()
             PlacesCard()
-
         }
     }
 }
@@ -57,7 +56,6 @@ struct AssuranceCard: View {
     var body: some View {
         VStack {
             HStack {
-
                 Text("Assurance: v" + Assurance.extensionVersion)
                     .padding(.leading)
                     .font(.system(size: HEADING_FONT_SIZE, weight: .heavy, design: .default))
@@ -98,7 +96,7 @@ struct UserProfileCard: View {
                 Button(action: {
                     let userProfile: [String: Any] = [
                         "type": "HardCore Gamer",
-                        "age": 16
+                        "age": 16,
                     ]
                     UserProfile.updateUserAttributes(attributeDict: userProfile)
                 }, label: {

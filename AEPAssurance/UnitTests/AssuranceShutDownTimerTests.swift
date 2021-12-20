@@ -17,7 +17,6 @@ import Foundation
 import XCTest
 
 class AssuranceShutDownTimerTests: XCTestCase {
-
     let runtime = TestableExtensionRuntime()
     let mockDataStore = MockDataStore()
     var mockSession: MockAssuranceSession!
@@ -88,18 +87,18 @@ class AssuranceShutDownTimerTests: XCTestCase {
     }
 
     var assuranceStartEvent: Event {
-        return Event(name: "Start Session",
-                     type: AssuranceConstants.SDKEventType.ASSURANCE,
-                     source: EventSource.requestContent,
-                     data: [
-                        AssuranceConstants.EventDataKey.START_SESSION_URL: "griffon://?adb_validation_sessionid=28f4a622-d34f-4036-c81a-d21352144b57&env=stage"
-                     ])
+        Event(name: "Start Session",
+              type: AssuranceConstants.SDKEventType.ASSURANCE,
+              source: EventSource.requestContent,
+              data: [
+                  AssuranceConstants.EventDataKey.START_SESSION_URL: "griffon://?adb_validation_sessionid=28f4a622-d34f-4036-c81a-d21352144b57&env=stage",
+              ])
     }
 
     var testEvent: Event {
-        return Event(name: "testName",
-                     type: "testType",
-                     source: "testSource",
-                     data: nil)
+        Event(name: "testName",
+              type: "testType",
+              source: "testSource",
+              data: nil)
     }
 }

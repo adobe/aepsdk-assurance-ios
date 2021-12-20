@@ -16,7 +16,6 @@ import Foundation
 
 @objc(AEPMobileAssurance)
 public class Assurance: NSObject, Extension {
-
     /// Time before assurance shuts down on non receipt of start session event.
     let shutdownTime: Int
 
@@ -43,7 +42,7 @@ public class Assurance: NSObject, Extension {
     private let DEFAULT_ENVIRONMENT = AssuranceEnvironment.prod
     var environment: AssuranceEnvironment {
         get {
-            AssuranceEnvironment.init(envString: datastore.getString(key: AssuranceConstants.DataStoreKeys.ENVIRONMENT) ?? DEFAULT_ENVIRONMENT.rawValue)
+            AssuranceEnvironment(envString: datastore.getString(key: AssuranceConstants.DataStoreKeys.ENVIRONMENT) ?? DEFAULT_ENVIRONMENT.rawValue)
         }
         set {
             datastore.set(key: AssuranceConstants.DataStoreKeys.ENVIRONMENT, value: newValue.rawValue)
@@ -82,7 +81,7 @@ public class Assurance: NSObject, Extension {
 
     public func onRegistered() {
         registerListener(type: EventType.wildcard, source: EventSource.wildcard, listener: handleWildcardEvent)
-        self.assuranceSession = AssuranceSession(self)
+        assuranceSession = AssuranceSession(self)
 
         /// if the Assurance session was already connected in the previous app session, go ahead and reconnect socket
         /// and do not turn on the unregister timer
@@ -100,7 +99,7 @@ public class Assurance: NSObject, Extension {
 
     public required init?(runtime: ExtensionRuntime) {
         self.runtime = runtime
-        self.shutdownTime = AssuranceConstants.SHUTDOWN_TIME
+        shutdownTime = AssuranceConstants.SHUTDOWN_TIME
     }
 
     /// Initializer for testing purposes to mock the shut down time .
@@ -109,8 +108,8 @@ public class Assurance: NSObject, Extension {
         self.shutdownTime = shutdownTime
     }
 
-    public func readyForEvent(_ event: Event) -> Bool {
-        return true
+    public func readyForEvent(_: Event) -> Bool {
+        true
     }
 
     /// Returns an Array of `AssuranceEvent`s containing regular and XDM shared state details of all the registered extensions.
@@ -192,11 +191,11 @@ public class Assurance: NSObject, Extension {
         // Read the environment query parameter from the deeplink url
         let environmentString = deeplinkURL?.params[AssuranceConstants.Deeplink.ENVIRONMENT_KEY] ?? ""
 
-        // invalidate the timer        
+        // invalidate the timer
         invalidateTimer()
 
         // save the environment and sessionID
-        environment = AssuranceEnvironment.init(envString: environmentString)
+        environment = AssuranceEnvironment(envString: environmentString)
         self.sessionId = sessionId
         shareState()
         shouldProcessEvents = true
@@ -274,7 +273,7 @@ public class Assurance: NSObject, Extension {
 
         let sharedStatePayload = [sharedContentKey: sharedState.value]
         var assuranceEvent = AssuranceEvent.from(event: event)
-        assuranceEvent.payload?.updateValue(AnyCodable.init(sharedStatePayload), forKey: AssuranceConstants.PayloadKey.METADATA)
+        assuranceEvent.payload?.updateValue(AnyCodable(sharedStatePayload), forKey: AssuranceConstants.PayloadKey.METADATA)
         assuranceSession?.sendEvent(assuranceEvent)
     }
 
@@ -283,8 +282,8 @@ public class Assurance: NSObject, Extension {
     /// Start the shutdown timer in the background queue without blocking the current thread.
     /// If the timer get fired, then it shuts down the assurance extension.
     private func startShutDownTimer() {
-        Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance shutdown timer started. Waiting for 5 seconds to receive assurance session url.");
-        let queue = DispatchQueue.init(label: "com.adobe.assurance.shutdowntimer", qos: .background)
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance shutdown timer started. Waiting for 5 seconds to receive assurance session url.")
+        let queue = DispatchQueue(label: "com.adobe.assurance.shutdowntimer", qos: .background)
         timer = createDispatchTimer(queue: queue, block: {
             self.shutDownAssurance()
         })
@@ -298,7 +297,7 @@ public class Assurance: NSObject, Extension {
         Log.debug(label: AssuranceConstants.LOG_TAG, "Timeout - Assurance extension did not receive session url. Shutting down from processing any further events.")
         invalidateTimer()
         Log.debug(label: AssuranceConstants.LOG_TAG, "Clearing the queued events and purging Assurance shared state.")
-        self.assuranceSession?.clearQueueEvents()
+        assuranceSession?.clearQueueEvents()
         clearState()
     }
 
@@ -314,7 +313,7 @@ public class Assurance: NSObject, Extension {
     ///     - queue: the dispatch queue on which the timer runs
     ///     - block: the block that needs be executed once the timer fires
     /// - Returns: a configured `DispatchSourceTimer` instance
-    private func createDispatchTimer(queue: DispatchQueue, block : @escaping () -> Void) -> DispatchSourceTimer {
+    private func createDispatchTimer(queue: DispatchQueue, block: @escaping () -> Void) -> DispatchSourceTimer {
         let timer = DispatchSource.makeTimerSource(queue: queue)
         timer.schedule(wallDeadline: .now() + DispatchTimeInterval.seconds(shutdownTime))
         timer.setEventHandler(handler: block)
@@ -373,9 +372,9 @@ public class Assurance: NSObject, Extension {
     ///
     private func prepareSharedStateEvent(owner: String, eventName: String, stateContent: [String: Any], stateType: String) -> AssuranceEvent {
         var payload: [String: AnyCodable] = [:]
-        payload[AssuranceConstants.ACPExtensionEventKey.NAME] = AnyCodable.init(eventName)
-        payload[AssuranceConstants.ACPExtensionEventKey.TYPE] = AnyCodable.init(EventType.hub.lowercased())
-        payload[AssuranceConstants.ACPExtensionEventKey.SOURCE] = AnyCodable.init(EventSource.sharedState.lowercased())
+        payload[AssuranceConstants.ACPExtensionEventKey.NAME] = AnyCodable(eventName)
+        payload[AssuranceConstants.ACPExtensionEventKey.TYPE] = AnyCodable(EventType.hub.lowercased())
+        payload[AssuranceConstants.ACPExtensionEventKey.SOURCE] = AnyCodable(EventSource.sharedState.lowercased())
         payload[AssuranceConstants.ACPExtensionEventKey.DATA] = [AssuranceConstants.EventDataKey.SHARED_STATE_OWNER: owner]
         payload[AssuranceConstants.PayloadKey.METADATA] = [stateType: stateContent]
         return AssuranceEvent(type: AssuranceConstants.EventType.GENERIC, payload: payload)

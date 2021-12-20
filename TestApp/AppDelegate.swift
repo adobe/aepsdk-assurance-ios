@@ -26,8 +26,7 @@ import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         MobileCore.setLogLevel(.trace)
         let extensions = [AEPIdentity.Identity.self,
@@ -41,24 +40,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                           Consent.self,
                           UserProfile.self,
                           Assurance.self,
-                          Places.self
-        ]
-        MobileCore.registerExtensions(extensions, {
+                          Places.self]
+        MobileCore.registerExtensions(extensions) {
             MobileCore.configureWith(appId: "")
-        })
+        }
 
         return true
     }
 
     // MARK: UISceneSession Lifecycle
 
-    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+    func application(_: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options _: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+    func application(_: UIApplication, open url: URL, options _: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         Assurance.startSession(url: url)
         return true
     }
-
 }

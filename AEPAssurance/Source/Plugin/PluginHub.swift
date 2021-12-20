@@ -45,7 +45,7 @@ class PluginHub {
             return
         }
 
-        for i in 0...(pluginsForVendor.count - 1) {
+        for i in 0 ... (pluginsForVendor.count - 1) {
             let plugin = pluginsForVendor[i]
 
             // if the plugin matches control type of the event. Send the event to that plugin
@@ -57,25 +57,25 @@ class PluginHub {
 
     /// Notifies all the registered plugins about the successful connection establishment with Assurance session.
     func notifyPluginsOnConnect() {
-        getEachRegisteredPlugin({ plugin in
+        getEachRegisteredPlugin { plugin in
             plugin.onSessionConnected()
-        })
+        }
     }
 
     /// Notifies all the registered plugins about disconnection with Assurance session.
     /// - Parameter :
     ///     - closeCode: Integer representing the reason for socket disconnection
     func notifyPluginsOnDisconnect(withCloseCode closeCode: Int) {
-        getEachRegisteredPlugin({ plugin in
+        getEachRegisteredPlugin { plugin in
             plugin.onSessionDisconnectedWithCloseCode(closeCode)
-        })
+        }
     }
 
     /// Notifies all the registered plugins about connection termination with Assurance session.
     func notifyPluginsOnSessionTerminated() {
-        getEachRegisteredPlugin({ plugin in
+        getEachRegisteredPlugin { plugin in
             plugin.onSessionTerminated()
-        })
+        }
     }
 
     // MARK: Private methods
@@ -88,7 +88,7 @@ class PluginHub {
                 return
             }
 
-            for i in 0...(threadSafePluginsArray.count - 1) {
+            for i in 0 ... (threadSafePluginsArray.count - 1) {
                 let plugin = threadSafePluginsArray[i]
                 callback(plugin)
             }

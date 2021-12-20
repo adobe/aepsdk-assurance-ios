@@ -24,7 +24,7 @@ protocol SessionAuthorizingUI {
     /// Invoke this during start session to display the pinCode screen
     /// - Parameters
     ///    - callback : callback that will be invoked with results on the pinCode interaction.
-    mutating func show(callback : @escaping PinCodeCallback)
+    mutating func show(callback: @escaping PinCodeCallback)
 
     /// Invoked when the a socket connection is initialized
     func connectionInitialized()

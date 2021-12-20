@@ -55,10 +55,10 @@ install-githook:
 	./tools/git-hooks/setup.sh
 
 lint-autocorrect:
-	(swiftlint autocorrect --format)
+	(./Pods/SwiftLint/swiftlint autocorrect --format)
 
 lint:
-	(swiftlint lint Sources TestApp/)
+	(./Pods/SwiftLint/swiftlint lint Sources TestApp/)
 
 build-test-apps:
 	xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme $(APP_NAME) -destination 'platform=iOS Simulator,name=iPhone 8'

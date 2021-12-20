@@ -14,10 +14,9 @@
 import XCTest
 
 class URL_ParserTests: XCTestCase {
-
     func test_queryParams_happy() throws {
         // setup
-        let url = URL.init(string: "griffon://?adb_validation_sessionid=someId&env=stage")!
+        let url = URL(string: "griffon://?adb_validation_sessionid=someId&env=stage")!
 
         // test
         XCTAssertEqual(2, url.params.count)
@@ -27,7 +26,7 @@ class URL_ParserTests: XCTestCase {
 
     func test_queryParams_emptyParameter() throws {
         // setup
-        let url = URL.init(string: "griffon://?adb_validation_sessionid=someId&env=")!
+        let url = URL(string: "griffon://?adb_validation_sessionid=someId&env=")!
 
         // test
         XCTAssertEqual(2, url.params.count)
@@ -37,7 +36,7 @@ class URL_ParserTests: XCTestCase {
 
     func test_queryParams_invalidParameter() throws {
         // setup
-        let url = URL.init(string: "griffon://?adb_validation_sessionid=someId&env")!
+        let url = URL(string: "griffon://?adb_validation_sessionid=someId&env")!
 
         // test
         XCTAssertEqual(1, url.params.count)
@@ -46,7 +45,7 @@ class URL_ParserTests: XCTestCase {
 
     func test_queryParams_integerParameter() throws {
         // setup
-        let url = URL.init(string: "griffon://?adb_validation_sessionid=someId&env=67")!
+        let url = URL(string: "griffon://?adb_validation_sessionid=someId&env=67")!
 
         // test
         XCTAssertEqual(2, url.params.count)
@@ -56,10 +55,9 @@ class URL_ParserTests: XCTestCase {
 
     func test_queryParams_noParameters() throws {
         // setup
-        let url = URL.init(string: "griffon://")!
+        let url = URL(string: "griffon://")!
 
         // test
         XCTAssertEqual(0, url.params.count)
     }
-
 }

@@ -15,13 +15,12 @@ import Foundation
 import XCTest
 
 class AssuranceEnvironmentTests: XCTestCase {
-
     func test_assuranceEnvironment_enumCreation() throws {
-        let devEnum = AssuranceEnvironment.init(envString: "dev")
-        let qaEnum = AssuranceEnvironment.init(envString: "qa")
-        let stageEnum = AssuranceEnvironment.init(envString: "stage")
-        let prodEnum = AssuranceEnvironment.init(envString: "")
-        let defaultEnum = AssuranceEnvironment.init(envString: "wonder what i am")
+        let devEnum = AssuranceEnvironment(envString: "dev")
+        let qaEnum = AssuranceEnvironment(envString: "qa")
+        let stageEnum = AssuranceEnvironment(envString: "stage")
+        let prodEnum = AssuranceEnvironment(envString: "")
+        let defaultEnum = AssuranceEnvironment(envString: "wonder what i am")
 
         XCTAssertEqual(devEnum, AssuranceEnvironment.dev)
         XCTAssertEqual(qaEnum, AssuranceEnvironment.qa)
@@ -36,5 +35,4 @@ class AssuranceEnvironmentTests: XCTestCase {
         XCTAssertEqual("-stage", AssuranceEnvironment.stage.urlFormat)
         XCTAssertEqual("", AssuranceEnvironment.prod.urlFormat)
     }
-
 }

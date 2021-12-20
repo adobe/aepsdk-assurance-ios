@@ -22,7 +22,7 @@ class TestableExtensionRuntime: ExtensionRuntime {
     var otherXDMSharedStates: [String: SharedStateResult] = [:]
 
     func getListener(type: String, source: String) -> EventListener? {
-        return listeners["\(type)-\(source)"]
+        listeners["\(type)-\(source)"]
     }
 
     func simulateComingEvent(event: Event) {
@@ -47,27 +47,27 @@ class TestableExtensionRuntime: ExtensionRuntime {
     }
 
     func createPendingSharedState(event _: Event?) -> SharedStateResolver {
-        return { data in
+        { data in
             self.sharedStates += [data]
         }
     }
 
-    func getSharedState(extensionName: String, event: Event?, barrier: Bool) -> SharedStateResult? {
-        return otherSharedStates["\(extensionName)-\(String(describing: event?.id))"] ?? nil
+    func getSharedState(extensionName: String, event: Event?, barrier _: Bool) -> SharedStateResult? {
+        otherSharedStates["\(extensionName)-\(String(describing: event?.id))"] ?? nil
     }
 
-    public func createXDMSharedState(data: [String: Any], event: Event?) {
+    public func createXDMSharedState(data: [String: Any], event _: Event?) {
         createdXdmSharedStates += [data]
     }
 
-    func createPendingXDMSharedState(event: Event?) -> SharedStateResolver {
-        return { data in
+    func createPendingXDMSharedState(event _: Event?) -> SharedStateResolver {
+        { data in
             self.createdXdmSharedStates += [data]
         }
     }
 
-    func getXDMSharedState(extensionName: String, event: Event?, barrier: Bool) -> SharedStateResult? {
-        return otherXDMSharedStates["\(extensionName)"] ?? nil
+    func getXDMSharedState(extensionName: String, event _: Event?, barrier _: Bool) -> SharedStateResult? {
+        otherXDMSharedStates["\(extensionName)"] ?? nil
     }
 
     func simulateSharedState(extensionName: String, event: Event?, data: (value: [String: Any]?, status: SharedStateStatus)) {
@@ -89,28 +89,28 @@ class TestableExtensionRuntime: ExtensionRuntime {
     func stopEvents() {}
 }
 
-extension TestableExtensionRuntime {
-    public var firstEvent: Event? {
+public extension TestableExtensionRuntime {
+    var firstEvent: Event? {
         dispatchedEvents[0]
     }
 
-    public var secondEvent: Event? {
+    var secondEvent: Event? {
         dispatchedEvents[1]
     }
 
-    public var thirdEvent: Event? {
+    var thirdEvent: Event? {
         dispatchedEvents[2]
     }
 
-    public var firstSharedState: [String: Any]? {
+    var firstSharedState: [String: Any]? {
         sharedStates[0]
     }
 
-    public var secondSharedState: [String: Any]? {
+    var secondSharedState: [String: Any]? {
         sharedStates[1]
     }
 
-    public var thirdSharedState: [String: Any]? {
+    var thirdSharedState: [String: Any]? {
         sharedStates[2]
     }
 }

@@ -16,9 +16,8 @@ import AEPServices
 import XCTest
 
 class AssuranceEventTests: XCTestCase {
-
     private let SAMPLE_PAYLOAD: [String: AnyCodable] = ["payloadkey": "value"]
-    private let SAMPLE_TIMESTAMP: Date = Date()
+    private let SAMPLE_TIMESTAMP = Date()
 
     /*--------------------------------------------------
      Initializer
@@ -123,7 +122,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertEqual("someID", event.eventID, "Inaccurate eventID")
         XCTAssertEqual("someVendor", event.vendor, "Inaccurate vendor")
         XCTAssertEqual("someType", event.type, "Inaccurate type")
-        XCTAssertEqual(113435556, (event.timestamp?.timeIntervalSince1970 ?? -1) * 1000, accuracy: 1, "Inaccurate timestamp")
+        XCTAssertEqual(113_435_556, (event.timestamp?.timeIntervalSince1970 ?? -1) * 1000, accuracy: 1, "Inaccurate timestamp")
         let payloadValue = event.payload?["levelOneKey"]?.dictionaryValue!["levelTwoKey"]
         XCTAssertEqual("levelTwoValue", payloadValue as! String)
     }

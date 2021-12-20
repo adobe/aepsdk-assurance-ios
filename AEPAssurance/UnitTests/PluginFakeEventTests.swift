@@ -17,7 +17,6 @@ import Foundation
 import XCTest
 
 class PluginFakeEventTests: XCTestCase {
-
     let plugin = PluginFakeEvent()
 
     override func setUpWithError() throws {
@@ -65,7 +64,7 @@ class PluginFakeEventTests: XCTestCase {
         }
 
         // test
-        plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
+        plugin.receiveEvent(AssuranceEvent(type: AssuranceConstants.EventType.CONTROL, payload: payload))
 
         // verify
         wait(for: [expectation], timeout: 0.3)
@@ -78,8 +77,9 @@ class PluginFakeEventTests: XCTestCase {
              "eventSource": "fakeEventSource"]
 
         let payload: [String: AnyCodable] = [
-            "detail": AnyCodable.init(eventInfo),
-            "type": "Control"]
+            "detail": AnyCodable(eventInfo),
+            "type": "Control",
+        ]
         let expectation = XCTestExpectation(description: "PluginFakeEvent should not dispatch event when eventName is not available")
         expectation.isInverted = true
 
@@ -89,7 +89,7 @@ class PluginFakeEventTests: XCTestCase {
         }
 
         // test
-        plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
+        plugin.receiveEvent(AssuranceEvent(type: AssuranceConstants.EventType.CONTROL, payload: payload))
 
         // verify
         wait(for: [expectation], timeout: 0.3)
@@ -102,8 +102,9 @@ class PluginFakeEventTests: XCTestCase {
              "eventSource": "fakeEventSource"]
 
         let payload: [String: AnyCodable] = [
-            "detail": AnyCodable.init(eventInfo),
-            "type": "Control"]
+            "detail": AnyCodable(eventInfo),
+            "type": "Control",
+        ]
         let expectation = XCTestExpectation(description: "PluginFakeEvent should not dispatch event when eventType is not available")
         expectation.isInverted = true
 
@@ -113,7 +114,7 @@ class PluginFakeEventTests: XCTestCase {
         }
 
         // test
-        plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
+        plugin.receiveEvent(AssuranceEvent(type: AssuranceConstants.EventType.CONTROL, payload: payload))
 
         // verify
         wait(for: [expectation], timeout: 0.3)
@@ -126,8 +127,9 @@ class PluginFakeEventTests: XCTestCase {
              "eventType": "fakeEventType"]
 
         let payload: [String: AnyCodable] = [
-            "detail": AnyCodable.init(eventInfo),
-            "type": "Control"]
+            "detail": AnyCodable(eventInfo),
+            "type": "Control",
+        ]
         let expectation = XCTestExpectation(description: "PluginFakeEvent should not dispatch event when eventSource is not available")
         expectation.isInverted = true
 
@@ -137,7 +139,7 @@ class PluginFakeEventTests: XCTestCase {
         }
 
         // test
-        plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
+        plugin.receiveEvent(AssuranceEvent(type: AssuranceConstants.EventType.CONTROL, payload: payload))
 
         // verify
         wait(for: [expectation], timeout: 0.3)
@@ -152,12 +154,13 @@ class PluginFakeEventTests: XCTestCase {
              "eventSource": "fakeEventSource"]
 
         let payload: [String: AnyCodable] = [
-            "detail": AnyCodable.init(eventInfo),
-            "type": "Control"]
-        return AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload)
+            "detail": AnyCodable(eventInfo),
+            "type": "Control",
+        ]
+        return AssuranceEvent(type: AssuranceConstants.EventType.CONTROL, payload: payload)
     }
 
-    private func registerMockExtension<T: Extension> (_ type: T.Type) {
+    private func registerMockExtension<T: Extension>(_ type: T.Type) {
         let semaphore = DispatchSemaphore(value: 0)
         EventHub.shared.registerExtension(type) { _ in
             semaphore.signal()
@@ -166,7 +169,7 @@ class PluginFakeEventTests: XCTestCase {
         semaphore.wait()
     }
 
-    private func unregisterMockExtension<T: Extension> (_ type: T.Type) {
+    private func unregisterMockExtension<T: Extension>(_ type: T.Type) {
         let semaphore = DispatchSemaphore(value: 0)
         EventHub.shared.unregisterExtension(type) { _ in
             semaphore.signal()

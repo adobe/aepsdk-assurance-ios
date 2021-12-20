@@ -23,7 +23,7 @@ class iOSStatusUI {
 
     required init(withSession assuranceSession: AssuranceSession) {
         self.assuranceSession = assuranceSession
-        self.clientLogQueue = ThreadSafeQueue(withLimit: 100)
+        clientLogQueue = ThreadSafeQueue(withLimit: 100)
     }
 
     /// Displays the Assurance Status UI on the customers application.
@@ -35,7 +35,7 @@ class iOSStatusUI {
         }
 
         if fullScreenMessage == nil {
-            self.fullScreenMessage = ServiceProvider.shared.uiService.createFullscreenMessage(payload: String(bytes: StatusInfoHTML.content, encoding: .utf8)!, listener: self, isLocalImageUsed: false)
+            fullScreenMessage = ServiceProvider.shared.uiService.createFullscreenMessage(payload: String(bytes: StatusInfoHTML.content, encoding: .utf8)!, listener: self, isLocalImageUsed: false)
         }
 
         floatingButton = ServiceProvider.shared.uiService.createFloatingButton(listener: self)
@@ -47,10 +47,10 @@ class iOSStatusUI {
     /// Removes Assurance Status UI from the customers application
     ///
     func remove() {
-        self.floatingButton?.dismiss()
-        self.floatingButton = nil
-        self.fullScreenMessage = nil
-        self.webView = nil
+        floatingButton?.dismiss()
+        floatingButton = nil
+        fullScreenMessage = nil
+        webView = nil
     }
 
     ///
@@ -108,5 +108,4 @@ class iOSStatusUI {
             }
         }
     }
-
 }

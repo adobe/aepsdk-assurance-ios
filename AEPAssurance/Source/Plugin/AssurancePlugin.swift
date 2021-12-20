@@ -18,7 +18,6 @@ import Foundation
 ///  An Inbound command with a specified vendor and command type will invoke the  plugin.
 ///  WildCardPlugin : `AssurancePlugin` with commandType "wildcard" will listen all the command for its defined vendor.
 protocol AssurancePlugin {
-
     /// the vendor name for the Assurance plugin
     var vendor: String { get }
 
@@ -41,8 +40,8 @@ protocol AssurancePlugin {
     /// - Parameter closeCode : an integer value representing the reason for webSocket disconnect
     func onSessionDisconnectedWithCloseCode(_ closeCode: Int)
 
-    ///This protocol method is invoked when Assurance session is disconnected and the Assurance Floating UI button is removed.
-    ///Invocation of this method guarantees that the Assurance session is completely terminated and the Assurance extension will not automatically
-    ///reconnect the session on the next app launch.
+    /// This protocol method is invoked when Assurance session is disconnected and the Assurance Floating UI button is removed.
+    /// Invocation of this method guarantees that the Assurance session is completely terminated and the Assurance extension will not automatically
+    /// reconnect the session on the next app launch.
     func onSessionTerminated()
 }

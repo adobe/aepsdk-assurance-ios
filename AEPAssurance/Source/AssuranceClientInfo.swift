@@ -16,7 +16,6 @@ import Foundation
 import UIKit
 
 struct AssuranceClientInfo {
-
     static let PLATFORM_NAME = "Canonical platform name"
     static let DEVICE_NAME = "Device name"
     static let OPERATING_SYSTEM = "Operating system"
@@ -38,13 +37,14 @@ struct AssuranceClientInfo {
     ///
     /// - Returns- A `Dictionary` containing the above mentioned data
     static func getData() -> [String: AnyCodable] {
-        return [AssuranceConstants.ClientInfoKeys.VERSION: AnyCodable.init(AssuranceConstants.EXTENSION_VERSION),
-                AssuranceConstants.ClientInfoKeys.TYPE: "connect",
-                AssuranceConstants.ClientInfoKeys.APP_SETTINGS: AnyCodable.init(readAppSettingData()),
-                AssuranceConstants.ClientInfoKeys.DEVICE_INFO: AnyCodable.init(readDeviceInfo())]
+        [AssuranceConstants.ClientInfoKeys.VERSION: AnyCodable(AssuranceConstants.EXTENSION_VERSION),
+         AssuranceConstants.ClientInfoKeys.TYPE: "connect",
+         AssuranceConstants.ClientInfoKeys.APP_SETTINGS: AnyCodable(readAppSettingData()),
+         AssuranceConstants.ClientInfoKeys.DEVICE_INFO: AnyCodable(readDeviceInfo())]
     }
 
     // MARK: - Private helper methods
+
     /// - Returns: A `Dictionary` containing the app's Info.plist data
     private static func readAppSettingData() -> NSDictionary {
         var appSettingsInDictionary: NSDictionary = [:]
@@ -54,7 +54,7 @@ struct AssuranceClientInfo {
         return appSettingsInDictionary
     }
 
-    ///- Returns: A `Dictionary` with the required device information
+    /// - Returns: A `Dictionary` with the required device information
     private static func readDeviceInfo() -> [String: Any] {
         let systemInfoService = ServiceProvider.shared.systemInfoService
 
@@ -62,7 +62,7 @@ struct AssuranceClientInfo {
         var deviceInfo: [String: Any] = [:]
         deviceInfo[PLATFORM_NAME] = PLATFORM_IOS
         deviceInfo[DEVICE_NAME] = UIDevice.current.name
-        deviceInfo[OPERATING_SYSTEM] = ("\(systemInfoService.getOperatingSystemName()) \(systemInfoService.getOperatingSystemVersion())")
+        deviceInfo[OPERATING_SYSTEM] = "\(systemInfoService.getOperatingSystemName()) \(systemInfoService.getOperatingSystemVersion())"
         deviceInfo[DEVICE_TYPE] = getDeviceType()
         deviceInfo[MODEL] = systemInfoService.getDeviceModelNumber()
         deviceInfo[SCREEN_SIZE] = "\(screenSize.width)x\(screenSize.height)"
@@ -77,7 +77,7 @@ struct AssuranceClientInfo {
     /// Battery level ranges from 0 (fully discharged) to 100 (fully charged).
     /// For simulator where the battery levels are not available -1 is returned.
     ///
-    ///- Returns: An `Int` representing the battery level of the device
+    /// - Returns: An `Int` representing the battery level of the device
     private static func getBatteryLevel() -> Int {
         let batteryPercentage = Int(UIDevice.current.batteryLevel * 100)
         return (batteryPercentage) > 0 ? batteryPercentage : -1
@@ -120,5 +120,4 @@ struct AssuranceClientInfo {
             return "Unspecified"
         }
     }
-
 }

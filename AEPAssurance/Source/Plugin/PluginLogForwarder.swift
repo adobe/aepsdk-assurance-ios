@@ -31,7 +31,7 @@ class PluginLogForwarder: AssurancePlugin {
     var currentlyRunning: Bool = false
     private var logPipe = Pipe() /// consumes the log messages from STDERR
     private var consoleRedirectPipe = Pipe() /// outputs the log message back to STDERR
-    private var logQueue: DispatchQueue = DispatchQueue(label: "com.adobe.assurance.log.forwarder")
+    private var logQueue = DispatchQueue(label: "com.adobe.assurance.log.forwarder")
 
     lazy var savedStdError: Int32 = dup(STDERR_FILENO)
 
@@ -41,7 +41,7 @@ class PluginLogForwarder: AssurancePlugin {
         logPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
             let data = fileHandle.availableData
             if let logLine = String(data: data, encoding: .utf8) {
-                self?.session?.sendEvent(AssuranceEvent(type: AssuranceConstants.EventType.LOG, payload: [AssuranceConstants.LogForwarding.LOG_LINE: AnyCodable.init(logLine)]))
+                self?.session?.sendEvent(AssuranceEvent(type: AssuranceConstants.EventType.LOG, payload: [AssuranceConstants.LogForwarding.LOG_LINE: AnyCodable(logLine)]))
             }
 
             /// writes log back to stderr
@@ -52,7 +52,7 @@ class PluginLogForwarder: AssurancePlugin {
     /// this protocol method is called from `PluginHub` to handle log forwarding command
     func receiveEvent(_ event: AssuranceEvent) {
         // quick bail, if you cannot read the session instance
-        guard self.session != nil else {
+        guard session != nil else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Unable to get the session instance. Assurance SDK is ignoring the command to start/stop forwarding logs.")
             return
         }
@@ -63,7 +63,6 @@ class PluginLogForwarder: AssurancePlugin {
         }
 
         forwardingEnabled ? startForwarding() : stopForwarding()
-
     }
 
     /// protocol method is called from this Plugin is registered with `PluginHub`
@@ -74,7 +73,7 @@ class PluginLogForwarder: AssurancePlugin {
     // no op - protocol methods
     func onSessionConnected() {}
 
-    func onSessionDisconnectedWithCloseCode(_ closeCode: Int) {}
+    func onSessionDisconnectedWithCloseCode(_: Int) {}
 
     func onSessionTerminated() {}
 
@@ -120,6 +119,6 @@ class PluginLogForwarder: AssurancePlugin {
 
 private extension AssuranceEvent {
     var commandLogForwardingEnable: Bool? {
-        return commandDetails?[AssuranceConstants.LogForwarding.ENABLE] as? Bool
+        commandDetails?[AssuranceConstants.LogForwarding.ENABLE] as? Bool
     }
 }

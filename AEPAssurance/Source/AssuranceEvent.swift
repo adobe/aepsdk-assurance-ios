@@ -65,20 +65,20 @@ struct AssuranceEvent: Codable {
     /// - Returns: an `AssuranceEvent`
     static func from(event: Event) -> AssuranceEvent {
         var payload: [String: AnyCodable] = [:]
-        payload[AssuranceConstants.ACPExtensionEventKey.NAME] = AnyCodable.init(event.name)
-        payload[AssuranceConstants.ACPExtensionEventKey.TYPE] = AnyCodable.init(event.type.lowercased())
-        payload[AssuranceConstants.ACPExtensionEventKey.SOURCE] = AnyCodable.init(event.source.lowercased())
-        payload[AssuranceConstants.ACPExtensionEventKey.UNIQUE_IDENTIFIER] = AnyCodable.init(event.id.uuidString)
-        payload[AssuranceConstants.ACPExtensionEventKey.TIMESTAMP] = AnyCodable.init(event.timestamp)
+        payload[AssuranceConstants.ACPExtensionEventKey.NAME] = AnyCodable(event.name)
+        payload[AssuranceConstants.ACPExtensionEventKey.TYPE] = AnyCodable(event.type.lowercased())
+        payload[AssuranceConstants.ACPExtensionEventKey.SOURCE] = AnyCodable(event.source.lowercased())
+        payload[AssuranceConstants.ACPExtensionEventKey.UNIQUE_IDENTIFIER] = AnyCodable(event.id.uuidString)
+        payload[AssuranceConstants.ACPExtensionEventKey.TIMESTAMP] = AnyCodable(event.timestamp)
 
         // if available, add eventData
         if let eventData = event.data {
-            payload[AssuranceConstants.ACPExtensionEventKey.DATA] = AnyCodable.init(eventData)
+            payload[AssuranceConstants.ACPExtensionEventKey.DATA] = AnyCodable(eventData)
         }
 
         // if available, add responseID
-        if  let responseID = event.responseID {
-            payload[AssuranceConstants.ACPExtensionEventKey.RESPONSE_IDENTIFIER] = AnyCodable.init(responseID.uuidString)
+        if let responseID = event.responseID {
+            payload[AssuranceConstants.ACPExtensionEventKey.RESPONSE_IDENTIFIER] = AnyCodable(responseID.uuidString)
         }
 
         return AssuranceEvent(type: AssuranceConstants.EventType.GENERIC, payload: payload)
@@ -96,7 +96,7 @@ struct AssuranceEvent: Codable {
         self.payload = payload
         self.timestamp = timestamp
         self.vendor = vendor
-        self.eventNumber = AssuranceEvent.generateEventNumber()
+        eventNumber = AssuranceEvent.generateEventNumber()
     }
 
     /// Returns the type of the command. Applies only for command events. This method returns nil for all other `AssuranceEvent`s.
@@ -142,7 +142,7 @@ struct AssuranceEvent: Codable {
         return payload?[AssuranceConstants.PayloadKey.DETAIL]?.dictionaryValue
     }
 
-    static private var eventNumberCounter: Int32 = 0
+    private static var eventNumberCounter: Int32 = 0
     private static func generateEventNumber() -> Int32 {
         OSAtomicIncrement32(&eventNumberCounter)
         return eventNumberCounter
@@ -150,7 +150,7 @@ struct AssuranceEvent: Codable {
 
     public var description: String {
         // swiftformat:disable indent
-        return "\n[\n" +
+        "\n[\n" +
             "  id: \(eventID)\n" +
             "  type: \(type)\n" +
             "  vendor: \(vendor)\n" +
@@ -160,5 +160,4 @@ struct AssuranceEvent: Codable {
             "]"
         // swiftformat:enable indent
     }
-
 }

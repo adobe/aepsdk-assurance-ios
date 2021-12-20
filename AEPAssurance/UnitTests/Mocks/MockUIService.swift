@@ -36,6 +36,7 @@ class MockFloatingButton: FloatingButtonPresentable {
         setButtonImageCalled = true
         buttonImageValue = imageData
     }
+
     var setInitialPositionCalled = false
     var initialPositionValue: FloatingButtonPosition?
     func setInitial(position: FloatingButtonPosition) {
@@ -54,7 +55,6 @@ class MockFloatingButton: FloatingButtonPresentable {
     func dismiss() {
         dismissCalled = true
     }
-
 }
 
 class MockUIService: UIService {
@@ -75,7 +75,6 @@ class MockUIService: UIService {
         createFloatingButtonCalled = true
         return floatingButton ?? MockFloatingButton()
     }
-
 }
 
 class MockFullScreenMessage: FullscreenMessage {
@@ -99,26 +98,23 @@ class MockFullScreenMessage: FullscreenMessage {
     override func hide() {
         hideCalled = true
     }
-
 }
 
 class MockMessageMonitor: MessageMonitoring {
     func isMessageDisplayed() -> Bool {
-        return false
+        false
     }
 
-    func displayMessage() {
-    }
+    func displayMessage() {}
 
-    func dismissMessage() {
-    }
+    func dismissMessage() {}
 
-    func show(message: Showable) -> Bool {
-        return true
+    func show(message _: Showable) -> Bool {
+        true
     }
 
     func dismiss() -> Bool {
-        return true
+        true
     }
 }
 

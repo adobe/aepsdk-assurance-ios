@@ -14,12 +14,10 @@
 import Foundation
 
 class MockAssuranceUIUtil: AssuranceUIUtil {
-
     var mockImageData: Data?
     var takeScreenShotCalled = false
-    override func takeScreenshot(_ callback :@escaping (Data?) -> Void) {
+    override func takeScreenshot(_ callback: @escaping (Data?) -> Void) {
         takeScreenShotCalled = true
         callback(mockImageData)
     }
-
 }

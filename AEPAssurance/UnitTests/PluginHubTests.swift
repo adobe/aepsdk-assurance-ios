@@ -16,12 +16,11 @@ import Foundation
 import XCTest
 
 class PluginHubTests: XCTestCase {
-
     let pluginHub = PluginHub()
 
     // sample plugins
-    var pluginTaco = PluginTaco()   // vendor "Food"
-    var pluginBlue = PluginBlue()   // vendor "Color"
+    var pluginTaco = PluginTaco() // vendor "Food"
+    var pluginBlue = PluginBlue() // vendor "Color"
     var pluginGreen = PluginGreen() // vendor "Color"
     var pluginColorWildCard = PluginColorWildCard() // vendor "Color"
 
@@ -135,21 +134,20 @@ class PluginHubTests: XCTestCase {
     // MARK: - Helper properties
 
     private var tacoEvent: AssuranceEvent {
-        return AssuranceEvent(type: "control", payload: ["type": "Taco"], vendor: "Food")
+        AssuranceEvent(type: "control", payload: ["type": "Taco"], vendor: "Food")
     }
 
     private var blueEvent: AssuranceEvent {
-        return AssuranceEvent(type: "control", payload: ["type": "Blue"], vendor: "Color")
+        AssuranceEvent(type: "control", payload: ["type": "Blue"], vendor: "Color")
     }
 
     private var randomTypeEvent: AssuranceEvent {
-        return AssuranceEvent(type: "control", payload: ["type": "random"], vendor: "Color")
+        AssuranceEvent(type: "control", payload: ["type": "random"], vendor: "Color")
     }
 
     private var randomVendorEvent: AssuranceEvent {
-        return AssuranceEvent(type: "control", payload: ["type": "Blue"], vendor: "random")
+        AssuranceEvent(type: "control", payload: ["type": "Blue"], vendor: "random")
     }
-
 }
 
 // MARK: - Sample plugin classes
@@ -159,12 +157,12 @@ class PluginBlue: AssurancePlugin {
     var commandType: String = "Blue"
 
     var isOnRegisterCalled = false
-    func onRegistered(_ session: AssuranceSession) {
+    func onRegistered(_: AssuranceSession) {
         isOnRegisterCalled = true
     }
 
     var eventReceived = false
-    func receiveEvent(_ event: AssuranceEvent) {
+    func receiveEvent(_: AssuranceEvent) {
         eventReceived = true
     }
 
@@ -174,7 +172,7 @@ class PluginBlue: AssurancePlugin {
     }
 
     var isSessionDisconnectCalled = false
-    func onSessionDisconnectedWithCloseCode(_ closeCode: Int) {
+    func onSessionDisconnectedWithCloseCode(_: Int) {
         isSessionDisconnectCalled = true
     }
 
@@ -185,17 +183,16 @@ class PluginBlue: AssurancePlugin {
 }
 
 class PluginGreen: AssurancePlugin {
-
     var vendor: String = "Color"
     var commandType: String = "Green"
 
     var isOnRegisterCalled = false
-    func onRegistered(_ session: AssuranceSession) {
+    func onRegistered(_: AssuranceSession) {
         isOnRegisterCalled = true
     }
 
     var eventReceived = false
-    func receiveEvent(_ event: AssuranceEvent) {
+    func receiveEvent(_: AssuranceEvent) {
         eventReceived = true
     }
 
@@ -205,7 +202,7 @@ class PluginGreen: AssurancePlugin {
     }
 
     var isSessionDisconnectCalled = false
-    func onSessionDisconnectedWithCloseCode(_ closeCode: Int) {
+    func onSessionDisconnectedWithCloseCode(_: Int) {
         isSessionDisconnectCalled = true
     }
 
@@ -217,40 +214,38 @@ class PluginGreen: AssurancePlugin {
 
 // A wildcard plugin listens to all event directed towards the vendor "Color"
 class PluginColorWildCard: AssurancePlugin {
-
     var vendor: String = "Color"
     var commandType: String = "wildcard"
 
     var isOnRegisterCalled = false
-    func onRegistered(_ session: AssuranceSession) {
+    func onRegistered(_: AssuranceSession) {
         isOnRegisterCalled = true
     }
 
     var eventReceived = false
-    func receiveEvent(_ event: AssuranceEvent) {
+    func receiveEvent(_: AssuranceEvent) {
         eventReceived = true
     }
 
     func onSessionConnected() {}
 
-    func onSessionDisconnectedWithCloseCode(_ closeCode: Int) {}
+    func onSessionDisconnectedWithCloseCode(_: Int) {}
 
     func onSessionTerminated() {}
 }
 
 class PluginTaco: AssurancePlugin {
-
     var expectation: XCTestExpectation?
     var vendor: String = "Food"
     var commandType: String = "Taco"
 
     var isOnRegisterCalled = false
-    func onRegistered(_ session: AssuranceSession) {
+    func onRegistered(_: AssuranceSession) {
         isOnRegisterCalled = true
     }
 
     var eventReceived = false
-    func receiveEvent(_ event: AssuranceEvent) {
+    func receiveEvent(_: AssuranceEvent) {
         expectation?.fulfill()
         eventReceived = true
     }
@@ -262,7 +257,7 @@ class PluginTaco: AssurancePlugin {
     }
 
     var isSessionDisconnectCalled = false
-    func onSessionDisconnectedWithCloseCode(_ closeCode: Int) {
+    func onSessionDisconnectedWithCloseCode(_: Int) {
         isSessionDisconnectCalled = true
     }
 

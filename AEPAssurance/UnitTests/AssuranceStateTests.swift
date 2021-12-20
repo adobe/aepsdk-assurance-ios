@@ -16,12 +16,11 @@ import Foundation
 import XCTest
 
 class AssuranceStateTests: XCTestCase {
-
     var assurance: Assurance!
     let runtime = TestableExtensionRuntime()
 
     var mockDataStore: MockDataStore {
-        return ServiceProvider.shared.namedKeyValueService as! MockDataStore
+        ServiceProvider.shared.namedKeyValueService as! MockDataStore
     }
 
     override func setUp() {
@@ -107,9 +106,9 @@ class AssuranceStateTests: XCTestCase {
         XCTAssertTrue(runtime.secondSharedState!.isEmpty)
     }
 
-    //********************************************************************
+    // ********************************************************************
     // Private methods
-    //********************************************************************
+    // ********************************************************************
 
     private func mockClientIDToPersistence(clientID: String) {
         mockDataStore.dict[AssuranceConstants.DataStoreKeys.CLIENT_ID] = clientID
@@ -118,5 +117,4 @@ class AssuranceStateTests: XCTestCase {
     private func mockSessionIDToPersistence(sessionID: String) {
         mockDataStore.dict[AssuranceConstants.DataStoreKeys.SESSION_ID] = sessionID
     }
-
 }

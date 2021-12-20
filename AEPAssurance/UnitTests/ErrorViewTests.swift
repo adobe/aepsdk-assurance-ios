@@ -18,7 +18,6 @@ import WebKit
 import XCTest
 
 class ErrorViewTests: XCTestCase {
-
     let mockUIService = MockUIService()
     let mockMessage = MockFullScreenMessage()
     let mockWebView = MockWebView()

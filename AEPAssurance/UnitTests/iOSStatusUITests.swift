@@ -18,7 +18,6 @@ import WebKit
 import XCTest
 
 class iOSStatusUITests: XCTestCase {
-
     var statusUI: iOSStatusUI!
     var mockSession: MockAssuranceSession!
     var mockAssuranceExtension: MockAssurance!
@@ -208,7 +207,6 @@ class iOSStatusUITests: XCTestCase {
         // verify the
         XCTAssertTrue(mockButton.setButtonImageCalled)
         XCTAssertEqual(Data(bytes: ActiveIcon.content, count: ActiveIcon.content.count), mockButton.buttonImageValue)
-
     }
 
     func test_updateForSocketInactive() throws {

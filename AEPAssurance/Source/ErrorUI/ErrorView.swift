@@ -15,7 +15,6 @@ import Foundation
 import WebKit
 
 class ErrorView: FullscreenMessageDelegate {
-
     var error: AssuranceConnectionError
     var fullscreenMessage: FullscreenPresentable?
     var fullscreenWebView: WKWebView?
@@ -34,7 +33,7 @@ class ErrorView: FullscreenMessageDelegate {
         fullscreenWebView = message.webView as? WKWebView
     }
 
-    func onDismiss(message: FullscreenMessage) {
+    func onDismiss(message _: FullscreenMessage) {
         fullscreenWebView = nil
         fullscreenMessage = nil
     }
@@ -56,7 +55,7 @@ class ErrorView: FullscreenMessageDelegate {
         return true
     }
 
-    func webViewDidFinishInitialLoading(webView: WKWebView) {
+    func webViewDidFinishInitialLoading(webView _: WKWebView) {
         showErrorDialogToUser()
     }
 
@@ -69,5 +68,4 @@ class ErrorView: FullscreenMessageDelegate {
         let jsFunctionCall = String(format: "showError('%@','%@', %d);", error.info.name, error.info.description, false)
         fullscreenWebView?.evaluateJavaScript(jsFunctionCall, completionHandler: nil)
     }
-
 }

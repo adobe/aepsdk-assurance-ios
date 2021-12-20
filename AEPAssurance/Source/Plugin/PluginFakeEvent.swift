@@ -26,13 +26,11 @@ import Foundation
 ///
 /// @see AssuranceConstants.PluginFakeEvent
 struct PluginFakeEvent: AssurancePlugin {
-
     var vendor: String = AssuranceConstants.Vendor.MOBILE
 
     var commandType: String = AssuranceConstants.CommandType.FAKE_EVENT
 
     func receiveEvent(_ event: AssuranceEvent) {
-
         // extract the details of the fake event from the Assurance event's payload
         // 1. Read the event name
         guard let eventName = event.commandFakeEventName else {
@@ -58,32 +56,30 @@ struct PluginFakeEvent: AssurancePlugin {
     }
 
     // no op - protocol methods
-    func onRegistered(_ session: AssuranceSession) {}
+    func onRegistered(_: AssuranceSession) {}
 
     func onSessionConnected() {}
 
-    func onSessionDisconnectedWithCloseCode(_ closeCode: Int) {}
+    func onSessionDisconnectedWithCloseCode(_: Int) {}
 
     func onSessionTerminated() {}
-
 }
 
 /// AssuranceEvent extension to simplify reading of command detail keys for PluginFakeEvent
 private extension AssuranceEvent {
-
     var commandFakeEventName: String? {
-        return commandDetails?[AssuranceConstants.PluginFakeEvent.NAME] as? String
+        commandDetails?[AssuranceConstants.PluginFakeEvent.NAME] as? String
     }
 
     var commandFakeEventType: String? {
-        return commandDetails?[AssuranceConstants.PluginFakeEvent.TYPE] as? String
+        commandDetails?[AssuranceConstants.PluginFakeEvent.TYPE] as? String
     }
 
     var commandFakeEventSource: String? {
-        return commandDetails?[AssuranceConstants.PluginFakeEvent.SOURCE] as? String
+        commandDetails?[AssuranceConstants.PluginFakeEvent.SOURCE] as? String
     }
 
     var commandFakeEventData: [String: Any]? {
-        return commandDetails?[AssuranceConstants.PluginFakeEvent.DATA] as? [String: Any]
+        commandDetails?[AssuranceConstants.PluginFakeEvent.DATA] as? [String: Any]
     }
 }

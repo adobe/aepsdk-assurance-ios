@@ -14,7 +14,6 @@
 import XCTest
 
 class ThreadSafeQueueTests: XCTestCase {
-
     func test_enqueue() throws {
         // setup
         let queue = ThreadSafeQueue<String>(withLimit: 10)
@@ -44,7 +43,7 @@ class ThreadSafeQueueTests: XCTestCase {
     func test_size() throws {
         // setup
         let queue = ThreadSafeQueue<Int>(withLimit: 1000)
-        for number in 1...100 {
+        for number in 1 ... 100 {
             queue.enqueue(newElement: number)
         }
 
@@ -55,7 +54,7 @@ class ThreadSafeQueueTests: XCTestCase {
     func test_clear() throws {
         // setup
         let queue = ThreadSafeQueue<Int>(withLimit: 10)
-        for number in 1...5 {
+        for number in 1 ... 5 {
             queue.enqueue(newElement: number)
         }
 
@@ -68,7 +67,7 @@ class ThreadSafeQueueTests: XCTestCase {
     func test_limit() throws {
         // setup
         let queue = ThreadSafeQueue<Int>(withLimit: 5)
-        for number in 1...15 {
+        for number in 1 ... 15 {
             queue.enqueue(newElement: number)
         }
 
@@ -76,7 +75,7 @@ class ThreadSafeQueueTests: XCTestCase {
         XCTAssertEqual(5, queue.size())
 
         // dequeueing only gets the last entered elements
-        for number in 11...15 {
+        for number in 11 ... 15 {
             XCTAssertEqual(number, queue.dequeue())
         }
     }
@@ -84,8 +83,7 @@ class ThreadSafeQueueTests: XCTestCase {
     func test_threadSafety() throws {
         let queue = ThreadSafeQueue<String>(withLimit: 1000)
         let group = DispatchGroup()
-        for _ in 0...10 {
-
+        for _ in 0 ... 10 {
             // Spawning threads for enqueue task
             group.enter()
             DispatchQueue.global().async {
@@ -127,5 +125,4 @@ class ThreadSafeQueueTests: XCTestCase {
         let result = group.wait(timeout: DispatchTime.now() + 3)
         XCTAssert(result == .success)
     }
-
 }

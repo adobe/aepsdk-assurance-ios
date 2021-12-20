@@ -15,18 +15,15 @@ import Foundation
 import WebKit
 
 extension iOSStatusUI: FullscreenMessageDelegate {
-
     /// Invoked when statusUI fullscreen message is displayed
     /// - Parameters:
     ///     - message: statusUI fullscreen message
-    func onShow(message: FullscreenMessage) {
-    }
+    func onShow(message _: FullscreenMessage) {}
 
     /// Invoked when statusUI fullscreen message is dismissed
     /// - Parameters:
     ///     - message: statusUI fullscreen message
-    func onDismiss(message: FullscreenMessage) {
-    }
+    func onDismiss(message _: FullscreenMessage) {}
 
     /// Invoked when the statusUI fullscreen message is attempting to load a url
     /// - Parameters:
@@ -34,7 +31,7 @@ extension iOSStatusUI: FullscreenMessageDelegate {
     ///     - url:     String the url being loaded by the message
     /// - Returns: True if the core wants to handle the URL (and not the fullscreen message view implementation)
     func overrideUrlLoad(message: FullscreenMessage, url: String?) -> Bool {
-        self.webView = message.webView as? WKWebView
+        webView = message.webView as? WKWebView
         // no operation if we are unable to find the host of the url
         // return true, so force core to handle the URL
         guard let host = URL(string: url ?? "")?.host else {
@@ -63,7 +60,7 @@ extension iOSStatusUI: FullscreenMessageDelegate {
 
     /// Invoked when the fullscreen message finished loading its first content on the webView.
     /// - Parameter webView - the `WKWebView` instance that completed loading its initial content.
-    func webViewDidFinishInitialLoading(webView: WKWebView) {
+    func webViewDidFinishInitialLoading(webView _: WKWebView) {
         updateLogUI()
     }
 

@@ -17,7 +17,7 @@ import Foundation
 class MockPinPad: SessionAuthorizingUI {
     var isDisplayed: Bool
 
-    required init(withExtension: Assurance) {
+    required init(withExtension _: Assurance) {
         isDisplayed = false
     }
 
@@ -48,5 +48,4 @@ class MockPinPad: SessionAuthorizingUI {
         connectionFailedWithErrorCalled = true
         connectionFailedWithErrorValue = error
     }
-
 }

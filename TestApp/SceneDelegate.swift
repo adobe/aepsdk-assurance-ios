@@ -15,10 +15,9 @@ import SwiftUI
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
     var window: UIWindow?
 
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+    func scene(_ scene: UIScene, willConnectTo _: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Create the SwiftUI view that provides the window contents.
         let contentView = ContentView()
 
@@ -36,12 +35,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
 
-    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+    func scene(_: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         // This method is called when the app in background is opened with a deep link.
         // https://developer.apple.com/documentation/uikit/uiscenedelegate/3238059-scene
         if let deepLinkURL = URLContexts.first?.url {
             Assurance.startSession(url: deepLinkURL)
         }
     }
-
 }

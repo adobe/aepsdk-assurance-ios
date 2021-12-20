@@ -28,7 +28,7 @@ class iOSPinCodeScreen: SessionAuthorizingUI {
 
     /// Invoke this during start session to display the pinCode screen.
     func show(callback: @escaping PinCodeCallback) {
-        self.pinCodeCallback = callback
+        pinCodeCallback = callback
         showPincodeScreen()
     }
 

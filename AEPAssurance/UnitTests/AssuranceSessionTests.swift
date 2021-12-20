@@ -17,7 +17,6 @@ import Foundation
 import XCTest
 
 class AssuranceSessionTests: XCTestCase {
-
     let runtime = TestableExtensionRuntime()
     var session: AssuranceSession!
     var assuranceExtension: MockAssurance!
@@ -39,8 +38,7 @@ class AssuranceSessionTests: XCTestCase {
         mockPinPad = MockPinPad(withExtension: assuranceExtension)
     }
 
-    override func tearDown() {
-    }
+    override func tearDown() {}
 
     func test_startSession() throws {
         // setup
@@ -364,19 +362,17 @@ class AssuranceSessionTests: XCTestCase {
         XCTAssertTrue(mockPinPad.connectionFailedWithErrorCalled)
         XCTAssertTrue(mockSocket.connectCalled)
         XCTAssertEqual(sampleSocketURL, mockSocket.connectURL?.absoluteString)
-
     }
 
     private func sampleAssuranceEvent() -> AssuranceEvent {
-        return AssuranceEvent(type: "sampleType", payload: nil)
+        AssuranceEvent(type: "sampleType", payload: nil)
     }
 
     private var tacoEvent: AssuranceEvent {
-        return AssuranceEvent(type: "control", payload: ["type": "Taco"], vendor: "Food")
+        AssuranceEvent(type: "control", payload: ["type": "Taco"], vendor: "Food")
     }
 
     private var startForwardingEvent: AssuranceEvent {
-        return AssuranceEvent(type: "control", payload: ["type": AnyCodable.init(AssuranceConstants.CommandType.START_EVENT_FORWARDING)], vendor: AssuranceConstants.Vendor.MOBILE)
+        AssuranceEvent(type: "control", payload: ["type": AnyCodable(AssuranceConstants.CommandType.START_EVENT_FORWARDING)], vendor: AssuranceConstants.Vendor.MOBILE)
     }
-
 }

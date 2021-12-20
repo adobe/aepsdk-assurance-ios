@@ -18,48 +18,49 @@ extension Event {
 
     /// A boolean value that determines whether event is a sharedState change event (Regular and XDM).
     var isSharedStateEvent: Bool {
-        return type == EventType.hub && source == EventSource.sharedState
+        type == EventType.hub && source == EventSource.sharedState
     }
 
     /// A boolean value that determines whether event is assurance request content event.
     var isAssuranceRequestContent: Bool {
-        return type == AssuranceConstants.SDKEventType.ASSURANCE && source == EventSource.requestContent
+        type == AssuranceConstants.SDKEventType.ASSURANCE && source == EventSource.requestContent
     }
 
     /// A boolean value that determines whether event is a places request content event.
     var isPlacesRequestEvent: Bool {
-        return type == EventType.places && source == EventSource.requestContent
+        type == EventType.places && source == EventSource.requestContent
     }
 
     /// A boolean value that determines whether event is a places response content event.
     var isPlacesResponseEvent: Bool {
-        return type == EventType.places && source == EventSource.responseContent
+        type == EventType.places && source == EventSource.responseContent
     }
 
     /// A boolean value that determines whether event is Places nearby POI request.
     var isRequestNearByPOIEvent: Bool {
-        return name == AssuranceConstants.Places.EventName.REQUEST_NEARBY_POI
+        name == AssuranceConstants.Places.EventName.REQUEST_NEARBY_POI
     }
 
     /// A boolean value that determines whether event is Places request reset.
     var isRequestResetEvent: Bool {
-        return name == AssuranceConstants.Places.EventName.REQUEST_RESET
+        name == AssuranceConstants.Places.EventName.REQUEST_RESET
     }
 
     /// A boolean value that determines whether event is Places region response event. Also called as region entry/exit events.
     var isResponseRegionEvent: Bool {
-        return name == AssuranceConstants.Places.EventName.RESPONSE_REGION_EVENT
+        name == AssuranceConstants.Places.EventName.RESPONSE_REGION_EVENT
     }
 
     /// A boolean value that determines whether event is Places region nearby POI response event.
     var isResponseNearByEvent: Bool {
-        return name == AssuranceConstants.Places.EventName.RESPONSE_NEARBY_POI_EVENT && responseID == nil
+        name == AssuranceConstants.Places.EventName.RESPONSE_NEARBY_POI_EVENT && responseID == nil
     }
 
     // MARK: - EventData values
+
     /// A string representing shared state owner for shared state change events.
     var sharedStateOwner: String? {
-        return data?[AssuranceConstants.EventDataKey.SHARED_STATE_OWNER] as? String
+        data?[AssuranceConstants.EventDataKey.SHARED_STATE_OWNER] as? String
     }
 
     /// A string representing POI count for places nearby POI request events.
@@ -88,7 +89,7 @@ extension Event {
 
     /// A string representing region type (Entry/Exit) for places region events.
     var regionEventType: String {
-        return data?[AssuranceConstants.Places.EventDataKeys.REGION_EVENT_TYPE] as? String ?? "-"
+        data?[AssuranceConstants.Places.EventDataKeys.REGION_EVENT_TYPE] as? String ?? "-"
     }
 
     /// A string representing region name for places region events.
@@ -102,7 +103,6 @@ extension Event {
 
     /// An Array containing dictionary of nearby POI details for a places nearby POI response event.
     var nearByPOIs: [Any] {
-        return data?[AssuranceConstants.Places.EventDataKeys.NEARBY_POI] as? Array ?? []
+        data?[AssuranceConstants.Places.EventDataKeys.NEARBY_POI] as? Array ?? []
     }
-
 }

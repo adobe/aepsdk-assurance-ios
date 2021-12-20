@@ -15,7 +15,6 @@ import AEPServices
 import Foundation
 
 extension Assurance {
-
     /// Call this function to create a new shared state for Assurance
     /// Important - An empty shared state is created if sessionId is not available
     func shareState() {
@@ -46,5 +45,4 @@ extension Assurance {
         shareStateData[AssuranceConstants.SharedStateKeys.INTEGRATION_ID] = sessionId + "|" + clientID
         return shareStateData
     }
-
 }

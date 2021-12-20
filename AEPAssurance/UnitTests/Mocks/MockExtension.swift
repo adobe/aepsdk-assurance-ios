@@ -25,13 +25,11 @@ class MockExtension: Extension {
         self.runtime = runtime
     }
 
-    func onRegistered() {
-    }
+    func onRegistered() {}
 
-    func onUnregistered() {
-    }
+    func onUnregistered() {}
 
     func readyForEvent(_: Event) -> Bool {
-        return true
+        true
     }
 }

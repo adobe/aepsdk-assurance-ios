@@ -17,17 +17,17 @@ class AssuranceSession {
     let RECONNECT_TIMEOUT = 5
     let assuranceExtension: Assurance
     var pinCodeScreen: SessionAuthorizingUI?
-    let outboundQueue: ThreadSafeQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
-    let inboundQueue: ThreadSafeQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
+    let outboundQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
+    let inboundQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
     let inboundSource: DispatchSourceUserDataAdd = DispatchSource.makeUserDataAddSource(queue: DispatchQueue.global(qos: .default))
     let outboundSource: DispatchSourceUserDataAdd = DispatchSource.makeUserDataAddSource(queue: DispatchQueue.global(qos: .default))
-    let pluginHub: PluginHub = PluginHub()
+    let pluginHub = PluginHub()
 
-    lazy var socket: SocketConnectable  = {
-        return WebViewSocket(withDelegate: self)
+    lazy var socket: SocketConnectable = {
+        WebViewSocket(withDelegate: self)
     }()
 
-    lazy var statusUI: iOSStatusUI  = {
+    lazy var statusUI: iOSStatusUI = {
         iOSStatusUI.init(withSession: self)
     }()
 
@@ -64,7 +64,7 @@ class AssuranceSession {
 
         // if there is a socket URL already connected in the previous session, reuse it.
         if let socketURL = assuranceExtension.connectedWebSocketURL {
-            self.statusUI.display()
+            statusUI.display()
             socket.connect(withUrl: URL(string: socketURL)!)
             return
         }
@@ -82,7 +82,7 @@ class AssuranceSession {
         self.pinCodeScreen = pinCodeScreen
 
         // invoke the pinpad screen and create a socketURL with the pincode and other essential parameters
-        pinCodeScreen.show(callback: { [weak self]  socketURL, error in
+        pinCodeScreen.show(callback: { [weak self] socketURL, error in
             if let error = error {
                 self?.handleConnectionError(error: error, closeCode: nil)
                 return
@@ -123,7 +123,7 @@ class AssuranceSession {
         if pinCodeScreen?.isDisplayed == true {
             pinCodeScreen?.connectionFailedWithError(error)
         } else {
-            let errorView = ErrorView.init(AssuranceConnectionError.clientError)
+            let errorView = ErrorView(AssuranceConnectionError.clientError)
             errorView.display()
         }
 
@@ -183,5 +183,4 @@ class AssuranceSession {
         pluginHub.registerPlugin(PluginScreenshot(), toSession: self)
         pluginHub.registerPlugin(PluginLogForwarder(), toSession: self)
     }
-
 }

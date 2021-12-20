@@ -17,7 +17,6 @@ import Foundation
 import XCTest
 
 class AssuranceBlobTests: XCTestCase {
-
     let runtime = TestableExtensionRuntime()
     var assuranceExtension: MockAssurance?
     var mockNetworkService: MockNetworkService!
@@ -50,7 +49,7 @@ class AssuranceBlobTests: XCTestCase {
 
     func test_sendBlob_makesNetworkRequest() throws {
         // test
-        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", callback: {_ in })
+        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", callback: { _ in })
 
         // verify
         XCTAssertTrue(mockNetworkService.connectAsyncCalled)
@@ -65,10 +64,10 @@ class AssuranceBlobTests: XCTestCase {
     func test_sendBlob_WhenUploadSuccess() throws {
         // setup
         let expectation = XCTestExpectation(description: "Send Blob should call the callback with valid blobId")
-        let mockConnection = HttpConnection.init(data: sampleResponse, response: HTTPURLResponse.init(), error: nil)
+        let mockConnection = HttpConnection(data: sampleResponse, response: HTTPURLResponse(), error: nil)
 
         // test
-        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", callback: {blobId in
+        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", callback: { blobId in
             XCTAssertEqual("mockBlobId", blobId)
             expectation.fulfill()
         })
@@ -80,10 +79,10 @@ class AssuranceBlobTests: XCTestCase {
     func test_sendBlob_WhenUploadError() throws {
         // setup
         let expectation = XCTestExpectation(description: "On Error SendBlob should call the callback with nil")
-        let mockConnection = HttpConnection.init(data: errorResponse, response: HTTPURLResponse.init(), error: nil)
+        let mockConnection = HttpConnection(data: errorResponse, response: HTTPURLResponse(), error: nil)
 
         // test
-        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", callback: {blobId in
+        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", callback: { blobId in
             XCTAssertNil(blobId)
             expectation.fulfill()
         })
@@ -95,10 +94,10 @@ class AssuranceBlobTests: XCTestCase {
     func test_sendBlob_WhenInvalidResponse() throws {
         // setup
         let expectation = XCTestExpectation(description: "On Error SendBlob should call the callback with nil")
-        let mockConnection = HttpConnection.init(data: invalidJSON, response: HTTPURLResponse.init(), error: nil)
+        let mockConnection = HttpConnection(data: invalidJSON, response: HTTPURLResponse(), error: nil)
 
         // test
-        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", callback: {blobId in
+        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", callback: { blobId in
             XCTAssertNil(blobId)
             expectation.fulfill()
         })
@@ -111,10 +110,10 @@ class AssuranceBlobTests: XCTestCase {
         // setup
         let expectation = XCTestExpectation(description: "On Error SendBlob should call the callback with nil")
         let errorResponse = HTTPURLResponse(url: URL(string: "https://fakeURL.com")!, statusCode: 404, httpVersion: nil, headerFields: [:])
-        let mockConnection = HttpConnection.init(data: invalidJSON, response: errorResponse, error: nil)
+        let mockConnection = HttpConnection(data: invalidJSON, response: errorResponse, error: nil)
 
         // test
-        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", callback: {blobId in
+        AssuranceBlob.sendBlob(sampleData!, forSession: mockSession, contentType: "png", callback: { blobId in
             XCTAssertNil(blobId)
             expectation.fulfill()
         })

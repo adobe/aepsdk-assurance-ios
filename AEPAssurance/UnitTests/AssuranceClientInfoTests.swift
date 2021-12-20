@@ -15,12 +15,11 @@
 import XCTest
 
 class AssuranceClientInfoTests: XCTestCase {
-
     func test_getClientInfo() throws {
         let clientInfo = AssuranceClientInfo.getData()
 
         // verify client event type
-        XCTAssertEqual( "connect", clientInfo[AssuranceConstants.ClientInfoKeys.TYPE]?.stringValue)
+        XCTAssertEqual("connect", clientInfo[AssuranceConstants.ClientInfoKeys.TYPE]?.stringValue)
 
         // verify extension version
         XCTAssertEqual(AssuranceConstants.EXTENSION_VERSION, clientInfo[AssuranceConstants.ClientInfoKeys.VERSION]?.stringValue)
@@ -41,5 +40,4 @@ class AssuranceClientInfoTests: XCTestCase {
         XCTAssertNotNil(deviceInfo["Low power mode enabled"] as? Bool)
         XCTAssertNotNil(deviceInfo["Location service enabled"] as? Bool)
     }
-
 }

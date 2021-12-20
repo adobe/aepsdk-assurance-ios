@@ -25,21 +25,20 @@ import UIKit
 /// The ` AssuranceBlob` service then responds with the blobID of the uploaded screenshot image. This blobID is then forwarded to the ongoing assurance session.
 /// Failure to upload the screenshot will result in not sending any event to assurance session.
 class PluginScreenshot: AssurancePlugin {
-
     weak var session: AssuranceSession?
     var uiUtil = AssuranceUIUtil()
     var vendor: String = AssuranceConstants.Vendor.MOBILE
     var commandType: String = AssuranceConstants.CommandType.SCREENSHOT
 
     /// this protocol method is called from `PluginHub` to handle screenshot command
-    func receiveEvent(_ event: AssuranceEvent) {
+    func receiveEvent(_: AssuranceEvent) {
         // quick bail, if you cannot read the session instance
         guard let session = self.session else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Unable to get the session instance. Ignoring the screenShot request.")
             return
         }
 
-        uiUtil.takeScreenshot({ imageData in
+        uiUtil.takeScreenshot { imageData in
 
             guard let imageData = imageData else {
                 Log.debug(label: AssuranceConstants.LOG_TAG, "Unable to capture screenshot from the device. Ignoring the screenShot request.")
@@ -54,7 +53,7 @@ class PluginScreenshot: AssurancePlugin {
                     Log.debug(label: AssuranceConstants.LOG_TAG, "Uploading screenshot failed. Ignoring the screenShot request.")
                 }
             })
-        })
+        }
     }
 
     /// protocol method is called from this Plugin is registered with `PluginHub`
@@ -65,8 +64,7 @@ class PluginScreenshot: AssurancePlugin {
     // no op - protocol methods
     func onSessionConnected() {}
 
-    func onSessionDisconnectedWithCloseCode(_ closeCode: Int) {}
+    func onSessionDisconnectedWithCloseCode(_: Int) {}
 
     func onSessionTerminated() {}
-
 }
