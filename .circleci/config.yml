@@ -56,10 +56,6 @@ jobs:
             - ~/.cocoapods
 
       - run:
-          name: Install SwiftLint
-          command: make install-swiftlint
-
-      - run:
           name: Lint Source Code
           command: make lint
 
