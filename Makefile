@@ -16,7 +16,7 @@ IOS_ARCHIVE_DSYM_PATH = $(CURR_DIR)/build/ios.xcarchive/dSYMs/
 setup:
 	(pod install)
 
-setup-tools: install-swiftlint install-githook
+setup-tools: install-githook
 
 pod-repo-update:
 	(pod repo update)
@@ -48,17 +48,14 @@ test:
 	@echo "######################################################################"
 	xcodebuild test -workspace $(PROJECT_NAME).xcworkspace -scheme $(PROJECT_NAME) -destination 'platform=iOS Simulator,name=iPhone 11 Pro' -derivedDataPath build/out -enableCodeCoverage YES
 
-install-swiftlint:
-	HOMEBREW_NO_AUTO_UPDATE=1 brew install swiftlint && brew cleanup swiftlint
-
 install-githook:
 	./tools/git-hooks/setup.sh
 
 lint-autocorrect:
-	(swiftlint autocorrect --format)
+	(./Pods/SwiftLint/swiftlint autocorrect --format)
 
 lint:
-	(swiftlint lint Sources TestApp/)
+	(./Pods/SwiftLint/swiftlint lint Sources TestApp/)
 
 build-test-apps:
 	xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme $(APP_NAME) -destination 'platform=iOS Simulator,name=iPhone 8'

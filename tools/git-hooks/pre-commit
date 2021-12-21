@@ -1,5 +1,5 @@
 #!/bin/bash
-SWIFTLINT=swiftlint
+SWIFTLINT=./Pods/SwiftLint/swiftlint
 CONFIG=.swiftlint.yml
 
 if ! command -v "${SWIFTLINT}" &> /dev/null; then
