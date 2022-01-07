@@ -715,6 +715,7 @@
 				B6407195262C313E00C43183 /* Sources */,
 				B6407196262C313E00C43183 /* Frameworks */,
 				B6407197262C313E00C43183 /* Resources */,
+				7834867D27712D300076DB70 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -919,6 +920,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		7834867D27712D300076DB70 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\ncd ${PROJECT_DIR}\nif which ./Pods/SwiftLint/swiftlint >/dev/null; then\n  ./Pods/SwiftLint/swiftlint\nelse\n  echo \"error: SwiftLint not installed, please run the pod install command from the project root directory.\"\nfi\n";
+		};
 		879463ABBE56BFF38666F31D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1000,7 +1018,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# generate Array<UInt8> representation for PinDialog.html\n# Output file - PinDialog.swift\necho \"enum PinDialogHTML {\" > ${SCRIPT_OUTPUT_FILE_0}\necho \"    static let content : [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\ncat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n\n# generate Array<UInt8> representation StatusInfo.html\n# Output file - StatusInfo.swift\necho \"enum StatusInfoHTML {\" > ${SCRIPT_OUTPUT_FILE_1}\necho \"    static let content : [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_1}\ncat ${SCRIPT_INPUT_FILE_1} |  xxd -i >> ${SCRIPT_OUTPUT_FILE_1}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_1}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_1}\n";
+			shellScript = "#!/bin/sh\n\n# generate Array<UInt8> representation for PinDialog.html\n# Output file - PinDialog.swift\necho \"enum PinDialogHTML {\" > ${SCRIPT_OUTPUT_FILE_0}\necho \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\ncat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n\n# generate Array<UInt8> representation StatusInfo.html\n# Output file - StatusInfo.swift\necho \"enum StatusInfoHTML {\" > ${SCRIPT_OUTPUT_FILE_1}\necho \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_1}\ncat ${SCRIPT_INPUT_FILE_1} |  xxd -i >> ${SCRIPT_OUTPUT_FILE_1}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_1}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_1}\n";
 		};
 		B6FEB899263A13A400F0F240 /* Generate binary representation of Icons */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1022,7 +1040,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# Generate Array<UInt8> representation for active.png\n# Output file - ActiveIcon.swift\necho \"enum ActiveIcon {\" > ${SCRIPT_OUTPUT_FILE_0}\necho \"    static let content : [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\ncat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n\n# Generate Array<UInt8> representation inactive.png\n# Output file - InActiveIcon.swift\necho \"enum InactiveIcon {\" > ${SCRIPT_OUTPUT_FILE_1}\necho \"    static let content : [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_1}\ncat ${SCRIPT_INPUT_FILE_1} |  xxd -i >> ${SCRIPT_OUTPUT_FILE_1}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_1}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_1}\n";
+			shellScript = "#!/bin/sh\n\n# Generate Array<UInt8> representation for active.png\n# Output file - ActiveIcon.swift\necho \"enum ActiveIcon {\" > ${SCRIPT_OUTPUT_FILE_0}\necho \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\ncat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n\n# Generate Array<UInt8> representation inactive.png\n# Output file - InActiveIcon.swift\necho \"enum InactiveIcon {\" > ${SCRIPT_OUTPUT_FILE_1}\necho \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_1}\ncat ${SCRIPT_INPUT_FILE_1} |  xxd -i >> ${SCRIPT_OUTPUT_FILE_1}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_1}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_1}\n";
 		};
 		B6FEB8A4263A171200F0F240 /* Generate binary representation of Javascript files */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1042,7 +1060,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# generate Array<UInt8> representation for SocketScript.js\n# Output file - SocketScript.swift\necho \"enum SocketScript {\" > ${SCRIPT_OUTPUT_FILE_0}\necho \"    static let content : [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\ncat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n";
+			shellScript = "#!/bin/sh\n\n# generate Array<UInt8> representation for SocketScript.js\n# Output file - SocketScript.swift\necho \"enum SocketScript {\" > ${SCRIPT_OUTPUT_FILE_0}\necho \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\ncat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n";
 		};
 		DE0A0E17DF6874976616C93F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
