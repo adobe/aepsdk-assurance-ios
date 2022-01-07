@@ -235,7 +235,7 @@ public class Assurance: NSObject, Extension {
                 }
                 assuranceSession?.addClientLog("\t  \(poiDictionary["regionname"] as? String ?? "Unknown")", visibility: .high)
             }
-            assuranceSession?.addClientLog("Places - Found \(nearByPOIs.count) nearby POIs\(nearByPOIs.count > 0 ? " :" : ".")", visibility: .high)
+            assuranceSession?.addClientLog("Places - Found \(nearByPOIs.count) nearby POIs\(!nearByPOIs.isEmpty ? " :" : ".")", visibility: .high)
         }
     }
 

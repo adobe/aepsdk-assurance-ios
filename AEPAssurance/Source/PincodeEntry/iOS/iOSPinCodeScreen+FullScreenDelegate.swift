@@ -73,7 +73,7 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
                 return false
             }
 
-            //wss://connect%@.griffon.adobe.com/client/v1?sessionId=%@&token=%@&orgId=%@&clientId=%@
+            // wss://connect%@.griffon.adobe.com/client/v1?sessionId=%@&token=%@&orgId=%@&clientId=%@
             let socketURL = String(format: AssuranceConstants.BASE_SOCKET_URL,
                                    assuranceExtension.environment.urlFormat,
                                    sessionId,

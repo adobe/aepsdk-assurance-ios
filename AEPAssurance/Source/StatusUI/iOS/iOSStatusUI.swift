@@ -35,7 +35,7 @@ class iOSStatusUI {
         }
 
         if fullScreenMessage == nil {
-            self.fullScreenMessage = ServiceProvider.shared.uiService.createFullscreenMessage(payload: String(bytes: StatusInfoHTML.content, encoding: .utf8)!, listener: self, isLocalImageUsed: false)
+            self.fullScreenMessage = ServiceProvider.shared.uiService.createFullscreenMessage(payload: String(bytes: StatusInfoHTML.content, encoding: .utf8) ?? "", listener: self, isLocalImageUsed: false)
         }
 
         floatingButton = ServiceProvider.shared.uiService.createFloatingButton(listener: self)
