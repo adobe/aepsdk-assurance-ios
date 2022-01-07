@@ -65,7 +65,11 @@ class AssuranceSession {
         // if there is a socket URL already connected in the previous session, reuse it.
         if let socketURL = assuranceExtension.connectedWebSocketURL {
             self.statusUI.display()
-            socket.connect(withUrl: URL(string: socketURL)!)
+            guard let url = URL(string: socketURL) else {
+                Log.warning(label: AssuranceConstants.LOG_TAG, "Invalid socket url. Ignoring to start new session.")
+                return
+            }
+            socket.connect(withUrl: url)
             return
         }
 

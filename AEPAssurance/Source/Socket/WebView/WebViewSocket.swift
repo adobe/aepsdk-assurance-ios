@@ -66,7 +66,7 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
             self.webView?.configuration.userContentController.addUserScript(WKUserScript(source: socketJavascript, injectionTime: .atDocumentEnd, forMainFrameOnly: false))
             self.setupCallbacks()
             self.webView?.navigationDelegate = self
-            self.loadNav = self.webView?.loadHTMLString(self.pageContent, baseURL: nil)!
+            self.loadNav = self.webView?.loadHTMLString(self.pageContent, baseURL: nil)
         }
     }
 

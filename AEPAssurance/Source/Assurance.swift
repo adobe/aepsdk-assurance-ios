@@ -232,7 +232,7 @@ public class Assurance: NSObject, Extension {
                 }
                 assuranceSession?.addClientLog("\t  \(poiDictionary["regionname"] as? String ?? "Unknown")", visibility: .high)
             }
-            assuranceSession?.addClientLog("Places - Found \(nearByPOIs.count) nearby POIs\(nearByPOIs.count > 0 ? " :" : ".")", visibility: .high)
+            assuranceSession?.addClientLog("Places - Found \(nearByPOIs.count) nearby POIs\(!nearByPOIs.isEmpty ? " :" : ".")", visibility: .high)
         }
     }
 
@@ -283,7 +283,7 @@ public class Assurance: NSObject, Extension {
     /// Start the shutdown timer in the background queue without blocking the current thread.
     /// If the timer get fired, then it shuts down the assurance extension.
     private func startShutDownTimer() {
-        Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance shutdown timer started. Waiting for 5 seconds to receive assurance session url.");
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance shutdown timer started. Waiting for 5 seconds to receive assurance session url.")
         let queue = DispatchQueue.init(label: "com.adobe.assurance.shutdowntimer", qos: .background)
         timer = createDispatchTimer(queue: queue, block: {
             self.shutDownAssurance()
