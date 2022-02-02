@@ -159,4 +159,15 @@ enum AssuranceConstants {
             static let NEARBY_POI = "nearbypois"
         }
     }
+
+    enum AssuranceEvent {
+        static let SIZE_LIMIT = 32 * 1024 // 32KB
+
+        enum MetadataKey {
+            static let CHUNK_ID = "chunkID"
+            static let CHUNK_SEQUENCE = "chunkSequenceNumber"
+            static let CHUNK_TOTAL = "chunkTotal"
+        }
+    }
+
 }

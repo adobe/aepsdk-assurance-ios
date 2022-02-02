@@ -18,6 +18,7 @@ import XCTest
 class AssuranceEventTests: XCTestCase {
 
     private let SAMPLE_PAYLOAD: [String: AnyCodable] = ["payloadkey": "value"]
+    private let SAMPLE_METADATA: [String: AnyCodable] = ["metadatakey": "value"]
     private let SAMPLE_TIMESTAMP: Date = Date()
 
     /*--------------------------------------------------
@@ -68,6 +69,19 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertEqual(SAMPLE_PAYLOAD, event.payload, "Inaccurate event payload")
         XCTAssertEqual(AssuranceConstants.Vendor.SDK, event.vendor, "Inaccurate event vendor")
         XCTAssertEqual(SAMPLE_TIMESTAMP, event.timestamp, "Inaccurate event timestamp")
+        XCTAssertNil(event.metadata, "Metadata should be nil")
+    }
+    
+    func test_init_withMetaData() throws {
+        let event = AssuranceEvent(type: "generic", payload: SAMPLE_PAYLOAD, timestamp: SAMPLE_TIMESTAMP, metadata: SAMPLE_METADATA)
+        
+        // verify
+        XCTAssertNotNil(event.eventID, "A random eventID should be generated")
+        XCTAssertEqual("generic", event.type, "Inaccurate event type")
+        XCTAssertEqual(SAMPLE_PAYLOAD, event.payload, "Inaccurate event payload")
+        XCTAssertEqual(AssuranceConstants.Vendor.MOBILE, event.vendor, "Inaccurate event vendor")
+        XCTAssertEqual(SAMPLE_TIMESTAMP, event.timestamp, "Inaccurate event timestamp")
+        XCTAssertEqual(SAMPLE_METADATA, event.metadata, "Inaccurate metadata")
     }
 
     func test_init_withNilAndEmptyPayload() throws {
@@ -111,7 +125,10 @@ class AssuranceEventTests: XCTestCase {
                         "levelOneKey": {
                           "levelTwoKey": "levelTwoValue"
                         }
-                      }
+                      },
+                      "metadata": {
+                        "chunkNumber" : "20"
+                     }
                     }
                    """.data(using: .utf8)!
 
@@ -125,7 +142,9 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertEqual("someType", event.type, "Inaccurate type")
         XCTAssertEqual(113435556, (event.timestamp?.timeIntervalSince1970 ?? -1) * 1000, accuracy: 1, "Inaccurate timestamp")
         let payloadValue = event.payload?["levelOneKey"]?.dictionaryValue!["levelTwoKey"]
+        let metadataValue = event.metadata?["chunkNumber"]
         XCTAssertEqual("levelTwoValue", payloadValue as! String)
+        XCTAssertEqual("20", metadataValue?.stringValue)
     }
 
     func test_initFromJSONData_withoutPayload() throws {

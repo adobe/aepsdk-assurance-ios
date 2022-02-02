@@ -44,11 +44,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             Assurance.startSession(url: deepLinkURL)
         }
     }
-    
-    func sceneWillEnterForeground(_ scene:UIScene) {
+
+    func sceneWillEnterForeground(_ scene: UIScene) {
         MobileCore.lifecycleStart(additionalContextData: nil)
     }
-    
+
     func sceneDidEnterBackground(_ scene: UIScene) {
         MobileCore.lifecyclePause()
     }

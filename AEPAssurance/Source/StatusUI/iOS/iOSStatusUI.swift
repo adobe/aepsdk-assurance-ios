@@ -65,7 +65,7 @@ class iOSStatusUI {
     /// Updates Assurance Status UI to denote socket connection is currently inactive.
     ///
     func updateForSocketInActive() {
-        addClientLog("Assurance disconnected. Attempting to reconnect..", visibility: .low)
+        addClientLog("Attempting to reconnect..", visibility: .low)
         floatingButton?.setButtonImage(imageData: Data(bytes: InactiveIcon.content, count: InactiveIcon.content.count))
     }
 
