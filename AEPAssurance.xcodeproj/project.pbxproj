@@ -28,6 +28,9 @@
 		B603F9FF27A9EC7D0033416B /* 20KBString.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603F9FE27A9EC7D0033416B /* 20KBString.txt */; };
 		B603FA0027A9EC8B0033416B /* 100KBString.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603F9FC27A9EBBC0033416B /* 100KBString.txt */; };
 		B603FA0427A9F51B0033416B /* 40KBString.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603FA0327A9F51B0033416B /* 40KBString.txt */; };
+		B603FA0927AB1D270033416B /* htmlSample.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603FA0827AB1D270033416B /* htmlSample.txt */; };
+		B603FA0B27AB1EBA0033416B /* 30KB_And_1CharacterString.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603FA0A27AB1EBA0033416B /* 30KB_And_1CharacterString.txt */; };
+		B603FA0D27AB285A0033416B /* 30KBString.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603FA0C27AB285A0033416B /* 30KBString.txt */; };
 		B60BAC0C26434ED90054CD21 /* AssuranceConnectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60BAC0B26434ED90054CD21 /* AssuranceConnectionError.swift */; };
 		B63ADA8C266F700C00A1281A /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADA8B266F700C00A1281A /* ErrorView.swift */; };
 		B63ADA8E266F718900A1281A /* ErrorViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADA8D266F718900A1281A /* ErrorViewTests.swift */; };
@@ -198,6 +201,9 @@
 		B603F9FC27A9EBBC0033416B /* 100KBString.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 100KBString.txt; sourceTree = "<group>"; };
 		B603F9FE27A9EC7D0033416B /* 20KBString.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 20KBString.txt; sourceTree = "<group>"; };
 		B603FA0327A9F51B0033416B /* 40KBString.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 40KBString.txt; sourceTree = "<group>"; };
+		B603FA0827AB1D270033416B /* htmlSample.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = htmlSample.txt; sourceTree = "<group>"; };
+		B603FA0A27AB1EBA0033416B /* 30KB_And_1CharacterString.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 30KB_And_1CharacterString.txt; sourceTree = "<group>"; };
+		B603FA0C27AB285A0033416B /* 30KBString.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 30KBString.txt; sourceTree = "<group>"; };
 		B60BAC0B26434ED90054CD21 /* AssuranceConnectionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceConnectionError.swift; sourceTree = "<group>"; };
 		B63ADA8B266F700C00A1281A /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		B63ADA8D266F718900A1281A /* ErrorViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewTests.swift; sourceTree = "<group>"; };
@@ -364,9 +370,12 @@
 		B603F9FB27A9EB620033416B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B603FA0C27AB285A0033416B /* 30KBString.txt */,
+				B603FA0827AB1D270033416B /* htmlSample.txt */,
 				B603FA0327A9F51B0033416B /* 40KBString.txt */,
 				B603F9FC27A9EBBC0033416B /* 100KBString.txt */,
 				B603F9FE27A9EC7D0033416B /* 20KBString.txt */,
+				B603FA0A27AB1EBA0033416B /* 30KB_And_1CharacterString.txt */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -873,9 +882,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B603FA0B27AB1EBA0033416B /* 30KB_And_1CharacterString.txt in Resources */,
+				B603FA0D27AB285A0033416B /* 30KBString.txt in Resources */,
 				B603FA0027A9EC8B0033416B /* 100KBString.txt in Resources */,
 				B603F9FF27A9EC7D0033416B /* 20KBString.txt in Resources */,
 				B603FA0427A9F51B0033416B /* 40KBString.txt in Resources */,
+				B603FA0927AB1D270033416B /* htmlSample.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -46,6 +46,31 @@ class AssuranceEventChunkerTests: XCTestCase {
         // verify
         XCTAssertEqual(1, chunkedEvents.count)
     }
+
+    
+    func test_chunk_onExact30KBPayload() throws {
+        // prepare
+        let bigString = readStringFromFile(fileName: "30KBString")
+        let event = AssuranceEvent(type: "type", payload: ["largeEvent" : AnyCodable.init(bigString)])
+        
+        // test
+        let chunkedEvents = chunker.chunk(event)
+        
+        // verify
+        XCTAssertEqual(1, chunkedEvents.count)
+    }
+    
+    func test_chunk_on30KBAnd1CharacterPayload() throws {
+        // prepare
+        let bigString = readStringFromFile(fileName: "30KB_And_1CharacterString")
+        let event = AssuranceEvent(type: "type", payload: ["largeEvent" : AnyCodable.init(bigString)])
+        
+        // test
+        let chunkedEvents = chunker.chunk(event)
+        
+        // verify
+        XCTAssertEqual(2, chunkedEvents.count)
+    }
     
     func test_chunk_on40KBPayload() throws {
         // prepare
@@ -101,6 +126,27 @@ class AssuranceEventChunkerTests: XCTestCase {
         
         // verify
         XCTAssertEqual(4, chunkedEvents.count)
+    }
+    
+    // This HTML sample file is approximately 40KB in size
+    func test_chunk_htmlData() throws {
+        // prepare
+        let htmlText = readStringFromFile(fileName: "htmlSample")
+        let eventPayload = ["htmlMessage" : AnyCodable.init(htmlText)]
+        let event = AssuranceEvent(type: "type", payload: eventPayload)
+        
+        // test
+        let chunkedEvents = chunker.chunk(event)
+        
+        // verify
+        XCTAssertEqual(2, chunkedEvents.count)
+        
+        // verify chunk Data
+        let firstChunkedEvent = chunkedEvents[0]
+        let secondChunkedEvent = chunkedEvents[1]
+        let mergedChunkString = firstChunkedEvent.payload!["chunkData"]!.stringValue!  + secondChunkedEvent.payload!["chunkData"]!.stringValue!
+        let payloadString = AnyCodable.toAnyDictionary(dictionary: eventPayload)?.jsonString
+        XCTAssertEqual(payloadString, mergedChunkString)
     }
     
     private func readStringFromFile(fileName: String) -> String {
