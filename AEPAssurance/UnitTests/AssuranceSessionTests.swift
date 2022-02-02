@@ -353,7 +353,7 @@ class AssuranceSessionTests: XCTestCase {
         session.pinCodeScreen = mockPinPad
 
         // test
-        session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.DELETED_SESSSION, "", true)
+        session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.DELETED_SESSION, "", true)
 
         // verify
         XCTAssertTrue(mockStatusUI.removeCalled)

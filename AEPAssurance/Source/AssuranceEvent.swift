@@ -21,6 +21,7 @@ struct AssuranceEvent: Codable {
     var payload: [String: AnyCodable]?
     var eventNumber: Int32?
     var timestamp: Date?
+    var metadata: [String: AnyCodable]?
 
     /// Decodes a JSON data into a `AssuranceEvent`
     ///
@@ -91,12 +92,13 @@ struct AssuranceEvent: Codable {
     ///   - payload: A dictionary representing the payload to be sent wrapped in the event. This will be serialized into JSON in the transportation process
     ///   - timestamp: optional argument representing the time original event was created. If not provided current time is taken
     ///   - vendor: vendor for the created `AssuranceEvent` defaults to "com.adobe.griffon.mobile".
-    init(type: String, payload: [String: AnyCodable]?, timestamp: Date = Date(), vendor: String = AssuranceConstants.Vendor.MOBILE) {
+    init(type: String, payload: [String: AnyCodable]?, timestamp: Date = Date(), vendor: String = AssuranceConstants.Vendor.MOBILE, metadata: [String: AnyCodable]? = nil) {
         self.type = type
         self.payload = payload
         self.timestamp = timestamp
         self.vendor = vendor
         self.eventNumber = AssuranceEvent.generateEventNumber()
+        self.metadata = metadata
     }
 
     /// Returns the type of the command. Applies only for command events. This method returns nil for all other `AssuranceEvent`s.
@@ -157,8 +159,15 @@ struct AssuranceEvent: Codable {
             "  payload: \(PrettyDictionary.prettify(payload))\n" +
             "  eventNumber: \(String(describing: eventNumber))\n" +
             "  timestamp: \(String(describing: timestamp?.description))\n" +
+            "  metadata: \(PrettyDictionary.prettify(metadata))\n" +
             "]"
         // swiftformat:enable indent
+    }
+
+    var jsonData: Data {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .millisecondsSince1970
+        return (try? encoder.encode(self)) ?? Data()
     }
 
 }

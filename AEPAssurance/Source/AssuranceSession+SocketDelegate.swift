@@ -68,7 +68,7 @@ extension AssuranceSession: SocketDelegate {
         // Deleted Session : Close code 4903
         // Happens when the client connects to a deleted session.
         // This is a non-retry error. Display the error back to user and close the connection.
-        case AssuranceConstants.SocketCloseCode.DELETED_SESSSION:
+        case AssuranceConstants.SocketCloseCode.DELETED_SESSION:
             handleConnectionError(error: AssuranceConnectionError.deletedSession, closeCode: closeCode)
             break
 

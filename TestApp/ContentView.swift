@@ -30,6 +30,7 @@ struct ContentView: View {
             PlacesCard()
 
         }
+        .onAppear { MobileCore.track(state: "Home", data: nil) }
     }
 }
 

@@ -18,6 +18,7 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
 
     var delegate: SocketDelegate
     var socketURL: URL?
+    let eventChunker = AssuranceEventChunker()
 
     /// variable tracking the current socket status
     var socketState: SocketState = .unknown {
@@ -52,8 +53,8 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     required init(withDelegate delegate: SocketDelegate) {
         self.delegate = delegate
         super.init()
-        // read the webSocket javascript from the built resources
 
+        // read the webSocket javascript from the built resources
         guard let socketJavascript = String(bytes: SocketScript.content, encoding: .utf8) else {
             Log.warning(label: AssuranceConstants.LOG_TAG, "Unable to load javascript string for webView socket connection.")
             return
@@ -116,17 +117,17 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     /// - Parameters :
     ///     - event : the event to be sent to Assurance session
     func sendEvent(_ event: AssuranceEvent) {
-        socketQueue.async {
-            let encoder = JSONEncoder()
-            encoder.dateEncodingStrategy = .millisecondsSince1970
-            let jsonData = (try? encoder.encode(event)) ?? Data()
-            let dataString = jsonData.base64EncodedString(options: .endLineWithLineFeed)
-            let jsCommand = String(format: "sendData(\"%@\");", dataString)
-            self.runJavascriptCommand(jsCommand, { error in
-                if error != nil {
-                    Log.debug(label: AssuranceConstants.LOG_TAG, "An error occurred while sending data - \(String(describing: error?.localizedDescription))")
+        socketQueue.async { [self] in
+            let jsonData = event.jsonData
+            if jsonData.count < AssuranceConstants.AssuranceEvent.SIZE_LIMIT {
+                self.sendDataOverSocket(jsonData)
+            } else {
+                let chunkedEvents = self.eventChunker.chunk(event)
+                for eachEvent in chunkedEvents {
+                    let jsonData = eachEvent.jsonData
+                    self.sendDataOverSocket(jsonData)
                 }
-            })
+            }
         }
     }
 
@@ -201,6 +202,21 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
             self.delegate.webSocket(self, didReceiveEvent: receivedEvent)
         })
 
+    }
+
+    /// Call this method to send the data through the  established socket connection
+    /// Before calling this method, make sure the data size is within the limit of an assurance socket (32MB).
+    /// Failing to do so will result in socket disconnection with error code 1009
+    /// - Parameters :
+    ///     - jsonData : the encoded data to be sent over socket
+    private func sendDataOverSocket(_ jsonData: Data) {
+        let dataString = jsonData.base64EncodedString(options: .endLineWithLineFeed)
+        let jsCommand = String(format: "sendData(\"%@\");", dataString)
+        self.runJavascriptCommand(jsCommand, { error in
+            if error != nil {
+                Log.debug(label: AssuranceConstants.LOG_TAG, "An error occurred while sending data - \(String(describing: error?.localizedDescription))")
+            }
+        })
     }
 
     /// Helper method configure socket event handlers.

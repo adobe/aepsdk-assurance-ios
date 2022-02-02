@@ -12,6 +12,7 @@
 
 #import "SceneDelegate.h"
 @import AEPAssurance;
+@import AEPCore;
 
 @interface SceneDelegate ()
 
@@ -28,6 +29,14 @@
 
 - (void)scene:(UIScene *)scene openURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts {
     [AEPMobileAssurance startSessionWithUrl:URLContexts.allObjects.firstObject.URL];
+}
+
+- (void)sceneDidEnterBackground:(UIScene *)scene {
+    [AEPMobileCore lifecyclePause];
+}
+
+- (void)sceneWillEnterForeground:(UIScene *)scene {
+    [AEPMobileCore lifecycleStart:nil];
 }
 
 @end
