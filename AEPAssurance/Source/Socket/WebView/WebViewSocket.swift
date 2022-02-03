@@ -119,12 +119,16 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     func sendEvent(_ event: AssuranceEvent) {
         socketQueue.async { [self] in
             let jsonData = event.jsonData
+            print("Peaks------  Original Event Size: \(jsonData.count)")
+
+            // Chunk the event if it exceeds the size limit
             if jsonData.count < AssuranceConstants.AssuranceEvent.SIZE_LIMIT {
                 self.sendDataOverSocket(jsonData)
             } else {
                 let chunkedEvents = self.eventChunker.chunk(event)
                 for eachEvent in chunkedEvents {
                     let jsonData = eachEvent.jsonData
+                    print("Peaks------  Chunked Event Size: \(jsonData.count)")
                     self.sendDataOverSocket(jsonData)
                 }
             }

@@ -29,7 +29,8 @@ class AssuranceEventChunkerTests: XCTestCase {
         let chunkedEvents = chunker.chunk(noPayloadEvent)
         
         // verify
-        XCTAssertEqual(0, chunkedEvents.count)
+        XCTAssertEqual(1, chunkedEvents.count)
+        XCTAssertEqual(noPayloadEvent.eventID, chunkedEvents[0].eventID)
     }
     
     // This test case wont be a real scenario within Assurance SDK.

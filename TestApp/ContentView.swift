@@ -54,7 +54,7 @@ struct YellowButtonStyle: ButtonStyle {
 }
 
 struct AssuranceCard: View {
-    @State private var assuranceURL: String = ""
+    @State private var assuranceURL: String = "assurance://?adb_validation_sessionid=b2a59c60-2efa-41c1-86bf-0794b8f7c95a&env=dev"
     var body: some View {
         VStack {
             HStack {
@@ -125,7 +125,7 @@ struct AnalyticsCard: View {
             }
             HStack {
                 Button(action: {
-                    MobileCore.track(state: "Car Purchased", data: nil)
+                    MobileCore.dispatch(event: Event(name: "Event 2", type: "type", source: "source", data: BIG_DATA))
                 }, label: {
                     Text("Track Action")
                 }).buttonStyle(YellowButtonStyle()).padding()
@@ -206,3 +206,1493 @@ struct PlacesCard: View {
         }
     }
 }
+
+let BIG_DATA: Dictionary = ["one": """
+<!DOCTYPE html>
+<html>
+<head>
+<title>this is where the page title would go!</title>
+<style>
+body {
+  background-color: #000000;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: white;
+}
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>h1 {
+  font-size: 2em;
+}
+a:hover {
+  color: #cccccc;
+}
+p {
+  color: blue;
+}
+.redtext {
+  color: red;
+}
+p.redtext {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>a header!</h1>
+<p>this is just a paragraph on the page</p>
+<p class="redtext">this is just another paragraph on the page</p>
+<p>a third paragraph <a href="http://adobe.com">with a link!</a></p>
+<p>Here is a quote from WWF's website:</p>
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+<p>Here we specify the width and height of an image with the width and height attributes:</p>
+<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6></h6>
+</body>
+</html>
+"""]

@@ -24,7 +24,7 @@ struct AssuranceEventChunker {
     ///  For the AssuranceEvent to completely fit into the maximum allowed socket size, we safely assign
     ///    30KB for payload
     ///    2KB for other fields
-    let CHUNK_SIZE = 30 * 1024 // 30KB
+    let CHUNK_SIZE = (Int) ((30 * 1024) * 0.7) // 30KB
 
     /// Chunks the given `AssuranceEvent` into multiple socket consumable size AssuranceEvents
     ///
@@ -41,7 +41,7 @@ struct AssuranceEventChunker {
         var chunkedEvents: [AssuranceEvent] = []
 
         guard let eventPayload = event.payload else {
-            return chunkedEvents
+            return [event]
         }
 
         /// An unique ID representing this set of chunked events
@@ -51,6 +51,7 @@ struct AssuranceEventChunker {
         encoder.dateEncodingStrategy = .millisecondsSince1970
         let payloadData = (try? encoder.encode(eventPayload)) ?? Data()
         let payloadSize = payloadData.count
+        print("Peaks------  Original Event Payload Size: \(payloadSize)")
 
         /// formula calculate total chunks (rounded up to the nearest integer)
         /// totalChunks = n / d + (n % d == 0 ? 0 : 1)
@@ -67,9 +68,12 @@ struct AssuranceEventChunker {
             }
             let range: Range<Data.Index> = chunkBase..<(chunkBase + diff)
             chunk = payloadData.subdata(in: range)
+            
             let decodedChunkString = String(decoding: chunk, as: UTF8.self)
+            print("Peaks------  Chunked Event Payload Size: \(decodedChunkString.utf8.count)")
+                        
             chunkedEvents.append(AssuranceEvent(type: event.type,
-                                                payload: ["chunkData": AnyCodable.init(decodedChunkString)],
+                                                payload: [AssuranceConstants.AssuranceEvent.PayloadKey.CHUNK_DATA: AnyCodable.init(decodedChunkString)],
                                                 timestamp: event.timestamp ?? Date(),
                                                 vendor: event.vendor,
                                                 metadata: [ AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_ID: AnyCodable.init(chunkID),

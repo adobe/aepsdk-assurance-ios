@@ -161,10 +161,14 @@ enum AssuranceConstants {
     }
 
     enum AssuranceEvent {
-        static let SIZE_LIMIT = 32 * 1024 // 32KB
+        static let SIZE_LIMIT = (Int) ((32 * 1024) * 0.7) // 32KB
+        
+        enum PayloadKey {
+            static let CHUNK_DATA = "chunkData"
+        }
 
         enum MetadataKey {
-            static let CHUNK_ID = "chunkID"
+            static let CHUNK_ID = "chunkId"
             static let CHUNK_SEQUENCE = "chunkSequenceNumber"
             static let CHUNK_TOTAL = "chunkTotal"
         }
