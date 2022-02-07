@@ -161,7 +161,9 @@ enum AssuranceConstants {
     }
 
     enum AssuranceEvent {
-        static let SIZE_LIMIT = (Int) ((32 * 1024) * 0.7) // 32KB
+        /// The maximum size of an event that can get through the socket is 32KB.
+        /// The factor 0.75 is introduced to accommodate blowing up of size due to the mandatory base64 encoding of AssuranceEvent before sending through the socket.
+        static let SIZE_LIMIT = (Int) ((32 * 1024) * 0.75)
         
         enum PayloadKey {
             static let CHUNK_DATA = "chunkData"

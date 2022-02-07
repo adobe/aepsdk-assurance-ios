@@ -119,8 +119,6 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     func sendEvent(_ event: AssuranceEvent) {
         socketQueue.async { [self] in
             let jsonData = event.jsonData
-            print("Peaks------  Original Event Size: \(jsonData.count)")
-
             // Chunk the event if it exceeds the size limit
             if jsonData.count < AssuranceConstants.AssuranceEvent.SIZE_LIMIT {
                 self.sendDataOverSocket(jsonData)
@@ -128,7 +126,6 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
                 let chunkedEvents = self.eventChunker.chunk(event)
                 for eachEvent in chunkedEvents {
                     let jsonData = eachEvent.jsonData
-                    print("Peaks------  Chunked Event Size: \(jsonData.count)")
                     self.sendDataOverSocket(jsonData)
                 }
             }
@@ -145,7 +142,7 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     // Called after page is loaded
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if navigation == self.loadNav {
-            Log.trace(label: AssuranceConstants.LOG_TAG, "WKWebView initialization complete with socket connection javascipt.")
+            Log.trace(label: AssuranceConstants.LOG_TAG, "WKWebView initialization complete with socket connection javascript.")
             isWebViewLoaded = true
         }
     }

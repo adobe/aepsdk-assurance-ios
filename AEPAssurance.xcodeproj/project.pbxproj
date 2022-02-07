@@ -26,11 +26,10 @@
 		3FF4F5C8E96A31D0A6E896C4 /* Pods_TestApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96C170474540581D23D5C489 /* Pods_TestApp.framework */; };
 		4A3445E6430F2FDC93CD6A1F /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F7044D49EBAEA4F53647EF2 /* Pods_UnitTests.framework */; };
 		B603F9FF27A9EC7D0033416B /* 20KBString.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603F9FE27A9EC7D0033416B /* 20KBString.txt */; };
-		B603FA0027A9EC8B0033416B /* 100KBString.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603F9FC27A9EBBC0033416B /* 100KBString.txt */; };
 		B603FA0427A9F51B0033416B /* 40KBString.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603FA0327A9F51B0033416B /* 40KBString.txt */; };
 		B603FA0927AB1D270033416B /* htmlSample.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603FA0827AB1D270033416B /* htmlSample.txt */; };
-		B603FA0B27AB1EBA0033416B /* 30KB_And_1CharacterString.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603FA0A27AB1EBA0033416B /* 30KB_And_1CharacterString.txt */; };
-		B603FA0D27AB285A0033416B /* 30KBString.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603FA0C27AB285A0033416B /* 30KBString.txt */; };
+		B603FA0D27AB285A0033416B /* emptylines.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603FA0C27AB285A0033416B /* emptylines.txt */; };
+		B603FA1127AD91A30033416B /* sampleRules.json in Resources */ = {isa = PBXBuildFile; fileRef = B603FA1027AD91A30033416B /* sampleRules.json */; };
 		B60BAC0C26434ED90054CD21 /* AssuranceConnectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60BAC0B26434ED90054CD21 /* AssuranceConnectionError.swift */; };
 		B63ADA8C266F700C00A1281A /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADA8B266F700C00A1281A /* ErrorView.swift */; };
 		B63ADA8E266F718900A1281A /* ErrorViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADA8D266F718900A1281A /* ErrorViewTests.swift */; };
@@ -110,6 +109,9 @@
 		B6D6A03A2660ECBD005042BE /* SocketDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A0352660ECBC005042BE /* SocketDelegate.swift */; };
 		B6D6A03F2660ED4D005042BE /* WebViewSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A03E2660ED4D005042BE /* WebViewSocket.swift */; };
 		B6D6A0412660ED56005042BE /* NativeSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D6A0402660ED56005042BE /* NativeSocket.swift */; };
+		B6DB487A27B1982600166FC4 /* sample.html in Resources */ = {isa = PBXBuildFile; fileRef = B6DB487927B1982600166FC4 /* sample.html */; };
+		B6DB487F27B1D73500166FC4 /* 5KBString.txt in Resources */ = {isa = PBXBuildFile; fileRef = B6DB487B27B1D27E00166FC4 /* 5KBString.txt */; };
+		B6DB488027B1D73900166FC4 /* rules.json in Resources */ = {isa = PBXBuildFile; fileRef = B6DB487D27B1D6FF00166FC4 /* rules.json */; };
 		B6DBD81E26787F5A009EB47E /* AssuranceSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DBD81C26787F23009EB47E /* AssuranceSessionTests.swift */; };
 		B6DBD8202678FB19009EB47E /* MockStatusUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DBD81F2678FB19009EB47E /* MockStatusUI.swift */; };
 		B6DDFAAA268139B7002D2757 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B6DDFAA9268139B7002D2757 /* AppDelegate.m */; };
@@ -198,12 +200,11 @@
 		493D855458BBA67C6F19F468 /* Pods-AEPAssurance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AEPAssurance.release.xcconfig"; path = "Target Support Files/Pods-AEPAssurance/Pods-AEPAssurance.release.xcconfig"; sourceTree = "<group>"; };
 		5ABE4461A8032C0B29C8BCF6 /* Pods-TestAppObjC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppObjC.debug.xcconfig"; path = "Target Support Files/Pods-TestAppObjC/Pods-TestAppObjC.debug.xcconfig"; sourceTree = "<group>"; };
 		96C170474540581D23D5C489 /* Pods_TestApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B603F9FC27A9EBBC0033416B /* 100KBString.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 100KBString.txt; sourceTree = "<group>"; };
 		B603F9FE27A9EC7D0033416B /* 20KBString.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 20KBString.txt; sourceTree = "<group>"; };
 		B603FA0327A9F51B0033416B /* 40KBString.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 40KBString.txt; sourceTree = "<group>"; };
 		B603FA0827AB1D270033416B /* htmlSample.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = htmlSample.txt; sourceTree = "<group>"; };
-		B603FA0A27AB1EBA0033416B /* 30KB_And_1CharacterString.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 30KB_And_1CharacterString.txt; sourceTree = "<group>"; };
-		B603FA0C27AB285A0033416B /* 30KBString.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 30KBString.txt; sourceTree = "<group>"; };
+		B603FA0C27AB285A0033416B /* emptylines.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = emptylines.txt; sourceTree = "<group>"; };
+		B603FA1027AD91A30033416B /* sampleRules.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sampleRules.json; sourceTree = "<group>"; };
 		B60BAC0B26434ED90054CD21 /* AssuranceConnectionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceConnectionError.swift; sourceTree = "<group>"; };
 		B63ADA8B266F700C00A1281A /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		B63ADA8D266F718900A1281A /* ErrorViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewTests.swift; sourceTree = "<group>"; };
@@ -288,6 +289,9 @@
 		B6D6A0352660ECBC005042BE /* SocketDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketDelegate.swift; sourceTree = "<group>"; };
 		B6D6A03E2660ED4D005042BE /* WebViewSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewSocket.swift; sourceTree = "<group>"; };
 		B6D6A0402660ED56005042BE /* NativeSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeSocket.swift; sourceTree = "<group>"; };
+		B6DB487927B1982600166FC4 /* sample.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = sample.html; sourceTree = "<group>"; };
+		B6DB487B27B1D27E00166FC4 /* 5KBString.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 5KBString.txt; sourceTree = "<group>"; };
+		B6DB487D27B1D6FF00166FC4 /* rules.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = rules.json; sourceTree = "<group>"; };
 		B6DBD81C26787F23009EB47E /* AssuranceSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceSessionTests.swift; sourceTree = "<group>"; };
 		B6DBD81F2678FB19009EB47E /* MockStatusUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockStatusUI.swift; sourceTree = "<group>"; };
 		B6DDFAA6268139B7002D2757 /* TestAppObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestAppObjC.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -370,12 +374,12 @@
 		B603F9FB27A9EB620033416B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B603FA0C27AB285A0033416B /* 30KBString.txt */,
+				B6DB487D27B1D6FF00166FC4 /* rules.json */,
+				B6DB487B27B1D27E00166FC4 /* 5KBString.txt */,
+				B603FA0C27AB285A0033416B /* emptylines.txt */,
 				B603FA0827AB1D270033416B /* htmlSample.txt */,
 				B603FA0327A9F51B0033416B /* 40KBString.txt */,
-				B603F9FC27A9EBBC0033416B /* 100KBString.txt */,
 				B603F9FE27A9EC7D0033416B /* 20KBString.txt */,
-				B603FA0A27AB1EBA0033416B /* 30KB_And_1CharacterString.txt */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -507,6 +511,8 @@
 				B64071F1262C8F8D00C43183 /* LaunchScreen.storyboard */,
 				B64071F4262C8F8D00C43183 /* Info.plist */,
 				B64071EE262C8F8D00C43183 /* Preview Content */,
+				B603FA1027AD91A30033416B /* sampleRules.json */,
+				B6DB487927B1982600166FC4 /* sample.html */,
 			);
 			path = TestApp;
 			sourceTree = "<group>";
@@ -882,11 +888,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B603FA0B27AB1EBA0033416B /* 30KB_And_1CharacterString.txt in Resources */,
-				B603FA0D27AB285A0033416B /* 30KBString.txt in Resources */,
-				B603FA0027A9EC8B0033416B /* 100KBString.txt in Resources */,
+				B603FA0D27AB285A0033416B /* emptylines.txt in Resources */,
+				B6DB488027B1D73900166FC4 /* rules.json in Resources */,
 				B603F9FF27A9EC7D0033416B /* 20KBString.txt in Resources */,
 				B603FA0427A9F51B0033416B /* 40KBString.txt in Resources */,
+				B6DB487F27B1D73500166FC4 /* 5KBString.txt in Resources */,
 				B603FA0927AB1D270033416B /* htmlSample.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -896,7 +902,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B64071F3262C8F8D00C43183 /* LaunchScreen.storyboard in Resources */,
+				B603FA1127AD91A30033416B /* sampleRules.json in Resources */,
 				B64071F0262C8F8D00C43183 /* Preview Assets.xcassets in Resources */,
+				B6DB487A27B1982600166FC4 /* sample.html in Resources */,
 				B64071ED262C8F8D00C43183 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1056,7 +1064,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# generate Array<UInt8> representation for PinDialog.html\n# Output file - PinDialog.swift\necho \"enum PinDialogHTML {\" > ${SCRIPT_OUTPUT_FILE_0}\necho \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\ncat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n\n# generate Array<UInt8> representation StatusInfo.html\n# Output file - StatusInfo.swift\necho \"enum StatusInfoHTML {\" > ${SCRIPT_OUTPUT_FILE_1}\necho \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_1}\ncat ${SCRIPT_INPUT_FILE_1} |  xxd -i >> ${SCRIPT_OUTPUT_FILE_1}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_1}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_1}\n";
+			shellScript = "#!/bin/sh\n\n# generate Array<UInt8> representation for PinDialog.html\n# Output file - PinDialog.swift\n#echo \"enum PinDialogHTML {\" > ${SCRIPT_OUTPUT_FILE_0}\n#echo \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\n#cat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\n#echo  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\n#echo \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n\n# generate Array<UInt8> representation StatusInfo.html\n# Output file - StatusInfo.swift\n#echo \"enum StatusInfoHTML {\" > ${SCRIPT_OUTPUT_FILE_1}\n#echo \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_1}\n#cat ${SCRIPT_INPUT_FILE_1} |  xxd -i >> ${SCRIPT_OUTPUT_FILE_1}\n#echo  \"]\" >> ${SCRIPT_OUTPUT_FILE_1}\n#echo \"}\" >> ${SCRIPT_OUTPUT_FILE_1}\n";
 		};
 		B6FEB899263A13A400F0F240 /* Generate binary representation of Icons */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1078,7 +1086,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# Generate Array<UInt8> representation for active.png\n# Output file - ActiveIcon.swift\necho \"enum ActiveIcon {\" > ${SCRIPT_OUTPUT_FILE_0}\necho \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\ncat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n\n# Generate Array<UInt8> representation inactive.png\n# Output file - InActiveIcon.swift\necho \"enum InactiveIcon {\" > ${SCRIPT_OUTPUT_FILE_1}\necho \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_1}\ncat ${SCRIPT_INPUT_FILE_1} |  xxd -i >> ${SCRIPT_OUTPUT_FILE_1}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_1}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_1}\n";
+			shellScript = "#!/bin/sh\n\n# Generate Array<UInt8> representation for active.png\n# Output file - ActiveIcon.swift\n#echo \"enum ActiveIcon {\" > ${SCRIPT_OUTPUT_FILE_0}\n#echo \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\n#cat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\n#echo  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\n#echo \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n\n# Generate Array<UInt8> representation inactive.png\n# Output file - InActiveIcon.swift\n#echo \"enum InactiveIcon {\" > ${SCRIPT_OUTPUT_FILE_1}\n#echo \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_1}\n#cat ${SCRIPT_INPUT_FILE_1} |  xxd -i >> ${SCRIPT_OUTPUT_FILE_1}\n#echo  \"]\" >> ${SCRIPT_OUTPUT_FILE_1}\n#echo \"}\" >> ${SCRIPT_OUTPUT_FILE_1}\n";
 		};
 		B6FEB8A4263A171200F0F240 /* Generate binary representation of Javascript files */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1098,7 +1106,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# generate Array<UInt8> representation for SocketScript.js\n# Output file - SocketScript.swift\necho \"enum SocketScript {\" > ${SCRIPT_OUTPUT_FILE_0}\necho \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\ncat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n";
+			shellScript = "#!/bin/sh\n\n# generate Array<UInt8> representation for SocketScript.js\n# Output file - SocketScript.swift\n#echo \"enum SocketScript {\" > ${SCRIPT_OUTPUT_FILE_0}\n#echo \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\n#cat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\n#echo  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\n#echo \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n";
 		};
 		DE0A0E17DF6874976616C93F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

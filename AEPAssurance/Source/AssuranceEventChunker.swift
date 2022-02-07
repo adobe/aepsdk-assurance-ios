@@ -24,7 +24,13 @@ struct AssuranceEventChunker {
     ///  For the AssuranceEvent to completely fit into the maximum allowed socket size, we safely assign
     ///    30KB for payload
     ///    2KB for other fields
-    let CHUNK_SIZE = (Int) ((30 * 1024) * 0.7) // 30KB
+    ///
+    /// Accounting for escape string bloat factor:
+    ///   After chunking the payload into multiple consumable data size, the chunk's are then recreated into corresponding `AssuranceEvent`'s.
+    /// During this process the chunked payload string is escaped and put inside the `chunkData` field of the resulting `Assurance Event`. This
+    /// escaping of string further increases the size of the chunked Data. To accommodate for unknown bloating factor, the chunk size for each event is reduced to 15KB.
+    /// Additionally the factor 0.75 corresponds to size correction due to base64 Encoding of data before sending them over Websocket.
+    let CHUNK_SIZE = (Int) ((15 * 1024) * 0.75) // 15KB
 
     /// Chunks the given `AssuranceEvent` into multiple socket consumable size AssuranceEvents
     ///
@@ -40,19 +46,19 @@ struct AssuranceEventChunker {
     func chunk(_ event: AssuranceEvent) -> [AssuranceEvent] {
         var chunkedEvents: [AssuranceEvent] = []
 
+        /// Highly unlikely to have an event that needs to be chunked without a payload. If so this is an misbehaving event
+        /// We should discard this event and return an empty array in such cases
         guard let eventPayload = event.payload else {
-            return [event]
+            Log.warning(label: AssuranceConstants.LOG_TAG, "Discarding the Assurance Event that is demanding to be chunked without a payload. \(event.description)")
+            return []
         }
 
         /// An unique ID representing this set of chunked events
         let chunkID = UUID().uuidString
-
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .millisecondsSince1970
         let payloadData = (try? encoder.encode(eventPayload)) ?? Data()
         let payloadSize = payloadData.count
-        print("Peaks------  Original Event Payload Size: \(payloadSize)")
-
         /// formula calculate total chunks (rounded up to the nearest integer)
         /// totalChunks = n / d + (n % d == 0 ? 0 : 1)
         ///  where:
@@ -70,8 +76,6 @@ struct AssuranceEventChunker {
             chunk = payloadData.subdata(in: range)
             
             let decodedChunkString = String(decoding: chunk, as: UTF8.self)
-            print("Peaks------  Chunked Event Payload Size: \(decodedChunkString.utf8.count)")
-                        
             chunkedEvents.append(AssuranceEvent(type: event.type,
                                                 payload: [AssuranceConstants.AssuranceEvent.PayloadKey.CHUNK_DATA: AnyCodable.init(decodedChunkString)],
                                                 timestamp: event.timestamp ?? Date(),
