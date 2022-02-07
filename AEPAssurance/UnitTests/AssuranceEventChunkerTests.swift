@@ -101,7 +101,7 @@ class AssuranceEventChunkerTests: XCTestCase {
 
     
     // This is an extreme case of chunking, when an 8KB empty lines files is loaded.
-    // The Assurance event escapes the empty lines and the string bloats up more than huge size
+    // The Assurance event escapes the empty lines and the string bloats up to more than consumable socket size limit
     // This is then chunked by the chunker into appropriate sizes
     func test_chunk_EmptyLinesText() throws {
         // prepare
