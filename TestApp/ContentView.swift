@@ -228,9 +228,7 @@ struct BigEventsCard: View {
                     let path = Bundle.main.path(forResource: "sampleRules", ofType: "json")
                     let sampleJson = try? String(contentsOfFile: path!, encoding: String.Encoding.utf8)
                     do {
-                        // make sure this JSON is in the format we expect
                         if let json = try JSONSerialization.jsonObject(with: Data(sampleJson!.utf8), options: []) as? [String: Any] {
-                            // try to read out a string array
                             MobileCore.dispatch(event: Event(name: "Huge JSON Event", type: "type", source: "source", data: json))
                         }
                     } catch _ as NSError {}
