@@ -36,7 +36,7 @@ class AssuranceEventChunkerTests: XCTestCase {
     
     // This test case wont be a real scenario within Assurance SDK.
     // As events with payload size less than 24KB (32*0.75) is never passed to EventChunker.
-    // Result of this test case is to make sure that Chunker doesn't break with 5KB payload
+    // Result of this test case is to make sure that Chunker doesn't break with smaller payload
     func test_chunk_on5KBPayload() throws {
         // prepare
         let stringFromFile = readStringFromFile("5KBString")
@@ -98,19 +98,19 @@ class AssuranceEventChunkerTests: XCTestCase {
         let payloadString = AnyCodable.toAnyDictionary(dictionary: originalEventPayload)?.jsonString
         XCTAssertEqual(payloadString, mergedChunkString)
     }
-
     
-    // This is an extreme case of chunking, when an 8KB empty lines files is loaded.
-    // The Assurance event escapes the empty lines and the string bloats up to more than consumable socket size limit
-    // This is then chunked by the chunker into appropriate sizes
+    
+    // This is an extreme case of chunking. When an 8KB empty lines files is loaded,
+    // the chunking process escapes the empty lines and the string bloats up to more than consumable socket size limit
+    // This test case is to examine that if the bloat factor because of double escaping is still within the limits.
     func test_chunk_EmptyLinesText() throws {
         // prepare
         let bigString = readStringFromFile("emptylines")
         let event = AssuranceEvent(type: "type", payload: ["largeEvent" : AnyCodable.init(bigString)])
-
+        
         // test
         let chunkedEvents = chunker.chunk(event)
-
+        
         // verify final event sizes
         XCTAssertEqual(2, chunkedEvents.count)
         XCTAssertLessThan(sizeOf(chunkedEvents[0]), ALLOWED_CHUNK_EVENT_SIZE)
@@ -123,19 +123,19 @@ class AssuranceEventChunkerTests: XCTestCase {
         let htmlText = readStringFromFile("htmlSample")
         let eventPayload = ["htmlMessage" : AnyCodable.init(htmlText)]
         let event = AssuranceEvent(type: "type", payload: eventPayload)
-
+        
         // test
         let chunkedEvents = chunker.chunk(event)
-
+        
         // verify
         XCTAssertEqual(4, chunkedEvents.count)
-
+        
         // verify chunk Data
         let mergedChunkString = chunkedEvents[0].payload!["chunkData"]!.stringValue!  + chunkedEvents[1].payload!["chunkData"]!.stringValue! +
-                                chunkedEvents[2].payload!["chunkData"]!.stringValue!  + chunkedEvents[3].payload!["chunkData"]!.stringValue!
+            chunkedEvents[2].payload!["chunkData"]!.stringValue!  + chunkedEvents[3].payload!["chunkData"]!.stringValue!
         let payloadString = AnyCodable.toAnyDictionary(dictionary: eventPayload)?.jsonString
         XCTAssertEqual(payloadString, mergedChunkString)
-                
+        
         // verify chunk event sizes
         XCTAssertLessThan(sizeOf(chunkedEvents[0]), ALLOWED_CHUNK_EVENT_SIZE)
         XCTAssertLessThan(sizeOf(chunkedEvents[1]), ALLOWED_CHUNK_EVENT_SIZE)
@@ -148,10 +148,10 @@ class AssuranceEventChunkerTests: XCTestCase {
         // prepare
         let eventPayload = readJsonFromFile("rules")
         let event = AssuranceEvent(type: "type", payload: eventPayload)
-
+        
         // test
         let chunkedEvents = chunker.chunk(event)
-
+        
         // verify
         XCTAssertEqual(2, chunkedEvents.count)
         
@@ -159,8 +159,8 @@ class AssuranceEventChunkerTests: XCTestCase {
         XCTAssertLessThan(sizeOf(chunkedEvents[0]), ALLOWED_CHUNK_EVENT_SIZE)
         XCTAssertLessThan(sizeOf(chunkedEvents[1]), ALLOWED_CHUNK_EVENT_SIZE)
     }
-
-
+    
+    
     private func readStringFromFile(_ fileName: String) -> String {
         let bundle = Bundle(for: type(of: self))
         let path = bundle.path(forResource: fileName, ofType: "txt")!
@@ -175,8 +175,9 @@ class AssuranceEventChunkerTests: XCTestCase {
             if let json = try JSONSerialization.jsonObject(with: Data(sampleJson!.utf8), options: []) as? [String: Any] {
                 return ["rules": AnyCodable.init(json)]
             }
-        } catch let error as NSError {
-            return [:]        }
+        } catch _ as NSError {
+            return [:]
+        }
         return [:]
     }
     

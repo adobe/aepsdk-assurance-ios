@@ -74,7 +74,7 @@ struct AssuranceEventChunker {
             }
             let range: Range<Data.Index> = chunkBase..<(chunkBase + diff)
             chunk = payloadData.subdata(in: range)
-            
+
             let decodedChunkString = String(decoding: chunk, as: UTF8.self)
             chunkedEvents.append(AssuranceEvent(type: event.type,
                                                 payload: [AssuranceConstants.AssuranceEvent.PayloadKey.CHUNK_DATA: AnyCodable.init(decodedChunkString)],

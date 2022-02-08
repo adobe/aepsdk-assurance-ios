@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             MobileCore.configureWith(appId: "")
         })
         MobileCore.lifecycleStart(additionalContextData: nil)
-        
+
         MobileCore.updateConfigurationWith(configDict: ["experienceCloud.org": "056F3DD059CB22060A494021@AdobeOrg"])
         return true
     }

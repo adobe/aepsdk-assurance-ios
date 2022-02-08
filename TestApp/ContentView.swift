@@ -125,7 +125,7 @@ struct AnalyticsCard: View {
             }
             HStack {
                 Button(action: {
-                    MobileCore.track(action: "Television Purchased", data: ["Model" : "Sony"])
+                    MobileCore.track(action: "Television Purchased", data: ["Model": "Sony"])
                 }, label: {
                     Text("Track Action")
                 }).buttonStyle(YellowButtonStyle()).padding()
@@ -220,24 +220,20 @@ struct BigEventsCard: View {
                 Button(action: {
                     let path = Bundle.main.path(forResource: "sample", ofType: "html")
                     let sampleHtml = try? String(contentsOfFile: path!, encoding: String.Encoding.utf8)
-                    MobileCore.dispatch(event: Event(name: "Huge HTML Event", type: "type", source: "source", data: ["html" : sampleHtml ?? ""]))
+                    MobileCore.dispatch(event: Event(name: "Huge HTML Event", type: "type", source: "source", data: ["html": sampleHtml ?? ""]))
                 }, label: {
                     Text("Send HTML")
                 }).buttonStyle(YellowButtonStyle()).padding()
                 Button(action: {
                     let path = Bundle.main.path(forResource: "sampleRules", ofType: "json")
                     let sampleJson = try? String(contentsOfFile: path!, encoding: String.Encoding.utf8)
-                    
                     do {
                         // make sure this JSON is in the format we expect
                         if let json = try JSONSerialization.jsonObject(with: Data(sampleJson!.utf8), options: []) as? [String: Any] {
                             // try to read out a string array
                             MobileCore.dispatch(event: Event(name: "Huge JSON Event", type: "type", source: "source", data: json))
-
                         }
-                    } catch let error as NSError {
-                        print("Failed to load: \(error.localizedDescription)")
-                    }
+                    } catch _ as NSError {}
 
                 }, label: {
                     Text("Send huge rules data")
@@ -246,5 +242,3 @@ struct BigEventsCard: View {
         }
     }
 }
-
-
