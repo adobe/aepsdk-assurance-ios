@@ -175,5 +175,9 @@ enum AssuranceConstants {
             static let CHUNK_TOTAL = "chunkTotal"
         }
     }
+    
+    enum QuickConnect {
+        static let SHAKE_NOTIFICATION_KEY = "AdobeAssuranceShakeDetector"
+    }
 
 }
