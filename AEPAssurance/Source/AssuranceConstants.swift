@@ -21,6 +21,7 @@ enum AssuranceConstants {
 
     static let BASE_SOCKET_URL = "wss://connect%@.griffon.adobe.com/client/v1?sessionId=%@&token=%@&orgId=%@&clientId=%@"
     static let SHUTDOWN_TIME = 5
+    static let QUICK_CONNECT_BASE_URL = "https://device.griffon.adobe.com/device/"
 
     enum Deeplink {
         static let SESSIONID_KEY = "adb_validation_sessionid"
@@ -175,9 +176,14 @@ enum AssuranceConstants {
             static let CHUNK_TOTAL = "chunkTotal"
         }
     }
-    
+
     enum QuickConnect {
         static let SHAKE_NOTIFICATION_KEY = "AdobeAssuranceShakeDetector"
+    }
+
+    enum Network {
+        static let CONNECTION_TIMEOUT = TimeInterval(10)
+        static let READ_TIMEOUT = TimeInterval(10)
     }
 
 }

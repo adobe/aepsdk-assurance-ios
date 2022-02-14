@@ -25,6 +25,8 @@
 		337C8C135446B45550172205 /* Pods_TestAppObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FEAA724C29B9FAC154C0556 /* Pods_TestAppObjC.framework */; };
 		3FF4F5C8E96A31D0A6E896C4 /* Pods_TestApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96C170474540581D23D5C489 /* Pods_TestApp.framework */; };
 		4A3445E6430F2FDC93CD6A1F /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F7044D49EBAEA4F53647EF2 /* Pods_UnitTests.framework */; };
+		B601172227BAE3EF006D3968 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B601172127BAE3EF006D3968 /* Connection.swift */; };
+		B601172527BAE4AA006D3968 /* AdobeLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B601172427BAE4AA006D3968 /* AdobeLogo.swift */; };
 		B603F9FF27A9EC7D0033416B /* 20KBString.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603F9FE27A9EC7D0033416B /* 20KBString.txt */; };
 		B603FA0427A9F51B0033416B /* 40KBString.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603FA0327A9F51B0033416B /* 40KBString.txt */; };
 		B603FA0927AB1D270033416B /* htmlSample.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603FA0827AB1D270033416B /* htmlSample.txt */; };
@@ -203,6 +205,10 @@
 		493D855458BBA67C6F19F468 /* Pods-AEPAssurance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AEPAssurance.release.xcconfig"; path = "Target Support Files/Pods-AEPAssurance/Pods-AEPAssurance.release.xcconfig"; sourceTree = "<group>"; };
 		5ABE4461A8032C0B29C8BCF6 /* Pods-TestAppObjC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppObjC.debug.xcconfig"; path = "Target Support Files/Pods-TestAppObjC/Pods-TestAppObjC.debug.xcconfig"; sourceTree = "<group>"; };
 		96C170474540581D23D5C489 /* Pods_TestApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B601171F27BAE193006D3968 /* connection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connection.png; sourceTree = "<group>"; };
+		B601172127BAE3EF006D3968 /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
+		B601172327BAE478006D3968 /* adobelogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adobelogo.png; sourceTree = "<group>"; };
+		B601172427BAE4AA006D3968 /* AdobeLogo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdobeLogo.swift; sourceTree = "<group>"; };
 		B603F9FE27A9EC7D0033416B /* 20KBString.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 20KBString.txt; sourceTree = "<group>"; };
 		B603FA0327A9F51B0033416B /* 40KBString.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 40KBString.txt; sourceTree = "<group>"; };
 		B603FA0827AB1D270033416B /* htmlSample.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = htmlSample.txt; sourceTree = "<group>"; };
@@ -584,6 +590,8 @@
 		B670E67726392FEE000FCB96 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				B601172327BAE478006D3968 /* adobelogo.png */,
+				B601171F27BAE193006D3968 /* connection.png */,
 				B670E67826393277000FCB96 /* active.png */,
 				B670E67926393284000FCB96 /* inactive.png */,
 			);
@@ -712,6 +720,8 @@
 		B6FEB88A263A0F0700F0F240 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				B601172427BAE4AA006D3968 /* AdobeLogo.swift */,
+				B601172127BAE3EF006D3968 /* Connection.swift */,
 				B6FEB8B0263A18F500F0F240 /* ActiveIcon.swift */,
 				B6FEB8AF263A18F500F0F240 /* InactiveIcon.swift */,
 			);
@@ -998,7 +1008,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\ncd ${PROJECT_DIR}\nif which ./Pods/SwiftLint/swiftlint >/dev/null; then\n  ./Pods/SwiftLint/swiftlint\nelse\n  echo \"error: SwiftLint not installed, please run the pod install command from the project root directory.\"\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#cd ${PROJECT_DIR}\n#if which ./Pods/SwiftLint/swiftlint >/dev/null; then\n#  ./Pods/SwiftLint/swiftlint\n#else\n#  echo \"error: SwiftLint not installed, please run the pod install command from the project root directory.\"\n#fi\n";
 		};
 		879463ABBE56BFF38666F31D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1093,6 +1103,8 @@
 			inputPaths = (
 				"$(SRCROOT)/Resources/Icons/active.png",
 				"$(SRCROOT)/Resources/Icons/inactive.png",
+				"$(SRCROOT)/Resources/Icons/connection.png",
+				"$(SRCROOT)/Resources/Icons/adobelogo.png",
 			);
 			name = "Generate binary representation of Icons";
 			outputFileListPaths = (
@@ -1100,10 +1112,12 @@
 			outputPaths = (
 				"$(SRCROOT)/AEPAssurance/Source/BuiltResources/Icons/ActiveIcon.swift",
 				"$(SRCROOT)/AEPAssurance/Source/BuiltResources/Icons/InactiveIcon.swift",
+				"$(SRCROOT)/AEPAssurance/Source/BuiltResources/Icons/Connection.swift",
+				"$(SRCROOT)/AEPAssurance/Source/BuiltResources/Icons/AdobeLogo.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# Generate Array<UInt8> representation for active.png\n# Output file - ActiveIcon.swift\n#echo \"enum ActiveIcon {\" > ${SCRIPT_OUTPUT_FILE_0}\n#echo \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\n#cat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\n#echo  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\n#echo \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n\n# Generate Array<UInt8> representation inactive.png\n# Output file - InActiveIcon.swift\n#echo \"enum InactiveIcon {\" > ${SCRIPT_OUTPUT_FILE_1}\n#echo \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_1}\n#cat ${SCRIPT_INPUT_FILE_1} |  xxd -i >> ${SCRIPT_OUTPUT_FILE_1}\n#echo  \"]\" >> ${SCRIPT_OUTPUT_FILE_1}\n#echo \"}\" >> ${SCRIPT_OUTPUT_FILE_1}\n";
+			shellScript = "#!/bin/sh\n\n# Generate Array<UInt8> representation for active.png\n# Output file - ActiveIcon.swift\n#echo \"enum ActiveIcon {\" > ${SCRIPT_OUTPUT_FILE_0}\n#echo \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\n#cat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\n#echo  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\n#echo \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n\n# Generate Array<UInt8> representation inactive.png\n# Output file - InActiveIcon.swift\n#echo \"enum connectionImage {\" > ${SCRIPT_OUTPUT_FILE_2}\n#echo \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_2}\n#cat ${SCRIPT_INPUT_FILE_2} |  xxd -i >> ${SCRIPT_OUTPUT_FILE_2}\n#echo  \"]\" >> ${SCRIPT_OUTPUT_FILE_2}\n#echo \"}\" >> ${SCRIPT_OUTPUT_FILE_2}\n";
 		};
 		B6FEB8A4263A171200F0F240 /* Generate binary representation of Javascript files */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1172,6 +1186,7 @@
 				B6B23ACE26414C8100EE8153 /* iOSPinCodeScreen+FullScreenDelegate.swift in Sources */,
 				B64071D7262C376A00C43183 /* AssuranceConstants.swift in Sources */,
 				B6D6A027265F9F32005042BE /* AssuranceUIUtil.swift in Sources */,
+				B601172527BAE4AA006D3968 /* AdobeLogo.swift in Sources */,
 				B6CECC652655A8D3000D517F /* ThreadSafeQueue.swift in Sources */,
 				B6D6A015265D8836005042BE /* AssuranceClientInfo.swift in Sources */,
 				B6B055A32681CFE700AF5D1A /* PluginLogForwarder.swift in Sources */,
@@ -1203,6 +1218,7 @@
 				B63ADAB5267262F600A1281A /* iOSStatusUI+FullScreenDelegate.swift in Sources */,
 				B6B0E2D7263C7FAB00EF5E21 /* AssuranceSession.swift in Sources */,
 				B63ADABE26732C8100A1281A /* AssuranceSession+EventHandler.swift in Sources */,
+				B601172227BAE3EF006D3968 /* Connection.swift in Sources */,
 				B64FDF6E264F33EF00D33192 /* AssurancePlugin.swift in Sources */,
 				B6D6A0382660ECBD005042BE /* SocketConnectable.swift in Sources */,
 				B63ADAB12672629700A1281A /* iOSStatusUI.swift in Sources */,

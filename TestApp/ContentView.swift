@@ -30,7 +30,10 @@ struct ContentView: View {
             PlacesCard()
             BigEventsCard()
         }
-        .onAppear { MobileCore.track(state: "Home Screen", data: nil) }
+        .onAppear { MobileCore.track(state: "Home Screen", data: nil)
+            let qc = QuickConnectView()
+            qc.show()
+        }
     }
 }
 
