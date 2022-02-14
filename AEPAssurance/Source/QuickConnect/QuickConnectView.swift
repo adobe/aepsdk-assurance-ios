@@ -15,18 +15,25 @@ import Foundation
 import UIKit
 
 public class QuickConnectView {
+    
     private let HEADER_HEIGHT = 110.0
     private let HEADER_LABEL_HEIGHT = 60.0
+    
     private let DESCRIPTION_TEXTVIEW_TOP_MARGIN = 30.0
     private let DESCRIPTION_TEXTVIEW_HEIGHT = 50.0
     
     private let CONNECTION_IMAGE_TOP_MARGIN = 10.0
     private let CONNECTION_IMAGE_HEIGHT = 70.0
     
+    private let BUTTON_HOLDER_TOP_MARGIN = 20.0
+    private let BUTTON_HOLDER_HEIGHT = 60.0
     
     private let ADOBE_LOGO_IMAGE_BOTTOM_MARGIN = -60.0
     private let ADOBE_LOGO_IMAGE_HEIGHT = 20.0
     
+    private let CANCEL_BUTTON_TOP_MARGIN = 10
+    private let CANCEL_BUTTON_HEIGHT = 40.0
+    private let CANCEL_BUTTON_WIDTH = 100.0
 
     public init() {
     }
@@ -77,7 +84,23 @@ public class QuickConnectView {
             connectionImageView.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: CONNECTION_IMAGE_TOP_MARGIN),
             connectionImageView.heightAnchor.constraint(equalToConstant: CONNECTION_IMAGE_HEIGHT)
         ])
+                    
         
+        baseView.addSubview(buttonHolder)
+        NSLayoutConstraint.activate([
+            buttonHolder.leftAnchor.constraint(equalTo: baseView.leftAnchor),
+            buttonHolder.rightAnchor.constraint(equalTo: baseView.rightAnchor),
+            buttonHolder.topAnchor.constraint(equalTo: connectionImageView.bottomAnchor, constant: BUTTON_HOLDER_TOP_MARGIN),
+            buttonHolder.heightAnchor.constraint(equalToConstant: BUTTON_HOLDER_HEIGHT)
+        ])
+        
+        buttonHolder.addSubview(cancelButton)
+        NSLayoutConstraint.activate([
+            cancelButton.centerYAnchor.constraint(equalTo: buttonHolder.centerYAnchor),
+            cancelButton.heightAnchor.constraint(equalToConstant: CANCEL_BUTTON_HEIGHT),
+            cancelButton.widthAnchor.constraint(equalToConstant: CANCEL_BUTTON_WIDTH),
+            cancelButton.centerXAnchor.constraint(equalTo: buttonHolder.centerXAnchor)
+        ])
         
         baseView.addSubview(adobeLogo)
         NSLayoutConstraint.activate([
@@ -155,10 +178,22 @@ public class QuickConnectView {
         return imageView
     }()
     
+    lazy private var buttonHolder : UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     lazy private var cancelButton : UIButton = {
         let button = UIButton()
         button.contentMode = .scaleAspectFit
+        button.backgroundColor = .clear
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.cornerRadius = 20
+        button.titleLabel?.font = UIFont(name: "Helvetica", size: 14.0)
+        button.setTitle("Cancel", for: .normal)
         button.accessibilityLabel = "AssuranceQuickConnectAdobeLogo"
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
