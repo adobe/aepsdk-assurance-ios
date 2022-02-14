@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         MobileCore.track(state: "Before SDK Init", data: nil)
-        MobileCore.setLogLevel(.trace)
+        MobileCore.setLogLevel(.debug)
         let extensions = [AEPIdentity.Identity.self,
                           Lifecycle.self,
                           Signal.self,
@@ -48,6 +48,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             MobileCore.configureWith(appId: "")
         })
         MobileCore.lifecycleStart(additionalContextData: nil)
+
+        MobileCore.updateConfigurationWith(configDict: ["experienceCloud.org": "056F3DD059CB22060A494021@AdobeOrg"])
         return true
     }
 
