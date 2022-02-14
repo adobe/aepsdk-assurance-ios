@@ -88,7 +88,7 @@ public class Assurance: NSObject, Extension {
         /// and do not turn on the unregister timer
         if connectedWebSocketURL != nil {
             shareState()
-            Log.trace(label: AssuranceConstants.LOG_TAG, "Assurance Session was already connected in previous app launch. Attempting to reconnect. URL : \(connectedWebSocketURL)")
+            Log.trace(label: AssuranceConstants.LOG_TAG, "Assurance Session was already connected during previous app launch. Attempting to reconnect. URL : \(String(describing: connectedWebSocketURL))")
             assuranceSession?.startSession()
             return
         }
