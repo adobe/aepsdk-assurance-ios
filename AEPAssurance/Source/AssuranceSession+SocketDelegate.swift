@@ -30,9 +30,12 @@ extension AssuranceSession: SocketDelegate {
     /// - Parameters:
     ///     - socket: the socket instance.
     ///     - closeCode:An `Int` representing the reason for socket disconnection. Reference : https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
-    ///     - reason: A `String` description for the reason of disconnection
+    ///     - reason: A `String` description for the reason for socket disconnection
     ///     - wasClean: A boolean representing if the connection has been terminated successfully. A false value represents the socket connection can be attempted to reconnected.
     func webSocketDidDisconnect(_ socket: SocketConnectable, _ closeCode: Int, _ reason: String, _ wasClean: Bool) {
+
+        // Adding client log so user knows the reason for disconnection
+        statusUI.addClientLog("Assurance Session disconnected : <br> &emsp; close code: \(closeCode) <br> &emsp; reason: \(reason) <br> &emsp; isClean : \(wasClean) ", visibility: .low)
 
         switch closeCode {
 
@@ -70,7 +73,6 @@ extension AssuranceSession: SocketDelegate {
         // This is a non-retry error. Display the error back to user and close the connection.
         case AssuranceConstants.SocketCloseCode.DELETED_SESSION:
             handleConnectionError(error: AssuranceConnectionError.deletedSession, closeCode: closeCode)
-            break
 
         // Events Limit : Close code 4400
         // This error is generically thrown if the client doesn't adhere to the protocol of the socket connection.

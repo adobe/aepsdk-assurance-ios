@@ -88,7 +88,7 @@ class AssuranceSession {
         // invoke the pinpad screen and create a socketURL with the pincode and other essential parameters
         pinCodeScreen.show(callback: { [weak self]  socketURL, error in
             if let error = error {
-                self?.handleConnectionError(error: error, closeCode: nil)
+                self?.handleConnectionError(error: error, closeCode: -1)
                 return
             }
 
@@ -121,9 +121,13 @@ class AssuranceSession {
         outboundSource.add(data: 1)
     }
 
-    func handleConnectionError(error: AssuranceConnectionError, closeCode: Int?) {
+    /// Handles the Assurance socket connection error by showing the appropriate UI to the user.
+    /// - Parameters:
+    ///   - error: The `AssurancConnectionError` representing the error
+    ///   - closeCode: close code defining the reason for socket closure.
+    func handleConnectionError(error: AssuranceConnectionError, closeCode: Int) {
         // if the pinCode screen is still being displayed. Then use the same webView to display error
-        Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with error :\(error.info.name) \n description : \(error.info.description) \n close code: \(closeCode ?? -1)")
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with error :\(error.info.name) \n description : \(error.info.description) \n close code: \(closeCode)")
         if pinCodeScreen?.isDisplayed == true {
             pinCodeScreen?.connectionFailedWithError(error)
         } else {
@@ -131,9 +135,7 @@ class AssuranceSession {
             errorView.display()
         }
 
-        if let closeCode = closeCode {
-            pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
-        }
+        pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
 
         // since we don't give retry option for these errors and UI will be dismissed anyway, hence notify plugins for onSessionTerminated
         if !error.info.shouldRetry {

@@ -41,11 +41,11 @@ enum AssuranceConnectionError {
             return ("Socket Connection Error",
                     "Unable to form a valid socket URL for connection.", false)
         case .noOrgId:
-            return ("Invalid Launch & SDK Configuration",
-                    "The Experience Cloud Org identifier is unavailable from SDK configuration. Please ensure the Launch mobile property is properly configured.", false)
+            return (" Invalid Mobile SDK Configuration",
+                    "The Experience Cloud organization identifier is unavailable. Ensure SDK configuration is setup correctly. See documentation for more detail.", false)
         case .orgIDMismatch:
             return ("Unauthorized Access",
-                    "The Experience Cloud organization for this Launch Property does not match that of the AEP Assurance session", false)
+                    "The Experience Cloud organization identifier does not match with that of the Assurance session. Ensure the right Experience Cloud organization is being used. See documentation for more detail.", false)
         case .connectionLimit:
             return ("Connection Limit Reached",
                     "You have reached the maximum number of connected device (50) allowed to a session.", false)
