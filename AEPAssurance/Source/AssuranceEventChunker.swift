@@ -44,9 +44,15 @@ struct AssuranceEventChunker {
     ///   2. chunkTotal - The total number of chunks to define the original event
     ///   3. chunkSequenceNumber - Integer Value representing the sequence of chunks. Used to identify the position of a specific chunk. Value ranges from 0 to (chunkTotal - 1)
     ///
-    /// - Parameter event: An `AssuranceEvent` that is over the socket size limit that needs to be chunked
+    /// - Parameter event: An `AssuranceEvent` that needs to be sent over the socket
     /// - Returns: An array of chunked AssuranceEvents
     func chunk(_ event: AssuranceEvent) -> [AssuranceEvent] {
+        let jsonData = event.jsonData
+
+        // send the original event back if the size is within the socket limit
+        if jsonData.count < AssuranceConstants.AssuranceEvent.SIZE_LIMIT {
+            return [event]
+        }
         var chunkedEvents: [AssuranceEvent] = []
 
         /// Highly unlikely to have an event that needs to be chunked without a payload. If so this is an misbehaving event
