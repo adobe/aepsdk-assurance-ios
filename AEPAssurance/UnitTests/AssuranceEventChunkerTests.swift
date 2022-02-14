@@ -20,9 +20,6 @@ class AssuranceEventChunkerTests: XCTestCase {
     
     let chunker = AssuranceEventChunker()
     
-    // This test case wont be a real scenario within Assurance SDK.
-    // As events with no payload is never passed to EventChunker.
-    // Result of this test case is to make sure that Chunker doesn't break with nil payload
     func test_chunk_whenNoPayload() throws {
         // setup
         let noPayloadEvent = AssuranceEvent(type: "type", payload:nil)
@@ -30,13 +27,12 @@ class AssuranceEventChunkerTests: XCTestCase {
         // test
         let chunkedEvents = chunker.chunk(noPayloadEvent)
         
-        // verify
-        XCTAssertEqual(0, chunkedEvents.count)
+        // verify that chunker returns the originalEvent
+        XCTAssertEqual(1, chunkedEvents.count)
+        XCTAssertEqual(noPayloadEvent.eventID, chunkedEvents[0].eventID)
     }
     
-    // This test case wont be a real scenario within Assurance SDK.
-    // As events with payload size less than 24KB (32*0.75) is never passed to EventChunker.
-    // Result of this test case is to make sure that Chunker doesn't break with smaller payload
+
     func test_chunk_on5KBPayload() throws {
         // prepare
         let stringFromFile = readStringFromFile("5KBString")
@@ -49,13 +45,12 @@ class AssuranceEventChunkerTests: XCTestCase {
         // verify
         XCTAssertEqual(1, chunkedEvents.count)
         
-        // verify chunk Data
-        let chunkedString = chunkedEvents[0].payload!["chunkData"]!.stringValue!
-        let payloadString = AnyCodable.toAnyDictionary(dictionary: originalEventPayload)?.jsonString
-        XCTAssertEqual(payloadString, chunkedString)
+        // verify that chunker returns the originalEvent
+        XCTAssertEqual(1, chunkedEvents.count)
+        XCTAssertEqual(originalEvent.eventID, chunkedEvents[0].eventID)
     }
     
-    func test_chunk_on20KBPayload() throws {
+    func test_chunk_on25KBPayload() throws {
         // prepare
         let stringFromFile = readStringFromFile("20KBString")
         let originalEventPayload = ["payloadKey" : AnyCodable.init(stringFromFile)]
@@ -65,7 +60,7 @@ class AssuranceEventChunkerTests: XCTestCase {
         let chunkedEvents = chunker.chunk(originalEvent)
         
         // verify
-        XCTAssertEqual(2, chunkedEvents.count)
+        XCTAssertEqual(3, chunkedEvents.count)
         
         // verify the content of first chunked event
         let firstChunkedEvent = chunkedEvents[0]
@@ -81,40 +76,48 @@ class AssuranceEventChunkerTests: XCTestCase {
         XCTAssertEqual(originalEvent.timestamp, secondChunkedEvent.timestamp)
         XCTAssertNotNil(secondChunkedEvent.eventID)
         
+        // verify the content of second chunked event
+        let thirdChunkedEvent = chunkedEvents[2]
+        XCTAssertEqual(originalEvent.vendor, thirdChunkedEvent.vendor)
+        XCTAssertEqual(originalEvent.type, thirdChunkedEvent.type)
+        XCTAssertEqual(originalEvent.timestamp, thirdChunkedEvent.timestamp)
+        XCTAssertNotNil(thirdChunkedEvent.eventID)
+        
         // verify chunk metadata
         // verify total chunk number
-        XCTAssertEqual(2, secondChunkedEvent.metadata!["chunkTotal"])
-        XCTAssertEqual(2, firstChunkedEvent.metadata!["chunkTotal"])
+        XCTAssertEqual(3, firstChunkedEvent.metadata!["chunkTotal"])
+        XCTAssertEqual(3, secondChunkedEvent.metadata!["chunkTotal"])
+        XCTAssertEqual(3, thirdChunkedEvent.metadata!["chunkTotal"])
         
         // verify if the chunkID's are the same
         XCTAssertEqual(secondChunkedEvent.metadata!["chunkID"], firstChunkedEvent.metadata!["chunkID"])
+        XCTAssertEqual(thirdChunkedEvent.metadata!["chunkID"], firstChunkedEvent.metadata!["chunkID"])
         
         // verify sequence number
         XCTAssertEqual(0 ,firstChunkedEvent.metadata!["chunkSequenceNumber"])
         XCTAssertEqual(1 ,secondChunkedEvent.metadata!["chunkSequenceNumber"])
+        XCTAssertEqual(2 ,thirdChunkedEvent.metadata!["chunkSequenceNumber"])
         
         // verify chunk Data
-        let mergedChunkString = firstChunkedEvent.payload!["chunkData"]!.stringValue!  + secondChunkedEvent.payload!["chunkData"]!.stringValue!
+        let mergedChunkString = firstChunkedEvent.payload!["chunkData"]!.stringValue!  + secondChunkedEvent.payload!["chunkData"]!.stringValue! + thirdChunkedEvent.payload!["chunkData"]!.stringValue!
         let payloadString = AnyCodable.toAnyDictionary(dictionary: originalEventPayload)?.jsonString
         XCTAssertEqual(payloadString, mergedChunkString)
     }
     
     
-    // This is an extreme case of chunking. When an 8KB empty lines files is loaded,
-    // the chunking process escapes the empty lines and the string bloats up to more than consumable socket size limit
-    // This test case is to examine that if the bloat factor because of double escaping is still within the limits.
     func test_chunk_EmptyLinesText() throws {
         // prepare
-        let bigString = readStringFromFile("emptylines")
+        let bigString = readStringFromFile("emptylines") // 14KB of empty lines
         let event = AssuranceEvent(type: "type", payload: ["largeEvent" : AnyCodable.init(bigString)])
         
         // test
         let chunkedEvents = chunker.chunk(event)
         
         // verify final event sizes
-        XCTAssertEqual(2, chunkedEvents.count)
+        XCTAssertEqual(3, chunkedEvents.count)
         XCTAssertLessThan(sizeOf(chunkedEvents[0]), ALLOWED_CHUNK_EVENT_SIZE)
         XCTAssertLessThan(sizeOf(chunkedEvents[1]), ALLOWED_CHUNK_EVENT_SIZE)
+        XCTAssertLessThan(sizeOf(chunkedEvents[2]), ALLOWED_CHUNK_EVENT_SIZE)
     }
     
     // This HTML sample file is approximately 40KB in size
@@ -153,11 +156,12 @@ class AssuranceEventChunkerTests: XCTestCase {
         let chunkedEvents = chunker.chunk(event)
         
         // verify
-        XCTAssertEqual(2, chunkedEvents.count)
+        XCTAssertEqual(3, chunkedEvents.count)
         
         // verify chunk event sizes
         XCTAssertLessThan(sizeOf(chunkedEvents[0]), ALLOWED_CHUNK_EVENT_SIZE)
         XCTAssertLessThan(sizeOf(chunkedEvents[1]), ALLOWED_CHUNK_EVENT_SIZE)
+        XCTAssertLessThan(sizeOf(chunkedEvents[2]), ALLOWED_CHUNK_EVENT_SIZE)
     }
     
     
