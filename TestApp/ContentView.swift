@@ -21,6 +21,7 @@ import SwiftUI
 let HEADING_FONT_SIZE: CGFloat = 25.0
 
 struct ContentView: View {
+
     var body: some View {
         ScrollView(.vertical) {
             AssuranceCard()
@@ -31,8 +32,6 @@ struct ContentView: View {
             BigEventsCard()
         }
         .onAppear { MobileCore.track(state: "Home Screen", data: nil)
-            let qc = QuickConnectView()
-            qc.show()
         }
     }
 }
@@ -57,7 +56,7 @@ struct YellowButtonStyle: ButtonStyle {
 }
 
 struct AssuranceCard: View {
-    @State private var assuranceURL: String = "assurance://?adb_validation_sessionid=72427e07-b526-4645-bf93-7dafb5c8309a&env=dev"
+    @State private var assuranceURL: String = ""
     var body: some View {
         VStack {
             HStack {

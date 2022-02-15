@@ -11,16 +11,16 @@
  */
 
 import Foundation
+import UIKit
 
 class QuickConnectManager {
 
+    private let quickConnectService = QuickConnectService()
+    private lazy var quickConnectView = QuickConnectView(manager: self)
     private let parentExtension: Assurance
-    private let view: QuickConnectView
 
     init(assurance: Assurance) {
         parentExtension = assurance
-        view = QuickConnectView()
-        detectShakeGesture()
     }
 
     func detectShakeGesture() {
@@ -29,13 +29,94 @@ class QuickConnectManager {
                                                name: NSNotification.Name(AssuranceConstants.QuickConnect.SHAKE_NOTIFICATION_KEY),
                                                object: nil)
     }
+    
+    func createDevice() {
+        quickConnectService.registerDevice(clientID: parentExtension.clientID, orgID: parentExtension.getURLEncodedOrgID() ?? "changeme", callback: { result in
+             
+             switch result {
+             case .success(_):
+                 self.quickConnectView.waitingState()
+                 self.checkDeviceStatus()
+                 break
+             case .failure(_):
+                 self.quickConnectView.onFailedDeviceRegistration()
+             }
+             
+         })
+     }
+    
+    func checkDeviceStatus() {
+        
+        guard let orgID = parentExtension.getURLEncodedOrgID() else {
+            // log here
+            return
+        }
+        quickConnectService.getDeviceStatus(clientID: parentExtension.clientID, orgID: orgID, callback: { [self] result in
+            switch result {
+            case .success((let sessionId, let token)):
+                
+                deleteDevice()
+                self.quickConnectView.onSuccessfulApproval()
+                //wss://connect%@.griffon.adobe.com/client/v1?sessionId=%@&token=%@&orgId=%@&clientId=%@
+                let socketURL = String(format: AssuranceConstants.BASE_SOCKET_URL,
+                                       self.parentExtension.environment.urlFormat,
+                                       sessionId,
+                                       token,
+                                       orgID,
+                                       self.parentExtension.clientID)
+
+                guard let url = URL(string: socketURL) else {
+                    return
+                }
+                
+                self.parentExtension.assuranceSession?.connectToSocketWith(url: url)
+                break
+            case .failure(_):
+                self.quickConnectView.onFailedApproval()
+                    //self.registrationUI?.showStatus(status: "API failure to check the device status.")
+                break
+            }
+            
+        })
+    }
+    
+    func deleteDevice() {
+        guard let orgID = parentExtension.getURLEncodedOrgID() else {
+            // log here
+            return
+        }
+        
+        quickConnectService.deleteDevice(clientID: parentExtension.clientID, orgID: orgID, callback: { [self] result in
+        switch result {
+            case .success(_):
+                // log here
+                break
+            case .failure(_):
+                // log here\
+                break
+            }
+        })
+
+    }
+    
 
     @objc private func handleShakeGesture() {
         parentExtension.shouldProcessEvents = true
-        // parentExtension.invalidateTimer()
+        parentExtension.invalidateTimer()
         DispatchQueue.main.async {
-            // self.view?.appear()
+             self.quickConnectView.show()
         }
     }
-
 }
+
+
+#if DEBUG
+extension UIWindow {
+    open override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if(motion == UIEvent.EventSubtype.motionShake) {
+            NotificationCenter.default.post(name: NSNotification.Name(AssuranceConstants.QuickConnect.SHAKE_NOTIFICATION_KEY),
+                                            object: nil)
+        }
+    }
+}
+#endif

@@ -25,19 +25,25 @@ public class QuickConnectView {
     private let CONNECTION_IMAGE_TOP_MARGIN = 10.0
     private let CONNECTION_IMAGE_HEIGHT = 70.0
     
-    private let BUTTON_HOLDER_TOP_MARGIN = 20.0
+    private let BUTTON_HOLDER_TOP_MARGIN = 30.0
     private let BUTTON_HOLDER_HEIGHT = 60.0
     
     private let ADOBE_LOGO_IMAGE_BOTTOM_MARGIN = -60.0
     private let ADOBE_LOGO_IMAGE_HEIGHT = 20.0
     
     private let CANCEL_BUTTON_TOP_MARGIN = 10
-    private let CANCEL_BUTTON_HEIGHT = 40.0
-    private let CANCEL_BUTTON_WIDTH = 100.0
+    private let CANCEL_BUTTON_HEIGHT = 45.0
+    private let BUTTON_CORNER_RADIUS = 22.5
+    
+    private let BUTTON_FONT_SIZE = 17.0
+    
+    private let manager : QuickConnectManager
 
-    public init() {
-    }
-
+    
+    init(manager : QuickConnectManager) {
+         self.manager = manager
+     }
+    
     public func show() {
         guard let window = UIApplication.shared.assuranceGetKeyWindow() else {
             Log.warning(label: AssuranceConstants.LOG_TAG, "QuickConnect View unable to get the keyWindow, ")
@@ -76,7 +82,6 @@ public class QuickConnectView {
             descriptionTextView.heightAnchor.constraint(equalToConstant: DESCRIPTION_TEXTVIEW_HEIGHT)
         ])
         
-        
         baseView.addSubview(connectionImageView)
         NSLayoutConstraint.activate([
             connectionImageView.leftAnchor.constraint(equalTo: baseView.leftAnchor),
@@ -84,23 +89,26 @@ public class QuickConnectView {
             connectionImageView.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: CONNECTION_IMAGE_TOP_MARGIN),
             connectionImageView.heightAnchor.constraint(equalToConstant: CONNECTION_IMAGE_HEIGHT)
         ])
-                    
         
-        baseView.addSubview(buttonHolder)
+        baseView.addSubview(buttonStackView)
         NSLayoutConstraint.activate([
-            buttonHolder.leftAnchor.constraint(equalTo: baseView.leftAnchor),
-            buttonHolder.rightAnchor.constraint(equalTo: baseView.rightAnchor),
-            buttonHolder.topAnchor.constraint(equalTo: connectionImageView.bottomAnchor, constant: BUTTON_HOLDER_TOP_MARGIN),
-            buttonHolder.heightAnchor.constraint(equalToConstant: BUTTON_HOLDER_HEIGHT)
+            buttonStackView.leadingAnchor.constraint(equalTo: baseView.leadingAnchor, constant: 40.0),
+            buttonStackView.trailingAnchor.constraint(equalTo: baseView.trailingAnchor, constant: -40.0),
+            buttonStackView.topAnchor.constraint(equalTo: connectionImageView.bottomAnchor, constant: BUTTON_HOLDER_TOP_MARGIN),
+            buttonStackView.heightAnchor.constraint(equalToConstant: BUTTON_HOLDER_HEIGHT)
         ])
         
-        buttonHolder.addSubview(cancelButton)
+        buttonStackView.addArrangedSubview(cancelButton)
         NSLayoutConstraint.activate([
-            cancelButton.centerYAnchor.constraint(equalTo: buttonHolder.centerYAnchor),
-            cancelButton.heightAnchor.constraint(equalToConstant: CANCEL_BUTTON_HEIGHT),
-            cancelButton.widthAnchor.constraint(equalToConstant: CANCEL_BUTTON_WIDTH),
-            cancelButton.centerXAnchor.constraint(equalTo: buttonHolder.centerXAnchor)
+            cancelButton.heightAnchor.constraint(equalToConstant: CANCEL_BUTTON_HEIGHT)
         ])
+        
+
+        buttonStackView.addArrangedSubview(connectButton)
+        NSLayoutConstraint.activate([
+            connectButton.heightAnchor.constraint(equalToConstant: CANCEL_BUTTON_HEIGHT)
+        ])
+        initialState()
         
         baseView.addSubview(adobeLogo)
         NSLayoutConstraint.activate([
@@ -110,14 +118,26 @@ public class QuickConnectView {
             adobeLogo.heightAnchor.constraint(equalToConstant: ADOBE_LOGO_IMAGE_HEIGHT)
         ])
         
+        self.baseView.frame.origin.y = window.frame.size.height
         UIView.animate(withDuration: 0.2,
                        delay: 0,
                        options: [.curveEaseInOut],
                        animations: { [] in
+            self.baseView.frame.origin.y = 0
             self.baseView.backgroundColor = UIColor(red: 47.0/256.0, green: 47.0/256.0, blue: 47.0/256.0, alpha: 1)
         }, completion: nil)
             
     }
+    
+    @objc func cancelClicked(_ sender: AnyObject?) {
+        dismiss()
+     }
+    
+    @objc func connectClicked(_ sender: AnyObject?) {
+        waitingState()
+        manager.createDevice()
+     }
+        
         
     lazy private var baseView : UIView = {
         let view = UIView()
@@ -178,11 +198,15 @@ public class QuickConnectView {
         return imageView
     }()
     
-    lazy private var buttonHolder : UIView = {
-        let view = UIView()
-        view.backgroundColor = .clear
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+    lazy private var buttonStackView : UIStackView = {
+        let stackView = UIStackView()
+        stackView.backgroundColor = .clear
+        stackView.spacing = 15.0
+        stackView.alignment = .center
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
     
     lazy private var cancelButton : UIButton = {
@@ -191,12 +215,104 @@ public class QuickConnectView {
         button.backgroundColor = .clear
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.white.cgColor
-        button.layer.cornerRadius = 20
-        button.titleLabel?.font = UIFont(name: "Helvetica", size: 14.0)
+        button.layer.cornerRadius = BUTTON_CORNER_RADIUS
+        button.titleLabel?.font = UIFont(name: "Helvetica", size: BUTTON_FONT_SIZE)
         button.setTitle("Cancel", for: .normal)
-        button.accessibilityLabel = "AssuranceQuickConnectAdobeLogo"
+        button.accessibilityLabel = "AssuranceQuickConnectButtonCancel"
+        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(self.cancelClicked(_:)), for: .touchUpInside)
         return button
     }()
+    
+    lazy private var connectButton : UIButton = {
+        let button = UIButton()
+        button.contentMode = .scaleAspectFit
+        button.backgroundColor = UIColor(red: 20.0/256.0, green: 115.0/256.0, blue: 230.0/256.0, alpha: 1)
+        button.layer.cornerRadius = BUTTON_CORNER_RADIUS
+        button.titleLabel?.font = UIFont(name: "Helvetica", size: BUTTON_FONT_SIZE)
+        button.setTitle("Connect", for: .normal)
+        button.accessibilityLabel = "AssuranceQuickConnectButtonConnect"
+        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(self.connectClicked(_:)), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    func initialState(){
+        DispatchQueue.main.async {
+            self.connectButton.setTitle("Connect", for: .normal)
+            self.connectButton.backgroundColor = UIColor(red: 20.0/256.0, green: 115.0/256.0, blue: 230.0/256.0, alpha: 1)
+            self.connectButton.isUserInteractionEnabled = true
+        }
+    }
+    
+    
+    func waitingState() {
+        DispatchQueue.main.async {
+            self.connectButton.setTitle("Waiting...", for: .normal)
+            self.connectButton.backgroundColor = UIColor(red: 67.0/256.0, green: 67.0/256.0, blue: 67.0/256.0, alpha: 1)
+            self.connectButton.isUserInteractionEnabled = false
+        }
+    }
+    
+    func connectionSuccessfulState(){
+        DispatchQueue.main.async {
+            self.connectButton.setTitle("Connected", for: .normal)
+            self.connectButton.backgroundColor = UIColor(red: 45.0/256.0, green: 157.0/256.0, blue: 120.0/256.0, alpha: 1)
+            self.connectButton.isUserInteractionEnabled = false
+        }
+    }
+    
+//    func onSuccessfulDeviceRegistration() {
+//          DispatchQueue.main.async {
+//              UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+//                  self.labelRegisteringDevice.text = self.registerDeviceApproved
+//              }, completion: {resut in
+//                  self.labelDeviceApprovalStatus.isHidden = false
+//                  self.labelDeviceApprovalHint.isHidden = false
+//              })
+//          }
+//      }
+      
+      func onFailedDeviceRegistration() {
+          DispatchQueue.main.async {
+              
+          }
+      }
+            
+      func onSuccessfulApproval() {
+              self.connectionSuccessfulState()
+          DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+              self.dismiss()
+          }
+      }
+      
+      func onFailedApproval() {
+          DispatchQueue.main.async {
+              
+          }
+      }
+    
+    
+    
+    func dismiss() {
+        DispatchQueue.main.async {
+            guard let window = UIApplication.shared.assuranceGetKeyWindow() else {
+                return
+            }
+            
+            UIView.animate(withDuration: 0.3,
+                           delay: 0,
+                           options: [.curveEaseInOut],
+                           animations: { [self] in
+                self.baseView.frame.origin.y = window.frame.size.height
+            }, completion: { [self] _ in
+                self.baseView.removeFromSuperview()
+            })
+        }
+    
+    }
 
 }

@@ -45,11 +45,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                           Places.self
         ]
         MobileCore.registerExtensions(extensions, {
-            MobileCore.configureWith(appId: "")
+            MobileCore.configureWith(appId: "94f571f308d5/f986c2be4925/launch-e96cdeaddea9-development")
         })
         MobileCore.lifecycleStart(additionalContextData: nil)
 
-        MobileCore.updateConfigurationWith(configDict: ["experienceCloud.org": "056F3DD059CB22060A494021@AdobeOrg"])
+        //MobileCore.updateConfigurationWith(configDict: ["experienceCloud.org": "056F3DD059CB22060A494021@AdobeOrg"])
         return true
     }
 

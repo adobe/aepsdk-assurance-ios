@@ -189,5 +189,9 @@ class AssuranceSession {
         pluginHub.registerPlugin(PluginScreenshot(), toSession: self)
         pluginHub.registerPlugin(PluginLogForwarder(), toSession: self)
     }
+    
+    func connectToSocketWith(url : URL) {
+        self.socket.connect(withUrl: url)
+    }
 
 }

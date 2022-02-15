@@ -16,6 +16,8 @@ import Foundation
 
 @objc(AEPMobileAssurance)
 public class Assurance: NSObject, Extension {
+    
+    var quickConnect :QuickConnectManager?
 
     /// Time before assurance shuts down on non receipt of start session event.
     let shutdownTime: Int
@@ -92,6 +94,11 @@ public class Assurance: NSObject, Extension {
             assuranceSession?.startSession()
             return
         }
+        
+        #if DEBUG
+        self.quickConnect = QuickConnectManager(assurance: self)
+        quickConnect?.detectShakeGesture()
+        #endif
 
         /// if the Assurance session is not previously connected, turn on 5 sec timer to wait for Assurance deeplink
         startShutDownTimer()
@@ -309,7 +316,7 @@ public class Assurance: NSObject, Extension {
     }
 
     /// Invalidate the ongoing timer and cleans it from memory
-    private func invalidateTimer() {
+    func invalidateTimer() {
         timer?.cancel()
         timer = nil
     }
@@ -386,4 +393,11 @@ public class Assurance: NSObject, Extension {
         payload[AssuranceConstants.PayloadKey.METADATA] = [stateType: stateContent]
         return AssuranceEvent(type: AssuranceConstants.EventType.GENERIC, payload: payload)
     }
+    
+    func getURLEncodedOrgID() -> String? {
+        let configState = runtime.getSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, barrier: false)
+        let orgID = configState?.value?[AssuranceConstants.EventDataKey.CONFIG_ORG_ID] as? String
+        return orgID?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+    }
+    
 }
