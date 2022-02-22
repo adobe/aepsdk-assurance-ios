@@ -40,8 +40,20 @@ class AssuranceSession {
     /// indicates if Assurance SDK can start forwarding events to the session. This flag is set when a command `startForwarding` is received from the socket.
     var canStartForwarding: Bool = false
 
-    /// true indicates Assurance SDK has timeout and shutdown after non-reception of deep link URL because of which it  has cleared all the queued initial SDK events from memory.
+    /// true indicates Assurance SDK has timeout and shutdown after non-reception of deep link URL because of which it has cleared all the queued initial SDK events from memory.
     var didClearBootEvent: Bool = false
+
+    /// Boolean flag indicating whether to process and queue the SDK events heard from the wildcard listener.
+    /// This flag is set to false on the following occasions:
+    ///  1. When the Assurance extension automatically shuts down on non arrival of assurance deeplink after the 5 second timeout.
+    ///  2. When the Assurance session is disconnected by the user.
+    /// This flag is turned back on when Assurance extension is reconnected to an new Assurance session
+    ///
+    /// TODO: MOB-15936
+    /// Tracking flags is difficult! This flag should be removed in favor of recreating a
+    /// new AssuranceSession for each new socket connection and making the AssuranceExtension rely
+    /// on the existence of a session for inferring event processing.
+    var canProcessSDKEvents: Bool = true
 
     /// Initializer with instance of  `Assurance` extension
     init(_ assuranceExtension: Assurance) {
@@ -57,6 +69,8 @@ class AssuranceSession {
     /// Otherwise PinCode screen is presented for establishing a new connection.
     ///
     func startSession() {
+        canProcessSDKEvents = true
+
         if socket.socketState == .open || socket.socketState == .connecting {
             Log.debug(label: AssuranceConstants.LOG_TAG, "There is already an ongoing Assurance session. Ignoring to start new session.")
             return
@@ -108,6 +122,7 @@ class AssuranceSession {
     /// Terminates the ongoing Assurance session.
     ///
     func terminateSession() {
+        canProcessSDKEvents = false
         socket.disconnect()
         clearSessionData()
     }
@@ -158,10 +173,11 @@ class AssuranceSession {
     ///
     /// Clears the queued SDK events from memory. Call this method once Assurance shut down timer is triggered.
     ///
-    func clearQueueEvents() {
+    func shutDownSession() {
         inboundQueue.clear()
         outboundQueue.clear()
         didClearBootEvent = true
+        canProcessSDKEvents = false
     }
 
     ///

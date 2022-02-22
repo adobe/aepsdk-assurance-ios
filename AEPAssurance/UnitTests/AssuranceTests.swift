@@ -157,7 +157,7 @@ class AssuranceTests: XCTestCase {
                           type: EventType.analytics,
                           source: EventSource.requestContent,
                           data: nil)
-        assurance.shouldProcessEvents = false
+        mockSession.canProcessSDKEvents = false
 
         // test
         runtime.simulateComingEvent(event: event)

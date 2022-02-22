@@ -55,8 +55,15 @@ struct AssuranceEventChunker {
         }
         var chunkedEvents: [AssuranceEvent] = []
 
-        /// Highly unlikely to have an event that needs to be chunked without a payload. If so this is an misbehaving event
-        /// We should discard this event and return an empty array in such cases
+        /// The payload is null and the event size exceeds MAX_EVENT_SIZE. This implies that
+        /// the metadata is contributing to the event size increase. Metadata currently is data about
+        /// chunks. It follows that metadata cannot be chunked. The current logic assumes that
+        /// metadata is always within a sane limit (as it is being added internally) and any event
+        /// with a large metadata cannot be handled currently. So, discard this event.
+        /// When Assurance event is publicly instantiable, this assumption about metadata
+        /// does not hold.
+        /// If such a case arises, then the AssuranceEvent creation MUST handle restricting the size
+        /// of metadata accordingly.
         guard let eventPayload = event.payload else {
             Log.warning(label: AssuranceConstants.LOG_TAG, "Discarding the Assurance Event that is demanding to be chunked without a payload. \(event.description)")
             return []
