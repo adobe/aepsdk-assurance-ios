@@ -90,7 +90,7 @@ class AssuranceSessionTests: XCTestCase {
         XCTAssertEqual(2, session.outboundQueue.size())
     }
 
-    func test_session_clearQueueEvents() throws {
+    func test_session_shutDownSession() throws {
         // setup
         session.outboundQueue.enqueue(newElement: sampleAssuranceEvent())
         session.inboundQueue.enqueue(newElement: sampleAssuranceEvent())
@@ -98,12 +98,13 @@ class AssuranceSessionTests: XCTestCase {
         XCTAssertEqual(1, session.inboundQueue.size())
 
         // test
-        session.clearQueueEvents()
+        session.shutDownSession()
 
         // verify
         XCTAssertEqual(0, session.outboundQueue.size())
         XCTAssertEqual(0, session.inboundQueue.size())
         XCTAssertTrue(session.didClearBootEvent)
+        XCTAssertFalse(session.canProcessSDKEvents)
     }
 
     func test_session_outBoundEventsAreQueued_until_socketConnected() throws {
@@ -232,6 +233,7 @@ class AssuranceSessionTests: XCTestCase {
         XCTAssertTrue(mockPlugin.isSessionTerminatedCalled)
         XCTAssertTrue(mockSocket.disconnectCalled)
         XCTAssertFalse(session.canStartForwarding)
+        XCTAssertFalse(session.canProcessSDKEvents)
         XCTAssertNil(assuranceExtension.sessionId)
         XCTAssertNil(assuranceExtension.connectedWebSocketURL)
         XCTAssertEqual(AssuranceConstants.DEFAULT_ENVIRONMENT, assuranceExtension.environment)

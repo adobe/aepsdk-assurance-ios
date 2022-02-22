@@ -55,7 +55,6 @@ struct AssuranceEventChunker {
         }
         var chunkedEvents: [AssuranceEvent] = []
 
-        
         /// The payload is null and the event size exceeds MAX_EVENT_SIZE. This implies that
         /// the metadata is contributing to the event size increase. Metadata currently is data about
         /// chunks. It follows that metadata cannot be chunked. The current logic assumes that

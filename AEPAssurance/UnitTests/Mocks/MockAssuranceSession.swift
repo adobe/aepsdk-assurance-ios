@@ -44,6 +44,12 @@ class MockAssuranceSession: AssuranceSession {
     override func terminateSession() {
         terminateSessionCalled = true
     }
+    
+    var shutDownSessionCalled = false
+    override func shutDownSession() {
+        shutDownSessionCalled = true
+    }
+
 
     func mockSocketState(state: SocketState) {
         if let mockSocket = socket as? MockSocket {
