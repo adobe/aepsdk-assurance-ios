@@ -157,7 +157,7 @@ class AssuranceTests: XCTestCase {
                           type: EventType.analytics,
                           source: EventSource.requestContent,
                           data: nil)
-        assurance.shouldProcessEvents = false
+        mockSession.canProcessSDKEvents = false
 
         // test
         runtime.simulateComingEvent(event: event)
@@ -304,7 +304,8 @@ class AssuranceTests: XCTestCase {
         let resultEvents = assurance.getAllExtensionStateData()
 
         // verify that the required shared state events are generated
-        XCTAssertEqual(2, resultEvents.count)
+        XCTAssertEqual(3, resultEvents.count)
+        XCTAssertTrue(resultEvents.hasEventWithName("EventHub State"))
         XCTAssertTrue(resultEvents.hasEventWithName("Configuration State"))
         XCTAssertTrue(resultEvents.hasEventWithName("\(CONSENT_SHARED_STATE_NAME) XDM State"))
     }
