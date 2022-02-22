@@ -43,12 +43,11 @@ class AssuranceSession {
     /// true indicates Assurance SDK has timeout and shutdown after non-reception of deep link URL because of which it has cleared all the queued initial SDK events from memory.
     var didClearBootEvent: Bool = false
 
-    /// Boolean flag indicating whether to process and queue the SDK events listened from the wildcard listener.
-    /// This flag is set to false on the following occasions
+    /// Boolean flag indicating whether to process and queue the SDK events heard from the wildcard listener.
+    /// This flag is set to false on the following occasions:
     ///  1. When the Assurance extension automatically shuts down on non arrival of assurance deeplink after the 5 second timeout.
     ///  2. When the Assurance session is disconnected by the user.
-    /// This flag is turned back on when
-    ///  1. Assurance extension is reconnected to an new Assurance session
+    /// This flag is turned back on when Assurance extension is reconnected to an new Assurance session
     ///
     /// TODO: MOB-15936
     /// Tracking flags is difficult! This flag should be removed in favor of recreating a
