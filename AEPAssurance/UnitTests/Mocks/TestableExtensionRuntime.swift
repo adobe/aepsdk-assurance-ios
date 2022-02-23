@@ -77,6 +77,9 @@ class TestableExtensionRuntime: ExtensionRuntime {
     public func simulateXDMSharedState(for extensionName: String, data: (value: [String: Any]?, status: SharedStateStatus)) {
         otherXDMSharedStates["\(extensionName)"] = SharedStateResult(status: data.status, value: data.value)
     }
+    
+    func getHistoricalEvents(_ requests: [EventHistoryRequest], enforceOrder: Bool, handler: @escaping ([EventHistoryResult]) -> Void) {
+    }
 
     /// clear the events and shared states that have been created by the current extension
     public func reset() {
