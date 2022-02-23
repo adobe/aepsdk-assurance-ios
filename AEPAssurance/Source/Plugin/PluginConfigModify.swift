@@ -77,12 +77,12 @@ class PluginConfigModify: AssurancePlugin {
         }
     }
 
-    // no op - protocol methods
     /// protocol method is called from this Plugin is registered with `PluginHub`
     func onRegistered(_ session: AssuranceSession) {
         self.session = session
     }
 
+    // no op - protocol methods
     func onSessionConnected() {}
 
     func onSessionDisconnectedWithCloseCode(_ closeCode: Int) {}
