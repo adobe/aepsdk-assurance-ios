@@ -28,8 +28,9 @@ struct ContentView: View {
             UserProfileCard()
             ConsentCard()
             PlacesCard()
-
+            BigEventsCard()
         }
+        .onAppear { MobileCore.track(state: "Home Screen", data: nil) }
     }
 }
 
@@ -108,7 +109,7 @@ struct UserProfileCard: View {
                 Button(action: {
                     UserProfile.removeUserAttributes(attributeNames: ["type"])
                 }, label: {
-                    Text("Remove ")
+                    Text("Remove")
                 }).buttonStyle(YellowButtonStyle()).padding()
             }
         }
@@ -124,13 +125,13 @@ struct AnalyticsCard: View {
             }
             HStack {
                 Button(action: {
-                    MobileCore.track(state: "Car Purchased", data: nil)
+                    MobileCore.track(action: "Television Purchased", data: ["Model": "Sony"])
                 }, label: {
                     Text("Track Action")
                 }).buttonStyle(YellowButtonStyle()).padding()
 
                 Button(action: {
-                    MobileCore.track(state: "Home Page", data: nil)
+                    MobileCore.track(state: "Billing Screen", data: nil)
                 }, label: {
                     Text("Track State")
                 }).buttonStyle(YellowButtonStyle()).padding()
@@ -201,6 +202,40 @@ struct PlacesCard: View {
                 }, label: {
                     Text("Exit")
                 }).buttonStyle(YellowButtonStyle())
+            }
+        }
+    }
+}
+
+struct BigEventsCard: View {
+    var body: some View {
+        VStack {
+            HStack {
+                Spacer()
+                Text("Big Assurance Events").padding(.leading).font(.system(size: HEADING_FONT_SIZE, weight: .heavy, design: .default))
+                Spacer()
+            }
+
+            HStack {
+                Button(action: {
+                    let path = Bundle.main.path(forResource: "sample", ofType: "html")
+                    let sampleHtml = try? String(contentsOfFile: path!, encoding: String.Encoding.utf8)
+                    MobileCore.dispatch(event: Event(name: "Huge HTML Event", type: "type", source: "source", data: ["html": sampleHtml ?? ""]))
+                }, label: {
+                    Text("Send HTML")
+                }).buttonStyle(YellowButtonStyle()).padding()
+                Button(action: {
+                    let path = Bundle.main.path(forResource: "sampleRules", ofType: "json")
+                    let sampleJson = try? String(contentsOfFile: path!, encoding: String.Encoding.utf8)
+                    do {
+                        if let json = try JSONSerialization.jsonObject(with: Data(sampleJson!.utf8), options: []) as? [String: Any] {
+                            MobileCore.dispatch(event: Event(name: "Huge JSON Event", type: "type", source: "source", data: json))
+                        }
+                    } catch _ as NSError {}
+
+                }, label: {
+                    Text("Send huge rules data")
+                }).buttonStyle(YellowButtonStyle()).padding()
             }
         }
     }

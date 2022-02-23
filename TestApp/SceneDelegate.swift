@@ -11,6 +11,7 @@
  */
 
 import AEPAssurance
+import AEPCore
 import SwiftUI
 import UIKit
 
@@ -42,6 +43,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let deepLinkURL = URLContexts.first?.url {
             Assurance.startSession(url: deepLinkURL)
         }
+    }
+
+    func sceneWillEnterForeground(_ scene: UIScene) {
+        MobileCore.lifecycleStart(additionalContextData: nil)
+    }
+
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        MobileCore.lifecyclePause()
     }
 
 }
