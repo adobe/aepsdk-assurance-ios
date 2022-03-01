@@ -19,7 +19,7 @@ protocol SessionAuthorizingUI {
     /// property that indicated if the pinCode screen is currently displayed
     var isDisplayed: Bool { get }
 
-    init(withExtension: Assurance)
+    init(withState stateManager: AssuranceStateManager)
 
     /// Invoke this during start session to display the pinCode screen
     /// - Parameters

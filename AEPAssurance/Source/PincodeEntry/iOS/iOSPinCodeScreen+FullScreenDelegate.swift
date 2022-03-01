@@ -65,23 +65,23 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
                 return false
             }
 
-            guard let sessionId = assuranceExtension.sessionId else {
+            guard let sessionId = stateManager.sessionId else {
                 self.pinCodeCallback?(nil, AssuranceConnectionError.noSessionID)
                 return false
             }
 
-            guard let orgID = getURLEncodedOrgID() else {
+            guard let orgID = stateManager.getURLEncodedOrgID() else {
                 self.pinCodeCallback?(nil, AssuranceConnectionError.noOrgId)
                 return false
             }
 
             // wss://connect%@.griffon.adobe.com/client/v1?sessionId=%@&token=%@&orgId=%@&clientId=%@
             let socketURL = String(format: AssuranceConstants.BASE_SOCKET_URL,
-                                   assuranceExtension.environment.urlFormat,
+                                   stateManager.environment.urlFormat,
                                    sessionId,
                                    passcode,
                                    orgID,
-                                   assuranceExtension.clientID)
+                                   stateManager.clientID)
 
             guard let url = URL(string: socketURL) else {
                 self.pinCodeCallback?(nil, AssuranceConnectionError.noURL)
@@ -101,18 +101,6 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
     ///
     func onShowFailure() {
         Log.warning(label: AssuranceConstants.LOG_TAG, "Unable to display the pincode screen, onShowFailure delegate method is invoked")
-    }
-
-    /// Getter to retrieve the url encoded experience cloud orgId  from configuration
-    /// Returns nil
-    ///  - if core is not configured and configuration shared state is not available.
-    ///  - if configuration shared state does not have value for `experienceCloud.org`
-    ///
-    /// - Returns: optional string representing the url coded experienceCloud Org Id to which the `MobileCore` is configured
-    func getURLEncodedOrgID() -> String? {
-        let configState = assuranceExtension.runtime.getSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, barrier: false)
-        let orgID = configState?.value?[AssuranceConstants.EventDataKey.CONFIG_ORG_ID] as? String
-        return orgID?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
     }
 
 }
