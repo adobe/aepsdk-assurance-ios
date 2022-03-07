@@ -29,8 +29,6 @@ public class Assurance: NSObject, Extension {
     var assuranceSession: AssuranceSession?
     var timer: DispatchSourceTimer?
     let stateManager: AssuranceStateManager
-    
-
 
     public func onRegistered() {
         registerListener(type: EventType.wildcard, source: EventSource.wildcard, listener: handleWildcardEvent)
@@ -255,5 +253,4 @@ public class Assurance: NSObject, Extension {
         return timer
     }
 
-  
 }

@@ -1,5 +1,5 @@
 /*
- Copyright 2021 Adobe. All rights reserved.
+ Copyright 2022 Adobe. All rights reserved.
  This file is licensed to you under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License. You may obtain a copy
  of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -10,16 +10,20 @@
  governing permissions and limitations under the License.
  */
 
-
-import Foundation
-import AEPServices
 import AEPCore
+import AEPServices
+import Foundation
 import UIKit
 
 class AssuranceStateManager {
-    
+
     let datastore = NamedCollectionDataStore(name: AssuranceConstants.EXTENSION_NAME)
-    
+
+    /// sessionID represents a unique identifier session to which this library attempts to connect.
+    /// This property gets set when a deep-link initiating an assurance session is received.
+    /// The presence of valid sessionID variable in `AssuranceStateManager` denotes a connection to Assurance session has been initiated.
+    /// Note : The presence of sessionID does not denote active socket connection
+    /// The absence of sessionID denotes a session connection is terminated or session connection is cancelled.
     var sessionId: String? {
         get {
             datastore.getString(key: AssuranceConstants.DataStoreKeys.SESSION_ID)
@@ -28,8 +32,12 @@ class AssuranceStateManager {
             datastore.set(key: AssuranceConstants.DataStoreKeys.SESSION_ID, value: newValue)
         }
     }
-    
+
     private let DEFAULT_ENVIRONMENT = AssuranceEnvironment.prod
+
+    /// environment property defines the current environment to which the assurance session is connecting.
+    /// This value should not be confused with launch environment.
+    /// This value is obtained from the deeplink url invoked to connect with Griffon. And it is used to connect with griffon services and UI running in dev modes
     var environment: AssuranceEnvironment {
         get {
             AssuranceEnvironment.init(envString: datastore.getString(key: AssuranceConstants.DataStoreKeys.ENVIRONMENT) ?? DEFAULT_ENVIRONMENT.rawValue)
@@ -38,9 +46,10 @@ class AssuranceStateManager {
             datastore.set(key: AssuranceConstants.DataStoreKeys.ENVIRONMENT, value: newValue.rawValue)
         }
     }
-    
-    
-    // getter for client ID
+
+    /// clientID is an identifier to uniquely identify the connected device to an Assurance Session.
+    /// This is a string representation of a UUID. This ID is required for client → server communications.
+    /// A clientID is generated at the client and is persisted throughout the lifecycle of the app.
     lazy var clientID: String = {
         // return with clientId, if it is already available in persistence
         if let persistedClientID = datastore.getString(key: AssuranceConstants.DataStoreKeys.CLIENT_ID) {
@@ -53,8 +62,7 @@ class AssuranceStateManager {
         return newClientID
 
     }()
-    
-    
+
     /// property representing the webSocket URL of the ongoing Assurance session
     /// A valid value on this property represents that an assurance session is currently running.
     /// A nil value on this property represents there is no ongoing assurance session.
@@ -70,13 +78,12 @@ class AssuranceStateManager {
             }
         }
     }
-    
-    let runtime :ExtensionRuntime
+
+    let runtime: ExtensionRuntime
     init(_ runtime: ExtensionRuntime) {
         self.runtime = runtime
     }
-    
-    
+
     /// Call this function to create a new shared state for Assurance
     /// Important - An empty shared state is created if sessionId is not available
     func shareState() {
@@ -87,7 +94,7 @@ class AssuranceStateManager {
     func clearState() {
         runtime.createSharedState(data: [:], event: nil)
     }
-    
+
     /// Returns an Array of `AssuranceEvent`s containing regular and XDM shared state details of all the registered extensions.
     /// - Returns: an array of `AssuranceEvent`
     func getAllExtensionStateData() -> [AssuranceEvent] {
@@ -112,8 +119,19 @@ class AssuranceStateManager {
 
         return stateEvents
     }
-    
-    
+
+    /// Getter to retrieve the url encoded experience cloud orgId  from configuration
+    /// Returns nil
+    ///  - if core is not configured and configuration shared state is not available.
+    ///  - if configuration shared state does not have value for `experienceCloud.org`
+    ///
+    /// - Returns: optional string representing the url coded experienceCloud Org Id to which the `MobileCore` is configured
+    func getURLEncodedOrgID() -> String? {
+        let configState = runtime.getSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, barrier: false)
+        let orgID = configState?.value?[AssuranceConstants.EventDataKey.CONFIG_ORG_ID] as? String
+        return orgID?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+    }
+
     // MARK: Helper methods to prepare shared state status events
 
     ///
@@ -172,8 +190,7 @@ class AssuranceStateManager {
         payload[AssuranceConstants.PayloadKey.METADATA] = [stateType: stateContent]
         return AssuranceEvent(type: AssuranceConstants.EventType.GENERIC, payload: payload)
     }
-    
-    
+
     /// Prepares the shared state data for the Assurance Extension
     /// A valid shared state contains:
     /// - sessionid
@@ -192,19 +209,6 @@ class AssuranceStateManager {
         shareStateData[AssuranceConstants.SharedStateKeys.SESSION_ID] = sessionId
         shareStateData[AssuranceConstants.SharedStateKeys.INTEGRATION_ID] = sessionId + "|" + clientID
         return shareStateData
-    }
-    
-    
-    /// Getter to retrieve the url encoded experience cloud orgId  from configuration
-    /// Returns nil
-    ///  - if core is not configured and configuration shared state is not available.
-    ///  - if configuration shared state does not have value for `experienceCloud.org`
-    ///
-    /// - Returns: optional string representing the url coded experienceCloud Org Id to which the `MobileCore` is configured
-    func getURLEncodedOrgID() -> String? {
-        let configState = runtime.getSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, barrier: false)
-        let orgID = configState?.value?[AssuranceConstants.EventDataKey.CONFIG_ORG_ID] as? String
-        return orgID?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
     }
 
 }
