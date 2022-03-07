@@ -27,13 +27,13 @@ class PluginHubTests: XCTestCase {
 
     let runtime = TestableExtensionRuntime()
     var session: MockAssuranceSession?
-    var assuranceExtension: MockAssurance?
+    var mockStateManager: MockAssuranceStateManager?
 
     // MARK: - Setup
 
     override func setUp() {
-        assuranceExtension = MockAssurance(runtime: runtime)
-        session = MockAssuranceSession(assuranceExtension!)
+        mockStateManager = MockAssuranceStateManager(runtime)
+        session = MockAssuranceSession(mockStateManager!)
 
         pluginHub.registerPlugin(pluginBlue, toSession: session!)
         pluginHub.registerPlugin(pluginGreen, toSession: session!)

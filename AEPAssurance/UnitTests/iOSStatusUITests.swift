@@ -21,7 +21,7 @@ class iOSStatusUITests: XCTestCase {
 
     var statusUI: iOSStatusUI!
     var mockSession: MockAssuranceSession!
-    var mockAssuranceExtension: MockAssurance!
+    var mockStateManager: MockAssuranceStateManager!
 
     // mock UIServices
     let mockUIService = MockUIService()
@@ -31,8 +31,8 @@ class iOSStatusUITests: XCTestCase {
 
     override func setUp() {
         let runtime = TestableExtensionRuntime()
-        mockAssuranceExtension = MockAssurance(runtime: runtime)
-        mockSession = MockAssuranceSession(mockAssuranceExtension!)
+        mockStateManager = MockAssuranceStateManager(runtime)
+        mockSession = MockAssuranceSession(mockStateManager)
 
         ServiceProvider.shared.uiService = mockUIService
         statusUI = iOSStatusUI.init(withSession: mockSession)
