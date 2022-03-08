@@ -36,7 +36,6 @@ opt_in_rules: # some rules are opt-in only
 excluded: # paths to ignore during linting
 - Carthage
 - AEPAssurance/UnitTests
-- TestApp
 - TestAppObjC
 - SampleApps/*/libs
 - Pods

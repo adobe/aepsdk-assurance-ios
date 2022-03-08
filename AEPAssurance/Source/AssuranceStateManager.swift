@@ -19,11 +19,11 @@ class AssuranceStateManager {
 
     let datastore = NamedCollectionDataStore(name: AssuranceConstants.EXTENSION_NAME)
 
-    /// sessionID represents a unique identifier session to which this library attempts to connect.
+    /// sessionID represents a unique identifier of a Project Griffon session to which this library attempts to connect.
     /// This property gets set when a deep-link initiating an assurance session is received.
     /// The presence of valid sessionID variable in `AssuranceStateManager` denotes a connection to Assurance session has been initiated.
-    /// Note : The presence of sessionID does not denote active socket connection
-    /// The absence of sessionID denotes a session connection is terminated or session connection is cancelled.
+    /// Note: The presence of sessionID does not denote active socket connection
+    /// The absence of sessionID denotes a session connection is terminated or cancelled.
     var sessionId: String? {
         get {
             datastore.getString(key: AssuranceConstants.DataStoreKeys.SESSION_ID)
@@ -37,7 +37,8 @@ class AssuranceStateManager {
 
     /// environment property defines the current environment to which the assurance session is connecting.
     /// This value should not be confused with launch environment.
-    /// This value is obtained from the deeplink url invoked to connect with Griffon. And it is used to connect with griffon services and UI running in dev modes
+    /// This value denotes the environment of Griffon services and UI running to which connection is made.
+    /// This value is obtained from as a query parameter of deeplink URL.
     var environment: AssuranceEnvironment {
         get {
             AssuranceEnvironment.init(envString: datastore.getString(key: AssuranceConstants.DataStoreKeys.ENVIRONMENT) ?? DEFAULT_ENVIRONMENT.rawValue)
@@ -86,12 +87,12 @@ class AssuranceStateManager {
 
     /// Call this function to create a new shared state for Assurance
     /// Important - An empty shared state is created if sessionId is not available
-    func shareState() {
+    func shareAssuranceState() {
         runtime.createSharedState(data: getSharedStateData() ?? [:], event: nil)
     }
 
     /// Call this function to empty the latest Assurance shared state
-    func clearState() {
+    func clearAssuranceState() {
         runtime.createSharedState(data: [:], event: nil)
     }
 

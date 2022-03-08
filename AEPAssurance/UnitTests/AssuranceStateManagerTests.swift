@@ -32,7 +32,7 @@ class AssuranceStateManagerTests: XCTestCase {
         runtime.reset()
     }
     
-    func test_assuranceState_createsAndPersistsClientId() throws {
+    func test_stateManager_createsAndPersistsClientId() throws {
         // test
         XCTAssertNotNil(stateManager.clientID)
         XCTAssertEqual(1, mockDataStore.dict.count)
@@ -47,7 +47,7 @@ class AssuranceStateManagerTests: XCTestCase {
         XCTAssertEqual("mockClientID", stateManager.clientID)
     }
 
-    func test_assuranceState_loadsPersistedSessionID() throws {
+    func test_stateManager_loadsPersistedSessionID() throws {
         // setup
         mockSessionIDToPersistence(sessionID: "mockSessionID")
 
@@ -55,7 +55,7 @@ class AssuranceStateManagerTests: XCTestCase {
         XCTAssertEqual("mockSessionID", stateManager.sessionId)
     }
 
-    func test_assuranceState_savesSessionIDToPersistence() throws {
+    func test_stateManager_savesSessionIDToPersistence() throws {
         // test
         stateManager.sessionId = "newSessionID"
 
@@ -66,7 +66,7 @@ class AssuranceStateManagerTests: XCTestCase {
     }
 
     
-    func test_getAllExtensionStateData() throws {
+    func test_stateManager_getAllExtensionStateData() throws {
         // setup
         runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.EVENT_HUB, event: nil, data: (sampleEventHubState, .set))
         runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, data: (sampleConfigurationState, .set))
@@ -82,7 +82,7 @@ class AssuranceStateManagerTests: XCTestCase {
         XCTAssertTrue(resultEvents.hasEventWithName("\(CONSENT_SHARED_STATE_NAME) XDM State"))
     }
 
-    func test_getAllExtensionStateData_WhenNoExtensionRegistered() throws {
+    func test_stateManager_getAllExtensionStateData_WhenNoExtensionRegistered() throws {
         // setup
         runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.EVENT_HUB, event: nil, data: ([:], .set))
 
@@ -94,7 +94,7 @@ class AssuranceStateManagerTests: XCTestCase {
     }
     
     
-    func test_getURLEncodedOrgID() throws {
+    func test_stateManager_getURLEncodedOrgID() throws {
         // setup
         runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, data: (sampleConfigurationState, .set))
 
@@ -102,7 +102,7 @@ class AssuranceStateManagerTests: XCTestCase {
         XCTAssertEqual("472B898333E9F7BC7F383101@AdobeOrg", stateManager.getURLEncodedOrgID())
     }
     
-    func test_getURLEncodedOrgID_whenNoConfig() throws {
+    func test_stateManager_getURLEncodedOrgID_whenNoConfig() throws {
         // setup
         runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, data: (nil, .set))
 
@@ -111,21 +111,21 @@ class AssuranceStateManagerTests: XCTestCase {
     }
     
     
-    func test_assuranceState_shareState_nilSessionID() throws {
+    func test_stateManager_shareAssuranceState_nilSessionID() throws {
         // test
-        stateManager.shareState()
+        stateManager.shareAssuranceState()
 
         // verify
         XCTAssertEqual(1, runtime.sharedStates.count)
         XCTAssertTrue(runtime.firstSharedState!.isEmpty)
     }
 
-    func test_assuranceState_shareState_happy() throws {
+    func test_stateManager_shareAssuranceState_happy() throws {
         // test
         stateManager.sessionId = "newSessionID"
 
         // test
-        stateManager.shareState()
+        stateManager.shareAssuranceState()
 
         // verify
         XCTAssertEqual(1, runtime.sharedStates.count)
@@ -137,13 +137,13 @@ class AssuranceStateManagerTests: XCTestCase {
         XCTAssertEqual("\(stateManager.sessionId!)" + "|" + "\(stateManager.clientID)", runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.INTEGRATION_ID] as? String)
     }
 
-    func test_assuranceState_clearState() throws {
+    func test_stateManager_clearAssuranceState() throws {
         // setup
         stateManager.sessionId = "newSessionID"
 
         // test
-        stateManager.shareState() // first set the shared state
-        stateManager.clearState() // and then attempt to clear it
+        stateManager.shareAssuranceState() // first set the shared state
+        stateManager.clearAssuranceState() // and then attempt to clear it
 
         // verify
         XCTAssertEqual(2, runtime.sharedStates.count)

@@ -185,7 +185,7 @@ class AssuranceSession {
     /// Call this method when user terminates the Assurance session or when non-recoverable socket error occurs.
     ///
     func clearSessionData() {
-        stateManager.clearState()
+        stateManager.clearAssuranceState()
         canStartForwarding = false
         pluginHub.notifyPluginsOnSessionTerminated()
         stateManager.sessionId = nil

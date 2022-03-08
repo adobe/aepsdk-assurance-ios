@@ -37,7 +37,7 @@ public class Assurance: NSObject, Extension {
         /// if the Assurance session was already connected in the previous app session, go ahead and reconnect socket
         /// and do not turn on the unregister timer
         if stateManager.connectedWebSocketURL != nil {
-            stateManager.shareState()
+            stateManager.shareAssuranceState()
             Log.trace(label: AssuranceConstants.LOG_TAG, "Assurance Session was already connected during previous app launch. Attempting to reconnect. URL : \(String(describing: stateManager.connectedWebSocketURL))")
             assuranceSession?.startSession()
             return
@@ -129,7 +129,7 @@ public class Assurance: NSObject, Extension {
         // save the environment and sessionID
         stateManager.environment = AssuranceEnvironment.init(envString: environmentString)
         stateManager.sessionId = sessionId
-        stateManager.shareState()
+        stateManager.shareAssuranceState()
 
         Log.trace(label: AssuranceConstants.LOG_TAG, "Received sessionID, Initializing Assurance session. \(sessionId)")
         assuranceSession?.startSession()
@@ -230,7 +230,7 @@ public class Assurance: NSObject, Extension {
         invalidateTimer()
         Log.debug(label: AssuranceConstants.LOG_TAG, "Clearing the queued events and purging Assurance shared state.")
         self.assuranceSession?.shutDownSession()
-        stateManager.clearState()
+        stateManager.clearAssuranceState()
     }
 
     /// Invalidate the ongoing timer and cleans it from memory
