@@ -22,7 +22,7 @@ class iOSPinCodeScreen: SessionAuthorizingUI {
     var pinCodeCallback: PinCodeCallback?
 
     /// Initializer
-    required init(withState stateManager: AssuranceStateManager) {
+    required init(withStateManager stateManager: AssuranceStateManager) {
         self.stateManager = stateManager
     }
 

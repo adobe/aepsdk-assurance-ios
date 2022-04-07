@@ -55,7 +55,7 @@ class AssuranceSession {
     /// on the existence of a session for inferring event processing.
     var canProcessSDKEvents: Bool = true
 
-    /// Initializer with instance of  `Assurance` extension
+    /// Initializer with instance of  `AssuranceStateManager`
     init(_ stateManager: AssuranceStateManager) {
         self.stateManager = stateManager
         handleInBoundEvents()
@@ -96,7 +96,7 @@ class AssuranceSession {
     ///
     /// Thread : Listener thread from EventHub
     func beginNewSession() {
-        let pinCodeScreen = iOSPinCodeScreen.init(withState: stateManager)
+        let pinCodeScreen = iOSPinCodeScreen.init(withStateManager: stateManager)
         self.pinCodeScreen = pinCodeScreen
 
         // invoke the pinpad screen and create a socketURL with the pincode and other essential parameters

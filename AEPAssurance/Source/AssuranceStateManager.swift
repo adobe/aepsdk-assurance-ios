@@ -15,6 +15,10 @@ import AEPServices
 import Foundation
 import UIKit
 
+
+///
+/// Responsible for managing the current Assurance state, handling Assurance extension's shared state and fetching shared states for other extensions.
+///
 class AssuranceStateManager {
 
     let datastore = NamedCollectionDataStore(name: AssuranceConstants.EXTENSION_NAME)
@@ -97,6 +101,7 @@ class AssuranceStateManager {
     }
 
     /// Returns an Array of `AssuranceEvent`s containing regular and XDM shared state details of all the registered extensions.
+    ///  Shared states with null or empty data are ignored.
     /// - Returns: an array of `AssuranceEvent`
     func getAllExtensionStateData() -> [AssuranceEvent] {
         var stateEvents: [AssuranceEvent] = []
@@ -122,20 +127,19 @@ class AssuranceStateManager {
     }
 
     /// Getter to retrieve the url encoded experience cloud orgId  from configuration
-    /// Returns nil
-    ///  - if core is not configured and configuration shared state is not available.
-    ///  - if configuration shared state does not have value for `experienceCloud.org`
+    /// Calling this method returns nil when:
+    ///  - core is not configured and configuration shared state is not available.
+    ///  - configuration shared state does not have value for `experienceCloud.org`
     ///
-    /// - Returns: optional string representing the url coded experienceCloud Org Id to which the `MobileCore` is configured
+    /// - Returns: optional string representing the url encoded experienceCloud Org Id to which the `MobileCore` is configured
     func getURLEncodedOrgID() -> String? {
         let configState = runtime.getSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, barrier: false)
         let orgID = configState?.value?[AssuranceConstants.EventDataKey.CONFIG_ORG_ID] as? String
         return orgID?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
     }
 
-    // MARK: Helper methods to prepare shared state status events
+    // MARK: - Helper methods to prepare shared state status events
 
-    ///
     /// Gets the friendly name for an extension from EventHub's shared state.
     /// - Parameters:
     ///     - extensionMap: an eventHub's shared state dictionary containing details of the registered extension

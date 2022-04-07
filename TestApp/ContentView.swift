@@ -228,7 +228,7 @@ struct BigEventsCard: View {
                 }).buttonStyle(YellowButtonStyle()).padding()
                 Button(action: {
                     let path = Bundle.main.path(forResource: "sampleRules", ofType: "json")
-                    guard let sampleJson = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) else {
+                    guard let sampleJson = try? String(contentsOfFile: path!, encoding: String.Encoding.utf8) else {
                         return
                     }
                     do {
