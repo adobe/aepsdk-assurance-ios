@@ -17,8 +17,8 @@ import XCTest
 class MockAssuranceSession: AssuranceSession {
 
     var expectation: XCTestExpectation?
-    override init(_ assuranceExtension: Assurance) {
-        super.init(assuranceExtension)
+    override init(_ stateManager: AssuranceStateManager) {
+        super.init(stateManager)
         self.socket = MockSocket(withDelegate: self)
     }
 

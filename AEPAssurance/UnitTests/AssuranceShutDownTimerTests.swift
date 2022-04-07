@@ -22,13 +22,15 @@ class AssuranceShutDownTimerTests: XCTestCase {
     let mockDataStore = MockDataStore()
     var mockSession: MockAssuranceSession!
     var assurance: Assurance!
+    var mockStateManager: MockAssuranceStateManager!
 
     override func setUp() {
         ServiceProvider.shared.namedKeyValueService = mockDataStore
-        assurance = Assurance(runtime: runtime, shutdownTime: 1)
+        mockStateManager = MockAssuranceStateManager(runtime)
+        assurance = Assurance(runtime: runtime, shutdownTime: 1, stateManager: mockStateManager)
 
         // mock the interaction with AssuranceSession class
-        mockSession = MockAssuranceSession(assurance)
+        mockSession = MockAssuranceSession(mockStateManager)
         assurance.assuranceSession = mockSession
     }
 
@@ -42,7 +44,7 @@ class AssuranceShutDownTimerTests: XCTestCase {
 
     func test_shutDownTimer() {
         // setup properties
-        assurance.connectedWebSocketURL = nil
+        mockStateManager.connectedWebSocketURL = nil
 
         // test
         assurance.onRegistered()
@@ -61,7 +63,7 @@ class AssuranceShutDownTimerTests: XCTestCase {
 
     func test_shutDownTimer_invalidated_whenSessionStarted() {
         // setup properties
-        assurance.connectedWebSocketURL = nil
+        mockStateManager.connectedWebSocketURL = nil
 
         // test
         assurance.onRegistered()
@@ -82,7 +84,7 @@ class AssuranceShutDownTimerTests: XCTestCase {
 
     func test_shutDownTimer_invalidedIfAssuranceReconnecting() {
         // setup properties
-        assurance.connectedWebSocketURL = "wss://sampleSocketURL"
+        mockStateManager.connectedWebSocketURL = "wss://sampleSocketURL"
 
         // test
         assurance.onRegistered()

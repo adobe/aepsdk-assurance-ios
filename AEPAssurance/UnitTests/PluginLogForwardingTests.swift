@@ -21,14 +21,14 @@ class PluginLogForwardingTests: XCTestCase {
 
     var plugin = PluginLogForwarder()
     let runtime = TestableExtensionRuntime()
-    var assuranceExtension: MockAssurance?
+    var stateManager: MockAssuranceStateManager?
     var mockSession: MockAssuranceSession!
 
     override func setUpWithError() throws {
-        assuranceExtension = MockAssurance(runtime: runtime)
-        assuranceExtension?.environment = .dev
-        assuranceExtension?.sessionId = "mocksessionId"
-        mockSession = MockAssuranceSession(assuranceExtension!)
+        stateManager = MockAssuranceStateManager(runtime)
+        stateManager?.environment = .dev
+        stateManager?.sessionId = "mocksessionId"
+        mockSession = MockAssuranceSession(stateManager!)
     }
 
     func test_vendor() {

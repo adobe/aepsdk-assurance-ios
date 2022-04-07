@@ -54,7 +54,7 @@ struct YellowButtonStyle: ButtonStyle {
 }
 
 struct AssuranceCard: View {
-    @State private var assuranceURL: String = ""
+    @State private var assuranceURL: String = "griffon://?adb_validation_sessionid=c0857675-4bab-4990-ba40-8781b10b415a"
     var body: some View {
         VStack {
             HStack {
@@ -218,17 +218,21 @@ struct BigEventsCard: View {
 
             HStack {
                 Button(action: {
-                    let path = Bundle.main.path(forResource: "sample", ofType: "html")
-                    let sampleHtml = try? String(contentsOfFile: path!, encoding: String.Encoding.utf8)
+                    guard let path = Bundle.main.path(forResource: "sample", ofType: "html") else {
+                        return
+                    }
+                    let sampleHtml = try? String(contentsOfFile: path, encoding: String.Encoding.utf8)
                     MobileCore.dispatch(event: Event(name: "Huge HTML Event", type: "type", source: "source", data: ["html": sampleHtml ?? ""]))
                 }, label: {
                     Text("Send HTML")
                 }).buttonStyle(YellowButtonStyle()).padding()
                 Button(action: {
                     let path = Bundle.main.path(forResource: "sampleRules", ofType: "json")
-                    let sampleJson = try? String(contentsOfFile: path!, encoding: String.Encoding.utf8)
+                    guard let sampleJson = try? String(contentsOfFile: path!, encoding: String.Encoding.utf8) else {
+                        return
+                    }
                     do {
-                        if let json = try JSONSerialization.jsonObject(with: Data(sampleJson!.utf8), options: []) as? [String: Any] {
+                        if let json = try JSONSerialization.jsonObject(with: Data(sampleJson.utf8), options: []) as? [String: Any] {
                             MobileCore.dispatch(event: Event(name: "Huge JSON Event", type: "type", source: "source", data: json))
                         }
                     } catch _ as NSError {}

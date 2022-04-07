@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         MobileCore.track(state: "Before SDK Init", data: nil)
-        MobileCore.setLogLevel(.debug)
+        MobileCore.setLogLevel(.trace)
         let extensions = [AEPIdentity.Identity.self,
                           Lifecycle.self,
                           Signal.self,
@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                           Places.self
         ]
         MobileCore.registerExtensions(extensions, {
-            MobileCore.configureWith(appId: "")
+            MobileCore.configureWith(appId: "launch-EN516bfbc0fe2b42449bf171a4f8cb9cef-development")
         })
         MobileCore.lifecycleStart(additionalContextData: nil)
         return true

@@ -19,7 +19,7 @@ import XCTest
 
 class iOSPinCodeScreenTests: XCTestCase {
 
-    var assurance: Assurance!
+    var mockStateManager: AssuranceStateManager!
     var pinCodeScreen: iOSPinCodeScreen!
     let mockUIService = MockUIService()
     let mockMessage = MockFullScreenMessage()
@@ -31,9 +31,8 @@ class iOSPinCodeScreenTests: XCTestCase {
         ServiceProvider.shared.uiService = mockUIService
         mockUIService.fullscreenMessage = mockMessage
         ServiceProvider.shared.namedKeyValueService = mockDataStore
-        assurance = Assurance(runtime: runtime)
-        assurance.onRegistered()
-        pinCodeScreen = iOSPinCodeScreen.init(withExtension: assurance)
+        mockStateManager = AssuranceStateManager(runtime)
+        pinCodeScreen = iOSPinCodeScreen.init(withState: mockStateManager)
         pinCodeScreen.fullscreenWebView = mockWebView
 
         // mock the orgID in configuration
@@ -62,7 +61,7 @@ class iOSPinCodeScreenTests: XCTestCase {
      --------------------------------------------------*/
     func test_iOSPinCodeScreen_connectClicked() throws {
         // setup
-        assurance.sessionId =  "mockSessionID"
+        mockStateManager.sessionId =  "mockSessionID"
 
         // verify that the correct socket url is created
         let expectation = XCTestExpectation(description: "Correct webSocket url should be created")
@@ -86,7 +85,7 @@ class iOSPinCodeScreenTests: XCTestCase {
      --------------------------------------------------*/
     func test_iOSPinCodeScreen_connectClicked_whenNotConfigured() throws {
         // setup
-        assurance.sessionId =  "mockSessionID"
+        mockStateManager.sessionId =  "mockSessionID"
         runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, data: (nil, .none))
 
         // verify
@@ -105,7 +104,7 @@ class iOSPinCodeScreenTests: XCTestCase {
      --------------------------------------------------*/
     func test_iOSPinCodeScreen_connectClicked_invalidPinCode() throws {
         // setup
-        assurance.sessionId =  "mockSessionID"
+        mockStateManager.sessionId =  "mockSessionID"
 
         // verify
         let expectation = XCTestExpectation(description: "No Pincode error should be returned")

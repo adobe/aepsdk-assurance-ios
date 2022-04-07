@@ -118,7 +118,7 @@ class ThreadSafeQueueTests: XCTestCase {
             DispatchQueue.global().async {
                 let sleepVal = arc4random() % 1000
                 usleep(sleepVal)
-                _ = queue.clear()
+                queue.clear()
                 group.leave()
             }
         }

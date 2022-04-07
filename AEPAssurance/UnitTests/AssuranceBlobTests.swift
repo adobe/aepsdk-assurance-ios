@@ -19,7 +19,7 @@ import XCTest
 class AssuranceBlobTests: XCTestCase {
 
     let runtime = TestableExtensionRuntime()
-    var assuranceExtension: MockAssurance?
+    var stateManager: MockAssuranceStateManager?
     var mockNetworkService: MockNetworkService!
     var mockSession: MockAssuranceSession!
     let sampleData = "sampleData".data(using: .utf8)
@@ -40,10 +40,10 @@ class AssuranceBlobTests: XCTestCase {
                 """.data(using: .utf8)!
 
     override func setUpWithError() throws {
-        assuranceExtension = MockAssurance(runtime: runtime)
-        assuranceExtension?.environment = .dev
-        assuranceExtension?.sessionId = "mocksessionId"
-        mockSession = MockAssuranceSession(assuranceExtension!)
+        stateManager = MockAssuranceStateManager(runtime)
+        stateManager?.environment = .dev
+        stateManager?.sessionId = "mocksessionId"
+        mockSession = MockAssuranceSession(stateManager!)
         mockNetworkService = MockNetworkService()
         ServiceProvider.shared.networkService = mockNetworkService
     }

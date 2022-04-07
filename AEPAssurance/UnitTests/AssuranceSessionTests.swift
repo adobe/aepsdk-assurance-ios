@@ -20,7 +20,7 @@ class AssuranceSessionTests: XCTestCase {
 
     let runtime = TestableExtensionRuntime()
     var session: AssuranceSession!
-    var assuranceExtension: MockAssurance!
+    var stateManager: MockAssuranceStateManager!
     var mockSocket: MockSocket!
     var mockStatusUI: MockStatusUI!
     var mockPinPad: MockPinPad!
@@ -31,12 +31,12 @@ class AssuranceSessionTests: XCTestCase {
     override func setUp() {
         ServiceProvider.shared.uiService = mockUIService
         mockUIService.fullscreenMessage = mockMessagePresentable
-        assuranceExtension = MockAssurance(runtime: runtime)
-        session = AssuranceSession(assuranceExtension)
+        stateManager = MockAssuranceStateManager(runtime)
+        session = AssuranceSession(stateManager)
         mockSocket = MockSocket(withDelegate: session)
         mockStatusUI = MockStatusUI(withSession: session)
         session.socket = mockSocket
-        mockPinPad = MockPinPad(withExtension: assuranceExtension)
+        mockPinPad = MockPinPad(withState: stateManager)
     }
 
     override func tearDown() {
@@ -44,7 +44,7 @@ class AssuranceSessionTests: XCTestCase {
 
     func test_startSession() throws {
         // setup
-        assuranceExtension.connectedWebSocketURL = nil
+        stateManager.connectedWebSocketURL = nil
 
         // test
         session.startSession()
@@ -67,7 +67,7 @@ class AssuranceSessionTests: XCTestCase {
 
     func test_startSession_whenConnectionURLExist() throws {
         // setup
-        assuranceExtension.connectedWebSocketURL = "wss://socket/connection"
+        stateManager.connectedWebSocketURL = "wss://socket/connection"
 
         // test
         session.startSession()
@@ -197,14 +197,14 @@ class AssuranceSessionTests: XCTestCase {
     func test_session_receives_startForwardingEvent_AfterBootEventsAreCleared() throws {
         // setup
         session.didClearBootEvent = true
-        assuranceExtension.expectation = XCTestExpectation(description: "Calls extension to get the shared state events")
+        stateManager.expectation = XCTestExpectation(description: "Calls extension to get the shared state events")
 
         // test
         session.webSocket(mockSocket, didReceiveEvent: startForwardingEvent)
 
         // verify
-        wait(for: [assuranceExtension.expectation!], timeout: 2.0)
-        XCTAssertTrue(assuranceExtension.getAllExtensionStateDataCalled)
+        wait(for: [stateManager.expectation!], timeout: 2.0)
+        XCTAssertTrue(stateManager.getAllExtensionStateDataCalled)
     }
 
     func test_session_addsClientLogs() throws {
@@ -221,9 +221,9 @@ class AssuranceSessionTests: XCTestCase {
     func test_session_terminateSession() throws {
         // setup
         session.pluginHub.registerPlugin(mockPlugin, toSession: session)
-        assuranceExtension.sessionId = "mockSessionID"
-        assuranceExtension.connectedWebSocketURL = "mockConnectedSocketURL"
-        assuranceExtension.environment = AssuranceEnvironment.prod
+        stateManager.sessionId = "mockSessionID"
+        stateManager.connectedWebSocketURL = "mockConnectedSocketURL"
+        stateManager.environment = AssuranceEnvironment.prod
         session.canStartForwarding = true
 
         // test
@@ -234,9 +234,9 @@ class AssuranceSessionTests: XCTestCase {
         XCTAssertTrue(mockSocket.disconnectCalled)
         XCTAssertFalse(session.canStartForwarding)
         XCTAssertFalse(session.canProcessSDKEvents)
-        XCTAssertNil(assuranceExtension.sessionId)
-        XCTAssertNil(assuranceExtension.connectedWebSocketURL)
-        XCTAssertEqual(AssuranceConstants.DEFAULT_ENVIRONMENT, assuranceExtension.environment)
+        XCTAssertNil(stateManager.sessionId)
+        XCTAssertNil(stateManager.connectedWebSocketURL)
+        XCTAssertEqual(AssuranceConstants.DEFAULT_ENVIRONMENT, stateManager.environment)
     }
 
     func test_session_whenConnected_sendsClientInfoEvent() throws {
@@ -262,7 +262,7 @@ class AssuranceSessionTests: XCTestCase {
         session.webSocket(mockSocket, didChangeState: .open)
 
         // verify
-        XCTAssertEqual(sampleURL?.absoluteString, assuranceExtension.connectedWebSocketURL)
+        XCTAssertEqual(sampleURL?.absoluteString, stateManager.connectedWebSocketURL)
     }
 
     func test_session_whenSocketDisconnect_NormalClosure() throws {
@@ -286,8 +286,8 @@ class AssuranceSessionTests: XCTestCase {
         session.statusUI = mockStatusUI
         mockPinPad.isDisplayed = true
         session.pinCodeScreen = mockPinPad
-        assuranceExtension.sessionId = "sampleSessionID"
-        assuranceExtension.connectedWebSocketURL = "url://with/sampleSessionID"
+        stateManager.sessionId = "sampleSessionID"
+        stateManager.connectedWebSocketURL = "url://with/sampleSessionID"
 
         // test
         session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.ORG_MISMATCH, "", true)
@@ -297,9 +297,9 @@ class AssuranceSessionTests: XCTestCase {
         XCTAssertTrue(mockPinPad.connectionFailedWithErrorCalled)
         XCTAssertEqual(AssuranceConnectionError.orgIDMismatch, mockPinPad.connectionFailedWithErrorValue)
         XCTAssertFalse(session.canStartForwarding)
-        XCTAssertNil(assuranceExtension.sessionId)
-        XCTAssertNil(assuranceExtension.connectedWebSocketURL)
-        XCTAssertEqual(AssuranceConstants.DEFAULT_ENVIRONMENT, assuranceExtension.environment)
+        XCTAssertNil(stateManager.sessionId)
+        XCTAssertNil(stateManager.connectedWebSocketURL)
+        XCTAssertEqual(AssuranceConstants.DEFAULT_ENVIRONMENT, stateManager.environment)
     }
 
     func test_session_whenSocketDisconnect_ConnectionLimit() throws {
@@ -371,7 +371,7 @@ class AssuranceSessionTests: XCTestCase {
         session.statusUI = mockStatusUI
         mockPinPad.isDisplayed = true
         session.pinCodeScreen = mockPinPad
-        assuranceExtension.connectedWebSocketURL = sampleSocketURL
+        stateManager.connectedWebSocketURL = sampleSocketURL
 
         // test
         session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.ABNORMAL_CLOSURE, "", true)

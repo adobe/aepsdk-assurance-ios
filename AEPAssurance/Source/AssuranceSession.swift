@@ -15,7 +15,7 @@ import Foundation
 
 class AssuranceSession {
     let RECONNECT_TIMEOUT = 5
-    let assuranceExtension: Assurance
+    let stateManager: AssuranceStateManager
     var pinCodeScreen: SessionAuthorizingUI?
     let outboundQueue: ThreadSafeQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
     let inboundQueue: ThreadSafeQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
@@ -55,9 +55,9 @@ class AssuranceSession {
     /// on the existence of a session for inferring event processing.
     var canProcessSDKEvents: Bool = true
 
-    /// Initializer with instance of  `Assurance` extension
-    init(_ assuranceExtension: Assurance) {
-        self.assuranceExtension = assuranceExtension
+    /// Initializer with instance of  `AssuranceStateManager`
+    init(_ stateManager: AssuranceStateManager) {
+        self.stateManager = stateManager
         handleInBoundEvents()
         handleOutBoundEvents()
         registerInternalPlugins()
@@ -77,7 +77,7 @@ class AssuranceSession {
         }
 
         // if there is a socket URL already connected in the previous session, reuse it.
-        if let socketURL = assuranceExtension.connectedWebSocketURL {
+        if let socketURL = stateManager.connectedWebSocketURL {
             self.statusUI.display()
             guard let url = URL(string: socketURL) else {
                 Log.warning(label: AssuranceConstants.LOG_TAG, "Invalid socket url. Ignoring to start new session.")
@@ -96,7 +96,7 @@ class AssuranceSession {
     ///
     /// Thread : Listener thread from EventHub
     func beginNewSession() {
-        let pinCodeScreen = iOSPinCodeScreen.init(withExtension: assuranceExtension)
+        let pinCodeScreen = iOSPinCodeScreen.init(withStateManager: stateManager)
         self.pinCodeScreen = pinCodeScreen
 
         // invoke the pinpad screen and create a socketURL with the pincode and other essential parameters
@@ -185,12 +185,12 @@ class AssuranceSession {
     /// Call this method when user terminates the Assurance session or when non-recoverable socket error occurs.
     ///
     func clearSessionData() {
-        assuranceExtension.clearState()
+        stateManager.clearAssuranceState()
         canStartForwarding = false
         pluginHub.notifyPluginsOnSessionTerminated()
-        assuranceExtension.sessionId = nil
-        assuranceExtension.connectedWebSocketURL = nil
-        assuranceExtension.environment = AssuranceConstants.DEFAULT_ENVIRONMENT
+        stateManager.sessionId = nil
+        stateManager.connectedWebSocketURL = nil
+        stateManager.environment = AssuranceConstants.DEFAULT_ENVIRONMENT
         pinCodeScreen = nil
     }
 

@@ -16,14 +16,14 @@ import WebKit
 
 class iOSPinCodeScreen: SessionAuthorizingUI {
     var isDisplayed: Bool = false
-    var assuranceExtension: Assurance
+    var stateManager: AssuranceStateManager
     var fullscreenMessage: FullscreenPresentable?
     var fullscreenWebView: WKWebView?
     var pinCodeCallback: PinCodeCallback?
 
     /// Initializer
-    required init(withExtension assuranceExtension: Assurance) {
-        self.assuranceExtension = assuranceExtension
+    required init(withStateManager stateManager: AssuranceStateManager) {
+        self.stateManager = stateManager
     }
 
     /// Invoke this during start session to display the pinCode screen.

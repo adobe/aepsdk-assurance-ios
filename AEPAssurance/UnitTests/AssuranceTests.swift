@@ -18,23 +18,24 @@ import XCTest
 
 class AssuranceTests: XCTestCase {
 
-    let CONSENT_SHARED_STATE_NAME = "com.adobe.edge.consent"
     let runtime = TestableExtensionRuntime()
     let mockUIService = MockUIService()
     let mockDataStore = MockDataStore()
     let mockMessagePresentable = MockFullscreenMessagePresentable()
     var mockSession: MockAssuranceSession!
+    var stateManager: AssuranceStateManager!
     var assurance: Assurance!
 
     override func setUp() {
         ServiceProvider.shared.uiService = mockUIService
         ServiceProvider.shared.namedKeyValueService = mockDataStore
         mockUIService.fullscreenMessage = mockMessagePresentable
-        assurance = Assurance(runtime: runtime)
+        stateManager = AssuranceStateManager(runtime)
+        assurance = Assurance(runtime: runtime, shutdownTime: AssuranceConstants.SHUTDOWN_TIME, stateManager: stateManager)
         assurance.onRegistered()
 
         // mock the interaction with AssuranceSession class
-        mockSession = MockAssuranceSession(assurance)
+        mockSession = MockAssuranceSession(stateManager)
         assurance.assuranceSession = mockSession
     }
 
@@ -61,12 +62,12 @@ class AssuranceTests: XCTestCase {
         XCTAssertTrue(mockMessagePresentable.showCalled)
 
         // verify that sessionID and environment are set in datastore
-        XCTAssertEqual("28f4a622-d34f-4036-c81a-d21352144b57", mockDataStore.dict[AssuranceConstants.DataStoreKeys.SESSION_ID] as! String)
+        XCTAssertEqual("28f4a622-d34f-4036-c81a-d21352144b57", stateManager.sessionId)
         XCTAssertEqual("stage", mockDataStore.dict[AssuranceConstants.DataStoreKeys.ENVIRONMENT] as! String)
 
         // verify the local variables
-        XCTAssertEqual("28f4a622-d34f-4036-c81a-d21352144b57", assurance.sessionId)
-        XCTAssertEqual(AssuranceEnvironment.stage, assurance.environment)
+        XCTAssertEqual("28f4a622-d34f-4036-c81a-d21352144b57", stateManager.sessionId)
+        XCTAssertEqual(AssuranceEnvironment.stage, stateManager.environment)
     }
 
     func test_startSession_withNonUUIDSessionID() throws {
@@ -294,33 +295,6 @@ class AssuranceTests: XCTestCase {
         XCTAssertEqual("Places - Found 0 nearby POIs.", mockSession.addClientLogMessage)
     }
 
-    func test_getAllExtensionStateData() throws {
-        // setup
-        runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.EVENT_HUB, event: nil, data: (sampleEventHubState, .set))
-        runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, data: (sampleConfigurationState, .set))
-        runtime.simulateXDMSharedState(for: CONSENT_SHARED_STATE_NAME, data: (sampleConsentState, .set))
-
-        // test
-        let resultEvents = assurance.getAllExtensionStateData()
-
-        // verify that the required shared state events are generated
-        XCTAssertEqual(3, resultEvents.count)
-        XCTAssertTrue(resultEvents.hasEventWithName("EventHub State"))
-        XCTAssertTrue(resultEvents.hasEventWithName("Configuration State"))
-        XCTAssertTrue(resultEvents.hasEventWithName("\(CONSENT_SHARED_STATE_NAME) XDM State"))
-    }
-
-    func test_getAllExtensionStateData_WhenNoExtensionRegistered() throws {
-        // setup
-        runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.EVENT_HUB, event: nil, data: ([:], .set))
-
-        // test
-        let resultEvents = assurance.getAllExtensionStateData()
-
-        // verify that the required shared state events are generated
-        XCTAssertEqual(0, resultEvents.count)
-    }
-
     func test_readyForEvent() {
         // should always return true
         XCTAssertTrue(assurance.readyForEvent(regionEvent))
@@ -389,50 +363,6 @@ class AssuranceTests: XCTestCase {
                      ])
     }
 
-    var sampleEventHubState: [String: Any] {
-        let data = """
-                   {
-                     "extensions": {
-                       "com.adobe.module.configuration": {
-                         "version": "1.8.0",
-                         "friendlyName": "Configuration"
-                       },
-                       "com.adobe.edge.consent": {
-                         "version": "1.0.0"
-                       }
-                     },
-                     "version": "1.8.0"
-                   }
-                   """.data(using: .utf8)!
-
-        return try! (JSONSerialization.jsonObject(with: data, options: []) as? [String: Any])!
-    }
-
-    var sampleConfigurationState: [String: Any] {
-        let data = """
-                   {
-                     "global.privacy" :  "optedin",
-                     "target.timout" :  5,
-                     "analytics.rsid": "rsids"
-                   }
-                   """.data(using: .utf8)!
-
-        return try! (JSONSerialization.jsonObject(with: data, options: []) as? [String: Any])!
-    }
-
-    var sampleConsentState: [String: Any] {
-        let data = """
-                    {
-                      "consents" : {
-                        "collect" : {
-                          "val" : "n"
-                        }
-                      }
-                    }
-                   """.data(using: .utf8)!
-
-        return try! (JSONSerialization.jsonObject(with: data, options: []) as? [String: Any])!
-    }
 }
 
 extension Array where Element == AssuranceEvent {
