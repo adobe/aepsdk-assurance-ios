@@ -16,13 +16,31 @@ import Foundation
 class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
 
     let stateManager: AssuranceStateManager
-    
+    var session: AssuranceSession?
+
     init(stateManager: AssuranceStateManager) {
-        eventQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
         self.stateManager = stateManager
     }
 
-  
+    func createSession() {
+
+    }
+
+    func getActiveSession() -> AssuranceSession? {
+        return session
+    }
+
+    func terminateSession() {
+
+    }
+
+    func shutDownSession() {
+
+    }
+
+    func sendEvent(_ assuranceEvent: AssuranceEvent) {
+
+    }
 
     // MARK: - AssurancePresentationDelegate methods
     func onPinConfirmation(_ url: URL) {
@@ -30,6 +48,5 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
 
     func onDisconnect() {
     }
-
 
 }
