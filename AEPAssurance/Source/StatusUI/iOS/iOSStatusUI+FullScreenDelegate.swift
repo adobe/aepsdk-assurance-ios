@@ -54,7 +54,7 @@ extension iOSStatusUI: FullscreenMessageDelegate {
         // return false, to indicate that the URL has been handled
         if host == AssuranceConstants.HTMLURLPath.DISCONNECT {
             message.dismiss()
-            assuranceSession.terminateSession()
+            sessionOrchestrator.terminateSession()
             return false
         }
 
