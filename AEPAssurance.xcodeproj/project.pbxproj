@@ -124,6 +124,9 @@
 		B6EB1C122805F3FE0036337E /* AssurancePresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C102805F3FE0036337E /* AssurancePresentation.swift */; };
 		B6EB1C132805F3FE0036337E /* AssurancePresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C112805F3FE0036337E /* AssurancePresentationDelegate.swift */; };
 		B6EB1C152805F4FE0036337E /* AssuranceSessionOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C142805F4FE0036337E /* AssuranceSessionOrchestrator.swift */; };
+		B6EB1C1728060D2D0036337E /* AssurancePresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C1628060D2D0036337E /* AssurancePresentationTests.swift */; };
+		B6EB1C1928060DB10036337E /* MockPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C1828060DB10036337E /* MockPresentation.swift */; };
+		B6EB1C1B280611410036337E /* MockSessionOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C1A280611410036337E /* MockSessionOrchestrator.swift */; };
 		B6F6F1B327A91E060040DCD4 /* AssuranceEventChunker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F6F1B227A91E060040DCD4 /* AssuranceEventChunker.swift */; };
 		B6F6F1B627A943C60040DCD4 /* AssuranceEventChunkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F6F1B427A942A10040DCD4 /* AssuranceEventChunkerTests.swift */; };
 		B6FEB8AC263A18E600F0F240 /* SocketScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FEB8AB263A18E600F0F240 /* SocketScript.swift */; };
@@ -312,6 +315,9 @@
 		B6EB1C102805F3FE0036337E /* AssurancePresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssurancePresentation.swift; sourceTree = "<group>"; };
 		B6EB1C112805F3FE0036337E /* AssurancePresentationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssurancePresentationDelegate.swift; sourceTree = "<group>"; };
 		B6EB1C142805F4FE0036337E /* AssuranceSessionOrchestrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceSessionOrchestrator.swift; sourceTree = "<group>"; };
+		B6EB1C1628060D2D0036337E /* AssurancePresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssurancePresentationTests.swift; sourceTree = "<group>"; };
+		B6EB1C1828060DB10036337E /* MockPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPresentation.swift; sourceTree = "<group>"; };
+		B6EB1C1A280611410036337E /* MockSessionOrchestrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSessionOrchestrator.swift; sourceTree = "<group>"; };
 		B6F6F1B227A91E060040DCD4 /* AssuranceEventChunker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEventChunker.swift; sourceTree = "<group>"; };
 		B6F6F1B427A942A10040DCD4 /* AssuranceEventChunkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEventChunkerTests.swift; sourceTree = "<group>"; };
 		B6FEB8AB263A18E600F0F240 /* SocketScript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketScript.swift; sourceTree = "<group>"; };
@@ -504,6 +510,7 @@
 				B64212B42684A655007343B6 /* AssuranceConnectionErrorTests.swift */,
 				B63EB79C2668D524005BE2C5 /* AssuranceClientLogMessageTests.swift */,
 				B6F6F1B427A942A10040DCD4 /* AssuranceEventChunkerTests.swift */,
+				B6EB1C1628060D2D0036337E /* AssurancePresentationTests.swift */,
 				B64071A9262C313E00C43183 /* Info.plist */,
 			);
 			name = UnitTests;
@@ -651,6 +658,8 @@
 				B6DBD81F2678FB19009EB47E /* MockStatusUI.swift */,
 				B64212B226849021007343B6 /* MockPinPad.swift */,
 				B6A0197127CEA8D30097ED5C /* MockAssuranceStateManager.swift */,
+				B6EB1C1828060DB10036337E /* MockPresentation.swift */,
+				B6EB1C1A280611410036337E /* MockSessionOrchestrator.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -1227,6 +1236,7 @@
 				B6A0197227CEA8D30097ED5C /* MockAssuranceStateManager.swift in Sources */,
 				B63ADABC26731A0400A1281A /* MockSocket.swift in Sources */,
 				B670E63D2638BF2A000FCB96 /* TestableExtensionRuntime.swift in Sources */,
+				B6EB1C1B280611410036337E /* MockSessionOrchestrator.swift in Sources */,
 				B6CECC5B26545829000D517F /* MockAssuranceSession.swift in Sources */,
 				B6CECC4E26531F5D000D517F /* PluginConfigModifyTests.swift in Sources */,
 				B6F6F1B627A943C60040DCD4 /* AssuranceEventChunkerTests.swift in Sources */,
@@ -1239,8 +1249,10 @@
 				B6CECC6026545857000D517F /* PluginHubTests.swift in Sources */,
 				B6D6A017265D8863005042BE /* AssuranceClientInfoTests.swift in Sources */,
 				B64FDF73264F384700D33192 /* PluginFakeEventTests.swift in Sources */,
+				B6EB1C1728060D2D0036337E /* AssurancePresentationTests.swift in Sources */,
 				B6DBD81E26787F5A009EB47E /* AssuranceSessionTests.swift in Sources */,
 				B6B055A626824EF900AF5D1A /* PluginLogForwardingTests.swift in Sources */,
+				B6EB1C1928060DB10036337E /* MockPresentation.swift in Sources */,
 				B6B23AD82641EF6500EE8153 /* AssuranceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

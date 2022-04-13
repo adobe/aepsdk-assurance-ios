@@ -32,7 +32,7 @@ class iOSPinCodeScreenTests: XCTestCase {
         mockUIService.fullscreenMessage = mockMessage
         ServiceProvider.shared.namedKeyValueService = mockDataStore
         mockStateManager = AssuranceStateManager(runtime)
-        pinCodeScreen = iOSPinCodeScreen.init(withState: mockStateManager)
+        pinCodeScreen = iOSPinCodeScreen.init(withStateManager: mockStateManager)
         pinCodeScreen.fullscreenWebView = mockWebView
 
         // mock the orgID in configuration

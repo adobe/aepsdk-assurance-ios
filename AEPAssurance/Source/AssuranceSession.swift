@@ -59,6 +59,15 @@ class AssuranceSession {
         registerInternalPlugins()
     }
 
+    /// Initializer for testing purposes to mock presentation layer
+    init?(_ stateManager: AssuranceStateManager, _ sessionOrchestrator: AssuranceSessionOrchestrator, _ presentation: AssurancePresentation) {
+        self.stateManager = stateManager
+        self.presentation = presentation
+        handleInBoundEvents()
+        handleOutBoundEvents()
+        registerInternalPlugins()
+    }
+
     ///
     /// Called this method to start an Assurance session.
     /// If the session was already connected, It will resume the connection.

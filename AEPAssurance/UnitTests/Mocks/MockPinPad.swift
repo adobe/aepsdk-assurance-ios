@@ -17,7 +17,7 @@ import Foundation
 class MockPinPad: SessionAuthorizingUI {
     var isDisplayed: Bool
 
-    required init(withState: AssuranceStateManager) {
+    required init(withStateManager withState: AssuranceStateManager) {
         isDisplayed = false
     }
 

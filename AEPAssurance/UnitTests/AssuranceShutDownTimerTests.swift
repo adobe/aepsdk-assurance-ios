@@ -20,18 +20,16 @@ class AssuranceShutDownTimerTests: XCTestCase {
 
     let runtime = TestableExtensionRuntime()
     let mockDataStore = MockDataStore()
-    var mockSession: MockAssuranceSession!
+    var mockSessionOrchestrator: MockSessionOrchestrator!
     var assurance: Assurance!
     var mockStateManager: MockAssuranceStateManager!
 
     override func setUp() {
         ServiceProvider.shared.namedKeyValueService = mockDataStore
         mockStateManager = MockAssuranceStateManager(runtime)
-        assurance = Assurance(runtime: runtime, shutdownTime: 1, stateManager: mockStateManager)
+        mockSessionOrchestrator = MockSessionOrchestrator(stateManager: mockStateManager)
+        assurance = Assurance(runtime: runtime, shutdownTime: 1, stateManager: mockStateManager, sessionOrchestrator: mockSessionOrchestrator)
 
-        // mock the interaction with AssuranceSession class
-        mockSession = MockAssuranceSession(mockStateManager)
-        assurance.assuranceSession = mockSession
     }
 
     override func tearDown() {
@@ -48,17 +46,17 @@ class AssuranceShutDownTimerTests: XCTestCase {
 
         // test
         assurance.onRegistered()
-        assurance.assuranceSession = mockSession
+        //assurance.assuranceSession = mockSession
 
         // verify assurance listens to event before shut down
-        XCTAssertTrue(mockSession.canProcessSDKEvents)
+        // XCTAssertTrue(mockSession.canProcessSDKEvents)  /// todo in sessionManagement PR
 
         // wait for assurance to shut down
         sleep(2)
 
         // verify assurance is shutdown after timer
-        XCTAssertTrue(mockSession.shutDownSessionCalled)
-        XCTAssertTrue(mockSession.canProcessSDKEvents)
+        XCTAssertTrue(mockSessionOrchestrator.shutDownSessionCalled)
+        //XCTAssertTrue(mockSession.canProcessSDKEvents)  /// todo in sessionManagement PR
     }
 
     func test_shutDownTimer_invalidated_whenSessionStarted() {
@@ -67,19 +65,18 @@ class AssuranceShutDownTimerTests: XCTestCase {
 
         // test
         assurance.onRegistered()
-        assurance.assuranceSession = mockSession
 
         // verify assurance listens to event before shut down
-        XCTAssertTrue(mockSession.canProcessSDKEvents)
+        // XCTAssertTrue(mockSession.canProcessSDKEvents)  /// todo in sessionManagement PR
         runtime.simulateComingEvent(event: assuranceStartEvent)
 
         // wait for assurance shutdown timer to run out
         sleep(2)
 
         // verify shutdown timer is invalidated and assurance keeps running
-        XCTAssertTrue(mockSession.canProcessSDKEvents)
+        // XCTAssertTrue(mockSession.canProcessSDKEvents)  /// todo in sessionManagement PR
         // verify that the assurance session is not shutdown
-        XCTAssertFalse(mockSession.shutDownSessionCalled)
+        XCTAssertFalse(mockSessionOrchestrator.shutDownSessionCalled)
     }
 
     func test_shutDownTimer_invalidedIfAssuranceReconnecting() {
@@ -88,11 +85,11 @@ class AssuranceShutDownTimerTests: XCTestCase {
 
         // test
         assurance.onRegistered()
-        assurance.assuranceSession = mockSession
         sleep(2)
 
         // verify
-        XCTAssertTrue(mockSession.canProcessSDKEvents)
+        // XCTAssertTrue(mockSession.canProcessSDKEvents)  /// todo in sessionManagement PR
+        XCTAssertFalse(mockSessionOrchestrator.shutDownSessionCalled)
     }
 
     var assuranceStartEvent: Event {
