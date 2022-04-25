@@ -2,7 +2,7 @@
  Copyright 2022 Adobe. All rights reserved.
  This file is licensed to you under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License. You may obtain a copy
- of the License at http://www.apache.org/licenses/LICENSE-2.0
+ of the License at http:www.apache.org/licenses/LICENSE-2.0
  
  Unless required by applicable law or agreed to in writing, software distributed under
  the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
@@ -15,7 +15,34 @@ import Foundation
 import XCTest
 import AEPServices
 
-
 class AssurancePresentationTests: XCTestCase {
+    
+    // testing class
+    var presentation: AssurancePresentation!
+    
+    // mocked dependencies
+    let runtime = TestableExtensionRuntime()
+    var mockStateManager: MockAssuranceStateManager!
+    var mockSessionOrchestrator: MockSessionOrchestrator!
+    var mockStatusUI : MockStatusUI!
+        
+    override func setUp() {
+        mockStateManager = MockAssuranceStateManager(runtime)
+        mockSessionOrchestrator = MockSessionOrchestrator(stateManager: mockStateManager)
+        mockStatusUI = MockStatusUI()
+        presentation = AssurancePresentation(stateManager: mockStateManager, sessionOrchestrator: mockSessionOrchestrator)
+    }
+    
+    
+    func test_addClientLog() {
+        // test
+        presentation.addClientLog("testString", visibility: .normal)
+        
+        // verify
+        XCTAssertTrue(mockStatusUI.addClientLogCalled)
+        XCTAssertEqual("testString", mockStatusUI.addClientLogMessage)
+        XCTAssertEqual("testString", mockStatusUI.addClientLogMessage)
+        
+    }
     
 }

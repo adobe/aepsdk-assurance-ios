@@ -37,8 +37,12 @@ class MockStatusUI: iOSStatusUI {
     }
 
     var addClientLogCalled = false
+    var addClientLogMessage : String
+    var addClientLogVisibility : AssuranceClientLogVisibility
     override func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
         addClientLogCalled = true
+        addClientLogMessage = message
+        addClientLogVisibility = visibility
     }
 
 }

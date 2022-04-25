@@ -31,16 +31,15 @@ class AssurancePresentation {
         self.sessionOrchestrator = sessionOrchestrator
     }
 
-    ///
-    /// Adds the log to Assurance Status UI.
+    /// Adds the log message o Assurance session's Status UI.
     /// - Parameters:
     ///     - message: `String` log message
     ///     - visibility: an `AssuranceClientLogVisibility` determining the importance of the log message
-    ///
     func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
         statusUI.addClientLog(message, visibility: visibility)
     }
 
+    /// Call this shows the UI elements that are required when a session is initialized.
     func onSessionInitialized() {
         // invoke the pinpad screen and create a socketURL with the pincode and other essential parameters
         pinCodeScreen.show(callback: { [weak self]  socketURL, error in
@@ -61,6 +60,7 @@ class AssurancePresentation {
         })
     }
 
+    /// Call this to show the UI elements that are required when a session connection has been successfully established.
     func onSessionConnected() {
         if pinCodeScreen.isDisplayed {
             self.pinCodeScreen.connectionSucceeded()
@@ -70,6 +70,7 @@ class AssurancePresentation {
         self.statusUI.updateForSocketConnected()
     }
 
+    /// Call this to show the UI elements that are required when a session is attempting to reconnect.
     func onSessionReconnecting() {
         if !statusUI.isDisplayed {
             statusUI.display()
@@ -77,11 +78,13 @@ class AssurancePresentation {
         statusUI.updateForSocketInActive()
     }
 
+    /// Call this method to clear the UI elements when a session is disconnected.
     func onSessionDisconnected() {
         pinCodeScreen.connectionFinished()
         statusUI.remove()
     }
 
+    /// Call this to show the UI elements that are required when a session has connection error.
     func onSessionConnectionError(error: AssuranceConnectionError) {
         if pinCodeScreen.isDisplayed == true {
             if error == .userCancelled {
