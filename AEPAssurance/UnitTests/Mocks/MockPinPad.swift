@@ -26,22 +26,22 @@ class MockPinPad: SessionAuthorizingUI {
         isDisplayed = true
         self.callback = callback
     }
-
-    var connectionInitializedCalled = false
-    func connectionInitialized() {
-        connectionInitializedCalled = true
+    
+    var onSessionInitializedCalled = false
+    func onSessionInitialized() {
+        onSessionInitializedCalled = true
     }
-
-    var connectionSucceededCalled = false
-    func connectionSucceeded() {
-        connectionSucceededCalled = true
+    
+    var onSessionConnectedCalled = false
+    func onSessionConnected() {
+        onSessionConnectedCalled = true
     }
-
-    var connectionFinishedCalled = false
-    func connectionFinished() {
-        connectionFinishedCalled = true
+    
+    var onSessionDisconnectedCalled = false
+    func onSessionDisconnected() {
+        onSessionDisconnectedCalled = true
     }
-
+    
     var connectionFailedWithErrorCalled = false
     var connectionFailedWithErrorValue: AssuranceConnectionError?
     func connectionFailedWithError(_ error: AssuranceConnectionError) {

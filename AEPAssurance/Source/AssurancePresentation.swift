@@ -56,14 +56,14 @@ class AssurancePresentation {
             // Thread : main thread (this callback is called from `overrideUrlLoad` method of WKWebView)
             Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to make a socket connection with URL : \(socketURL)")
             self?.sessionOrchestrator.onPinConfirmation(socketURL)
-            self?.pinCodeScreen.connectionInitialized()
+            self?.pinCodeScreen.onSessionInitialized()
         })
     }
 
     /// Call this to show the UI elements that are required when a session connection has been successfully established.
     func onSessionConnected() {
         if pinCodeScreen.isDisplayed {
-            self.pinCodeScreen.connectionSucceeded()
+            self.pinCodeScreen.onSessionConnected()
         }
 
         self.statusUI.display()
@@ -80,7 +80,7 @@ class AssurancePresentation {
 
     /// Call this method to clear the UI elements when a session is disconnected.
     func onSessionDisconnected() {
-        pinCodeScreen.connectionFinished()
+        pinCodeScreen.onSessionDisconnected()
         statusUI.remove()
     }
 

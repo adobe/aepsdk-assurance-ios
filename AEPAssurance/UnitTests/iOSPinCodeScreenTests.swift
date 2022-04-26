@@ -144,9 +144,9 @@ class iOSPinCodeScreenTests: XCTestCase {
     /*--------------------------------------------------
      connectionInitialized
      --------------------------------------------------*/
-    func test_iOSPinCodeScreen_connectionInitialized() throws {
+    func test_iOSPinCodeScreen_onSessionInitialized() throws {
         // test
-        pinCodeScreen.connectionInitialized()
+        pinCodeScreen.onSessionInitialized()
 
         // verify that the fullscreen message is displayed
         XCTAssertEqual("showLoading();", mockWebView.javaScriptStringReceived)
@@ -155,23 +155,23 @@ class iOSPinCodeScreenTests: XCTestCase {
     /*--------------------------------------------------
      connectionSucceeded
      --------------------------------------------------*/
-    func test_iOSPinCodeScreen_connectionSucceeded() throws {
+    func test_iOSPinCodeScreen_onSessionConnected() throws {
         // setup
         pinCodeScreen.fullscreenMessage = mockMessage
 
         // test
-        pinCodeScreen.connectionSucceeded()
+        pinCodeScreen.onSessionConnected()
 
         // verify that the fullscreen message is dismissed
         XCTAssertTrue(mockMessage.dismissCalled)
     }
 
-    func test_iOSPinCodeScreen_connectionFinished() throws {
+    func test_iOSPinCodeScreen_onSessionDisconnected() throws {
         // setup
         pinCodeScreen.fullscreenMessage = mockMessage
 
         // test
-        pinCodeScreen.connectionFinished()
+        pinCodeScreen.onSessionDisconnected()
 
         // verify that the fullscreen message is dismissed
         XCTAssertTrue(mockMessage.dismissCalled)

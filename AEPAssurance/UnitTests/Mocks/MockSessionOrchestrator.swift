@@ -55,8 +55,10 @@ class MockSessionOrchestrator : AssuranceSessionOrchestrator {
     // MARK: - AssurancePresentationDelegate methods
     override func onPinConfirmation(_ url: URL) {
     }
-
+    
+    var onDisconnectCalled = false
     override func onDisconnect() {
+        onDisconnectCalled = true
     }
 }
 
