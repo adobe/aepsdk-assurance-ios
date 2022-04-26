@@ -25,14 +25,17 @@ class AssurancePresentationTests: XCTestCase {
     var mockStateManager: MockAssuranceStateManager!
     var mockSessionOrchestrator: MockSessionOrchestrator!
     var mockStatusUI : MockStatusUI!
+    var mockPinPad : MockPinPad!
         
     override func setUp() {
         mockStateManager = MockAssuranceStateManager(runtime)
         mockSessionOrchestrator = MockSessionOrchestrator(stateManager: mockStateManager)
-        mockStatusUI = MockStatusUI()
+        mockStatusUI = MockStatusUI(withSessionOrchestrator: mockSessionOrchestrator)
+        mockPinPad = MockPinPad(withStateManager: mockStateManager)
         presentation = AssurancePresentation(stateManager: mockStateManager, sessionOrchestrator: mockSessionOrchestrator)
+        presentation.statusUI = mockStatusUI
+        presentation.pinCodeScreen = mockPinPad
     }
-    
     
     func test_addClientLog() {
         // test
@@ -42,7 +45,83 @@ class AssurancePresentationTests: XCTestCase {
         XCTAssertTrue(mockStatusUI.addClientLogCalled)
         XCTAssertEqual("testString", mockStatusUI.addClientLogMessage)
         XCTAssertEqual("testString", mockStatusUI.addClientLogMessage)
+    }
+    
+    func test_onSessionConnected() {
+        // setup
+        mockPinPad.isDisplayed = true
         
+        // test
+        presentation.onSessionConnected()
+        
+        // verify that the pinpad screen is removed
+        XCTAssertTrue(mockPinPad.onSessionConnectedCalled)
+        
+        // verify that the status screen is display with connected status
+        XCTAssertTrue(mockStatusUI.displayCalled)
+        XCTAssertTrue(mockStatusUI.updateForSocketConnectedCalled)
+    }
+    
+    func test_onSessionReconnecting() {
+        // setup
+        mockPinPad.isDisplayed = false
+        
+        // test
+        presentation.onSessionReconnecting()
+
+        // verify that the status screen is display with inactive status
+        XCTAssertTrue(mockStatusUI.displayCalled)
+        XCTAssertTrue(mockStatusUI.updateForSocketInActiveCalled)
+    }
+    
+    func test_onSessionDisconnected() {        
+        // test
+        presentation.onSessionDisconnected()
+
+        // verify that the status screen is display with inactive status
+        XCTAssertTrue(mockPinPad.onSessionDisconnectedCalled)
+        XCTAssertTrue(mockStatusUI.removeCalled)
+    }
+    
+    func test_onSessionConnectionError_nonRetryable() {
+        // setup
+        mockPinPad.isDisplayed = true
+        
+        // test
+        presentation.onSessionConnectionError(error: .eventLimit)
+
+        // verify
+        XCTAssertTrue(mockPinPad.connectionFailedWithErrorCalled)
+        XCTAssertEqual(.eventLimit, mockPinPad.connectionFailedWithErrorValue)
+        
+        // remove the Status UI on nonRetry error
+        XCTAssertTrue(mockStatusUI.removeCalled)
+    }
+    
+    func test_onSessionConnectionError_Retryable() {
+        // setup
+        mockPinPad.isDisplayed = true
+        
+        // test
+        presentation.onSessionConnectionError(error: .genericError)
+
+        // verify that the status screen is display with inactive status
+        XCTAssertTrue(mockPinPad.connectionFailedWithErrorCalled)
+        XCTAssertEqual(.genericError, mockPinPad.connectionFailedWithErrorValue)
+        
+        // donot remove the Status UI on Retry error
+        XCTAssertFalse(mockStatusUI.removeCalled)
+    }
+    
+    func test_onSessionConnectionError_UserCancelled() {
+        // setup the pinpad to be displayed
+        mockPinPad.isDisplayed = true
+        
+        // test
+        presentation.onSessionConnectionError(error: .userCancelled)
+
+        // verify that the status screen is display with inactive status
+        XCTAssertTrue(mockSessionOrchestrator.onDisconnectCalled)
     }
     
 }
