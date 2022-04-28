@@ -22,26 +22,26 @@ class MockPresentation : AssurancePresentation {
         super.init(stateManager: stateManager, sessionOrchestrator: sessionOrchestrator)
     }
     
-    var onSessionConnectedCalled = false
-    override func onSessionConnected() {
-        onSessionConnectedCalled = true
+    var sessionConnectedCalled = false
+    override func sessionConnected() {
+        sessionConnectedCalled = true
     }
     
-    var onSessionReconnectingCalled = false
-    override func onSessionReconnecting() {
-        onSessionReconnectingCalled = true
+    var sessionReconnectingCalled = false
+    override func sessionReconnecting() {
+        sessionReconnectingCalled = true
     }
     
-    var onSessionDisconnectedCalled = false
-    override func onSessionDisconnected() {
-        onSessionDisconnectedCalled = true
+    var sessionDisconnectedCalled = false
+    override func sessionDisconnected() {
+        sessionDisconnectedCalled = true
     }
     
-    var onSessionConnectionErrorCalled = false
-    var onSessionConnectionErrorValue : AssuranceConnectionError?
-    override func onSessionConnectionError(error: AssuranceConnectionError) {
-        onSessionConnectionErrorCalled = true
-        onSessionConnectionErrorValue = error
+    var sessionConnectionErrorCalled = false
+    var sessionConnectionErrorValue : AssuranceConnectionError?
+    override func sessionConnectionError(error: AssuranceConnectionError) {
+        sessionConnectionErrorCalled = true
+        sessionConnectionErrorValue = error
     }
     
     var addClientLogCalled = false

@@ -52,7 +52,7 @@ class AssurancePresentationTests: XCTestCase {
         mockPinPad.isDisplayed = true
         
         // test
-        presentation.onSessionConnected()
+        presentation.sessionConnected()
         
         // verify that the pinpad screen is removed
         XCTAssertTrue(mockPinPad.onSessionConnectedCalled)
@@ -67,7 +67,7 @@ class AssurancePresentationTests: XCTestCase {
         mockPinPad.isDisplayed = false
         
         // test
-        presentation.onSessionReconnecting()
+        presentation.sessionReconnecting()
 
         // verify that the status screen is display with inactive status
         XCTAssertTrue(mockStatusUI.displayCalled)
@@ -76,7 +76,7 @@ class AssurancePresentationTests: XCTestCase {
     
     func test_onSessionDisconnected() {        
         // test
-        presentation.onSessionDisconnected()
+        presentation.sessionDisconnected()
 
         // verify that the status screen is display with inactive status
         XCTAssertTrue(mockPinPad.onSessionDisconnectedCalled)
@@ -88,7 +88,7 @@ class AssurancePresentationTests: XCTestCase {
         mockPinPad.isDisplayed = true
         
         // test
-        presentation.onSessionConnectionError(error: .eventLimit)
+        presentation.sessionConnectionError(error: .eventLimit)
 
         // verify
         XCTAssertTrue(mockPinPad.connectionFailedWithErrorCalled)
@@ -103,7 +103,7 @@ class AssurancePresentationTests: XCTestCase {
         mockPinPad.isDisplayed = true
         
         // test
-        presentation.onSessionConnectionError(error: .genericError)
+        presentation.sessionConnectionError(error: .genericError)
 
         // verify that the status screen is display with inactive status
         XCTAssertTrue(mockPinPad.connectionFailedWithErrorCalled)
@@ -118,7 +118,7 @@ class AssurancePresentationTests: XCTestCase {
         mockPinPad.isDisplayed = true
         
         // test
-        presentation.onSessionConnectionError(error: .userCancelled)
+        presentation.sessionConnectionError(error: .userCancelled)
 
         // verify that the status screen is display with inactive status
         XCTAssertTrue(mockSessionOrchestrator.onDisconnectCalled)

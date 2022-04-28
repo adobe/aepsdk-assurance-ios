@@ -33,17 +33,17 @@ class iOSPinCodeScreen: SessionAuthorizingUI {
     }
 
     /// Invoked when the a socket connection is initialized.
-    func onSessionInitialized() {
+    func sessionInitialized() {
         fullscreenWebView?.evaluateJavaScript("showLoading();", completionHandler: nil)
     }
 
     /// Invoked when the a successful socket connection is established with a desired assurance session.
-    func onSessionConnected() {
+    func sessionConnected() {
         fullscreenMessage?.dismiss()
     }
 
     /// Invoked when the a successful socket connection is terminated.
-    func onSessionDisconnected() {
+    func sessionDisconnected() {
         fullscreenMessage?.dismiss()
     }
 

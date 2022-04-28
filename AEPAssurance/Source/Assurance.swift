@@ -83,7 +83,7 @@ public class Assurance: NSObject, Extension {
         /// 2. If Assurance extension collecting events before the 5 second timeout
         ///
         /// TODO :  the second condition is currently not implemented yet. Will be updated in upcoming PullRequest
-        if !(sessionOrchestrator.getActiveSession() != nil) {
+        if !(sessionOrchestrator.session != nil) {
             return
         }
 
@@ -149,9 +149,9 @@ public class Assurance: NSObject, Extension {
     ///     - event - a mobileCore's places request event
     private func handlePlacesRequest(event: Event) {
         if event.isRequestNearByPOIEvent {
-            sessionOrchestrator.getActiveSession()?.presentation.addClientLog("Places - Requesting \(event.poiCount) nearby POIs from (\(event.latitude), \(event.longitude))", visibility: .normal)
+            sessionOrchestrator.session?.presentation.addClientLog("Places - Requesting \(event.poiCount) nearby POIs from (\(event.latitude), \(event.longitude))", visibility: .normal)
         } else if event.isRequestResetEvent {
-            sessionOrchestrator.getActiveSession()?.presentation.addClientLog("Places - Resetting location", visibility: .normal)
+            sessionOrchestrator.session?.presentation.addClientLog("Places - Resetting location", visibility: .normal)
         }
     }
 
@@ -161,16 +161,16 @@ public class Assurance: NSObject, Extension {
     ///     - event - a mobileCore's places response event
     private func handlePlacesResponse(event: Event) {
         if event.isResponseRegionEvent {
-            sessionOrchestrator.getActiveSession()?.presentation.addClientLog("Places - Processed \(event.regionEventType) for region \(event.regionName).", visibility: .normal)
+            sessionOrchestrator.session?.presentation.addClientLog("Places - Processed \(event.regionEventType) for region \(event.regionName).", visibility: .normal)
         } else if event.isResponseNearByEvent {
             let nearByPOIs = event.nearByPOIs
             for poi in nearByPOIs {
                 guard let poiDictionary = poi as? [String: Any] else {
                     return
                 }
-                sessionOrchestrator.getActiveSession()?.presentation.addClientLog("\t  \(poiDictionary["regionname"] as? String ?? "Unknown")", visibility: .high)
+                sessionOrchestrator.session?.presentation.addClientLog("\t  \(poiDictionary["regionname"] as? String ?? "Unknown")", visibility: .high)
             }
-            sessionOrchestrator.getActiveSession()?.presentation.addClientLog("Places - Found \(nearByPOIs.count) nearby POIs\(!nearByPOIs.isEmpty ? " :" : ".")", visibility: .high)
+            sessionOrchestrator.session?.presentation.addClientLog("Places - Found \(nearByPOIs.count) nearby POIs\(!nearByPOIs.isEmpty ? " :" : ".")", visibility: .high)
         }
     }
 

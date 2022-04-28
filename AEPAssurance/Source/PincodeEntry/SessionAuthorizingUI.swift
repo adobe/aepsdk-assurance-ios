@@ -27,13 +27,13 @@ protocol SessionAuthorizingUI {
     mutating func show(callback : @escaping PinCodeCallback)
 
     /// Invoked when the a socket connection is initialized
-    func onSessionInitialized()
+    func sessionInitialized()
 
     /// Invoked when the a successful socket connection is established with a desired assurance session
-    func onSessionConnected()
+    func sessionConnected()
 
     /// Invoked when the a successful socket connection is terminated
-    func onSessionDisconnected()
+    func sessionDisconnected()
 
     /// Invoked when the a socket connection is failed
     /// - Parameters

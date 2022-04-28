@@ -25,14 +25,6 @@ class MockSessionOrchestrator : AssuranceSessionOrchestrator {
     override func createSession() {
         createSessionCalled = true
     }
-    
-    func setActiveSession(_ activeSession: AssuranceSession) {
-        session = activeSession
-    }
-
-    override func getActiveSession() -> AssuranceSession? {
-        return session
-    }
 
     var terminateSessionCalled = false
     override func terminateSession() {
@@ -53,12 +45,18 @@ class MockSessionOrchestrator : AssuranceSessionOrchestrator {
     }
 
     // MARK: - AssurancePresentationDelegate methods
-    override func onPinConfirmation(_ url: URL) {
+    override func pinScreenConnectClicked(_ url: URL) {
     }
     
     var onDisconnectCalled = false
-    override func onDisconnect() {
+    override func disconnectClicked() {
         onDisconnectCalled = true
+    }
+}
+
+extension AssuranceSessionOrchestrator {
+    func setSession() {
+        session = nil
     }
 }
 

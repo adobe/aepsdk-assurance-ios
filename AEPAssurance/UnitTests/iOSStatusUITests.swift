@@ -228,7 +228,7 @@ class iOSStatusUITests: XCTestCase {
     func test_floatingButtonShow_whenSocketConnected() throws {
         // setup
         statusUI.display()
-        mockSessionOrchestrator.setActiveSession(mockSession)
+        mockSessionOrchestrator.session = mockSession
         mockSession.mockSocketState(state: .open)
 
         // test

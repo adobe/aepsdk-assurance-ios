@@ -140,7 +140,7 @@ class AssuranceTests: XCTestCase {
 
     func test_handleWildCardEvent_withNilEventData() throws {
         // setup
-        mockSessionOrchestrator.setActiveSession(mockSession)
+        mockSessionOrchestrator.session = mockSession
         let event = Event(name: "Any SDK Event",
                           type: EventType.analytics,
                           source: EventSource.requestContent,
@@ -175,7 +175,7 @@ class AssuranceTests: XCTestCase {
 
     func test_handleSharedStateEvent_Regular() throws {
         // setup
-        mockSessionOrchestrator.setActiveSession(mockSession)
+        mockSessionOrchestrator.session = mockSession
         let sampleConfiguration = ["configkey": "value"]
         let configStateChangeEvent = Event(name: AssuranceConstants.SDKEventName.SHARED_STATE_CHANGE,
                                            type: EventType.hub,
@@ -194,7 +194,7 @@ class AssuranceTests: XCTestCase {
 
     func test_handleSharedStateEvent_XDM() throws {
         // setup
-        mockSessionOrchestrator.setActiveSession(mockSession)
+        mockSessionOrchestrator.session = mockSession
         let sampleConsent = ["consent": "yes"]
         let consentStateChangeEvent = Event(name: AssuranceConstants.SDKEventName.XDM_SHARED_STATE_CHANGE,
                                             type: EventType.hub,
@@ -256,7 +256,7 @@ class AssuranceTests: XCTestCase {
 
     func test_handlePlacesRequest_GetNearByPlaces() throws {
         // setup
-        mockSessionOrchestrator.setActiveSession(mockSession)
+        mockSessionOrchestrator.session = mockSession
         
         // test
         runtime.simulateComingEvent(event: getNearbyPlacesRequestEvent)
@@ -268,7 +268,7 @@ class AssuranceTests: XCTestCase {
 
     func test_handlePlacesRequest_PlacesReset() throws {
         // setup
-        mockSessionOrchestrator.setActiveSession(mockSession)
+        mockSessionOrchestrator.session = mockSession
         
         // test
         runtime.simulateComingEvent(event: placesResetEvent)
@@ -280,7 +280,7 @@ class AssuranceTests: XCTestCase {
 
     func test_handlePlacesResponse_RegionEvent() throws {
         // setup
-        mockSessionOrchestrator.setActiveSession(mockSession)
+        mockSessionOrchestrator.session = mockSession
         
         // test
         runtime.simulateComingEvent(event: regionEvent)
@@ -292,7 +292,7 @@ class AssuranceTests: XCTestCase {
 
     func test_handlePlacesResponse_nearbyPOIResponse() throws {
         // setup
-        mockSessionOrchestrator.setActiveSession(mockSession)
+        mockSessionOrchestrator.session = mockSession
         
         // test
         runtime.simulateComingEvent(event: nearbyPOIResponse)
@@ -303,7 +303,7 @@ class AssuranceTests: XCTestCase {
 
     func test_handlePlacesResponse_nearbyPOIResponseNoPOI() throws {
         // setup
-        mockSessionOrchestrator.setActiveSession(mockSession)
+        mockSessionOrchestrator.session = mockSession
         
         // test
         runtime.simulateComingEvent(event: nearbyPOIResponseNoPOI)

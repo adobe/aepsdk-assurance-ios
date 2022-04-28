@@ -28,17 +28,17 @@ class MockPinPad: SessionAuthorizingUI {
     }
     
     var onSessionInitializedCalled = false
-    func onSessionInitialized() {
+    func sessionInitialized() {
         onSessionInitializedCalled = true
     }
     
     var onSessionConnectedCalled = false
-    func onSessionConnected() {
+    func sessionConnected() {
         onSessionConnectedCalled = true
     }
     
     var onSessionDisconnectedCalled = false
-    func onSessionDisconnected() {
+    func sessionDisconnected() {
         onSessionDisconnectedCalled = true
     }
     

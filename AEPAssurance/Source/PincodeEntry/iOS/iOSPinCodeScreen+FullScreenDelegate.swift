@@ -89,7 +89,7 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
             }
 
             Log.trace(label: AssuranceConstants.LOG_TAG, "Connect Button clicked. Making a socket connection with url \(url).")
-            self.onSessionInitialized()
+            self.sessionInitialized()
             self.pinCodeCallback?(url, nil)
             return false
         }

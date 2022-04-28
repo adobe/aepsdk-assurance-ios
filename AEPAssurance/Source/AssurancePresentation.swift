@@ -39,12 +39,12 @@ class AssurancePresentation {
         statusUI.addClientLog(message, visibility: visibility)
     }
 
-    /// Call this shows the UI elements that are required when a session is initialized.
-    func onSessionInitialized() {
+    /// Call this to show the UI elements that are required when a session is initialized.
+    func sessionInitialized() {
         // invoke the pinpad screen and create a socketURL with the pincode and other essential parameters
         pinCodeScreen.show(callback: { [weak self]  socketURL, error in
             if let error = error {
-                self?.onSessionConnectionError(error: error)
+                self?.sessionConnectionError(error: error)
                 return
             }
 
@@ -55,15 +55,15 @@ class AssurancePresentation {
 
             // Thread : main thread (this callback is called from `overrideUrlLoad` method of WKWebView)
             Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to make a socket connection with URL : \(socketURL)")
-            self?.sessionOrchestrator.onPinConfirmation(socketURL)
-            self?.pinCodeScreen.onSessionInitialized()
+            self?.sessionOrchestrator.pinScreenConnectClicked(socketURL)
+            self?.pinCodeScreen.sessionInitialized()
         })
     }
 
     /// Call this to show the UI elements that are required when a session connection has been successfully established.
-    func onSessionConnected() {
+    func sessionConnected() {
         if pinCodeScreen.isDisplayed {
-            self.pinCodeScreen.onSessionConnected()
+            self.pinCodeScreen.sessionConnected()
         }
 
         self.statusUI.display()
@@ -71,7 +71,7 @@ class AssurancePresentation {
     }
 
     /// Call this to show the UI elements that are required when a session is attempting to reconnect.
-    func onSessionReconnecting() {
+    func sessionReconnecting() {
         if !statusUI.isDisplayed {
             statusUI.display()
         }
@@ -79,16 +79,16 @@ class AssurancePresentation {
     }
 
     /// Call this method to clear the UI elements when a session is disconnected.
-    func onSessionDisconnected() {
-        pinCodeScreen.onSessionDisconnected()
+    func sessionDisconnected() {
+        pinCodeScreen.sessionDisconnected()
         statusUI.remove()
     }
 
     /// Call this to show the UI elements that are required when a session has connection error.
-    func onSessionConnectionError(error: AssuranceConnectionError) {
+    func sessionConnectionError(error: AssuranceConnectionError) {
         if pinCodeScreen.isDisplayed == true {
             if error == .userCancelled {
-                sessionOrchestrator.onDisconnect()
+                sessionOrchestrator.disconnectClicked()
                 return
             }
 

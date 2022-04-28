@@ -70,7 +70,7 @@ extension AssuranceSession {
                     // 1. Remove the WebView UI and display the floating button
                     // 2. Share the Assurance shared state
                     // 3. Notify the client plugins on successful connection
-                    presentation.onSessionConnected()
+                    presentation.sessionConnected()
                     self.pluginHub.notifyPluginsOnConnect()
                     self.outboundSource.add(data: 1)
 

@@ -101,7 +101,7 @@ class AssuranceSession {
     ///
     /// Thread : Listener thread from EventHub
     func beginNewSession() {
-        presentation.onSessionInitialized()
+        presentation.sessionInitialized()
     }
 
     ///
@@ -130,7 +130,7 @@ class AssuranceSession {
         // if the pinCode screen is still being displayed. Then use the same webView to display error
         Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with error :\(error.info.name) \n description : \(error.info.description) \n close code: \(closeCode)")
 
-        presentation.onSessionConnectionError(error: error)
+        presentation.sessionConnectionError(error: error)
         pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
 
         // since we don't give retry option for these errors and UI will be dismissed anyway, hence notify plugins for onSessionTerminated

@@ -16,7 +16,11 @@ import Foundation
 class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
 
     let stateManager: AssuranceStateManager
+    #if DEBUG
     var session: AssuranceSession?
+    #else
+    private(set) var session: AssuranceSession?
+    #endif
 
     init(stateManager: AssuranceStateManager) {
         self.stateManager = stateManager
@@ -24,10 +28,6 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
 
     func createSession() {
 
-    }
-
-    func getActiveSession() -> AssuranceSession? {
-        return session
     }
 
     func terminateSession() {
@@ -43,10 +43,11 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     }
 
     // MARK: - AssurancePresentationDelegate methods
-    func onPinConfirmation(_ url: URL) {
+        
+    func pinScreenConnectClicked(_ url: URL) {
     }
 
-    func onDisconnect() {
+    func disconnectClicked() {
     }
 
 }
