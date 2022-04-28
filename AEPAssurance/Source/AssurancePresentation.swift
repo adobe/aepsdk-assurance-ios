@@ -19,7 +19,7 @@ class AssurancePresentation {
     let sessionOrchestrator: AssuranceSessionOrchestrator
 
     lazy var pinCodeScreen: SessionAuthorizingUI = {
-        iOSPinCodeScreen.init(withStateManager: stateManager)
+        iOSPinCodeScreen.init(withPresentationDelegate: sessionOrchestrator)
     }()
 
     lazy var statusUI: iOSStatusUI  = {
@@ -42,22 +42,7 @@ class AssurancePresentation {
     /// Call this to show the UI elements that are required when a session is initialized.
     func sessionInitialized() {
         // invoke the pinpad screen and create a socketURL with the pincode and other essential parameters
-        pinCodeScreen.show(callback: { [weak self]  socketURL, error in
-            if let error = error {
-                self?.sessionConnectionError(error: error)
-                return
-            }
-
-            guard let socketURL = socketURL else {
-                Log.debug(label: AssuranceConstants.LOG_TAG, "SocketURL to connect to session is empty. Ignoring to start Assurance session.")
-                return
-            }
-
-            // Thread : main thread (this callback is called from `overrideUrlLoad` method of WKWebView)
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to make a socket connection with URL : \(socketURL)")
-            self?.sessionOrchestrator.pinScreenConnectClicked(socketURL)
-            self?.pinCodeScreen.sessionInitialized()
-        })
+        pinCodeScreen.show()
     }
 
     /// Call this to show the UI elements that are required when a session connection has been successfully established.
@@ -87,12 +72,7 @@ class AssurancePresentation {
     /// Call this to show the UI elements that are required when a session has connection error.
     func sessionConnectionError(error: AssuranceConnectionError) {
         if pinCodeScreen.isDisplayed == true {
-            if error == .userCancelled {
-                sessionOrchestrator.disconnectClicked()
-                return
-            }
-
-            pinCodeScreen.connectionFailedWithError(error)
+            pinCodeScreen.sessionConnectionFailed(withError: error)
         } else {
             let errorView = ErrorView.init(AssuranceConnectionError.clientError)
             errorView.display()

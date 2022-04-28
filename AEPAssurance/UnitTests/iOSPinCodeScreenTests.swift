@@ -23,6 +23,7 @@ class iOSPinCodeScreenTests: XCTestCase {
     var pinCodeScreen: iOSPinCodeScreen!
     let mockUIService = MockUIService()
     let mockMessage = MockFullScreenMessage()
+    var mockSessionOrchestrator: MockSessionOrchestrator!
     let mockDataStore = MockDataStore()
     let runtime = TestableExtensionRuntime()
     let mockWebView = MockWebView()
@@ -32,7 +33,8 @@ class iOSPinCodeScreenTests: XCTestCase {
         mockUIService.fullscreenMessage = mockMessage
         ServiceProvider.shared.namedKeyValueService = mockDataStore
         mockStateManager = AssuranceStateManager(runtime)
-        pinCodeScreen = iOSPinCodeScreen.init(withStateManager: mockStateManager)
+        mockSessionOrchestrator = MockSessionOrchestrator(stateManager: mockStateManager)
+        pinCodeScreen = iOSPinCodeScreen.init(withPresentationDelegate: mockSessionOrchestrator)
         pinCodeScreen.fullscreenWebView = mockWebView
 
         // mock the orgID in configuration
@@ -49,7 +51,7 @@ class iOSPinCodeScreenTests: XCTestCase {
      --------------------------------------------------*/
     func test_iOSPinCodeScreen_show() throws {
         // setup
-        pinCodeScreen.show(callback: { _, _ in })
+        pinCodeScreen.show()
 
         // verify that the fullscreen message is displayed
         XCTAssertTrue(mockUIService.createFullscreenMessageCalled)
@@ -61,42 +63,15 @@ class iOSPinCodeScreenTests: XCTestCase {
      --------------------------------------------------*/
     func test_iOSPinCodeScreen_connectClicked() throws {
         // setup
-        mockStateManager.sessionId =  "mockSessionID"
-
-        // verify that the correct socket url is created
-        let expectation = XCTestExpectation(description: "Correct webSocket url should be created")
-        expectation.assertForOverFulfill = true
-        pinCodeScreen.show(callback: { socketURL, _ in
-
-            XCTAssertTrue(socketURL!.absoluteString.contains("wss://connect.griffon.adobe.com/client/v1?sessionId=mockSessionID&token=4444&orgId=mockorg@adobe.com&clientId="))
-            expectation.fulfill()
-        })
+        pinCodeScreen.show()
 
         // test
         let shouldURLBeHandled = pinCodeScreen.overrideUrlLoad(message: mockMessage, url: "adbinapp://confirm?code=4444")
 
         // verify
+        XCTAssertTrue(mockSessionOrchestrator.pinScreenConnectClickedCalled)
+        XCTAssertEqual("4444", mockSessionOrchestrator.pinScreenConnectClickedPinParameter)
         XCTAssertFalse(shouldURLBeHandled)
-        wait(for: [expectation], timeout: 1)
-    }
-
-    /*--------------------------------------------------
-     Simulate connect clicked - when no orgID
-     --------------------------------------------------*/
-    func test_iOSPinCodeScreen_connectClicked_whenNotConfigured() throws {
-        // setup
-        mockStateManager.sessionId =  "mockSessionID"
-        runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, data: (nil, .none))
-
-        // verify
-        let expectation = XCTestExpectation(description: "No OrgID error should be returned")
-        pinCodeScreen.show(callback: { _, error in
-            XCTAssertEqual(error, AssuranceConnectionError.noOrgId)
-            expectation.fulfill()
-        })
-
-        // test
-        _ = pinCodeScreen.overrideUrlLoad(message: mockMessage, url: "adbinapp://confirm?code=4444")
     }
 
     /*--------------------------------------------------
@@ -104,17 +79,15 @@ class iOSPinCodeScreenTests: XCTestCase {
      --------------------------------------------------*/
     func test_iOSPinCodeScreen_connectClicked_invalidPinCode() throws {
         // setup
-        mockStateManager.sessionId =  "mockSessionID"
-
-        // verify
-        let expectation = XCTestExpectation(description: "No Pincode error should be returned")
-        pinCodeScreen.show(callback: { _, error in
-            XCTAssertEqual(error, AssuranceConnectionError.noPincode)
-            expectation.fulfill()
-        })
+        pinCodeScreen.show()
 
         // test
-        _ = pinCodeScreen.overrideUrlLoad(message: mockMessage, url: "adbinapp://confirm?nodata")
+        let shouldURLBeHandled = pinCodeScreen.overrideUrlLoad(message: mockMessage, url: "adbinapp://confirm?nodata")
+        
+        // verify
+        XCTAssertTrue(mockSessionOrchestrator.pinScreenConnectClickedCalled)
+        XCTAssertEqual("", mockSessionOrchestrator.pinScreenConnectClickedPinParameter)
+        XCTAssertFalse(shouldURLBeHandled)
 
     }
 
@@ -126,7 +99,7 @@ class iOSPinCodeScreenTests: XCTestCase {
         let shouldURLBeHandled = pinCodeScreen.overrideUrlLoad(message: mockMessage, url: "adbinapp://cancel?")
 
         // verify that the message is dismissed
-        XCTAssertTrue(mockMessage.dismissCalled)
+        XCTAssertTrue(mockSessionOrchestrator.pinScreenCancelClickedCalled)
         XCTAssertFalse(shouldURLBeHandled)
     }
 
@@ -223,7 +196,7 @@ class iOSPinCodeScreenTests: XCTestCase {
 
     func test_connectionFailedWithError() throws {
         // test
-        pinCodeScreen.connectionFailedWithError(AssuranceConnectionError.clientError)
+        pinCodeScreen.sessionConnectionFailed(withError: .clientError)
 
         // verify
         XCTAssertEqual("showError('Client Disconnected','This client has been disconnected due to an unexpected error. Error Code 4400.', 0);",

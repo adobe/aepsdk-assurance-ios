@@ -13,6 +13,7 @@
 import Foundation
 
 protocol AssurancePresentationDelegate {
-    func pinScreenConnectClicked(_ url: URL)
+    func pinScreenConnectClicked(_ pin: String)
+    func pinScreenCancelClicked()
     func disconnectClicked()
 }

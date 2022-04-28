@@ -15,16 +15,14 @@
 import Foundation
 
 class MockPinPad: SessionAuthorizingUI {
+    
     var isDisplayed: Bool
-
-    required init(withStateManager withState: AssuranceStateManager) {
+    required init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate) {
         isDisplayed = false
     }
 
-    var callback: PinCodeCallback?
-    func show(callback: @escaping PinCodeCallback) {
+    func show() {
         isDisplayed = true
-        self.callback = callback
     }
     
     var onSessionInitializedCalled = false
@@ -42,11 +40,11 @@ class MockPinPad: SessionAuthorizingUI {
         onSessionDisconnectedCalled = true
     }
     
-    var connectionFailedWithErrorCalled = false
-    var connectionFailedWithErrorValue: AssuranceConnectionError?
-    func connectionFailedWithError(_ error: AssuranceConnectionError) {
-        connectionFailedWithErrorCalled = true
-        connectionFailedWithErrorValue = error
-    }
+    var sessionConnectionFailed = false
+    var sessionConnectionFailedError: AssuranceConnectionError?
+    func sessionConnectionFailed(withError error: AssuranceConnectionError) {
+        sessionConnectionFailed = true
+        sessionConnectionFailedError = error
+    }        
 
 }

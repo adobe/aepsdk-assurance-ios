@@ -45,13 +45,24 @@ class MockSessionOrchestrator : AssuranceSessionOrchestrator {
     }
 
     // MARK: - AssurancePresentationDelegate methods
-    override func pinScreenConnectClicked(_ url: URL) {
+    
+    var pinScreenConnectClickedCalled = false
+    var pinScreenConnectClickedPinParameter : String?
+    override func pinScreenConnectClicked(_ pin: String) {
+        pinScreenConnectClickedCalled = true
+        pinScreenConnectClickedPinParameter = pin
+    }
+
+    var pinScreenCancelClickedCalled = false
+    override func pinScreenCancelClicked() {
+        pinScreenCancelClickedCalled = true
+    }
+
+    var disconnectClickedCalled = false
+    override func disconnectClicked() {
+        disconnectClickedCalled = true
     }
     
-    var onDisconnectCalled = false
-    override func disconnectClicked() {
-        onDisconnectCalled = true
-    }
 }
 
 extension AssuranceSessionOrchestrator {
