@@ -47,7 +47,7 @@ class AssurancePresentation {
 
     /// Call this to show the UI elements that are required when a session connection has been successfully established.
     func sessionConnected() {
-        if pinCodeScreen.isDisplayed {
+        if pinCodeScreen.displayed {
             self.pinCodeScreen.sessionConnected()
         }
 
@@ -71,7 +71,7 @@ class AssurancePresentation {
 
     /// Call this to show the UI elements that are required when a session has connection error.
     func sessionConnectionError(error: AssuranceConnectionError) {
-        if pinCodeScreen.isDisplayed == true {
+        if pinCodeScreen.displayed == true {
             pinCodeScreen.sessionConnectionFailed(withError: error)
         } else {
             let errorView = ErrorView.init(AssuranceConnectionError.clientError)

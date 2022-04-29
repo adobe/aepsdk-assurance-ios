@@ -15,7 +15,7 @@ import Foundation
 protocol SessionAuthorizingUI {
 
     /// property that indicated if the pinCode screen is currently displayed
-    var isDisplayed: Bool { get }
+    var displayed: Bool { get }
 
     init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate)
 

@@ -16,13 +16,13 @@ import Foundation
 
 class MockPinPad: SessionAuthorizingUI {
     
-    var isDisplayed: Bool
+    var displayed: Bool
     required init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate) {
-        isDisplayed = false
+        displayed = false
     }
 
     func show() {
-        isDisplayed = true
+        displayed = true
     }
     
     var onSessionInitializedCalled = false

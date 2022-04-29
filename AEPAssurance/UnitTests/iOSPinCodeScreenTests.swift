@@ -163,13 +163,13 @@ class iOSPinCodeScreenTests: XCTestCase {
      --------------------------------------------------*/
     func test_onShow() throws {
         // setup
-        pinCodeScreen.isDisplayed = false
+        pinCodeScreen.displayed = false
 
         // test
         pinCodeScreen.onShow(message: mockMessage)
 
         // verify
-        XCTAssertTrue(pinCodeScreen.isDisplayed)
+        XCTAssertTrue(pinCodeScreen.displayed)
     }
 
     /*--------------------------------------------------
@@ -179,13 +179,13 @@ class iOSPinCodeScreenTests: XCTestCase {
         // setup
         pinCodeScreen.fullscreenWebView = mockWebView
         pinCodeScreen.fullscreenMessage = mockMessage
-        pinCodeScreen.isDisplayed = true
+        pinCodeScreen.displayed = true
 
         // test
         pinCodeScreen.onDismiss(message: mockMessage)
 
         // verify
-        XCTAssertFalse(pinCodeScreen.isDisplayed)
+        XCTAssertFalse(pinCodeScreen.displayed)
         XCTAssertNil(pinCodeScreen.fullscreenMessage)
         XCTAssertNil(pinCodeScreen.fullscreenWebView)
     }

@@ -49,7 +49,7 @@ class AssurancePresentationTests: XCTestCase {
     
     func test_onSessionConnected() {
         // setup
-        mockPinPad.isDisplayed = true
+        mockPinPad.displayed = true
         
         // test
         presentation.sessionConnected()
@@ -64,7 +64,7 @@ class AssurancePresentationTests: XCTestCase {
     
     func test_onSessionReconnecting() {
         // setup
-        mockPinPad.isDisplayed = false
+        mockPinPad.displayed = false
         
         // test
         presentation.sessionReconnecting()
@@ -85,7 +85,7 @@ class AssurancePresentationTests: XCTestCase {
     
     func test_onSessionConnectionError_nonRetryable() {
         // setup
-        mockPinPad.isDisplayed = true
+        mockPinPad.displayed = true
         
         // test
         presentation.sessionConnectionError(error: .eventLimit)
@@ -100,7 +100,7 @@ class AssurancePresentationTests: XCTestCase {
     
     func test_onSessionConnectionError_Retryable() {
         // setup
-        mockPinPad.isDisplayed = true
+        mockPinPad.displayed = true
         
         // test
         presentation.sessionConnectionError(error: .genericError)

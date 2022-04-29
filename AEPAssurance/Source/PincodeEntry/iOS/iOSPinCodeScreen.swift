@@ -15,7 +15,7 @@ import Foundation
 import WebKit
 
 class iOSPinCodeScreen: SessionAuthorizingUI {
-    var isDisplayed: Bool = false
+    var displayed: Bool = false
     var fullscreenMessage: FullscreenPresentable?
     var fullscreenWebView: WKWebView?
     var presentationDelegate: AssurancePresentationDelegate
