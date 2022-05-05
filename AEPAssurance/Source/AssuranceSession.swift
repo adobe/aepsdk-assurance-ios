@@ -3,7 +3,6 @@
  This file is licensed to you under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License. You may obtain a copy
  of the License at http://www.apache.org/licenses/LICENSE-2.0
-
  Unless required by applicable law or agreed to in writing, software distributed under
  the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
  OF ANY KIND, either express or implied. See the License for the specific language
@@ -22,13 +21,9 @@ class AssuranceSession {
     let inboundSource: DispatchSourceUserDataAdd = DispatchSource.makeUserDataAddSource(queue: DispatchQueue.global(qos: .default))
     let outboundSource: DispatchSourceUserDataAdd = DispatchSource.makeUserDataAddSource(queue: DispatchQueue.global(qos: .default))
     let pluginHub: PluginHub = PluginHub()
-
+    let presentation: AssurancePresentation
     lazy var socket: SocketConnectable  = {
         return WebViewSocket(withDelegate: self)
-    }()
-
-    lazy var statusUI: iOSStatusUI  = {
-        iOSStatusUI.init(withSession: self)
     }()
 
     // MARK: - boolean flags
@@ -56,8 +51,18 @@ class AssuranceSession {
     var canProcessSDKEvents: Bool = true
 
     /// Initializer with instance of  `AssuranceStateManager`
-    init(_ stateManager: AssuranceStateManager) {
+    init(_ stateManager: AssuranceStateManager, _ sessionOrchestrator: AssuranceSessionOrchestrator) {
         self.stateManager = stateManager
+        presentation = AssurancePresentation(stateManager: stateManager, sessionOrchestrator: sessionOrchestrator)
+        handleInBoundEvents()
+        handleOutBoundEvents()
+        registerInternalPlugins()
+    }
+
+    /// Initializer for testing purposes to mock presentation layer
+    init?(_ stateManager: AssuranceStateManager, _ sessionOrchestrator: AssuranceSessionOrchestrator, _ presentation: AssurancePresentation) {
+        self.stateManager = stateManager
+        self.presentation = presentation
         handleInBoundEvents()
         handleOutBoundEvents()
         registerInternalPlugins()
@@ -78,7 +83,7 @@ class AssuranceSession {
 
         // if there is a socket URL already connected in the previous session, reuse it.
         if let socketURL = stateManager.connectedWebSocketURL {
-            self.statusUI.display()
+            self.presentation.statusUI.display()
             guard let url = URL(string: socketURL) else {
                 Log.warning(label: AssuranceConstants.LOG_TAG, "Invalid socket url. Ignoring to start new session.")
                 return
@@ -96,26 +101,7 @@ class AssuranceSession {
     ///
     /// Thread : Listener thread from EventHub
     func beginNewSession() {
-        let pinCodeScreen = iOSPinCodeScreen.init(withStateManager: stateManager)
-        self.pinCodeScreen = pinCodeScreen
-
-        // invoke the pinpad screen and create a socketURL with the pincode and other essential parameters
-        pinCodeScreen.show(callback: { [weak self]  socketURL, error in
-            if let error = error {
-                self?.handleConnectionError(error: error, closeCode: -1)
-                return
-            }
-
-            guard let socketURL = socketURL else {
-                Log.debug(label: AssuranceConstants.LOG_TAG, "SocketURL to connect to session is empty. Ignoring to start Assurance session.")
-                return
-            }
-
-            // Thread : main thread (this callback is called from `overrideUrlLoad` method of WKWebView)
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to make a socket connection with URL : \(socketURL)")
-            self?.socket.connect(withUrl: socketURL)
-            pinCodeScreen.connectionInitialized()
-        })
+        presentation.sessionInitialized()
     }
 
     ///
@@ -138,36 +124,19 @@ class AssuranceSession {
 
     /// Handles the Assurance socket connection error by showing the appropriate UI to the user.
     /// - Parameters:
-    ///   - error: The `AssurancConnectionError` representing the error
+    ///   - error: The `AssuranceConnectionError` representing the error
     ///   - closeCode: close code defining the reason for socket closure.
     func handleConnectionError(error: AssuranceConnectionError, closeCode: Int) {
         // if the pinCode screen is still being displayed. Then use the same webView to display error
         Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with error :\(error.info.name) \n description : \(error.info.description) \n close code: \(closeCode)")
-        if pinCodeScreen?.isDisplayed == true {
-            pinCodeScreen?.connectionFailedWithError(error)
-        } else {
-            let errorView = ErrorView.init(AssuranceConnectionError.clientError)
-            errorView.display()
-        }
 
+        presentation.sessionConnectionError(error: error)
         pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
 
         // since we don't give retry option for these errors and UI will be dismissed anyway, hence notify plugins for onSessionTerminated
         if !error.info.shouldRetry {
             clearSessionData()
-            statusUI.remove()
-            pluginHub.notifyPluginsOnSessionTerminated()
         }
-    }
-
-    ///
-    /// Adds the log to Assurance Status UI.
-    /// - Parameters:
-    ///     - message: `String` log message
-    ///     - visibility: an `AssuranceClientLogVisibility` determining the importance of the log message
-    ///
-    func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
-        statusUI.addClientLog(message, visibility: visibility)
     }
 
     ///
@@ -191,7 +160,6 @@ class AssuranceSession {
         stateManager.sessionId = nil
         stateManager.connectedWebSocketURL = nil
         stateManager.environment = AssuranceConstants.DEFAULT_ENVIRONMENT
-        pinCodeScreen = nil
     }
 
     // MARK: - Private methods

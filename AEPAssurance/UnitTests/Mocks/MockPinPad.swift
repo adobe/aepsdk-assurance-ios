@@ -15,38 +15,36 @@
 import Foundation
 
 class MockPinPad: SessionAuthorizingUI {
-    var isDisplayed: Bool
-
-    required init(withState: AssuranceStateManager) {
-        isDisplayed = false
+    
+    var displayed: Bool
+    required init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate) {
+        displayed = false
     }
 
-    var callback: PinCodeCallback?
-    func show(callback: @escaping PinCodeCallback) {
-        isDisplayed = true
-        self.callback = callback
+    func show() {
+        displayed = true
     }
-
-    var connectionInitializedCalled = false
-    func connectionInitialized() {
-        connectionInitializedCalled = true
+    
+    var onSessionInitializedCalled = false
+    func sessionInitialized() {
+        onSessionInitializedCalled = true
     }
-
-    var connectionSucceededCalled = false
-    func connectionSucceeded() {
-        connectionSucceededCalled = true
+    
+    var onSessionConnectedCalled = false
+    func sessionConnected() {
+        onSessionConnectedCalled = true
     }
-
-    var connectionFinishedCalled = false
-    func connectionFinished() {
-        connectionFinishedCalled = true
+    
+    var onSessionDisconnectedCalled = false
+    func sessionDisconnected() {
+        onSessionDisconnectedCalled = true
     }
-
-    var connectionFailedWithErrorCalled = false
-    var connectionFailedWithErrorValue: AssuranceConnectionError?
-    func connectionFailedWithError(_ error: AssuranceConnectionError) {
-        connectionFailedWithErrorCalled = true
-        connectionFailedWithErrorValue = error
-    }
+    
+    var sessionConnectionFailed = false
+    var sessionConnectionFailedError: AssuranceConnectionError?
+    func sessionConnectionFailed(withError error: AssuranceConnectionError) {
+        sessionConnectionFailed = true
+        sessionConnectionFailedError = error
+    }        
 
 }

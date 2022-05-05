@@ -17,28 +17,24 @@ import XCTest
 class MockAssuranceSession: AssuranceSession {
 
     var expectation: XCTestExpectation?
-    override init(_ stateManager: AssuranceStateManager) {
-        super.init(stateManager)
+    override init(_ stateManager: AssuranceStateManager,_ sessionOrchestrator: AssuranceSessionOrchestrator) {
+        super.init(stateManager, sessionOrchestrator)
+        self.socket = MockSocket(withDelegate: self)
+    }
+    
+    init(_ stateManager: AssuranceStateManager) {
+        super.init(stateManager, MockSessionOrchestrator(stateManager: stateManager))
         self.socket = MockSocket(withDelegate: self)
     }
 
     var sendEventCalled = false
     var sentEvent: AssuranceEvent?
-
     override func sendEvent(_ assuranceEvent: AssuranceEvent) {
         expectation?.fulfill()
         sendEventCalled = true
         sentEvent = assuranceEvent
     }
 
-    var addClientLogCalled = false
-    var addClientLogMessage: String?
-    var addClientLogVisibility: AssuranceClientLogVisibility?
-    override func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
-        addClientLogCalled = true
-        addClientLogMessage = message
-        addClientLogVisibility = visibility
-    }
 
     var terminateSessionCalled = false
     override func terminateSession() {

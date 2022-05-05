@@ -15,7 +15,6 @@ import AEPServices
 import Foundation
 import UIKit
 
-
 ///
 /// Responsible for managing the current Assurance state, handling Assurance extension's shared state and fetching shared states for other extensions.
 ///
