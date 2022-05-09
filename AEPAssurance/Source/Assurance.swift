@@ -17,9 +17,6 @@ import Foundation
 @objc(AEPMobileAssurance)
 public class Assurance: NSObject, Extension {
 
-    /// Time before assurance shuts down on non receipt of start session event.
-    let shutdownTime: Int
-
     public var name = AssuranceConstants.EXTENSION_NAME
     public var friendlyName = AssuranceConstants.FRIENDLY_NAME
     public static var extensionVersion = AssuranceConstants.EXTENSION_VERSION
@@ -27,8 +24,17 @@ public class Assurance: NSObject, Extension {
     public var runtime: ExtensionRuntime
 
     var timer: DispatchSourceTimer?
+
+    /// Time before assurance shuts down on non receipt of start session event.
+    #if DEBUG
+    var shutdownTime: TimeInterval  // editable for testing purposes
+    var stateManager: AssuranceStateManager
+    var sessionOrchestrator: AssuranceSessionOrchestrator
+    #else
+    let shutdownTime: TimeInterval
     let stateManager: AssuranceStateManager
     let sessionOrchestrator: AssuranceSessionOrchestrator
+    #endif
 
     public func onRegistered() {
         registerListener(type: EventType.wildcard, source: EventSource.wildcard, listener: handleWildcardEvent)
@@ -57,14 +63,6 @@ public class Assurance: NSObject, Extension {
         self.shutdownTime = AssuranceConstants.SHUTDOWN_TIME
         self.stateManager = AssuranceStateManager(runtime)
         self.sessionOrchestrator = AssuranceSessionOrchestrator(stateManager: stateManager)
-    }
-
-    /// Initializer for testing purposes to mock the shut down time .
-    init?(runtime: ExtensionRuntime, shutdownTime: Int, stateManager: AssuranceStateManager, sessionOrchestrator: AssuranceSessionOrchestrator) {
-        self.runtime = runtime
-        self.shutdownTime = shutdownTime
-        self.stateManager = stateManager
-        self.sessionOrchestrator = sessionOrchestrator
     }
 
     public func readyForEvent(_ event: Event) -> Bool {
@@ -261,7 +259,7 @@ public class Assurance: NSObject, Extension {
     /// - Returns: a configured `DispatchSourceTimer` instance
     private func createDispatchTimer(queue: DispatchQueue, block : @escaping () -> Void) -> DispatchSourceTimer {
         let timer = DispatchSource.makeTimerSource(queue: queue)
-        timer.schedule(wallDeadline: .now() + DispatchTimeInterval.seconds(shutdownTime))
+        timer.schedule(wallDeadline: .now() + shutdownTime)
         timer.setEventHandler(handler: block)
         timer.resume()
         return timer

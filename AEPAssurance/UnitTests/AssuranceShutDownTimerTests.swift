@@ -28,7 +28,9 @@ class AssuranceShutDownTimerTests: XCTestCase {
         ServiceProvider.shared.namedKeyValueService = mockDataStore
         mockStateManager = MockAssuranceStateManager(runtime)
         mockSessionOrchestrator = MockSessionOrchestrator(stateManager: mockStateManager)
-        assurance = Assurance(runtime: runtime, shutdownTime: 1, stateManager: mockStateManager, sessionOrchestrator: mockSessionOrchestrator)
+        assurance = Assurance(runtime: runtime)
+        assurance.shutdownTime = TimeInterval(1)
+        assurance.sessionOrchestrator = mockSessionOrchestrator
     }
 
     override func tearDown() {
@@ -47,7 +49,7 @@ class AssuranceShutDownTimerTests: XCTestCase {
         assurance.onRegistered()
 
         // wait for assurance to shut down
-        sleep(2)
+        sleep(3)
 
         // verify assurance is shutdown after timer
         XCTAssertTrue(mockSessionOrchestrator.terminateSessionCalled)

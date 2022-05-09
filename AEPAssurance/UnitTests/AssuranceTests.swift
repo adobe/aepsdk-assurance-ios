@@ -34,7 +34,9 @@ class AssuranceTests: XCTestCase {
         stateManager = AssuranceStateManager(runtime)
         mockSessionOrchestrator = MockSessionOrchestrator(stateManager: stateManager)
 
-        assurance = Assurance(runtime: runtime, shutdownTime: AssuranceConstants.SHUTDOWN_TIME, stateManager: stateManager, sessionOrchestrator: mockSessionOrchestrator)
+        assurance = Assurance(runtime: runtime)
+        assurance.stateManager = stateManager
+        assurance.sessionOrchestrator = mockSessionOrchestrator
         assurance.onRegistered()
 
         // mock the interaction with AssuranceSession class
