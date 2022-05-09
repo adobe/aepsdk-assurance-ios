@@ -22,7 +22,7 @@ class AssuranceTests: XCTestCase {
     let mockUIService = MockUIService()
     let mockDataStore = MockDataStore()
     let mockMessagePresentable = MockFullscreenMessagePresentable()
-    var mockSession: MockAssuranceSession!
+    var mockSession: MockSession!
     var stateManager: AssuranceStateManager!
     var assurance: Assurance!
     var mockSessionOrchestrator: MockSessionOrchestrator!
@@ -41,7 +41,7 @@ class AssuranceTests: XCTestCase {
 
         // mock the interaction with AssuranceSession class
         let mockSessionDetails = AssuranceSessionDetails(sessionId: "mockSessionId", clientId: "mockClientId")
-        mockSession = MockAssuranceSession(sessionDetails: mockSessionDetails, stateManager: stateManager, sessionOrchestrator: mockSessionOrchestrator, outboundEvents: nil)
+        mockSession = MockSession(sessionDetails: mockSessionDetails, stateManager: stateManager, sessionOrchestrator: mockSessionOrchestrator, outboundEvents: nil)
     }
 
     override func tearDown() {

@@ -79,11 +79,10 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
         session = nil
     }
 
-    func sendEvent(_ assuranceEvent: AssuranceEvent) {
+    func queueEvent(_ assuranceEvent: AssuranceEvent) {
         /// Queue this event to the active session if one exists.
         if let session = session {
-            session.outboundQueue.enqueue(newElement: assuranceEvent)
-            session.outboundSource.add(data: 1)
+            session.sendEvent(assuranceEvent)
             return
         }
 
@@ -135,22 +134,8 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
             return
         }
 
+        Log.trace(label: AssuranceConstants.LOG_TAG, "Connect Button clicked. Starting a socket connection.")
         session.sessionDetails.authenticate(withPIN: pin, andOrgID: orgID)
-
-        /// wss://connect%@.griffon.adobe.com/client/v1?sessionId=%@&token=%@&orgId=%@&clientId=%@
-        let socketURL = String(format: AssuranceConstants.BASE_SOCKET_URL,
-                               session.sessionDetails.environment.urlFormat,
-                               session.sessionDetails.sessionId,
-                               pin,
-                               orgID,
-                               stateManager.clientID)
-
-        guard let url = URL(string: socketURL) else {
-            session.presentation.sessionConnectionError(error: .noURL)
-            return
-        }
-
-        Log.trace(label: AssuranceConstants.LOG_TAG, "Connect Button clicked. Making a socket connection with url \(url).")
         session.startSession()
     }
 

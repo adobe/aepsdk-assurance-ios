@@ -22,13 +22,13 @@ class AssurancePresentationTests: XCTestCase {
     
     // mocked dependencies
     let runtime = TestableExtensionRuntime()
-    var mockStateManager: MockAssuranceStateManager!
+    var mockStateManager: MockStateManager!
     var mockSessionOrchestrator: MockSessionOrchestrator!
     var mockStatusUI : MockStatusUI!
     var mockPinPad : MockPinPad!
         
     override func setUp() {
-        mockStateManager = MockAssuranceStateManager(runtime)
+        mockStateManager = MockStateManager(runtime)
         mockSessionOrchestrator = MockSessionOrchestrator(stateManager: mockStateManager)
         mockStatusUI = MockStatusUI(withSessionOrchestrator: mockSessionOrchestrator)
         mockPinPad = MockPinPad(withPresentationDelegate: mockSessionOrchestrator)

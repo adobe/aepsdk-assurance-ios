@@ -15,7 +15,7 @@ import Foundation
 import AEPServices
 import XCTest
 
-class MockAssuranceSession: AssuranceSession {
+class MockSession: AssuranceSession {
 
     var expectation: XCTestExpectation?
     override init(sessionDetails: AssuranceSessionDetails, stateManager: AssuranceStateManager, sessionOrchestrator: AssuranceSessionOrchestrator, outboundEvents: ThreadSafeArray<AssuranceEvent>?) {
@@ -30,6 +30,11 @@ class MockAssuranceSession: AssuranceSession {
         expectation?.fulfill()
         sendEventCalled = true
         sentEvent = assuranceEvent
+    }
+    
+    var startSessionCalled = false
+    override func startSession() {
+        startSessionCalled = true
     }
 
 

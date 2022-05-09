@@ -19,10 +19,10 @@ import XCTest
 class AssuranceBlobTests: XCTestCase {
 
     let runtime = TestableExtensionRuntime()
-    var stateManager: MockAssuranceStateManager!
+    var stateManager: MockStateManager!
     var mockNetworkService: MockNetworkService!
     var sessionOrchestrator: MockSessionOrchestrator!
-    var mockSession: MockAssuranceSession!
+    var mockSession: MockSession!
     let sampleData = "sampleData".data(using: .utf8)
     let sampleResponse = """
                 {
@@ -41,10 +41,10 @@ class AssuranceBlobTests: XCTestCase {
                 """.data(using: .utf8)!
 
     override func setUpWithError() throws {
-        stateManager = MockAssuranceStateManager(runtime)
+        stateManager = MockStateManager(runtime)
         sessionOrchestrator = MockSessionOrchestrator(stateManager: stateManager)        
         let sessionDetails = AssuranceSessionDetails(sessionId: "mockSessionId", clientId: "mockClientId", environment: .dev)
-        mockSession = MockAssuranceSession(sessionDetails: sessionDetails, stateManager: stateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: nil)
+        mockSession = MockSession(sessionDetails: sessionDetails, stateManager: stateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: nil)
         mockNetworkService = MockNetworkService()
         ServiceProvider.shared.networkService = mockNetworkService
     }

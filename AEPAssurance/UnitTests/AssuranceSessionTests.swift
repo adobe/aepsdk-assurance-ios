@@ -22,7 +22,7 @@ class AssuranceSessionTests: XCTestCase {
 
     let runtime = TestableExtensionRuntime()
     var session: AssuranceSession!
-    var stateManager: MockAssuranceStateManager!
+    var stateManager: MockStateManager!
     var sessionDetails: AssuranceSessionDetails!
     var mockSocket: MockSocket!
     var mockPresentation: MockPresentation!
@@ -35,7 +35,7 @@ class AssuranceSessionTests: XCTestCase {
         // create the required mocks
         ServiceProvider.shared.uiService = mockUIService
         mockUIService.fullscreenMessage = mockMessagePresentable
-        stateManager = MockAssuranceStateManager(runtime)
+        stateManager = MockStateManager(runtime)
         sessionOrchestrator = AssuranceSessionOrchestrator(stateManager: stateManager)
         mockPresentation = MockPresentation(sessionOrchestrator:sessionOrchestrator)
         try initNonAuthenticatedSession()

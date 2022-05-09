@@ -73,7 +73,7 @@
 		B676B7152681BB7C000EC291 /* AEPAssurance.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B6407199262C313E00C43183 /* AEPAssurance.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B67F6F2927D0A29C0003B955 /* AssuranceStateManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67F6F2727D0A24C0003B955 /* AssuranceStateManagerTests.swift */; };
 		B6A0197027CDA3990097ED5C /* AssuranceStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A0196F27CDA3980097ED5C /* AssuranceStateManager.swift */; };
-		B6A0197227CEA8D30097ED5C /* MockAssuranceStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A0197127CEA8D30097ED5C /* MockAssuranceStateManager.swift */; };
+		B6A0197227CEA8D30097ED5C /* MockStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A0197127CEA8D30097ED5C /* MockStateManager.swift */; };
 		B6A80BFE266ACBB60089C564 /* AssuranceShutDownTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A80BFD266ACBB50089C564 /* AssuranceShutDownTimerTests.swift */; };
 		B6AB2DEE26337BB700FE8AEA /* MockDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB2DED26337BB700FE8AEA /* MockDataStore.swift */; };
 		B6AFD589263403EB00C63608 /* AssuranceEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AFD588263403EB00C63608 /* AssuranceEvent.swift */; };
@@ -86,10 +86,11 @@
 		B6B23ACE26414C8100EE8153 /* iOSPinCodeScreen+FullScreenDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B23ACD26414C8100EE8153 /* iOSPinCodeScreen+FullScreenDelegate.swift */; };
 		B6B23AD82641EF6500EE8153 /* AssuranceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B23AD72641EF6500EE8153 /* AssuranceTests.swift */; };
 		B6B23B3B264269A800EE8153 /* iOSPinCodeScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B23B3A264269A800EE8153 /* iOSPinCodeScreenTests.swift */; };
+		B6C4C8392829AFD000BF4CC6 /* AssuranceSessionOrchestratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C4C8372829AFCB00BF4CC6 /* AssuranceSessionOrchestratorTests.swift */; };
 		B6CECC4C26531ECF000D517F /* PluginConfigModify.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC4B26531ECF000D517F /* PluginConfigModify.swift */; };
 		B6CECC4E26531F5D000D517F /* PluginConfigModifyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC4D26531F5D000D517F /* PluginConfigModifyTests.swift */; };
 		B6CECC5626544700000D517F /* PluginHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC5526544700000D517F /* PluginHub.swift */; };
-		B6CECC5B26545829000D517F /* MockAssuranceSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC5926545829000D517F /* MockAssuranceSession.swift */; };
+		B6CECC5B26545829000D517F /* MockSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC5926545829000D517F /* MockSession.swift */; };
 		B6CECC6026545857000D517F /* PluginHubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC5726544747000D517F /* PluginHubTests.swift */; };
 		B6CECC652655A8D3000D517F /* ThreadSafeQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC642655A8D3000D517F /* ThreadSafeQueue.swift */; };
 		B6CECC682655A94F000D517F /* ThreadSafeQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC662655A925000D517F /* ThreadSafeQueueTests.swift */; };
@@ -261,7 +262,7 @@
 		B670E72326395954000FCB96 /* PinDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinDialog.swift; sourceTree = "<group>"; };
 		B67F6F2727D0A24C0003B955 /* AssuranceStateManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStateManagerTests.swift; sourceTree = "<group>"; };
 		B6A0196F27CDA3980097ED5C /* AssuranceStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStateManager.swift; sourceTree = "<group>"; };
-		B6A0197127CEA8D30097ED5C /* MockAssuranceStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAssuranceStateManager.swift; sourceTree = "<group>"; };
+		B6A0197127CEA8D30097ED5C /* MockStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockStateManager.swift; sourceTree = "<group>"; };
 		B6A80BFD266ACBB50089C564 /* AssuranceShutDownTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceShutDownTimerTests.swift; sourceTree = "<group>"; };
 		B6AB2DED26337BB700FE8AEA /* MockDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataStore.swift; sourceTree = "<group>"; };
 		B6AFD588263403EB00C63608 /* AssuranceEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEvent.swift; sourceTree = "<group>"; };
@@ -275,11 +276,12 @@
 		B6B23ACD26414C8100EE8153 /* iOSPinCodeScreen+FullScreenDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "iOSPinCodeScreen+FullScreenDelegate.swift"; sourceTree = "<group>"; };
 		B6B23AD72641EF6500EE8153 /* AssuranceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceTests.swift; sourceTree = "<group>"; };
 		B6B23B3A264269A800EE8153 /* iOSPinCodeScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSPinCodeScreenTests.swift; sourceTree = "<group>"; };
+		B6C4C8372829AFCB00BF4CC6 /* AssuranceSessionOrchestratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceSessionOrchestratorTests.swift; sourceTree = "<group>"; };
 		B6CECC4B26531ECF000D517F /* PluginConfigModify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginConfigModify.swift; sourceTree = "<group>"; };
 		B6CECC4D26531F5D000D517F /* PluginConfigModifyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginConfigModifyTests.swift; sourceTree = "<group>"; };
 		B6CECC5526544700000D517F /* PluginHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginHub.swift; sourceTree = "<group>"; };
 		B6CECC5726544747000D517F /* PluginHubTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginHubTests.swift; sourceTree = "<group>"; };
-		B6CECC5926545829000D517F /* MockAssuranceSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAssuranceSession.swift; sourceTree = "<group>"; };
+		B6CECC5926545829000D517F /* MockSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSession.swift; sourceTree = "<group>"; };
 		B6CECC642655A8D3000D517F /* ThreadSafeQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadSafeQueue.swift; sourceTree = "<group>"; };
 		B6CECC662655A925000D517F /* ThreadSafeQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadSafeQueueTests.swift; sourceTree = "<group>"; };
 		B6D2A90B26322D1C0062AC5E /* AssuranceEnvironmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEnvironmentTests.swift; sourceTree = "<group>"; };
@@ -517,6 +519,7 @@
 				B6F6F1B427A942A10040DCD4 /* AssuranceEventChunkerTests.swift */,
 				B6EB1C1628060D2D0036337E /* AssurancePresentationTests.swift */,
 				B61A2F58282483EC006B56D5 /* AssuranceSessionDetailsTests.swift */,
+				B6C4C8372829AFCB00BF4CC6 /* AssuranceSessionOrchestratorTests.swift */,
 				B64071A9262C313E00C43183 /* Info.plist */,
 			);
 			name = UnitTests;
@@ -657,13 +660,13 @@
 				B6AB2DED26337BB700FE8AEA /* MockDataStore.swift */,
 				B670E63C2638BF2A000FCB96 /* TestableExtensionRuntime.swift */,
 				B6B0E2D2263C7E5300EF5E21 /* MockUIService.swift */,
-				B6CECC5926545829000D517F /* MockAssuranceSession.swift */,
+				B6CECC5926545829000D517F /* MockSession.swift */,
 				B6D6A01C265F05F8005042BE /* MockNetworkService.swift */,
 				B6D6A028265FA0EE005042BE /* MockAssuranceUIUtil.swift */,
 				B63ADABB26731A0400A1281A /* MockSocket.swift */,
 				B6DBD81F2678FB19009EB47E /* MockStatusUI.swift */,
 				B64212B226849021007343B6 /* MockPinPad.swift */,
-				B6A0197127CEA8D30097ED5C /* MockAssuranceStateManager.swift */,
+				B6A0197127CEA8D30097ED5C /* MockStateManager.swift */,
 				B6EB1C1828060DB10036337E /* MockPresentation.swift */,
 				B6EB1C1A280611410036337E /* MockSessionOrchestrator.swift */,
 			);
@@ -1237,15 +1240,16 @@
 				B67F6F2927D0A29C0003B955 /* AssuranceStateManagerTests.swift in Sources */,
 				B6AFD58E2634041E00C63608 /* AssuranceEventTests.swift in Sources */,
 				B6D6A01D265F05F8005042BE /* MockNetworkService.swift in Sources */,
+				B6C4C8392829AFD000BF4CC6 /* AssuranceSessionOrchestratorTests.swift in Sources */,
 				B64212B326849021007343B6 /* MockPinPad.swift in Sources */,
 				B6DBD8202678FB19009EB47E /* MockStatusUI.swift in Sources */,
 				B6D2A91026322D6D0062AC5E /* AssuranceEnvironmentTests.swift in Sources */,
-				B6A0197227CEA8D30097ED5C /* MockAssuranceStateManager.swift in Sources */,
+				B6A0197227CEA8D30097ED5C /* MockStateManager.swift in Sources */,
 				B63ADABC26731A0400A1281A /* MockSocket.swift in Sources */,
 				B61A2F59282483EC006B56D5 /* AssuranceSessionDetailsTests.swift in Sources */,
 				B670E63D2638BF2A000FCB96 /* TestableExtensionRuntime.swift in Sources */,
 				B6EB1C1B280611410036337E /* MockSessionOrchestrator.swift in Sources */,
-				B6CECC5B26545829000D517F /* MockAssuranceSession.swift in Sources */,
+				B6CECC5B26545829000D517F /* MockSession.swift in Sources */,
 				B6CECC4E26531F5D000D517F /* PluginConfigModifyTests.swift in Sources */,
 				B6F6F1B627A943C60040DCD4 /* AssuranceEventChunkerTests.swift in Sources */,
 				B6D6A020265F086A005042BE /* AssuranceBlobTests.swift in Sources */,

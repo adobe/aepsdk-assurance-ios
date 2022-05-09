@@ -22,11 +22,11 @@ class AssuranceShutDownTimerTests: XCTestCase {
     let mockDataStore = MockDataStore()
     var mockSessionOrchestrator: MockSessionOrchestrator!
     var assurance: Assurance!
-    var mockStateManager: MockAssuranceStateManager!
+    var mockStateManager: MockStateManager!
 
     override func setUp() {
         ServiceProvider.shared.namedKeyValueService = mockDataStore
-        mockStateManager = MockAssuranceStateManager(runtime)
+        mockStateManager = MockStateManager(runtime)
         mockSessionOrchestrator = MockSessionOrchestrator(stateManager: mockStateManager)
         assurance = Assurance(runtime: runtime)
         assurance.shutdownTime = TimeInterval(1)

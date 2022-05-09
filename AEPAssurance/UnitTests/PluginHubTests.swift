@@ -26,16 +26,16 @@ class PluginHubTests: XCTestCase {
     var pluginColorWildCard = PluginColorWildCard() // vendor "Color"
 
     let runtime = TestableExtensionRuntime()
-    var session: MockAssuranceSession?
-    var mockStateManager: MockAssuranceStateManager?
+    var session: MockSession?
+    var mockStateManager: MockStateManager?
 
     // MARK: - Setup
 
     override func setUp() {
-        mockStateManager = MockAssuranceStateManager(runtime)
+        mockStateManager = MockStateManager(runtime)
         let mockSessionOrchestrator = MockSessionOrchestrator(stateManager: mockStateManager!)
         let sessionDetail = AssuranceSessionDetails(sessionId: "mocksessionId", clientId: "clientId", environment: .dev)
-        session = MockAssuranceSession(sessionDetails: sessionDetail, stateManager: mockStateManager!, sessionOrchestrator: mockSessionOrchestrator, outboundEvents: nil)
+        session = MockSession(sessionDetails: sessionDetail, stateManager: mockStateManager!, sessionOrchestrator: mockSessionOrchestrator, outboundEvents: nil)
 
         pluginHub.registerPlugin(pluginBlue, toSession: session!)
         pluginHub.registerPlugin(pluginGreen, toSession: session!)

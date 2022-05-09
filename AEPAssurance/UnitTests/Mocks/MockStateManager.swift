@@ -16,7 +16,7 @@ import Foundation
 @testable import AEPCore
 import XCTest
 
-class MockAssuranceStateManager : AssuranceStateManager {
+class MockStateManager : AssuranceStateManager {
     
     var expectation: XCTestExpectation?
     required override init(_ runtime: ExtensionRuntime) {
@@ -28,6 +28,16 @@ class MockAssuranceStateManager : AssuranceStateManager {
         expectation?.fulfill()
         getAllExtensionStateDataCalled = true
         return []
+    }
+    
+    var clearAssuranceStateCalled = false
+    override func clearAssuranceState() {
+        clearAssuranceStateCalled = true
+    }
+    
+    var orgIDReturnValue: String?
+    override func getURLEncodedOrgID() -> String? {
+        return orgIDReturnValue
     }
     
 }

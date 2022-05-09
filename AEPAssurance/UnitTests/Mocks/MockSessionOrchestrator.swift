@@ -40,7 +40,7 @@ class MockSessionOrchestrator : AssuranceSessionOrchestrator {
 
     var sendEventCalled = false
     var sentEvent: AssuranceEvent?
-    override func sendEvent(_ assuranceEvent: AssuranceEvent) {
+    override func queueEvent(_ assuranceEvent: AssuranceEvent) {
         expectation?.fulfill()
         sendEventCalled = true
         sentEvent = assuranceEvent

@@ -97,7 +97,7 @@ public class Assurance: NSObject, Extension {
 
         /// forward all other events to Assurance session
         let assuranceEvent = AssuranceEvent.from(event: event)
-        sessionOrchestrator.sendEvent(assuranceEvent)
+        sessionOrchestrator.queueEvent(assuranceEvent)
 
         /// NearbyPOIs and Places entry/exits events are logged in the Status UI
         if event.isPlacesRequestEvent {
@@ -220,7 +220,7 @@ public class Assurance: NSObject, Extension {
         let sharedStatePayload = [sharedContentKey: sharedState.value]
         var assuranceEvent = AssuranceEvent.from(event: event)
         assuranceEvent.payload?.updateValue(AnyCodable.init(sharedStatePayload), forKey: AssuranceConstants.PayloadKey.METADATA)
-        sessionOrchestrator.sendEvent(assuranceEvent)
+        sessionOrchestrator.queueEvent(assuranceEvent)
     }
 
     // MARK: Shutdown timer methods
