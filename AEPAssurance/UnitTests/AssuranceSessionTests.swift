@@ -313,12 +313,12 @@ class AssuranceSessionTests: XCTestCase {
         session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.ABNORMAL_CLOSURE, "", true)
 
         // verify
+        wait(for: [mockSocket.expectation!], timeout: 2.0)
         XCTAssertTrue(mockPresentation.sessionReconnectingCalled)
-//        wait(for: [mockSocket.expectation!], timeout: 5.0)
         XCTAssertTrue(session.isAttemptingToReconnect)
         XCTAssertFalse(session.canStartForwarding)
-//        XCTAssertTrue(mockSocket.connectCalled)
-//        XCTAssertEqual(AUTHENTICATED_SOCKET_URL, mockSocket.connectURL?.absoluteString)
+        XCTAssertTrue(mockSocket.connectCalled)
+        XCTAssertEqual(AUTHENTICATED_SOCKET_URL, mockSocket.connectURL?.absoluteString)
     }
 
     private func sampleAssuranceEvent() -> AssuranceEvent {
