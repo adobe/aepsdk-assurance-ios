@@ -17,7 +17,7 @@ class AssuranceSessionDetails {
 
     private let SESSION_ID_KEY = "sessionId"
     private let PINCODE_KEY = "token"
-    private let CLIENTID_KEY = "clientId"
+    private let CLIENT_ID_KEY = "clientId"
     private let ORGID_KEY = "orgId"
 
     let datastore = NamedCollectionDataStore(name: AssuranceConstants.EXTENSION_NAME)
@@ -40,15 +40,15 @@ class AssuranceSessionDetails {
         }
 
         guard let sessionId = socketURL.params[SESSION_ID_KEY] else {
-            throw AssuranceSessionDetailBuilderError(message: "No SessionID")
+            throw AssuranceSessionDetailBuilderError(message: "No SessionId")
         }
 
-        guard let clientId = socketURL.params[CLIENTID_KEY] else {
-            throw AssuranceSessionDetailBuilderError(message: "No clientID")
+        guard let clientId = socketURL.params[CLIENT_ID_KEY] else {
+            throw AssuranceSessionDetailBuilderError(message: "No ClientId")
         }
 
         guard let orgId = socketURL.params[ORGID_KEY] else {
-            throw AssuranceSessionDetailBuilderError(message: "No OrgID")
+            throw AssuranceSessionDetailBuilderError(message: "No OrgId")
         }
 
         guard let pinCode = socketURL.params[PINCODE_KEY] else {
