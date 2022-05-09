@@ -42,9 +42,9 @@ class PluginScreenShotTests: XCTestCase {
 
     override func setUpWithError() throws {
         mockStateManager = MockAssuranceStateManager(runtime)
-        mockStateManager?.environment = .dev
-        mockStateManager?.sessionId = "mocksessionId"
-        mockSession = MockAssuranceSession(mockStateManager!)
+        let mockSessionOrchestrator = MockSessionOrchestrator(stateManager: mockStateManager!)
+        let sessionDetail = AssuranceSessionDetails(sessionId: "mocksessionId", clientId: "clientId", environment: .dev)
+        mockSession = MockAssuranceSession(sessionDetails: sessionDetail, stateManager: mockStateManager!, sessionOrchestrator: mockSessionOrchestrator, outboundEvents: nil)
         ServiceProvider.shared.networkService = mockNetworkService
         plugin.uiUtil = mockUIUtil
     }

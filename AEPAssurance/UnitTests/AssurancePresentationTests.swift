@@ -32,7 +32,7 @@ class AssurancePresentationTests: XCTestCase {
         mockSessionOrchestrator = MockSessionOrchestrator(stateManager: mockStateManager)
         mockStatusUI = MockStatusUI(withSessionOrchestrator: mockSessionOrchestrator)
         mockPinPad = MockPinPad(withPresentationDelegate: mockSessionOrchestrator)
-        presentation = AssurancePresentation(stateManager: mockStateManager, sessionOrchestrator: mockSessionOrchestrator)
+        presentation = AssurancePresentation(sessionOrchestrator: mockSessionOrchestrator)
         presentation.statusUI = mockStatusUI
         presentation.pinCodeScreen = mockPinPad
     }

@@ -35,11 +35,15 @@ public class Assurance: NSObject, Extension {
 
         /// if the Assurance session was already connected in the previous app session, go ahead and reconnect socket
         /// and do not turn on the unregister timer
-        if stateManager.connectedWebSocketURL != nil {
-            stateManager.shareAssuranceState()
-            Log.trace(label: AssuranceConstants.LOG_TAG, "Assurance Session was already connected during previous app launch. Attempting to reconnect. URL : \(String(describing: stateManager.connectedWebSocketURL))")
-            sessionOrchestrator.createSession()
-            return
+        if let connectedWebSocketURLString = stateManager.connectedWebSocketURL {
+            Log.trace(label: AssuranceConstants.LOG_TAG, "Assurance Session was already connected during previous app launch. Attempting to reconnect. URL : \(String(describing: connectedWebSocketURLString))")
+            do {
+                let sessionDetails = try AssuranceSessionDetails(withURLString: connectedWebSocketURLString)
+                sessionOrchestrator.createSession(withDetails: sessionDetails)
+                return
+            } catch {
+                Log.warning(label: AssuranceConstants.LOG_TAG, "Ignoring to reconnect to already connected session. Invalid socket url.  URL : \(String(describing: connectedWebSocketURLString)) Error Message: \(error.localizedDescription)")
+            }
         }
 
         /// if the Assurance session is not previously connected, turn on 5 sec timer to wait for Assurance deeplink
@@ -70,9 +74,10 @@ public class Assurance: NSObject, Extension {
     // MARK: - Event handlers
 
     /// Called by the wildcard listener to handle all the events dispatched from MobileCore's event hub.
-    /// Each mobile core event is converted to `AssuranceEvent` and is sent over the socket.
+    /// If an Assurance Session connection was established, each mobile core event is converted
+    /// to `AssuranceEvent` and is sent over the socket.
     /// - Parameters:
-    /// - event - a mobileCore's `Event`
+    /// - event - a MobileCore's `Event`
     private func handleWildcardEvent(event: Event) {
         if event.isAssuranceRequestContent {
             handleAssuranceRequestContent(event: event)
@@ -80,22 +85,23 @@ public class Assurance: NSObject, Extension {
 
         /// Handle wildcard event only
         /// 1. If there is an active session running
-        /// 2. If Assurance extension collecting events before the 5 second timeout
-        ///
-        /// TODO :  the second condition is currently not implemented yet. Will be updated in upcoming PullRequest
-        if !(sessionOrchestrator.session != nil) {
+        /// 2. If Assurance extension is collecting events before the 5 second timeout
+        if !(sessionOrchestrator.canProcessSDKEvents()) {
             return
         }
 
+        /// If the event is a sharedState change event
+        /// then attach the sharedState data to it before sending to over socket
         if event.isSharedStateEvent {
             processSharedStateEvent(event: event)
             return
         }
 
-        // forward all events to Assurance session
+        /// forward all other events to Assurance session
         let assuranceEvent = AssuranceEvent.from(event: event)
         sessionOrchestrator.sendEvent(assuranceEvent)
 
+        /// NearbyPOIs and Places entry/exits events are logged in the Status UI
         if event.isPlacesRequestEvent {
             handlePlacesRequest(event: event)
         } else if event.isPlacesResponseEvent {
@@ -103,7 +109,14 @@ public class Assurance: NSObject, Extension {
         }
     }
 
+    /// Call to handle MobileCore's event of type `Assurance` and source `RequestContent`
+    /// These are typically the events that are generated with startSession API is called.
+    /// This event contains the deeplink information to kickStart an Assurance session
+    ///
+    /// - Parameters:
+    /// - event - a AssuranceRequestContent event
     private func handleAssuranceRequestContent(event: Event) {
+        /// early bail out if eventData is nil
         guard let startSessionData = event.data else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance start session event received with empty data. Dropping event.")
             return
@@ -116,13 +129,13 @@ public class Assurance: NSObject, Extension {
 
         let deeplinkURL = URL(string: deeplinkUrlString)
         guard let sessionId = deeplinkURL?.params[AssuranceConstants.Deeplink.SESSIONID_KEY] else {
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Deeplink URL is invalid. Does not contain 'adb_validation_sessionid' query parameter : " + deeplinkUrlString)
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance start session event received with is invalid deeplink url. Does not contain 'adb_validation_sessionid' query parameter : " + deeplinkUrlString)
             return
         }
 
         // make sure the sessionID is an UUID string
         guard let _ = UUID(uuidString: sessionId) else {
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Deeplink URL is invalid. It contains sessionId that is not an valid UUID : " + deeplinkUrlString)
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance start session event received with is invalid deeplink url. It contains sessionId that is not an valid UUID : " + deeplinkUrlString)
             return
         }
 
@@ -132,13 +145,9 @@ public class Assurance: NSObject, Extension {
         // invalidate the timer
         invalidateTimer()
 
-        // save the environment and sessionID
-        stateManager.environment = AssuranceEnvironment.init(envString: environmentString)
-        stateManager.sessionId = sessionId
-        stateManager.shareAssuranceState()
-
-        Log.trace(label: AssuranceConstants.LOG_TAG, "Received sessionID, Initializing Assurance session. \(sessionId)")
-        sessionOrchestrator.createSession()
+        let sessionDetails = AssuranceSessionDetails(sessionId: sessionId, clientId: stateManager.clientID, environment: AssuranceEnvironment.init(envString: environmentString))
+        Log.trace(label: AssuranceConstants.LOG_TAG, "Assurance start session event received with sessionId : \(sessionId), Initializing Assurance session.")
+        sessionOrchestrator.createSession(withDetails: sessionDetails)
     }
 
     // MARK: Places event handlers
@@ -235,8 +244,7 @@ public class Assurance: NSObject, Extension {
         Log.debug(label: AssuranceConstants.LOG_TAG, "Timeout - Assurance extension did not receive session url. Shutting down from processing any further events.")
         invalidateTimer()
         Log.debug(label: AssuranceConstants.LOG_TAG, "Clearing the queued events and purging Assurance shared state.")
-        sessionOrchestrator.shutDownSession()
-        stateManager.clearAssuranceState()
+        sessionOrchestrator.terminateSession()
     }
 
     /// Invalidate the ongoing timer and cleans it from memory

@@ -19,8 +19,9 @@ import XCTest
 class AssuranceBlobTests: XCTestCase {
 
     let runtime = TestableExtensionRuntime()
-    var stateManager: MockAssuranceStateManager?
+    var stateManager: MockAssuranceStateManager!
     var mockNetworkService: MockNetworkService!
+    var sessionOrchestrator: MockSessionOrchestrator!
     var mockSession: MockAssuranceSession!
     let sampleData = "sampleData".data(using: .utf8)
     let sampleResponse = """
@@ -41,9 +42,9 @@ class AssuranceBlobTests: XCTestCase {
 
     override func setUpWithError() throws {
         stateManager = MockAssuranceStateManager(runtime)
-        stateManager?.environment = .dev
-        stateManager?.sessionId = "mocksessionId"
-        mockSession = MockAssuranceSession(stateManager!)
+        sessionOrchestrator = MockSessionOrchestrator(stateManager: stateManager)        
+        let sessionDetails = AssuranceSessionDetails(sessionId: "mockSessionId", clientId: "mockClientId", environment: .dev)
+        mockSession = MockAssuranceSession(sessionDetails: sessionDetails, stateManager: stateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: nil)
         mockNetworkService = MockNetworkService()
         ServiceProvider.shared.networkService = mockNetworkService
     }
@@ -54,7 +55,7 @@ class AssuranceBlobTests: XCTestCase {
 
         // verify
         XCTAssertTrue(mockNetworkService.connectAsyncCalled)
-        XCTAssertEqual("https://blob-dev.griffon.adobe.com/api/FileUpload?validationSessionId=mocksessionId", mockNetworkService.networkRequest?.url.absoluteString)
+        XCTAssertEqual("https://blob-dev.griffon.adobe.com/api/FileUpload?validationSessionId=mockSessionId", mockNetworkService.networkRequest?.url.absoluteString)
         XCTAssertEqual(sampleData, mockNetworkService.networkRequest?.connectPayload)
         XCTAssertEqual(HttpMethod.post, mockNetworkService.networkRequest?.httpMethod)
         XCTAssertEqual("application/octet-stream", mockNetworkService.networkRequest?.httpHeaders["Content-Type"])

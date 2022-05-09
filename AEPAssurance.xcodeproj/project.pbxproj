@@ -31,6 +31,8 @@
 		B603FA0D27AB285A0033416B /* emptylines.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603FA0C27AB285A0033416B /* emptylines.txt */; };
 		B603FA1127AD91A30033416B /* sampleRules.json in Resources */ = {isa = PBXBuildFile; fileRef = B603FA1027AD91A30033416B /* sampleRules.json */; };
 		B60BAC0C26434ED90054CD21 /* AssuranceConnectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60BAC0B26434ED90054CD21 /* AssuranceConnectionError.swift */; };
+		B61A2F59282483EC006B56D5 /* AssuranceSocketURLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61A2F58282483EC006B56D5 /* AssuranceSocketURLTests.swift */; };
+		B61B7E662822D08F00E1A6B2 /* AssuranceSessionDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61B7E652822D08F00E1A6B2 /* AssuranceSessionDetails.swift */; };
 		B63ADA8C266F700C00A1281A /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADA8B266F700C00A1281A /* ErrorView.swift */; };
 		B63ADA8E266F718900A1281A /* ErrorViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADA8D266F718900A1281A /* ErrorViewTests.swift */; };
 		B63ADAB12672629700A1281A /* iOSStatusUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADAB02672629700A1281A /* iOSStatusUI.swift */; };
@@ -212,6 +214,8 @@
 		B603FA0C27AB285A0033416B /* emptylines.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = emptylines.txt; sourceTree = "<group>"; };
 		B603FA1027AD91A30033416B /* sampleRules.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sampleRules.json; sourceTree = "<group>"; };
 		B60BAC0B26434ED90054CD21 /* AssuranceConnectionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceConnectionError.swift; sourceTree = "<group>"; };
+		B61A2F58282483EC006B56D5 /* AssuranceSocketURLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceSocketURLTests.swift; sourceTree = "<group>"; };
+		B61B7E652822D08F00E1A6B2 /* AssuranceSessionDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceSessionDetails.swift; sourceTree = "<group>"; };
 		B63ADA8B266F700C00A1281A /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		B63ADA8D266F718900A1281A /* ErrorViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewTests.swift; sourceTree = "<group>"; };
 		B63ADAB02672629700A1281A /* iOSStatusUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSStatusUI.swift; sourceTree = "<group>"; };
@@ -477,6 +481,7 @@
 				B6EB1C102805F3FE0036337E /* AssurancePresentation.swift */,
 				B6EB1C112805F3FE0036337E /* AssurancePresentationDelegate.swift */,
 				B6EB1C142805F4FE0036337E /* AssuranceSessionOrchestrator.swift */,
+				B61B7E652822D08F00E1A6B2 /* AssuranceSessionDetails.swift */,
 				B640719D262C313E00C43183 /* Info.plist */,
 			);
 			name = Source;
@@ -511,6 +516,7 @@
 				B63EB79C2668D524005BE2C5 /* AssuranceClientLogMessageTests.swift */,
 				B6F6F1B427A942A10040DCD4 /* AssuranceEventChunkerTests.swift */,
 				B6EB1C1628060D2D0036337E /* AssurancePresentationTests.swift */,
+				B61A2F58282483EC006B56D5 /* AssuranceSocketURLTests.swift */,
 				B64071A9262C313E00C43183 /* Info.plist */,
 			);
 			name = UnitTests;
@@ -1198,6 +1204,7 @@
 				B6B0E2C9263C674F00EF5E21 /* SessionAuthorizingUI.swift in Sources */,
 				B6FEB8B1263A18F500F0F240 /* InactiveIcon.swift in Sources */,
 				B6EB1C132805F3FE0036337E /* AssurancePresentationDelegate.swift in Sources */,
+				B61B7E662822D08F00E1A6B2 /* AssuranceSessionDetails.swift in Sources */,
 				B60BAC0C26434ED90054CD21 /* AssuranceConnectionError.swift in Sources */,
 				B6B0E2CD263C709100EF5E21 /* iOSPinCodeScreen.swift in Sources */,
 				B6407206262C90FA00C43183 /* Assurance+PublicAPI.swift in Sources */,
@@ -1235,6 +1242,7 @@
 				B6D2A91026322D6D0062AC5E /* AssuranceEnvironmentTests.swift in Sources */,
 				B6A0197227CEA8D30097ED5C /* MockAssuranceStateManager.swift in Sources */,
 				B63ADABC26731A0400A1281A /* MockSocket.swift in Sources */,
+				B61A2F59282483EC006B56D5 /* AssuranceSocketURLTests.swift in Sources */,
 				B670E63D2638BF2A000FCB96 /* TestableExtensionRuntime.swift in Sources */,
 				B6EB1C1B280611410036337E /* MockSessionOrchestrator.swift in Sources */,
 				B6CECC5B26545829000D517F /* MockAssuranceSession.swift in Sources */,

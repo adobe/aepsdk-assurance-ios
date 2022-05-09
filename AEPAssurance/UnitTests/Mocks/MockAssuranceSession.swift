@@ -12,20 +12,17 @@
 
 @testable import AEPAssurance
 import Foundation
+import AEPServices
 import XCTest
 
 class MockAssuranceSession: AssuranceSession {
 
     var expectation: XCTestExpectation?
-    override init(_ stateManager: AssuranceStateManager,_ sessionOrchestrator: AssuranceSessionOrchestrator) {
-        super.init(stateManager, sessionOrchestrator)
+    override init(sessionDetails: AssuranceSessionDetails, stateManager: AssuranceStateManager, sessionOrchestrator: AssuranceSessionOrchestrator, outboundEvents: ThreadSafeArray<AssuranceEvent>?) {
+        super.init(sessionDetails: sessionDetails, stateManager: stateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: outboundEvents)
         self.socket = MockSocket(withDelegate: self)
     }
-    
-    init(_ stateManager: AssuranceStateManager) {
-        super.init(stateManager, MockSessionOrchestrator(stateManager: stateManager))
-        self.socket = MockSocket(withDelegate: self)
-    }
+
 
     var sendEventCalled = false
     var sentEvent: AssuranceEvent?
@@ -36,16 +33,10 @@ class MockAssuranceSession: AssuranceSession {
     }
 
 
-    var terminateSessionCalled = false
-    override func terminateSession() {
-        terminateSessionCalled = true
+    var disconnectCalled = false
+    override func disconnect() {
+        disconnectCalled = true
     }
-    
-    var shutDownSessionCalled = false
-    override func shutDownSession() {
-        shutDownSessionCalled = true
-    }
-
 
     func mockSocketState(state: SocketState) {
         if let mockSocket = socket as? MockSocket {

@@ -33,7 +33,9 @@ class PluginHubTests: XCTestCase {
 
     override func setUp() {
         mockStateManager = MockAssuranceStateManager(runtime)
-        session = MockAssuranceSession(mockStateManager!)
+        let mockSessionOrchestrator = MockSessionOrchestrator(stateManager: mockStateManager!)
+        let sessionDetail = AssuranceSessionDetails(sessionId: "mocksessionId", clientId: "clientId", environment: .dev)
+        session = MockAssuranceSession(sessionDetails: sessionDetail, stateManager: mockStateManager!, sessionOrchestrator: mockSessionOrchestrator, outboundEvents: nil)
 
         pluginHub.registerPlugin(pluginBlue, toSession: session!)
         pluginHub.registerPlugin(pluginGreen, toSession: session!)

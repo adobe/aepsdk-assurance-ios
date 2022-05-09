@@ -47,25 +47,7 @@ class AssuranceStateManagerTests: XCTestCase {
         XCTAssertEqual("mockClientID", stateManager.clientID)
     }
 
-    func test_stateManager_loadsPersistedSessionID() throws {
-        // setup
-        mockSessionIDToPersistence(sessionID: "mockSessionID")
 
-        // test
-        XCTAssertEqual("mockSessionID", stateManager.sessionId)
-    }
-
-    func test_stateManager_savesSessionIDToPersistence() throws {
-        // test
-        stateManager.sessionId = "newSessionID"
-
-        // verify
-        XCTAssertEqual(1, mockDataStore.dict.count)
-        XCTAssertEqual("newSessionID", mockDataStore.dict[AssuranceConstants.DataStoreKeys.SESSION_ID] as! String)
-        XCTAssertEqual("newSessionID", stateManager.sessionId)
-    }
-
-    
     func test_stateManager_getAllExtensionStateData() throws {
         // setup
         runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.EVENT_HUB, event: nil, data: (sampleEventHubState, .set))
@@ -109,23 +91,11 @@ class AssuranceStateManagerTests: XCTestCase {
         // test and verify
         XCTAssertNil(stateManager.getURLEncodedOrgID())
     }
-    
-    
-    func test_stateManager_shareAssuranceState_nilSessionID() throws {
-        // test
-        stateManager.shareAssuranceState()
 
-        // verify
-        XCTAssertEqual(1, runtime.sharedStates.count)
-        XCTAssertTrue(runtime.firstSharedState!.isEmpty)
-    }
 
     func test_stateManager_shareAssuranceState_happy() throws {
         // test
-        stateManager.sessionId = "newSessionID"
-
-        // test
-        stateManager.shareAssuranceState()
+        stateManager.shareAssuranceState(withSessionID: "newSessionID")
 
         // verify
         XCTAssertEqual(1, runtime.sharedStates.count)
@@ -133,16 +103,15 @@ class AssuranceStateManagerTests: XCTestCase {
         XCTAssertNotNil(runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.SESSION_ID])
         XCTAssertNotNil(runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.INTEGRATION_ID])
         XCTAssertEqual(stateManager.clientID, runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.CLIENT_ID] as? String)
-        XCTAssertEqual(stateManager.sessionId, runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.SESSION_ID] as? String)
-        XCTAssertEqual("\(stateManager.sessionId!)" + "|" + "\(stateManager.clientID)", runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.INTEGRATION_ID] as? String)
+        XCTAssertEqual("newSessionID", runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.SESSION_ID] as? String)
+        XCTAssertEqual("newSessionID" + "|" + "\(stateManager.clientID)", runtime.firstSharedState?[AssuranceConstants.SharedStateKeys.INTEGRATION_ID] as? String)
     }
 
     func test_stateManager_clearAssuranceState() throws {
         // setup
-        stateManager.sessionId = "newSessionID"
+        stateManager.shareAssuranceState(withSessionID: "newSessionID") // first set the shared state
 
         // test
-        stateManager.shareAssuranceState() // first set the shared state
         stateManager.clearAssuranceState() // and then attempt to clear it
 
         // verify
@@ -164,7 +133,7 @@ class AssuranceStateManagerTests: XCTestCase {
     private func mockSessionIDToPersistence(sessionID: String) {
         mockDataStore.dict[AssuranceConstants.DataStoreKeys.SESSION_ID] = sessionID
     }
-    
+
     private var sampleEventHubState: [String: Any] {
         let data = """
                    {
