@@ -43,7 +43,8 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
         outboundEventBuffer = ThreadSafeArray(identifier: "Session Orchestrator's OutboundBuffer array")
     }
 
-    /// Creates and starts a new  `AssuranceSession` with the provided `AssuranceSessionDetails`
+    /// Creates and starts a new  `AssuranceSession` with the provided `AssuranceSessionDetails`.
+    ///
     /// A new AssuranceSession is only created if there isn't an already existing session.
     /// Calling this method also shares the shared state for the extension with the provided session details
     ///
@@ -68,10 +69,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     ///
     func terminateSession() {
         hasEverTerminated = true
-        if let outBoundEventBuffer = outboundEventBuffer {
-            outBoundEventBuffer.clear()
-            self.outboundEventBuffer = nil
-        }
+        self.outboundEventBuffer = nil
 
         stateManager.clearAssuranceState()
 
@@ -116,13 +114,13 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     func pinScreenConnectClicked(_ pin: String) {
         guard let session = session else {
             Log.error(label: AssuranceConstants.LOG_TAG, "PIN confirmation without active session.")
+            terminateSession()
             return
         }
 
         /// display the error if the pin is empty
         if pin.isEmpty {
             session.presentation.sessionConnectionError(error: .noPincode)
-            Log.error(label: AssuranceConstants.LOG_TAG, "Null/Empty PIN recorded. Cannot connect to a session.")
             terminateSession()
             return
         }

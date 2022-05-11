@@ -18,21 +18,52 @@ class AssuranceSessionDetails {
     private let SESSION_ID_KEY = "sessionId"
     private let PINCODE_KEY = "token"
     private let CLIENT_ID_KEY = "clientId"
-    private let ORGID_KEY = "orgId"
+    private let ORG_ID_KEY = "orgId"
 
-    let datastore = NamedCollectionDataStore(name: AssuranceConstants.EXTENSION_NAME)
+    /// A unique ID representing a session.
     let sessionId: String
-    let environment: AssuranceEnvironment!
+
+    /// Environment to which the Assurance session connection is made.
+    ///
+    /// For developer use only.
+    /// This environment has no co-relation with environment from Data Collection (Launch) configuration.
+    let environment: AssuranceEnvironment
+
+    /// A unique ID representing a client device.
+    ///
+    /// This Id is persisted for lifetime of the application.
     let clientID: String
+
+    /// The 4 digit authentication code to connect to a session.
+    ///
+    /// pinCode is obtained as user input from PinCode screen.
     var pinCode: String?
+
+    /// A Unique ID representing the Adobe Org under which the Assurance session is created.
     var orgId: String?
 
+    /// Initializer
+    ///
+    /// This init takes the minimum required details to initiate an Assurance session.
+    /// - Parameters:
+    ///  - sessionId:A string representing sessionId for a session
+    ///  - clientId: A string representing  clientId
+    ///  - environment: the AssuranceEnvironment
     init(sessionId: String, clientId: String, environment: AssuranceEnvironment = AssuranceEnvironment.prod) {
         self.sessionId = sessionId
         self.clientID = clientId
         self.environment = environment
     }
 
+    /// Initializer
+    ///
+    /// This init takes the socket URL String that contains all the necessary details to connect to an Assurance session.
+    ///
+    /// - throws:`AssuranceSessionDetailBuilderError` with apt message if the socketURL
+    ///           does not contain all the necessary session details
+    ///
+    /// - Parameters:
+    ///    - socketURLString: The previously connected socketURLString
     init(withURLString socketURLString: String) throws {
 
         guard let socketURL = URL(string: socketURLString) else {
@@ -47,7 +78,7 @@ class AssuranceSessionDetails {
             throw AssuranceSessionDetailBuilderError(message: "No ClientId")
         }
 
-        guard let orgId = socketURL.params[ORGID_KEY] else {
+        guard let orgId = socketURL.params[ORG_ID_KEY] else {
             throw AssuranceSessionDetailBuilderError(message: "No OrgId")
         }
 
@@ -66,6 +97,9 @@ class AssuranceSessionDetails {
         self.environment = AssuranceSessionDetails.readEnvironment(fromHost: host)
     }
 
+    /// Retrieves the authenticated socket URL to make successful socket connection.
+    /// - Returns: Success Result with URL if the session details contains all the necessary data
+    ///            Failure Result with AssuranceSessionDetailAuthenticationError if any authentication parameters were missing.
     func getAuthenticatedSocketURL() -> Result<URL, AssuranceSessionDetailAuthenticationError> {
         guard let pin = pinCode else {
             return .failure(.noPinCode)
@@ -89,13 +123,24 @@ class AssuranceSessionDetails {
         return .success(url)
     }
 
+    /// Authenticate the session details with Pin and OrgId.
+    ///
+    /// Once authenticated use `getAuthenticatedSocketURL` function to retrieve the
+    /// valid URL to make a successful assurance socket connection for the session.
+    ///
+    /// - Parameters:
+    ///   - pinCode: The 4 digit authentication code obtained from input of pinCode screen.
+    ///   - orgId: The Adobe OrgId obtained from DataCollection(Launch) UI configuration.
     func authenticate(withPIN pinCode: String, andOrgID orgId: String) {
         self.pinCode = pinCode
         self.orgId = orgId
     }
 
+    /// Retrieve the `AssuranceEnvironment` from the host of the URL.
+    /// - Parameters:
+    ///    - host: The host of the already connected socket URL
+    /// - Returns:the `AssuranceEnvironment` obtained from the host
     private static func readEnvironment(fromHost host: String) -> AssuranceEnvironment {
-
         guard let connectString = host.split(separator: ".").first else {
             return .prod
         }

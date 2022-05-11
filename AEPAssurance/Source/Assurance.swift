@@ -25,9 +25,9 @@ public class Assurance: NSObject, Extension {
 
     var timer: DispatchSourceTimer?
 
-    /// Time before assurance shuts down on non receipt of start session event.
     #if DEBUG
-    var shutdownTime: TimeInterval  // editable for testing purposes
+    /// following variables are made editable for testing purposes
+    var shutdownTime: TimeInterval /// Time before which Assurance extension shuts down on non receipt of start session event.
     var stateManager: AssuranceStateManager
     var sessionOrchestrator: AssuranceSessionOrchestrator
     #else
@@ -47,6 +47,8 @@ public class Assurance: NSObject, Extension {
                 let sessionDetails = try AssuranceSessionDetails(withURLString: connectedWebSocketURLString)
                 sessionOrchestrator.createSession(withDetails: sessionDetails)
                 return
+            } catch let error as AssuranceSessionDetailBuilderError {
+                Log.warning(label: AssuranceConstants.LOG_TAG, "Ignoring to reconnect to already connected session. Invalid socket url.  URL : \(String(describing: connectedWebSocketURLString)) Error Message: \(error.message)")
             } catch {
                 Log.warning(label: AssuranceConstants.LOG_TAG, "Ignoring to reconnect to already connected session. Invalid socket url.  URL : \(String(describing: connectedWebSocketURLString)) Error Message: \(error.localizedDescription)")
             }
@@ -108,11 +110,12 @@ public class Assurance: NSObject, Extension {
     }
 
     /// Call to handle MobileCore's event of type `Assurance` and source `RequestContent`
-    /// These are typically the events that are generated with startSession API is called.
-    /// This event contains the deeplink information to kickStart an Assurance session
+    ///
+    /// These are typically the events that are generated when startSession API is called.
+    /// This event contains the deeplink information to kickStart an Assurance session.
     ///
     /// - Parameters:
-    /// - event - a AssuranceRequestContent event
+    /// - event - a AssuranceRequestContent event with deeplink data
     private func handleAssuranceRequestContent(event: Event) {
         /// early bail out if eventData is nil
         guard let startSessionData = event.data else {
@@ -127,13 +130,13 @@ public class Assurance: NSObject, Extension {
 
         let deeplinkURL = URL(string: deeplinkUrlString)
         guard let sessionId = deeplinkURL?.params[AssuranceConstants.Deeplink.SESSIONID_KEY] else {
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance start session event received with is invalid deeplink url. Does not contain 'adb_validation_sessionid' query parameter : " + deeplinkUrlString)
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance start session event received with invalid deeplink url. URL does not contain 'adb_validation_sessionid' query parameter : " + deeplinkUrlString)
             return
         }
 
         // make sure the sessionID is an UUID string
         guard let _ = UUID(uuidString: sessionId) else {
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance start session event received with is invalid deeplink url. It contains sessionId that is not an valid UUID : " + deeplinkUrlString)
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance start session event received with invalid deeplink url. It contains sessionId that is not an valid UUID : " + deeplinkUrlString)
             return
         }
 
