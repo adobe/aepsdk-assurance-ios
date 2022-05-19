@@ -40,4 +40,8 @@ class MockStateManager : AssuranceStateManager {
         return orgIDReturnValue
     }
     
+    func setConnectedURLString(_ url : String?) {
+        self.connectedWebSocketURL = url
+    }
+    
 }

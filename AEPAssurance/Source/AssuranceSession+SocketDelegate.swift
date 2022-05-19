@@ -83,7 +83,12 @@ extension AssuranceSession: SocketDelegate {
         // For all other abnormal closures, display error back to UI and attempt to reconnect.
         default:
             Log.debug(label: AssuranceConstants.LOG_TAG, "Abnormal closure of webSocket. Reason - \(reason) and closeCode - \(closeCode)")
-            presentation.sessionConnectionError(error: AssuranceConnectionError.genericError)
+
+            // do the reconnect logic only if session was already connected
+            guard let _ = stateManager.connectedWebSocketURL else {
+                presentation.sessionConnectionError(error: AssuranceConnectionError.genericError)
+                return
+            }
 
             // immediately attempt to reconnect if the disconnect happens for the first time
             // then forth make an reconnect attempt every 5 seconds
