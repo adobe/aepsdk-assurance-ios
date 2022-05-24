@@ -51,8 +51,8 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     /// - Parameters:
     ///    - sessionDetails: An `AssuranceSessionDetails` instance containing all the essential data for starting a session
     func createSession(withDetails sessionDetails: AssuranceSessionDetails) {
-        if let _ = session {
-            Log.warning(label: AssuranceConstants.LOG_TAG, "An active session already exists. Cannot create a new one.")
+        if session != nil {
+            Log.warning(label: AssuranceConstants.LOG_TAG, "An active Assurance session already exists. Cannot create a new one. Ignoring to process the scanned deeplink.")
             return
         }
 
@@ -84,15 +84,9 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
             return
         }
 
-        /// drop the event if outboundEventBuffer is nil
-        guard let outBoundEventBuffer = outboundEventBuffer else {
-            return
-        }
-
-        /// We still want to queue the events to the buffer until the session is connected.
-        /// This ensures that even a session cancellation will allow sending the buffered events
-        /// in forthcoming session that successfully connects.
-        outBoundEventBuffer.append(assuranceEvent)
+        /// Drop the event if outboundEventBuffer is nil
+        /// If not, we still want to queue the events to the buffer until the session is connected.
+        outboundEventBuffer?.append(assuranceEvent)
     }
 
     /// Check if the Assurance extension is capable of handling events.
