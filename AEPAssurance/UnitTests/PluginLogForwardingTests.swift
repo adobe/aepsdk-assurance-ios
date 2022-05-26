@@ -129,7 +129,6 @@ class PluginLogForwardingTests: XCTestCase {
 
     func test_commandLogForwarding_completeWorkflow() {
         // setup
-        mockSession.expectation = XCTestExpectation(description: "Sends log event to connected session.")
         plugin.onRegistered(mockSession)
 
         // test
@@ -141,8 +140,7 @@ class PluginLogForwardingTests: XCTestCase {
         os_log("secret log message")
 
         // verify
-        wait(for: [mockSession.expectation!], timeout: 2.0)
-        XCTAssertTrue(mockSession.sendEventCalled)
+        wait(for: [mockSession.sendEventCalled], timeout: 2.0)
         let logEvent = mockSession.sentEvent
         XCTAssertEqual(AssuranceConstants.EventType.LOG, logEvent?.type)
         XCTAssertEqual(AssuranceConstants.Vendor.MOBILE, logEvent?.vendor)
@@ -151,7 +149,9 @@ class PluginLogForwardingTests: XCTestCase {
         XCTAssertTrue(logMessage!.contains("secret log message"))
 
         sleep(1)
-        mockSession.sendEventCalled = false
+        // reset the expectation and invert it to verify that sendEvent is not called
+        mockSession.sendEventCalled = XCTestExpectation()
+        mockSession.sendEventCalled.isInverted = true
 
         // now send event to stop forwarding
         plugin.receiveEvent(logForwardingEvent(start: false))
@@ -161,7 +161,7 @@ class PluginLogForwardingTests: XCTestCase {
 
         // verify
         XCTAssertFalse(plugin.currentlyRunning)
-        XCTAssertFalse(mockSession.sendEventCalled)
+        wait(for: [mockSession.sendEventCalled], timeout: 2.0)
     }
 
     func test_commandLogForwarding_stopForwarding_whenNeverStarted() {
@@ -177,7 +177,6 @@ class PluginLogForwardingTests: XCTestCase {
 
     func test_commandLogForwarding_when_startForwardingReceivedTwice() {
         // setup
-        mockSession.expectation = XCTestExpectation(description: "Sends log event to connected session.")
         plugin.onRegistered(mockSession)
 
         // test
@@ -186,8 +185,7 @@ class PluginLogForwardingTests: XCTestCase {
 
         // verify
         os_log("secret log message")
-        wait(for: [mockSession.expectation!], timeout: 2.0)
-        XCTAssertTrue(mockSession.sendEventCalled)
+        wait(for: [mockSession.sendEventCalled], timeout: 2.0)
     }
 
     func test_unusedProtocolMethod() {

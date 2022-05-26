@@ -19,6 +19,11 @@ import Foundation
 /// Acts as the source of truth for all operations related to active session.
 class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
 
+    /// Dispatch queue to synchronize the operations over a session
+    /// QOS  is userInteractive, they highest priority on the system.
+    /// Hence they can process the UI button clicks immediately and attempts to connect to socket and dismiss the UI
+    let sessionOperationQueue = DispatchQueue(label: "com.adobe.assurance.session.queue", qos: .userInteractive)
+
     let stateManager: AssuranceStateManager
 
     /// A buffer for holding the events until the initial Assurance session associated with
@@ -50,6 +55,8 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     ///
     /// - Parameters:
     ///    - sessionDetails: An `AssuranceSessionDetails` instance containing all the essential data for starting a session
+    ///
+    /// Thread: Called from listener thread or Assurance registration thread
     func createSession(withDetails sessionDetails: AssuranceSessionDetails) {
         if session != nil {
             Log.warning(label: AssuranceConstants.LOG_TAG, "An active Assurance session already exists. Cannot create a new one. Ignoring to process the scanned deeplink.")
@@ -57,36 +64,46 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
         }
 
         stateManager.shareAssuranceState(withSessionID: sessionDetails.sessionId)
-        session = AssuranceSession(sessionDetails: sessionDetails, stateManager: stateManager, sessionOrchestrator: self, outboundEvents: outboundEventBuffer)
-        session?.startSession()
-
-        outboundEventBuffer?.clear()
-        outboundEventBuffer = nil
+        sessionOperationQueue.async {
+            self.session = AssuranceSession(sessionDetails: sessionDetails, stateManager: self.stateManager, sessionOrchestrator: self, outboundEvents: self.outboundEventBuffer)
+            self.session?.startSession()
+            self.outboundEventBuffer?.clear()
+            self.outboundEventBuffer = nil
+        }
     }
 
     ///
     /// Dissolve the active session (if one exists) and its associated states.
     ///
+    /// Thread: Called from main thread when `Cancel` or `Disconnect` button is tapped.
+    ///       Called from the background shutDownTimer after the 5 second timeout
     func terminateSession() {
         hasEverTerminated = true
         self.outboundEventBuffer = nil
 
         stateManager.clearAssuranceState()
 
-        session?.disconnect()
-        session = nil
+        sessionOperationQueue.async {
+            self.session?.disconnect()
+            self.session = nil
+        }
     }
 
+    ///
+    /// Queue Events before sending to socket
+    ///
+    /// Thread: Called from wildcard listener thread
     func queueEvent(_ assuranceEvent: AssuranceEvent) {
-        /// Queue this event to the active session if one exists.
-        if let session = session {
-            session.sendEvent(assuranceEvent)
-            return
+        sessionOperationQueue.async {
+            /// Queue this event to the active session if one exists.
+            if let session = self.session {
+                session.sendEvent(assuranceEvent)
+                return
+            }
+            /// Drop the event if outboundEventBuffer is nil
+            /// If not, we still want to queue the events to the buffer until the session is connected.
+            self.outboundEventBuffer?.append(assuranceEvent)
         }
-
-        /// Drop the event if outboundEventBuffer is nil
-        /// If not, we still want to queue the events to the buffer until the session is connected.
-        outboundEventBuffer?.append(assuranceEvent)
     }
 
     /// Check if the Assurance extension is capable of handling events.
@@ -96,8 +113,11 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     /// - Returns  true if extension is waiting for the first session to be established on launch (before shutting down)
     ///           or, if an active session exists.
     ///           false if extension is shutdown or no active session exists.
+    /// Thread: Called from wildcard listener thread
     func canProcessSDKEvents() -> Bool {
-        return session != nil || outboundEventBuffer != nil
+        sessionOperationQueue.sync {
+            return session != nil || outboundEventBuffer != nil
+        }
     }
 
     // MARK: - AssurancePresentationDelegate methods
@@ -106,29 +126,31 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     /// - Parameters:
     ///    - pin: A `String` value representing 4 digit pin entered in the PinCode screen
     func pinScreenConnectClicked(_ pin: String) {
-        guard let session = session else {
-            Log.error(label: AssuranceConstants.LOG_TAG, "PIN confirmation without active session.")
-            terminateSession()
-            return
-        }
+        sessionOperationQueue.async {
+            guard let session = self.session else {
+                Log.error(label: AssuranceConstants.LOG_TAG, "PIN confirmation without active session.")
+                self.terminateSession()
+                return
+            }
 
-        /// display the error if the pin is empty
-        if pin.isEmpty {
-            session.presentation.sessionConnectionError(error: .noPincode)
-            terminateSession()
-            return
-        }
+            /// display the error if the pin is empty
+            if pin.isEmpty {
+                session.presentation.sessionConnectionError(error: .noPincode)
+                self.terminateSession()
+                return
+            }
 
-        /// display error if the OrgID is missing.
-        guard let orgID = stateManager.getURLEncodedOrgID() else {
-            session.presentation.sessionConnectionError(error: .noOrgId)
-            terminateSession()
-            return
-        }
+            /// display error if the OrgID is missing.
+            guard let orgID = self.stateManager.getURLEncodedOrgID() else {
+                session.presentation.sessionConnectionError(error: .noOrgId)
+                self.terminateSession()
+                return
+            }
 
-        Log.trace(label: AssuranceConstants.LOG_TAG, "Connect Button clicked. Starting a socket connection.")
-        session.sessionDetails.authenticate(withPIN: pin, andOrgID: orgID)
-        session.startSession()
+            Log.trace(label: AssuranceConstants.LOG_TAG, "Connect Button clicked. Starting a socket connection.")
+            session.sessionDetails.authenticate(withPIN: pin, andOrgID: orgID)
+            session.startSession()
+        }
     }
 
     ///

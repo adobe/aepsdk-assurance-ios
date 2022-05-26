@@ -17,30 +17,28 @@ import XCTest
 
 class MockSession: AssuranceSession {
 
-    var expectation: XCTestExpectation?
     override init(sessionDetails: AssuranceSessionDetails, stateManager: AssuranceStateManager, sessionOrchestrator: AssuranceSessionOrchestrator, outboundEvents: ThreadSafeArray<AssuranceEvent>?) {
         super.init(sessionDetails: sessionDetails, stateManager: stateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: outboundEvents)
-        self.socket = MockSocket(withDelegate: self)
+        self.socket = MockSocket(withDelegate: self)            
     }
 
 
-    var sendEventCalled = false
+    var sendEventCalled = XCTestExpectation(description: "SendEvent method not called")
     var sentEvent: AssuranceEvent?
     override func sendEvent(_ assuranceEvent: AssuranceEvent) {
-        expectation?.fulfill()
-        sendEventCalled = true
+        sendEventCalled.fulfill()
         sentEvent = assuranceEvent
     }
     
-    var startSessionCalled = false
+    var startSessionCalled = XCTestExpectation("startSession method not called")
     override func startSession() {
-        startSessionCalled = true
+        startSessionCalled.fulfill()
     }
 
 
-    var disconnectCalled = false
+    var disconnectCalled = XCTestExpectation("Disconnect method not called")
     override func disconnect() {
-        disconnectCalled = true
+        disconnectCalled.fulfill()
     }
 
     func mockSocketState(state: SocketState) {
