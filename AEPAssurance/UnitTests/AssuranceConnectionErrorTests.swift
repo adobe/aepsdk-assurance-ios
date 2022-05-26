@@ -22,11 +22,6 @@ class AssuranceConnectionErrorTests: XCTestCase {
         XCTAssertNotNil(AssuranceConnectionError.genericError.info.description)
         XCTAssertTrue(AssuranceConnectionError.genericError.info.shouldRetry)
 
-        // NoSessionId Error
-        XCTAssertNotNil(AssuranceConnectionError.noSessionID.info.name)
-        XCTAssertNotNil(AssuranceConnectionError.noSessionID.info.description)
-        XCTAssertFalse(AssuranceConnectionError.noSessionID.info.shouldRetry)
-
         // No PinCode Error
         XCTAssertNotNil(AssuranceConnectionError.noPincode.info.name)
         XCTAssertNotNil(AssuranceConnectionError.noPincode.info.description)

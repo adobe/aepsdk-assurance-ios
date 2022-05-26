@@ -22,8 +22,15 @@ class MockSessionOrchestrator : AssuranceSessionOrchestrator {
     }
 
     var createSessionCalled = false
-    override func createSession() {
+    var createSessionDetails: AssuranceSessionDetails?
+    override func createSession(withDetails sessionDetails: AssuranceSessionDetails) {
         createSessionCalled = true
+        createSessionDetails = sessionDetails
+    }
+    
+    var canProcessSDKEventsReturnValue = false
+    override func canProcessSDKEvents() -> Bool {
+        return canProcessSDKEventsReturnValue
     }
 
     var terminateSessionCalled = false
@@ -31,14 +38,9 @@ class MockSessionOrchestrator : AssuranceSessionOrchestrator {
         terminateSessionCalled = true
     }
 
-    var shutDownSessionCalled = false
-    override func shutDownSession() {
-        shutDownSessionCalled = true
-    }
-
     var sendEventCalled = false
     var sentEvent: AssuranceEvent?
-    override func sendEvent(_ assuranceEvent: AssuranceEvent) {
+    override func queueEvent(_ assuranceEvent: AssuranceEvent) {
         expectation?.fulfill()
         sendEventCalled = true
         sentEvent = assuranceEvent

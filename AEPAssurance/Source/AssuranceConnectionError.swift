@@ -16,7 +16,6 @@ import Foundation
 enum AssuranceConnectionError {
     case genericError
     case noOrgId
-    case noSessionID
     case noPincode
     case noURL
     case orgIDMismatch
@@ -31,9 +30,6 @@ enum AssuranceConnectionError {
         case .genericError:
             return ("Connection Error",
                     "The connection may be failing due to a network issue or an incorrect PIN. Please verify internet connectivity or the PIN and try again.", true)
-        case .noSessionID:
-            return ("Invalid SessionID",
-                    "Unable to extract valid Assurance sessionID from deeplink URL. Please try re-connecting to the session with a valid deeplink URL", false)
         case .noPincode:
             return ("HTML Error",
                     "Unable to extract the pincode entered.", true)

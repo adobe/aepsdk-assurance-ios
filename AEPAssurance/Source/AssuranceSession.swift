@@ -15,13 +15,20 @@ import Foundation
 class AssuranceSession {
     let RECONNECT_TIMEOUT = 5
     let stateManager: AssuranceStateManager
+    let sessionDetails: AssuranceSessionDetails
+    let sessionOrchestrator: AssuranceSessionOrchestrator
     var pinCodeScreen: SessionAuthorizingUI?
     let outboundQueue: ThreadSafeQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
     let inboundQueue: ThreadSafeQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
     let inboundSource: DispatchSourceUserDataAdd = DispatchSource.makeUserDataAddSource(queue: DispatchQueue.global(qos: .default))
     let outboundSource: DispatchSourceUserDataAdd = DispatchSource.makeUserDataAddSource(queue: DispatchQueue.global(qos: .default))
     let pluginHub: PluginHub = PluginHub()
+
+    #if DEBUG
+    var presentation: AssurancePresentation
+    #else
     let presentation: AssurancePresentation
+    #endif
     lazy var socket: SocketConnectable  = {
         return WebViewSocket(withDelegate: self)
     }()
@@ -35,80 +42,55 @@ class AssuranceSession {
     /// indicates if Assurance SDK can start forwarding events to the session. This flag is set when a command `startForwarding` is received from the socket.
     var canStartForwarding: Bool = false
 
-    /// true indicates Assurance SDK has timeout and shutdown after non-reception of deep link URL because of which it has cleared all the queued initial SDK events from memory.
-    var didClearBootEvent: Bool = false
-
-    /// Boolean flag indicating whether to process and queue the SDK events heard from the wildcard listener.
-    /// This flag is set to false on the following occasions:
-    ///  1. When the Assurance extension automatically shuts down on non arrival of assurance deeplink after the 5 second timeout.
-    ///  2. When the Assurance session is disconnected by the user.
-    /// This flag is turned back on when Assurance extension is reconnected to an new Assurance session
-    ///
-    /// TODO: MOB-15936
-    /// Tracking flags is difficult! This flag should be removed in favor of recreating a
-    /// new AssuranceSession for each new socket connection and making the AssuranceExtension rely
-    /// on the existence of a session for inferring event processing.
-    var canProcessSDKEvents: Bool = true
-
-    /// Initializer with instance of  `AssuranceStateManager`
-    init(_ stateManager: AssuranceStateManager, _ sessionOrchestrator: AssuranceSessionOrchestrator) {
+    /// Initializer
+    /// - Parameters:
+    ///    - sessionDetails: A valid `AssuranceSessionDetails` instance that contains at least sessionId and clientId to start a session
+    ///    - stateManager: `AssuranceStateManager` instance responsible for managing Assurance shared state and fetching other extension shared states
+    ///    - sessionOrchestrator: an orchestrating component that manages this session
+    ///    - outboundEvents: events that are queued before this session is initiated
+    init(sessionDetails: AssuranceSessionDetails, stateManager: AssuranceStateManager, sessionOrchestrator: AssuranceSessionOrchestrator, outboundEvents: ThreadSafeArray<AssuranceEvent>?) {
+        self.sessionDetails = sessionDetails
         self.stateManager = stateManager
-        presentation = AssurancePresentation(stateManager: stateManager, sessionOrchestrator: sessionOrchestrator)
+        self.sessionOrchestrator = sessionOrchestrator
+        presentation = AssurancePresentation(sessionOrchestrator: sessionOrchestrator)
         handleInBoundEvents()
         handleOutBoundEvents()
         registerInternalPlugins()
+
+        /// Queue the outboundEvents to outboundQueue
+        if let outboundEvents = outboundEvents {
+            for eachEvent in outboundEvents.shallowCopy {
+                outboundQueue.enqueue(newElement: eachEvent)
+            }
+        }
     }
 
-    /// Initializer for testing purposes to mock presentation layer
-    init?(_ stateManager: AssuranceStateManager, _ sessionOrchestrator: AssuranceSessionOrchestrator, _ presentation: AssurancePresentation) {
-        self.stateManager = stateManager
-        self.presentation = presentation
-        handleInBoundEvents()
-        handleOutBoundEvents()
-        registerInternalPlugins()
-    }
-
+    /// Starts an assurance session connection with the provided sessionDetails.
     ///
-    /// Called this method to start an Assurance session.
-    /// If the session was already connected, It will resume the connection.
-    /// Otherwise PinCode screen is presented for establishing a new connection.
-    ///
+    /// If the sessionDetails is not authenticated (doesn't have pin or orgId), it triggers the presentation to launch the pinCode screen
+    /// If the sessionDetails is already authenticated, then connects directly without pin prompt.
     func startSession() {
-        canProcessSDKEvents = true
-
         if socket.socketState == .open || socket.socketState == .connecting {
             Log.debug(label: AssuranceConstants.LOG_TAG, "There is already an ongoing Assurance session. Ignoring to start new session.")
             return
         }
 
-        // if there is a socket URL already connected in the previous session, reuse it.
-        if let socketURL = stateManager.connectedWebSocketURL {
-            self.presentation.statusUI.display()
-            guard let url = URL(string: socketURL) else {
-                Log.warning(label: AssuranceConstants.LOG_TAG, "Invalid socket url. Ignoring to start new session.")
-                return
-            }
+        switch sessionDetails.getAuthenticatedSocketURL() {
+        case .success(let url):
+            // if the URL is already authenticated with Pin and OrgId,
+            // then immediately make the socket connection
             socket.connect(withUrl: url)
-            return
+            self.presentation.statusUI.display()
+        case .failure:
+            // if the URL is not authenticated, then bring up the pinpad screen
+            presentation.sessionInitialized()
         }
-
-        // if there were no previous connected URL then start a new session
-        beginNewSession()
-    }
-
-    /// Called when a valid assurance deep link url is received from the startSession API
-    /// Calling this method will attempt to display the pinCode screen for session authentication
-    ///
-    /// Thread : Listener thread from EventHub
-    func beginNewSession() {
-        presentation.sessionInitialized()
     }
 
     ///
     /// Terminates the ongoing Assurance session.
     ///
-    func terminateSession() {
-        canProcessSDKEvents = false
+    func disconnect() {
         socket.disconnect()
         clearSessionData()
     }
@@ -120,6 +102,18 @@ class AssuranceSession {
     func sendEvent(_ assuranceEvent: AssuranceEvent) {
         outboundQueue.enqueue(newElement: assuranceEvent)
         outboundSource.add(data: 1)
+    }
+
+    ///
+    /// Clears all the data related to the current Assurance Session.
+    /// Call this method when user terminates the Assurance session or when non-recoverable socket error occurs.
+    ///
+    func clearSessionData() {
+        inboundQueue.clear()
+        outboundQueue.clear()
+        canStartForwarding = false
+        pluginHub.notifyPluginsOnSessionTerminated()
+        stateManager.connectedWebSocketURL = nil
     }
 
     /// Handles the Assurance socket connection error by showing the appropriate UI to the user.
@@ -137,29 +131,6 @@ class AssuranceSession {
         if !error.info.shouldRetry {
             clearSessionData()
         }
-    }
-
-    ///
-    /// Clears the queued SDK events from memory. Call this method once Assurance shut down timer is triggered.
-    ///
-    func shutDownSession() {
-        inboundQueue.clear()
-        outboundQueue.clear()
-        didClearBootEvent = true
-        canProcessSDKEvents = false
-    }
-
-    ///
-    /// Clears all the data related to the current Assurance Session.
-    /// Call this method when user terminates the Assurance session or when non-recoverable socket error occurs.
-    ///
-    func clearSessionData() {
-        stateManager.clearAssuranceState()
-        canStartForwarding = false
-        pluginHub.notifyPluginsOnSessionTerminated()
-        stateManager.sessionId = nil
-        stateManager.connectedWebSocketURL = nil
-        stateManager.environment = AssuranceConstants.DEFAULT_ENVIRONMENT
     }
 
     // MARK: - Private methods

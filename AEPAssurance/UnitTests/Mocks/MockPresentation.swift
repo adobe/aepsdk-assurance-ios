@@ -18,8 +18,13 @@ import XCTest
 class MockPresentation : AssurancePresentation {
     
     var expectation: XCTestExpectation?
-    required override  init(stateManager: AssuranceStateManager, sessionOrchestrator: AssuranceSessionOrchestrator) {
-        super.init(stateManager: stateManager, sessionOrchestrator: sessionOrchestrator)
+    required override  init(sessionOrchestrator: AssuranceSessionOrchestrator) {
+        super.init(sessionOrchestrator: sessionOrchestrator)
+    }
+    
+    var sessionInitializedCalled = false
+    override func sessionInitialized() {
+        sessionInitializedCalled = true
     }
     
     var sessionConnectedCalled = false

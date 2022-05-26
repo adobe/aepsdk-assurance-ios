@@ -22,7 +22,7 @@ class AssuranceTests: XCTestCase {
     let mockUIService = MockUIService()
     let mockDataStore = MockDataStore()
     let mockMessagePresentable = MockFullscreenMessagePresentable()
-    var mockSession: MockAssuranceSession!
+    var mockSession: MockSession!
     var stateManager: AssuranceStateManager!
     var assurance: Assurance!
     var mockSessionOrchestrator: MockSessionOrchestrator!
@@ -33,12 +33,15 @@ class AssuranceTests: XCTestCase {
         mockUIService.fullscreenMessage = mockMessagePresentable
         stateManager = AssuranceStateManager(runtime)
         mockSessionOrchestrator = MockSessionOrchestrator(stateManager: stateManager)
-        
-        assurance = Assurance(runtime: runtime, shutdownTime: AssuranceConstants.SHUTDOWN_TIME, stateManager: stateManager, sessionOrchestrator: mockSessionOrchestrator)
+
+        assurance = Assurance(runtime: runtime)
+        assurance.stateManager = stateManager
+        assurance.sessionOrchestrator = mockSessionOrchestrator
         assurance.onRegistered()
 
         // mock the interaction with AssuranceSession class
-        mockSession = MockAssuranceSession(stateManager)
+        let mockSessionDetails = AssuranceSessionDetails(sessionId: "mockSessionId", clientId: "mockClientId")
+        mockSession = MockSession(sessionDetails: mockSessionDetails, stateManager: stateManager, sessionOrchestrator: mockSessionOrchestrator, outboundEvents: nil)
     }
 
     override func tearDown() {
@@ -62,13 +65,10 @@ class AssuranceTests: XCTestCase {
         // verify
         XCTAssertTrue(mockSessionOrchestrator.createSessionCalled)
 
-        // verify that sessionID and environment are set in datastore
-        XCTAssertEqual("28f4a622-d34f-4036-c81a-d21352144b57", stateManager.sessionId)
-        XCTAssertEqual("stage", mockDataStore.dict[AssuranceConstants.DataStoreKeys.ENVIRONMENT] as! String)
-
-        // verify the local variables
-        XCTAssertEqual("28f4a622-d34f-4036-c81a-d21352144b57", stateManager.sessionId)
-        XCTAssertEqual(AssuranceEnvironment.stage, stateManager.environment)
+        // verify that sessionID and environment are properly passed as session details
+        XCTAssertEqual("28f4a622-d34f-4036-c81a-d21352144b57", mockSessionOrchestrator.createSessionDetails?.sessionId)
+        XCTAssertEqual(.stage, mockSessionOrchestrator.createSessionDetails?.environment)
+    
     }
 
     func test_startSession_withNonUUIDSessionID() throws {
@@ -141,6 +141,7 @@ class AssuranceTests: XCTestCase {
     func test_handleWildCardEvent_withNilEventData() throws {
         // setup
         mockSessionOrchestrator.session = mockSession
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = true
         let event = Event(name: "Any SDK Event",
                           type: EventType.analytics,
                           source: EventSource.requestContent,
@@ -160,7 +161,8 @@ class AssuranceTests: XCTestCase {
                           type: EventType.analytics,
                           source: EventSource.requestContent,
                           data: nil)
-        //mockSession.canProcessSDKEvents = false  ///todo on sessionManagement PullRequest
+        
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = false
 
         // test
         runtime.simulateComingEvent(event: event)
@@ -176,6 +178,7 @@ class AssuranceTests: XCTestCase {
     func test_handleSharedStateEvent_Regular() throws {
         // setup
         mockSessionOrchestrator.session = mockSession
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = true
         let sampleConfiguration = ["configkey": "value"]
         let configStateChangeEvent = Event(name: AssuranceConstants.SDKEventName.SHARED_STATE_CHANGE,
                                            type: EventType.hub,
@@ -195,6 +198,7 @@ class AssuranceTests: XCTestCase {
     func test_handleSharedStateEvent_XDM() throws {
         // setup
         mockSessionOrchestrator.session = mockSession
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = true
         let sampleConsent = ["consent": "yes"]
         let consentStateChangeEvent = Event(name: AssuranceConstants.SDKEventName.XDM_SHARED_STATE_CHANGE,
                                             type: EventType.hub,
@@ -256,6 +260,7 @@ class AssuranceTests: XCTestCase {
 
     func test_handlePlacesRequest_GetNearByPlaces() throws {
         // setup
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = true
         mockSessionOrchestrator.session = mockSession
         
         // test
@@ -268,6 +273,7 @@ class AssuranceTests: XCTestCase {
 
     func test_handlePlacesRequest_PlacesReset() throws {
         // setup
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = true
         mockSessionOrchestrator.session = mockSession
         
         // test
@@ -280,6 +286,7 @@ class AssuranceTests: XCTestCase {
 
     func test_handlePlacesResponse_RegionEvent() throws {
         // setup
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = true
         mockSessionOrchestrator.session = mockSession
         
         // test
@@ -292,6 +299,7 @@ class AssuranceTests: XCTestCase {
 
     func test_handlePlacesResponse_nearbyPOIResponse() throws {
         // setup
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = true
         mockSessionOrchestrator.session = mockSession
         
         // test
@@ -303,6 +311,7 @@ class AssuranceTests: XCTestCase {
 
     func test_handlePlacesResponse_nearbyPOIResponseNoPOI() throws {
         // setup
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = true
         mockSessionOrchestrator.session = mockSession
         
         // test

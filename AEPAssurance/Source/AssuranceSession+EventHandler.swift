@@ -76,7 +76,7 @@ extension AssuranceSession {
 
                     // If the initial SDK events were cleared because of Assurance shutting down after 5 second timeout
                     // then populate the griffon session with all the available shared state details (Both XDM and Regular)
-                    if self.didClearBootEvent {
+                    if self.sessionOrchestrator.hasEverTerminated {
                         let stateEvents = self.stateManager.getAllExtensionStateData()
                         Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance extension cleared the initial queued events. Sharing the shared state data of \(stateEvents.count) registered extensions.")
                         for eachStateEvent in stateEvents {

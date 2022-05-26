@@ -31,7 +31,7 @@ class iOSStatusUI {
     /// This method will initialize the FloatingButton and the FullScreen webView required for the displaying Assurance status.
     /// On calling this method Floating button appears on the screen showing the current connection status.
     func display() {
-        if let _ = floatingButton {
+        if floatingButton != nil {
             return
         }
 

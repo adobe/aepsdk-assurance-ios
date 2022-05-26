@@ -20,8 +20,8 @@ import XCTest
 class iOSStatusUITests: XCTestCase {
 
     var statusUI: iOSStatusUI!
-    var mockSession: MockAssuranceSession!
-    var mockStateManager: MockAssuranceStateManager!
+    var mockSession: MockSession!
+    var mockStateManager: MockStateManager!
     var mockSessionOrchestrator: MockSessionOrchestrator!
 
     // mock UIServices
@@ -32,10 +32,10 @@ class iOSStatusUITests: XCTestCase {
 
     override func setUp() {
         let runtime = TestableExtensionRuntime()
-        mockStateManager = MockAssuranceStateManager(runtime)
-        mockSession = MockAssuranceSession(mockStateManager)
+        mockStateManager = MockStateManager(runtime)
         mockSessionOrchestrator = MockSessionOrchestrator(stateManager: mockStateManager)
-
+        let sessionDetail = AssuranceSessionDetails(sessionId: "mocksessionId", clientId: "clientId", environment: .dev)
+        mockSession = MockSession(sessionDetails: sessionDetail, stateManager: mockStateManager!, sessionOrchestrator: mockSessionOrchestrator, outboundEvents: nil)
         ServiceProvider.shared.uiService = mockUIService
         statusUI = iOSStatusUI.init(withSessionOrchestrator: mockSessionOrchestrator)
 
@@ -129,7 +129,7 @@ class iOSStatusUITests: XCTestCase {
         // verify when floating button is tapped, floating button is dismissed
         // and fullscreen status screen is shown
         XCTAssertTrue(mockFullScreen.dismissCalled)
-        XCTAssertTrue(mockSessionOrchestrator.terminateSessionCalled)
+        XCTAssertTrue(mockSessionOrchestrator.disconnectClickedCalled)
         XCTAssertFalse(shouldHandleURL) // assert false because the URL is handled by the delegate method
     }
 

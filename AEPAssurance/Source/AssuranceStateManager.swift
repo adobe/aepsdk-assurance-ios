@@ -22,35 +22,6 @@ class AssuranceStateManager {
 
     let datastore = NamedCollectionDataStore(name: AssuranceConstants.EXTENSION_NAME)
 
-    /// sessionID represents a unique identifier of a Project Griffon session to which this library attempts to connect.
-    /// This property gets set when a deep-link initiating an assurance session is received.
-    /// The presence of valid sessionID variable in `AssuranceStateManager` denotes a connection to Assurance session has been initiated.
-    /// Note: The presence of sessionID does not denote active socket connection
-    /// The absence of sessionID denotes a session connection is terminated or cancelled.
-    var sessionId: String? {
-        get {
-            datastore.getString(key: AssuranceConstants.DataStoreKeys.SESSION_ID)
-        }
-        set {
-            datastore.set(key: AssuranceConstants.DataStoreKeys.SESSION_ID, value: newValue)
-        }
-    }
-
-    private let DEFAULT_ENVIRONMENT = AssuranceEnvironment.prod
-
-    /// environment property defines the current environment to which the assurance session is connecting.
-    /// This value should not be confused with launch environment.
-    /// This value denotes the environment of Griffon services and UI running to which connection is made.
-    /// This value is obtained from as a query parameter of deeplink URL.
-    var environment: AssuranceEnvironment {
-        get {
-            AssuranceEnvironment.init(envString: datastore.getString(key: AssuranceConstants.DataStoreKeys.ENVIRONMENT) ?? DEFAULT_ENVIRONMENT.rawValue)
-        }
-        set {
-            datastore.set(key: AssuranceConstants.DataStoreKeys.ENVIRONMENT, value: newValue.rawValue)
-        }
-    }
-
     /// clientID is an identifier to uniquely identify the connected device to an Assurance Session.
     /// This is a string representation of a UUID. This ID is required for client → server communications.
     /// A clientID is generated at the client and is persisted throughout the lifecycle of the app.
@@ -88,10 +59,21 @@ class AssuranceStateManager {
         self.runtime = runtime
     }
 
-    /// Call this function to create a new shared state for Assurance
-    /// Important - An empty shared state is created if sessionId is not available
-    func shareAssuranceState() {
-        runtime.createSharedState(data: getSharedStateData() ?? [:], event: nil)
+    /// Call this function to create a new shared state for Assurance with the provided sessionId
+    ///
+    /// A valid shared state contains:
+    /// - sessionId
+    /// - clientId
+    /// - integrationId = sessionId | clientId
+    ///
+    /// - Parameters:
+    ///    - sessionId: the sessionId of the new established session
+    func shareAssuranceState(withSessionID sessionId: String) {
+        var shareStateData: [String: String] = [:]
+        shareStateData[AssuranceConstants.SharedStateKeys.CLIENT_ID] = clientID
+        shareStateData[AssuranceConstants.SharedStateKeys.SESSION_ID] = sessionId
+        shareStateData[AssuranceConstants.SharedStateKeys.INTEGRATION_ID] = sessionId + "|" + clientID
+        runtime.createSharedState(data: shareStateData, event: nil)
     }
 
     /// Call this function to empty the latest Assurance shared state
@@ -139,11 +121,13 @@ class AssuranceStateManager {
 
     // MARK: - Helper methods to prepare shared state status events
 
+    ///
     /// Gets the friendly name for an extension from EventHub's shared state.
     /// - Parameters:
     ///     - extensionMap: an eventHub's shared state dictionary containing details of the registered extension
     ///     - extensionName: the extension's name for which the friendly name has to be retrieved
     /// - Returns:A `String` representing the friendly name of the extension.
+    ///
     private func getFriendlyExtensionName(extensionMap: [String: Any], extensionName: String) -> String {
         if let extensionDetails = extensionMap[extensionName] as? [String: Any] {
             if let friendlyName = extensionDetails[AssuranceConstants.EventDataKey.FRIENDLY_NAME] as? String {
@@ -193,26 +177,6 @@ class AssuranceStateManager {
         payload[AssuranceConstants.ACPExtensionEventKey.DATA] = [AssuranceConstants.EventDataKey.SHARED_STATE_OWNER: owner]
         payload[AssuranceConstants.PayloadKey.METADATA] = [stateType: stateContent]
         return AssuranceEvent(type: AssuranceConstants.EventType.GENERIC, payload: payload)
-    }
-
-    /// Prepares the shared state data for the Assurance Extension
-    /// A valid shared state contains:
-    /// - sessionid
-    /// - clientid
-    /// - integrationid
-    ///
-    /// - Returns: a dictionary  representing the current shared state data
-    private func getSharedStateData() -> [String: String]? {
-        // do not share shared state if the sessionId is unavailable
-        guard let sessionId = sessionId else {
-            return nil
-        }
-
-        var shareStateData: [String: String] = [:]
-        shareStateData[AssuranceConstants.SharedStateKeys.CLIENT_ID] = clientID
-        shareStateData[AssuranceConstants.SharedStateKeys.SESSION_ID] = sessionId
-        shareStateData[AssuranceConstants.SharedStateKeys.INTEGRATION_ID] = sessionId + "|" + clientID
-        return shareStateData
     }
 
 }

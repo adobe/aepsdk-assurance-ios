@@ -15,7 +15,6 @@ import Foundation
 
 class AssurancePresentation {
 
-    let stateManager: AssuranceStateManager
     let sessionOrchestrator: AssuranceSessionOrchestrator
 
     lazy var pinCodeScreen: SessionAuthorizingUI = {
@@ -26,8 +25,7 @@ class AssurancePresentation {
         iOSStatusUI.init(withSessionOrchestrator: sessionOrchestrator)
     }()
 
-    init(stateManager: AssuranceStateManager, sessionOrchestrator: AssuranceSessionOrchestrator) {
-        self.stateManager = stateManager
+    init(sessionOrchestrator: AssuranceSessionOrchestrator) {
         self.sessionOrchestrator = sessionOrchestrator
     }
 
