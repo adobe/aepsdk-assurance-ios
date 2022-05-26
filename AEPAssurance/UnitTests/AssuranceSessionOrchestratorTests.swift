@@ -48,6 +48,7 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         sessionOrchestrator.createSession(withDetails: sampleSessionDetail)
         
         // verify that a new session is created
+        sleep(1)
         XCTAssertNotNil(sessionOrchestrator.session)
         XCTAssertIdentical(sampleSessionDetail, sessionOrchestrator.session?.sessionDetails)
         
@@ -63,146 +64,154 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         // test
         let newSessionDetails = AssuranceSessionDetails(sessionId: "newSessionId", clientId: "newClientId")
         sessionOrchestrator.createSession(withDetails: newSessionDetails)
-        
+
         // verify that a new session is not created
         XCTAssertIdentical(mockSession, sessionOrchestrator.session)
     }
-    
+
     func test_terminateSession() {
         // setup
         sessionOrchestrator.session = mockSession
         queueTwoOutboundEvents()
-         
+
         // test
         sessionOrchestrator.terminateSession()
-        
+
         // verify
+        wait(for: [mockSession.disconnectCalled], timeout: 2.0)
         XCTAssertTrue(sessionOrchestrator.hasEverTerminated)
         XCTAssertTrue(mockStateManager.clearAssuranceStateCalled)
-        XCTAssertTrue(mockSession.disconnectCalled)
         XCTAssertNil(sessionOrchestrator.outboundEventBuffer)
         XCTAssertNil(sessionOrchestrator.session)
     }
-    
+
     func test_queueEvent_whenSessionActive() {
         // setup
         sessionOrchestrator.session = mockSession
-        
+
         // test
         sessionOrchestrator.queueEvent(AssuranceEvent(type: "event1", payload: [:]))
-        
+
         // verify
+        wait(for: [mockSession.sendEventCalled], timeout: 2.0)
         XCTAssertTrue(sessionOrchestrator.outboundEventBuffer!.isEmpty)
-        XCTAssertTrue(mockSession.sendEventCalled)
     }
-    
+
     func test_queueEvent_whenSessionInActive() {
         // setup
         sessionOrchestrator.session = nil
-        
+        // Invert the expectation as we need to verify sendEvent is not called
+        mockSession.sendEventCalled.isInverted = true
+
         // test
         sessionOrchestrator.queueEvent(AssuranceEvent(type: "event1", payload: [:]))
-        
+
         // verify
-        XCTAssertFalse(mockSession.sendEventCalled)
-        XCTAssertEqual(1,sessionOrchestrator.outboundEventBuffer!.count)        
+        wait(for: [mockSession.sendEventCalled], timeout: 1.0)
+        XCTAssertEqual(1,sessionOrchestrator.outboundEventBuffer!.count)
     }
-    
+
     func test_queueEvent_whenShutDown() {
         // setup
         sessionOrchestrator.session = nil
         sessionOrchestrator.outboundEventBuffer = nil
-        
+        // Invert the expectation as we need to verify sendEvent is not called
+        mockSession.sendEventCalled.isInverted = true
+
         // test
         sessionOrchestrator.queueEvent(AssuranceEvent(type: "event1", payload: [:]))
-        
+
         // verify
-        XCTAssertFalse(mockSession.sendEventCalled)
+        wait(for: [mockSession.sendEventCalled], timeout: 1.0)
         XCTAssertNil(sessionOrchestrator.outboundEventBuffer)
     }
-    
+
     func test_pinScreenConnectClicked() {
         // setup
         mockStateManager.orgIDReturnValue = "mockOrgId"
         sessionOrchestrator.session = mockSession
-                
+
         // test
         sessionOrchestrator.pinScreenConnectClicked("3325")
-        
+
         // verify
-        XCTAssertTrue(mockSession.startSessionCalled)
+        wait(for: [mockSession.startSessionCalled], timeout: 1.0)
     }
-    
-    
+
+
     func test_pinScreenConnectClicked_whenSessionNil() {
         // setup
         // ideally this scenario should never happen
         sessionOrchestrator.session = nil
-        
+
         // test and verify that orchestrator handles this gracefully
         XCTAssertNoThrow(sessionOrchestrator.pinScreenConnectClicked("3325"))
     }
-    
+
     func test_pinScreenConnectClicked_whenEmptyPin() {
         // setup
         mockStateManager.orgIDReturnValue = "mockOrgId"
         sessionOrchestrator.session = mockSession
-                
+        // Invert the expectation as we need to verify startSession is not called
+        mockSession.startSessionCalled.isInverted = true
+
         // test
         sessionOrchestrator.pinScreenConnectClicked("")
-        
+
         // verify that the UI is indicated for the error and session is cleared
-        XCTAssertFalse(mockSession.startSessionCalled)
-        XCTAssertTrue(mockSession.disconnectCalled)
+        wait(for: [mockSession.startSessionCalled], timeout: 1.0)
+        wait(for: [mockSession.disconnectCalled], timeout: 1.0)
         XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
         XCTAssertEqual(.noPincode ,mockPresentation.sessionConnectionErrorValue)
         XCTAssertTrue(mockStateManager.clearAssuranceStateCalled)
     }
-    
+
     func test_pinScreenConnectClicked_whenNoOrgId() {
         // setup
         mockStateManager.orgIDReturnValue = nil
         sessionOrchestrator.session = mockSession
-                
+        // Invert the expectation as we need to verify startSession is not called
+        mockSession.startSessionCalled.isInverted = true
+
         // test
         sessionOrchestrator.pinScreenConnectClicked("4442")
-        
+
         // verify that the UI is indicated for the error and session is cleared
-        XCTAssertFalse(mockSession.startSessionCalled)
-        XCTAssertTrue(mockSession.disconnectCalled)
+        wait(for: [mockSession.startSessionCalled], timeout: 1.0)
+        wait(for: [mockSession.disconnectCalled], timeout: 1.0)
         XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
         XCTAssertEqual(.noOrgId ,mockPresentation.sessionConnectionErrorValue)
         XCTAssertTrue(mockStateManager.clearAssuranceStateCalled)
     }
-    
+
     func test_pinScreenCancelClicked() {
         sessionOrchestrator.session = mockSession
-                
+
         // test
         sessionOrchestrator.pinScreenCancelClicked()
-        
+
         // verify that the session is terminated and cleared
         XCTAssertTrue(sessionOrchestrator.hasEverTerminated)
         XCTAssertTrue(mockStateManager.clearAssuranceStateCalled)
-        XCTAssertTrue(mockSession.disconnectCalled)
+        wait(for: [mockSession.disconnectCalled], timeout: 1.0)
         XCTAssertNil(sessionOrchestrator.outboundEventBuffer)
         XCTAssertNil(sessionOrchestrator.session)
     }
-    
+
     func test_disconnectClicked() {
         sessionOrchestrator.session = mockSession
-                
+
         // test
         sessionOrchestrator.disconnectClicked()
-        
+
         // verify that the session is terminated and cleared
         XCTAssertTrue(sessionOrchestrator.hasEverTerminated)
         XCTAssertTrue(mockStateManager.clearAssuranceStateCalled)
-        XCTAssertTrue(mockSession.disconnectCalled)
+        wait(for: [mockSession.disconnectCalled], timeout: 1.0)
         XCTAssertNil(sessionOrchestrator.outboundEventBuffer)
         XCTAssertNil(sessionOrchestrator.session)
     }
-    
+
     private func queueTwoOutboundEvents() {
         sessionOrchestrator.outboundEventBuffer?.append(AssuranceEvent(type: "event1", payload: [:]))
         sessionOrchestrator.outboundEventBuffer?.append(AssuranceEvent(type: "event2", payload: [:]))

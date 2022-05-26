@@ -48,6 +48,8 @@ class AssuranceSession {
     ///    - stateManager: `AssuranceStateManager` instance responsible for managing Assurance shared state and fetching other extension shared states
     ///    - sessionOrchestrator: an orchestrating component that manages this session
     ///    - outboundEvents: events that are queued before this session is initiated
+    ///
+    ///  Thread :  dispatch from session orderer queue. See sessionOrchestrator
     init(sessionDetails: AssuranceSessionDetails, stateManager: AssuranceStateManager, sessionOrchestrator: AssuranceSessionOrchestrator, outboundEvents: ThreadSafeArray<AssuranceEvent>?) {
         self.sessionDetails = sessionDetails
         self.stateManager = stateManager
@@ -69,6 +71,8 @@ class AssuranceSession {
     ///
     /// If the sessionDetails is not authenticated (doesn't have pin or orgId), it triggers the presentation to launch the pinCode screen
     /// If the sessionDetails is already authenticated, then connects directly without pin prompt.
+    ///
+    /// Thread :  dispatch from session orderer queue. See sessionOrchestrator
     func startSession() {
         if socket.socketState == .open || socket.socketState == .connecting {
             Log.debug(label: AssuranceConstants.LOG_TAG, "There is already an ongoing Assurance session. Ignoring to start new session.")
@@ -80,7 +84,6 @@ class AssuranceSession {
             // if the URL is already authenticated with Pin and OrgId,
             // then immediately make the socket connection
             socket.connect(withUrl: url)
-            self.presentation.statusUI.display()
         case .failure:
             // if the URL is not authenticated, then bring up the pinpad screen
             presentation.sessionInitialized()
@@ -90,6 +93,7 @@ class AssuranceSession {
     ///
     /// Terminates the ongoing Assurance session.
     ///
+    /// Thread :  dispatch from session orderer queue. See sessionOrchestrator
     func disconnect() {
         socket.disconnect()
         clearSessionData()
@@ -99,6 +103,7 @@ class AssuranceSession {
     /// Sends the `AssuranceEvent` to the connected session.
     /// - Parameter assuranceEvent - an `AssuranceEvent` to be forwarded
     ///
+    /// Thread :  dispatch from session orderer queue. See sessionOrchestrator
     func sendEvent(_ assuranceEvent: AssuranceEvent) {
         outboundQueue.enqueue(newElement: assuranceEvent)
         outboundSource.add(data: 1)
@@ -108,7 +113,7 @@ class AssuranceSession {
     /// Clears all the data related to the current Assurance Session.
     /// Call this method when user terminates the Assurance session or when non-recoverable socket error occurs.
     ///
-    func clearSessionData() {
+    private func clearSessionData() {
         inboundQueue.clear()
         outboundQueue.clear()
         canStartForwarding = false
