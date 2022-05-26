@@ -30,13 +30,13 @@ class MockSession: AssuranceSession {
         sentEvent = assuranceEvent
     }
     
-    var startSessionCalled = XCTestExpectation("startSession method not called")
+    var startSessionCalled = XCTestExpectation(description: "startSession method not called")
     override func startSession() {
         startSessionCalled.fulfill()
     }
 
 
-    var disconnectCalled = XCTestExpectation("Disconnect method not called")
+    var disconnectCalled = XCTestExpectation(description: "Disconnect method not called")
     override func disconnect() {
         disconnectCalled.fulfill()
     }
