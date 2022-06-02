@@ -10,6 +10,7 @@
  governing permissions and limitations under the License.
  */
 
+#if os(iOS)
 import AEPServices
 import Foundation
 import WebKit
@@ -231,3 +232,4 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     }
 
 }
+#endif

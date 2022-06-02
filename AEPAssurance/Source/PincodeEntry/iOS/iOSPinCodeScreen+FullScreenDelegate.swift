@@ -10,6 +10,7 @@
  governing permissions and limitations under the License.
  */
 
+#if os(iOS)
 import AEPServices
 import Foundation
 import WebKit
@@ -116,3 +117,4 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
     }
 
 }
+#endif

@@ -14,14 +14,13 @@ import AEPServices
 import Foundation
 
 extension AssuranceSession {
-
     ///
     /// Sends a clientInfo event to the connection session.
     ///
     func sendClientInfoEvent() {
         Log.debug(label: AssuranceConstants.LOG_TAG, "Sending client info event to Assurance")
-        let clientEvent = AssuranceEvent.init(type: AssuranceConstants.EventType.CLIENT, payload: AssuranceClientInfo.getData())
-        self.socket.sendEvent(clientEvent)
+        let clientEvent = AssuranceEvent(type: AssuranceConstants.EventType.CLIENT, payload: AssuranceClientInfo.getData())
+        socket.sendEvent(clientEvent)
     }
 
     ///
@@ -72,8 +71,10 @@ extension AssuranceSession {
                     // 2. Share the Assurance shared state
                     // 3. Notify the client plugins on successful connection
                     self.pinCodeScreen?.connectionSucceeded()
-                    self.statusUI.display()
-                    self.statusUI.updateForSocketConnected()
+                    #if os(iOS)
+                        self.statusUI.display()
+                        self.statusUI.updateForSocketConnected()
+                    #endif
                     self.pluginHub.notifyPluginsOnConnect()
                     self.outboundSource.add(data: 1)
 
@@ -95,5 +96,4 @@ extension AssuranceSession {
         })
         inboundSource.resume()
     }
-
 }
