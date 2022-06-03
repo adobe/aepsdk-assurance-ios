@@ -16,7 +16,6 @@ import Foundation
 
 @objc(AEPMobileAssurance)
 public class Assurance: NSObject, Extension {
-
     /// Time before assurance shuts down on non receipt of start session event.
     let shutdownTime: Int
 
@@ -38,6 +37,17 @@ public class Assurance: NSObject, Extension {
             datastore.set(key: AssuranceConstants.DataStoreKeys.SESSION_ID, value: newValue)
         }
     }
+
+    #if os(tvOS)
+        var passcode: String? {
+            get {
+                datastore.getString(key: AssuranceConstants.DataStoreKeys.PASSCODE)
+            }
+            set {
+                datastore.set(key: AssuranceConstants.DataStoreKeys.PASSCODE, value: newValue)
+            }
+        }
+    #endif
 
     private let DEFAULT_ENVIRONMENT = AssuranceEnvironment.prod
     var environment: AssuranceEnvironment {
@@ -186,6 +196,13 @@ public class Assurance: NSObject, Extension {
             return
         }
 
+        #if os(tvOS)
+            guard let passcode = deeplinkURL?.params[AssuranceConstants.Deeplink.PASSCODE_KEY] else {
+                Log.debug(label: AssuranceConstants.LOG_TAG, "Deeplink URL is invalid. Does not contain 'code' query parameter : " + deeplinkUrlString)
+                return
+            }
+        #endif
+
         // make sure the sessionID is an UUID string
         guard let _ = UUID(uuidString: sessionId) else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Deeplink URL is invalid. It contains sessionId that is not an valid UUID : " + deeplinkUrlString)
@@ -201,6 +218,9 @@ public class Assurance: NSObject, Extension {
         // save the environment and sessionID
         environment = AssuranceEnvironment.init(envString: environmentString)
         self.sessionId = sessionId
+        #if os(tvOS)
+            self.passcode = passcode
+        #endif
         shareState()
 
         Log.trace(label: AssuranceConstants.LOG_TAG, "Received sessionID, Initializing Assurance session. \(sessionId)")

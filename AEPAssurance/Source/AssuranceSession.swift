@@ -126,9 +126,26 @@ class AssuranceSession {
                 pinCodeScreen.connectionInitialized()
             })
         #elseif os(tvOS)
-            guard let socketURLString = UserDefaults.standard.string(forKey: "AEPAssurance_socket_url"),
-                  let socketURL = URL(string: socketURLString) else {
-                Log.debug(label: AssuranceConstants.LOG_TAG, "SocketURL to connect to session is empty. Ignoring to start Assurance session.")
+            func getURLEncodedOrgID() -> String? {
+                let configState = assuranceExtension.runtime.getSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, barrier: false)
+                let orgID = configState?.value?[AssuranceConstants.EventDataKey.CONFIG_ORG_ID] as? String
+                return orgID?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+            }
+
+            guard let sessionId = assuranceExtension.sessionId,
+                  let passcode = assuranceExtension.passcode,
+                  let orgID = getURLEncodedOrgID() else {
+                return
+            }
+
+            let socketURLString = String(format: AssuranceConstants.BASE_SOCKET_URL,
+                                         assuranceExtension.environment.urlFormat,
+                                         sessionId,
+                                         passcode,
+                                         orgID,
+                                         assuranceExtension.clientID)
+
+            guard let socketURL = URL(string: socketURLString) else {
                 return
             }
 
