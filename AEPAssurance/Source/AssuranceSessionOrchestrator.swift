@@ -32,14 +32,17 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     ///  2. After an Assurance Session is terminated.
     var hasEverTerminated: Bool = false
 
+    let assuranceQueue: DispatchQueue
+
     #if DEBUG
     var session: AssuranceSession?
     #else
     private(set) var session: AssuranceSession?
     #endif
 
-    init(stateManager: AssuranceStateManager) {
+    init(stateManager: AssuranceStateManager, assuranceQueue: DispatchQueue) {
         self.stateManager = stateManager
+        self.assuranceQueue = assuranceQueue
         outboundEventBuffer = ThreadSafeArray(identifier: "Session Orchestrator's OutboundBuffer array")
     }
 
@@ -50,6 +53,8 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     ///
     /// - Parameters:
     ///    - sessionDetails: An `AssuranceSessionDetails` instance containing all the essential data for starting a session
+    ///
+    /// Thread : Called on AssuranceQueue. See : ``Assurance``
     func createSession(withDetails sessionDetails: AssuranceSessionDetails) {
         if session != nil {
             Log.warning(label: AssuranceConstants.LOG_TAG, "An active Assurance session already exists. Cannot create a new one. Ignoring to process the scanned deeplink.")
@@ -67,6 +72,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     ///
     /// Dissolve the active session (if one exists) and its associated states.
     ///
+    /// Thread:
     func terminateSession() {
         hasEverTerminated = true
         self.outboundEventBuffer = nil
@@ -77,6 +83,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
         session = nil
     }
 
+    
     func queueEvent(_ assuranceEvent: AssuranceEvent) {
         /// Queue this event to the active session if one exists.
         if let session = session {
@@ -106,45 +113,51 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     /// - Parameters:
     ///    - pin: A `String` value representing 4 digit pin entered in the PinCode screen
     func pinScreenConnectClicked(_ pin: String) {
-        guard let session = session else {
-            Log.error(label: AssuranceConstants.LOG_TAG, "PIN confirmation without active session.")
-            terminateSession()
-            return
-        }
+        assuranceQueue.async { [self] in
+            guard let session = session else {
+                Log.error(label: AssuranceConstants.LOG_TAG, "PIN confirmation without active session.")
+                terminateSession()
+                return
+            }
 
-        /// display the error if the pin is empty
-        if pin.isEmpty {
-            session.presentation.sessionConnectionError(error: .noPincode)
-            terminateSession()
-            return
-        }
+            /// display the error if the pin is empty
+            if pin.isEmpty {
+                session.presentation.sessionConnectionError(error: .noPincode)
+                terminateSession()
+                return
+            }
 
-        /// display error if the OrgID is missing.
-        guard let orgID = stateManager.getURLEncodedOrgID() else {
-            session.presentation.sessionConnectionError(error: .noOrgId)
-            terminateSession()
-            return
-        }
+            /// display error if the OrgID is missing.
+            guard let orgID = stateManager.getURLEncodedOrgID() else {
+                session.presentation.sessionConnectionError(error: .noOrgId)
+                terminateSession()
+                return
+            }
 
-        Log.trace(label: AssuranceConstants.LOG_TAG, "Connect Button clicked. Starting a socket connection.")
-        session.sessionDetails.authenticate(withPIN: pin, andOrgID: orgID)
-        session.startSession()
+            Log.trace(label: AssuranceConstants.LOG_TAG, "Connect Button clicked. Starting a socket connection.")
+            session.sessionDetails.authenticate(withPIN: pin, andOrgID: orgID)
+            session.startSession()
+        }
     }
 
     ///
     /// Invoked when Cancel button is clicked on the PinCode screen.
     ///
     func pinScreenCancelClicked() {
-        Log.trace(label: AssuranceConstants.LOG_TAG, "Cancel clicked. Terminating session and dismissing the PinCode Screen.")
-        terminateSession()
+        assuranceQueue.async { [self] in
+            Log.trace(label: AssuranceConstants.LOG_TAG, "Cancel clicked. Terminating session and dismissing the PinCode Screen.")
+            terminateSession()
+        }
     }
 
     ///
     /// Invoked when Disconnect button is clicked on the Status UI.
     ///
     func disconnectClicked() {
-        Log.trace(label: AssuranceConstants.LOG_TAG, "Disconnect clicked. Terminating session.")
-        terminateSession()
+        assuranceQueue.async { [self] in
+            Log.trace(label: AssuranceConstants.LOG_TAG, "Disconnect clicked. Terminating session.")
+            terminateSession()
+        }
     }
 
 }

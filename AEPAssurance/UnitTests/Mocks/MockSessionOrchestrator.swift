@@ -16,15 +16,15 @@ import XCTest
 
 class MockSessionOrchestrator : AssuranceSessionOrchestrator {
     
-    var expectation: XCTestExpectation?
-    required override init(stateManager: AssuranceStateManager) {
-        super.init(stateManager: stateManager)
+    
+    required init(stateManager: AssuranceStateManager) {
+        super.init(stateManager: stateManager, assuranceQueue: DispatchQueue(label: "testQueue"))
     }
 
-    var createSessionCalled = false
+    var createSessionCalled = XCTestExpectation(description: "CreateSession method not called")
     var createSessionDetails: AssuranceSessionDetails?
     override func createSession(withDetails sessionDetails: AssuranceSessionDetails) {
-        createSessionCalled = true
+        createSessionCalled.fulfill()
         createSessionDetails = sessionDetails
     }
     
@@ -38,11 +38,10 @@ class MockSessionOrchestrator : AssuranceSessionOrchestrator {
         terminateSessionCalled = true
     }
 
-    var sendEventCalled = false
+    var sendEventCalled = XCTestExpectation(description: "SendEvent method not called")
     var sentEvent: AssuranceEvent?
     override func queueEvent(_ assuranceEvent: AssuranceEvent) {
-        expectation?.fulfill()
-        sendEventCalled = true
+        sendEventCalled.fulfill()
         sentEvent = assuranceEvent
     }
 

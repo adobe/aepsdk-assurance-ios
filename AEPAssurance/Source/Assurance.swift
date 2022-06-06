@@ -36,26 +36,32 @@ public class Assurance: NSObject, Extension {
     let sessionOrchestrator: AssuranceSessionOrchestrator
     #endif
 
+    /// A serial queue to handle all Assurance operations
+    let assuranceQueue = DispatchQueue(label: "com.adobe.assurance.operationQueue", qos: .userInteractive)
+
     public func onRegistered() {
         registerListener(type: EventType.wildcard, source: EventSource.wildcard, listener: handleWildcardEvent)
 
-        /// if the Assurance session was already connected in the previous app session, go ahead and reconnect socket
-        /// and do not turn on the unregister timer
-        if let connectedWebSocketURLString = stateManager.connectedWebSocketURL {
-            Log.trace(label: AssuranceConstants.LOG_TAG, "Assurance Session was already connected during previous app launch. Attempting to reconnect. URL : \(String(describing: connectedWebSocketURLString))")
-            do {
-                let sessionDetails = try AssuranceSessionDetails(withURLString: connectedWebSocketURLString)
-                sessionOrchestrator.createSession(withDetails: sessionDetails)
-                return
-            } catch let error as AssuranceSessionDetailBuilderError {
-                Log.warning(label: AssuranceConstants.LOG_TAG, "Ignoring to reconnect to already connected session. Invalid socket url.  URL : \(String(describing: connectedWebSocketURLString)) Error Message: \(error.message)")
-            } catch {
-                Log.warning(label: AssuranceConstants.LOG_TAG, "Ignoring to reconnect to already connected session. Invalid socket url.  URL : \(String(describing: connectedWebSocketURLString)) Error Message: \(error.localizedDescription)")
+        assuranceQueue.async { [self] in
+            /// if the Assurance session was already connected in the previous app session, go ahead and reconnect socket
+            /// and do not turn on the unregister timer
+            if let connectedWebSocketURLString = stateManager.connectedWebSocketURL {
+                Log.trace(label: AssuranceConstants.LOG_TAG, "Assurance Session was already connected during previous app launch. Attempting to reconnect. URL : \(String(describing: connectedWebSocketURLString))")
+                do {
+                    let sessionDetails = try AssuranceSessionDetails(withURLString: connectedWebSocketURLString)
+                    sessionOrchestrator.createSession(withDetails: sessionDetails)
+                    return
+                } catch let error as AssuranceSessionDetailBuilderError {
+                    Log.warning(label: AssuranceConstants.LOG_TAG, "Ignoring to reconnect to already connected session. Invalid socket url.  URL : \(String(describing: connectedWebSocketURLString)) Error Message: \(error.message)")
+                } catch {
+                    Log.warning(label: AssuranceConstants.LOG_TAG, "Ignoring to reconnect to already connected session. Invalid socket url.  URL : \(String(describing: connectedWebSocketURLString)) Error Message: \(error.localizedDescription)")
+                }
             }
+
+            /// if the Assurance session is not previously connected, turn on 5 sec timer to wait for Assurance deeplink
+            startShutDownTimer()
         }
 
-        /// if the Assurance session is not previously connected, turn on 5 sec timer to wait for Assurance deeplink
-        startShutDownTimer()
     }
 
     public func onUnregistered() {}
@@ -64,7 +70,7 @@ public class Assurance: NSObject, Extension {
         self.runtime = runtime
         self.shutdownTime = AssuranceConstants.SHUTDOWN_TIME
         self.stateManager = AssuranceStateManager(runtime)
-        self.sessionOrchestrator = AssuranceSessionOrchestrator(stateManager: stateManager)
+        self.sessionOrchestrator = AssuranceSessionOrchestrator(stateManager: stateManager, assuranceQueue: assuranceQueue)
     }
 
     public func readyForEvent(_ event: Event) -> Bool {
@@ -79,33 +85,35 @@ public class Assurance: NSObject, Extension {
     /// - Parameters:
     /// - event - a MobileCore's `Event`
     private func handleWildcardEvent(event: Event) {
-        if event.isAssuranceRequestContent {
-            handleAssuranceRequestContent(event: event)
-        }
+        assuranceQueue.async { [self] in
+            if event.isAssuranceRequestContent {
+                handleAssuranceRequestContent(event: event)
+            }
 
-        /// Handle wildcard event only
-        /// 1. If there is an active session running
-        /// 2. If Assurance extension is collecting events before the 5 second timeout
-        if !(sessionOrchestrator.canProcessSDKEvents()) {
-            return
-        }
+            /// Handle wildcard event only
+            /// 1. If there is an active session running
+            /// 2. If Assurance extension is collecting events before the 5 second timeout
+            if !(sessionOrchestrator.canProcessSDKEvents()) {
+                return
+            }
 
-        /// If the event is a sharedState change event
-        /// then attach the sharedState data to it before sending to over socket
-        if event.isSharedStateEvent {
-            processSharedStateEvent(event: event)
-            return
-        }
+            /// If the event is a sharedState change event
+            /// then attach the sharedState data to it before sending to over socket
+            if event.isSharedStateEvent {
+                processSharedStateEvent(event: event)
+                return
+            }
 
-        /// forward all other events to Assurance session
-        let assuranceEvent = AssuranceEvent.from(event: event)
-        sessionOrchestrator.queueEvent(assuranceEvent)
+            /// forward all other events to Assurance session
+            let assuranceEvent = AssuranceEvent.from(event: event)
+            sessionOrchestrator.queueEvent(assuranceEvent)
 
-        /// NearbyPOIs and Places entry/exits events are logged in the Status UI
-        if event.isPlacesRequestEvent {
-            handlePlacesRequest(event: event)
-        } else if event.isPlacesResponseEvent {
-            handlePlacesResponse(event: event)
+            /// NearbyPOIs and Places entry/exits events are logged in the Status UI
+            if event.isPlacesRequestEvent {
+                handlePlacesRequest(event: event)
+            } else if event.isPlacesResponseEvent {
+                handlePlacesResponse(event: event)
+            }
         }
     }
 

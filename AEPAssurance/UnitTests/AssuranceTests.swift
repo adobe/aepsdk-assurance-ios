@@ -23,6 +23,7 @@ class AssuranceTests: XCTestCase {
     let mockDataStore = MockDataStore()
     let mockMessagePresentable = MockFullscreenMessagePresentable()
     var mockSession: MockSession!
+    var mockPresentation: MockPresentation!
     var stateManager: AssuranceStateManager!
     var assurance: Assurance!
     var mockSessionOrchestrator: MockSessionOrchestrator!
@@ -33,6 +34,7 @@ class AssuranceTests: XCTestCase {
         mockUIService.fullscreenMessage = mockMessagePresentable
         stateManager = AssuranceStateManager(runtime)
         mockSessionOrchestrator = MockSessionOrchestrator(stateManager: stateManager)
+        mockPresentation = MockPresentation(sessionOrchestrator: mockSessionOrchestrator)
 
         assurance = Assurance(runtime: runtime)
         assurance.stateManager = stateManager
@@ -42,6 +44,7 @@ class AssuranceTests: XCTestCase {
         // mock the interaction with AssuranceSession class
         let mockSessionDetails = AssuranceSessionDetails(sessionId: "mockSessionId", clientId: "mockClientId")
         mockSession = MockSession(sessionDetails: mockSessionDetails, stateManager: stateManager, sessionOrchestrator: mockSessionOrchestrator, outboundEvents: nil)
+        mockSession.presentation = mockPresentation
     }
 
     override func tearDown() {
@@ -63,7 +66,7 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: event)
 
         // verify
-        XCTAssertTrue(mockSessionOrchestrator.createSessionCalled)
+        wait(for: [mockSessionOrchestrator.createSessionCalled], timeout: 1.0)
 
         // verify that sessionID and environment are properly passed as session details
         XCTAssertEqual("28f4a622-d34f-4036-c81a-d21352144b57", mockSessionOrchestrator.createSessionDetails?.sessionId)
@@ -151,7 +154,7 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: event)
 
         // verify that the event is sent to the session
-        XCTAssertTrue(mockSessionOrchestrator.sendEventCalled)
+        wait(for: [mockSessionOrchestrator.sendEventCalled], timeout: 1.0)
         XCTAssertEqual("Any SDK Event", mockSessionOrchestrator.sentEvent?.payload?[AssuranceConstants.ACPExtensionEventKey.NAME]?.stringValue)
     }
 
@@ -161,6 +164,7 @@ class AssuranceTests: XCTestCase {
                           type: EventType.analytics,
                           source: EventSource.requestContent,
                           data: nil)
+        mockSessionOrchestrator.sendEventCalled.isInverted = true
         
         mockSessionOrchestrator.canProcessSDKEventsReturnValue = false
 
@@ -168,7 +172,7 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: event)
 
         // verify that the event is not forwarded to session
-        XCTAssertFalse(mockSessionOrchestrator.sendEventCalled)
+        wait(for: [mockSessionOrchestrator.sendEventCalled], timeout: 1.0)
     }
 
     //--------------------------------------------------*/
@@ -190,7 +194,7 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: configStateChangeEvent)
 
         // verify that the event is sent to the session
-        XCTAssertTrue(mockSessionOrchestrator.sendEventCalled)
+        wait(for: [mockSessionOrchestrator.sendEventCalled], timeout: 1.0)
         let metadata = mockSessionOrchestrator.sentEvent?.payload?[AssuranceConstants.PayloadKey.METADATA]?.dictionaryValue
         XCTAssertEqual(sampleConfiguration, metadata?["state.data"] as! Dictionary)
     }
@@ -210,7 +214,7 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: consentStateChangeEvent)
 
         // verify that the event is sent to the session
-        XCTAssertTrue(mockSessionOrchestrator.sendEventCalled)
+        wait(for: [mockSessionOrchestrator.sendEventCalled], timeout: 1.0)
         let metadata = mockSessionOrchestrator.sentEvent?.payload?[AssuranceConstants.PayloadKey.METADATA]?.dictionaryValue
         XCTAssertEqual(sampleConsent, try XCTUnwrap(metadata?["xdm.state.data"]) as! Dictionary)
     }
@@ -222,12 +226,13 @@ class AssuranceTests: XCTestCase {
                                            source: EventSource.sharedState,
                                            data: [AssuranceConstants.EventDataKey.SHARED_STATE_OWNER: AssuranceConstants.SharedStateName.CONFIGURATION])
         runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, data: (value: nil, status: .pending))
+        mockSessionOrchestrator.sendEventCalled.isInverted = true
 
         // test
         runtime.simulateComingEvent(event: configStateChangeEvent)
 
         // verify that the pending shared state are not sent
-        XCTAssertFalse(mockSessionOrchestrator.sendEventCalled)
+        wait(for: [mockSessionOrchestrator.sendEventCalled], timeout: 1.0)
     }
 
     func test_handleSharedStateEvent_WhenSharedStateNotAvailable() throws {
@@ -236,12 +241,13 @@ class AssuranceTests: XCTestCase {
                                            type: EventType.hub,
                                            source: EventSource.sharedState,
                                            data: [AssuranceConstants.EventDataKey.SHARED_STATE_OWNER: AssuranceConstants.SharedStateName.CONFIGURATION])
+        mockSessionOrchestrator.sendEventCalled.isInverted = true
 
         // test
         runtime.simulateComingEvent(event: configStateChangeEvent)
 
         // verify that the pending shared state are not sent
-        XCTAssertFalse(mockSessionOrchestrator.sendEventCalled)
+        wait(for: [mockSessionOrchestrator.sendEventCalled], timeout: 1.0)
     }
 
     func test_handleSharedStateEvent_WhenStateOwnerNil() throws {
@@ -250,12 +256,13 @@ class AssuranceTests: XCTestCase {
                                            type: EventType.hub,
                                            source: EventSource.sharedState,
                                            data: [:]) // no stateOwner in data
+        mockSessionOrchestrator.sendEventCalled.isInverted = true
 
         // test
         runtime.simulateComingEvent(event: configStateChangeEvent)
 
         // verify that the pending shared state are not sent
-        XCTAssertFalse(mockSessionOrchestrator.sendEventCalled)
+        wait(for: [mockSessionOrchestrator.sendEventCalled], timeout: 1.0)
     }
 
     func test_handlePlacesRequest_GetNearByPlaces() throws {
@@ -267,8 +274,9 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: getNearbyPlacesRequestEvent)
 
         // verify that the client log is displayed
-        XCTAssertEqual(1, mockSession.presentation.statusUI.clientLogQueue.size())
-        XCTAssertEqual("Places - Requesting 7 nearby POIs from (12.340000, 23.455489)", mockSession.presentation.statusUI.clientLogQueue.dequeue()?.message)
+        wait(for: [mockPresentation.addClientLogCalled], timeout: 1.0)
+        XCTAssertEqual(1, mockPresentation.addClientLogCalledTimes)
+        XCTAssertEqual("Places - Requesting 7 nearby POIs from (12.340000, 23.455489)", mockPresentation.addClientLogMessage)
     }
 
     func test_handlePlacesRequest_PlacesReset() throws {
@@ -280,8 +288,9 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: placesResetEvent)
 
         // verify that the client log is displayed
-        XCTAssertEqual(1, mockSession.presentation.statusUI.clientLogQueue.size())
-        XCTAssertEqual("Places - Resetting location", mockSession.presentation.statusUI.clientLogQueue.dequeue()?.message)
+        wait(for: [mockPresentation.addClientLogCalled], timeout: 1.0)
+        XCTAssertEqual(1, mockPresentation.addClientLogCalledTimes)
+        XCTAssertEqual("Places - Resetting location", mockPresentation.addClientLogMessage)
     }
 
     func test_handlePlacesResponse_RegionEvent() throws {
@@ -293,8 +302,9 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: regionEvent)
 
         // verify that the client log is displayed
-        XCTAssertEqual(1, mockSession.presentation.statusUI.clientLogQueue.size())
-        XCTAssertEqual("Places - Processed entry for region Green house.", mockSession.presentation.statusUI.clientLogQueue.dequeue()?.message)
+        wait(for: [mockPresentation.addClientLogCalled], timeout: 1.0)
+        XCTAssertEqual(1, mockPresentation.addClientLogCalledTimes)
+        XCTAssertEqual("Places - Processed entry for region Green house.", mockPresentation.addClientLogMessage)
     }
 
     func test_handlePlacesResponse_nearbyPOIResponse() throws {
@@ -306,7 +316,8 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: nearbyPOIResponse)
 
         // verify that the client log is displayed
-        XCTAssertEqual(3, mockSession.presentation.statusUI.clientLogQueue.size())
+        wait(for: [mockPresentation.addClientLogCalled], timeout: 1.0)
+        XCTAssertEqual(3, mockPresentation.addClientLogCalledTimes)
     }
 
     func test_handlePlacesResponse_nearbyPOIResponseNoPOI() throws {
@@ -318,8 +329,9 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: nearbyPOIResponseNoPOI)
 
         // verify that the client log is displayed
-        XCTAssertEqual(1, mockSession.presentation.statusUI.clientLogQueue.size())
-        XCTAssertEqual("Places - Found 0 nearby POIs.", mockSession.presentation.statusUI.clientLogQueue.dequeue()?.message)
+        wait(for: [mockPresentation.addClientLogCalled], timeout: 1.0)
+        XCTAssertEqual(1, mockPresentation.addClientLogCalledTimes)
+        XCTAssertEqual("Places - Found 0 nearby POIs.", mockPresentation.addClientLogMessage)
     }
 
     func test_readyForEvent() {
