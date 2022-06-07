@@ -25,15 +25,15 @@ class AssuranceSession {
 
     lazy var socket: SocketConnectable = {
         #if os(iOS)
-            WebViewSocket(withDelegate: self)
+            return WebViewSocket(withDelegate: self)
         #elseif os(tvOS)
-            NativeSocket(withDelegate: self)
+            return NativeSocket(withDelegate: self)
         #endif
     }()
 
     #if os(iOS)
         lazy var statusUI: iOSStatusUI = {
-            iOSStatusUI.init(withSession: self)
+            return iOSStatusUI.init(withSession: self)
         }()
     #endif
 
