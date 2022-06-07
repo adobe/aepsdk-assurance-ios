@@ -15,6 +15,24 @@ import AEPServices
 import Foundation
 
 @objc public extension Assurance {
+    #if os(tvOS)
+        /// Starts an AEPAssurance session for tvOS.
+        ///
+        /// Calling this method when a session has already been started results in a no-op, otherwise it attempts to initiate a new AEPAssurance session.
+        /// A call to this API with an non griffon session url will be ignored
+        ///
+        /// - Parameter url: a valid AEPAssurance URL to start a session
+        /// - Parameter code: code related to the AEPAssurance URL
+        ///
+        static func startSession(url: URL?, code: String? = nil) {
+            var sessionUrl: URL?
+            if let code = code,
+               let updatedUrl = url?.appending([URLQueryItem(name: "code", value: code)]) {
+                sessionUrl = updatedUrl
+            }
+            startSession(url: sessionUrl)
+        }
+    #endif
 
     /// Starts an AEPAssurance session.
     ///
@@ -43,5 +61,4 @@ import Foundation
 
         MobileCore.dispatch(event: event)
     }
-
 }
