@@ -26,7 +26,7 @@ class AssuranceSession {
     lazy var socket: SocketConnectable = {
         #if os(iOS)
             WebViewSocket(withDelegate: self)
-        #else
+        #elseif os(tvOS)
             NativeSocket(withDelegate: self)
         #endif
     }()
