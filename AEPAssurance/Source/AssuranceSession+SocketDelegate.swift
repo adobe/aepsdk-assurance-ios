@@ -22,7 +22,7 @@ extension AssuranceSession: SocketDelegate {
     ///
     func webSocketDidConnect(_ socket: SocketConnectable) {
         Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance session successfully connected.")
-        self.sendClientInfoEvent()
+        sendClientInfoEvent()
     }
 
     ///
@@ -33,19 +33,21 @@ extension AssuranceSession: SocketDelegate {
     ///     - reason: A `String` description for the reason for socket disconnection
     ///     - wasClean: A boolean representing if the connection has been terminated successfully. A false value represents the socket connection can be attempted to reconnected.
     func webSocketDidDisconnect(_ socket: SocketConnectable, _ closeCode: Int, _ reason: String, _ wasClean: Bool) {
-
-        // Adding client log so user knows the reason for disconnection
-        statusUI.addClientLog("Assurance Session disconnected : <br> &emsp; close code: \(closeCode) <br> &emsp; reason: \(reason) <br> &emsp; isClean : \(wasClean) ", visibility: .low)
+        #if os(iOS)
+            // Adding client log so user knows the reason for disconnection
+            statusUI.addClientLog("Assurance Session disconnected : <br> &emsp; close code: \(closeCode) <br> &emsp; reason: \(reason) <br> &emsp; isClean : \(wasClean) ", visibility: .low)
+        #endif
 
         switch closeCode {
-
         // Normal Closure : Close code 4900
         // Happens when user disconnects hitting the disconnect button in Status UI.
         // notify plugin on normal closure
         case AssuranceConstants.SocketCloseCode.NORMAL_CLOSURE:
             Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected successfully with close code \(closeCode). Normal closure of websocket.")
             pinCodeScreen?.connectionFinished()
-            statusUI.remove()
+            #if os(iOS)
+                statusUI.remove()
+            #endif
             pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
 
         // ORG Mismatch : Close code 4900
@@ -105,7 +107,9 @@ extension AssuranceSession: SocketDelegate {
             if !isAttemptingToReconnect {
                 isAttemptingToReconnect = true
                 canStartForwarding = false // set this to false so that all the events are held up until client event is sent after successful reconnect
-                statusUI.updateForSocketInActive()
+                #if os(iOS)
+                    statusUI.updateForSocketInActive()
+                #endif
                 pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
             }
 
@@ -146,5 +150,4 @@ extension AssuranceSession: SocketDelegate {
             assuranceExtension.connectedWebSocketURL = socket.socketURL?.absoluteString
         }
     }
-
 }

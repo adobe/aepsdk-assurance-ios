@@ -25,6 +25,9 @@ enum AssuranceConstants {
     enum Deeplink {
         static let SESSIONID_KEY = "adb_validation_sessionid"
         static let ENVIRONMENT_KEY = "env"
+        #if os(tvOS)
+            static let PASSCODE_KEY = "code"
+        #endif
     }
 
     enum SharedStateName {
@@ -79,6 +82,9 @@ enum AssuranceConstants {
         static let ENVIRONMENT = "assurance.environment"
         static let SOCKETURL = "assurance.socketurl"
         static let CONFIG_MODIFIED_KEYS = "assurance.control.modifiedConfigKeys"
+        #if os(tvOS)
+            static let PASSCODE = "assurance.passcode"
+        #endif
     }
 
     enum SharedStateKeys {

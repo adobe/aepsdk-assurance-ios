@@ -10,6 +10,7 @@
  governing permissions and limitations under the License.
  */
 
+#if os(iOS)
 import AEPServices
 import Foundation
 import WebKit
@@ -110,3 +111,4 @@ class iOSStatusUI {
     }
 
 }
+#endif

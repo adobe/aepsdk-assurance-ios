@@ -10,6 +10,7 @@
  governing permissions and limitations under the License.
  */
 
+#if os(iOS)
 import AEPServices
 import Foundation
 import WebKit
@@ -74,3 +75,4 @@ extension iOSStatusUI: FullscreenMessageDelegate {
         Log.warning(label: AssuranceConstants.LOG_TAG, "Unable to display the statusUI screen, onShowFailure delegate method is invoked")
     }
 }
+#endif

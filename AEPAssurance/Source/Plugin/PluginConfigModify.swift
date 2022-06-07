@@ -26,7 +26,6 @@ import Foundation
 /// The modified configuration keys are stored in datastore, hence when assurance session is terminated the modified configuration is
 /// reverted back.
 class PluginConfigModify: AssurancePlugin {
-
     weak var session: AssuranceSession?
 
     let datastore = NamedCollectionDataStore(name: AssuranceConstants.EXTENSION_NAME)
@@ -54,10 +53,12 @@ class PluginConfigModify: AssurancePlugin {
 
         MobileCore.updateConfigurationWith(configDict: commandDetails)
         var logString = "Configuration updated for \(commandDetails.count > 1 ? "keys" : "key")"
-        for (configKey) in commandDetails.keys {
+        for configKey in commandDetails.keys {
             logString.append("<br> &emsp; \(configKey)")
         }
-        session?.statusUI.addClientLog(logString, visibility: .high)
+        #if os(iOS)
+            session?.statusUI.addClientLog(logString, visibility: .high)
+        #endif
         saveModifiedConfigKeys(commandDetails)
     }
 
@@ -112,5 +113,4 @@ class PluginConfigModify: AssurancePlugin {
     private func clearModifiedKeys() {
         datastore.remove(key: AssuranceConstants.DataStoreKeys.CONFIG_MODIFIED_KEYS)
     }
-
 }
