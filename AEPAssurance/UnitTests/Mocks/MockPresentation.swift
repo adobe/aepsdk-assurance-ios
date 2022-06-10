@@ -49,11 +49,13 @@ class MockPresentation : AssurancePresentation {
         sessionConnectionErrorValue = error
     }
     
-    var addClientLogCalled = false
+    var addClientLogCalled = XCTestExpectation(description: "Add Client log message not called")
+    var addClientLogCalledTimes = 0
     var addClientLogMessage: String?
     var addClientLogVisibility: AssuranceClientLogVisibility?
     override func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
-        addClientLogCalled = true
+        addClientLogCalled.fulfill()
+        addClientLogCalledTimes += 1
         addClientLogMessage = message
         addClientLogVisibility = visibility
     }

@@ -73,7 +73,7 @@ class PluginScreenShotTests: XCTestCase {
         mockNetworkService.completionHandler!(mockConnection)
 
         // verify that the assurance event is sent to the socket
-        XCTAssertTrue(mockSession.sendEventCalled)
+        wait(for: [mockSession.sendEventCalled], timeout: 1.0)
         XCTAssertEqual("mockBlobId", mockSession.sentEvent?.payload?["blobId"])
         XCTAssertEqual("image/png", mockSession.sentEvent?.payload?["mimeType"])
     }
@@ -106,6 +106,7 @@ class PluginScreenShotTests: XCTestCase {
         // setup
         mockUIUtil.mockImageData = sampleImageData
         plugin.onRegistered(mockSession)
+        mockSession.sendEventCalled.isInverted = true
 
         // test
         plugin.receiveEvent(screenShotEvent)
@@ -118,7 +119,7 @@ class PluginScreenShotTests: XCTestCase {
         mockNetworkService.completionHandler!(mockConnection)
 
         // verify that the assurance event is not sent
-        XCTAssertFalse(mockSession.sendEventCalled)
+        wait(for: [mockSession.sendEventCalled], timeout: 1.0)
     }
 
 }

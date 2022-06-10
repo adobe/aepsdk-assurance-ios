@@ -26,7 +26,7 @@ class AssuranceSessionTests: XCTestCase {
     var sessionDetails: AssuranceSessionDetails!
     var mockSocket: MockSocket!
     var mockPresentation: MockPresentation!
-    var sessionOrchestrator: AssuranceSessionOrchestrator!
+    var mockSessionOrchestrator: MockSessionOrchestrator!
     let mockUIService = MockUIService()
     let mockMessagePresentable = MockFullscreenMessagePresentable()
     let mockPlugin = PluginTaco()
@@ -36,8 +36,8 @@ class AssuranceSessionTests: XCTestCase {
         ServiceProvider.shared.uiService = mockUIService
         mockUIService.fullscreenMessage = mockMessagePresentable
         stateManager = MockStateManager(runtime)
-        sessionOrchestrator = AssuranceSessionOrchestrator(stateManager: stateManager)
-        mockPresentation = MockPresentation(sessionOrchestrator:sessionOrchestrator)
+        mockSessionOrchestrator = MockSessionOrchestrator(stateManager: stateManager)
+        mockPresentation = MockPresentation(sessionOrchestrator:mockSessionOrchestrator)
         try initNonAuthenticatedSession()
     }
     
@@ -187,7 +187,7 @@ class AssuranceSessionTests: XCTestCase {
 
     func test_session_receives_startForwardingEvent_sessionWasOnceTerminated() throws {
         // setup
-        sessionOrchestrator.hasEverTerminated = true
+        mockSessionOrchestrator.hasEverTerminated = true
         stateManager.expectation = XCTestExpectation(description: "Calls extension to get the shared state events")
 
         // test
@@ -350,7 +350,7 @@ class AssuranceSessionTests: XCTestCase {
 
     private func initAuthenticatedSession() throws {
         sessionDetails = try AssuranceSessionDetails(withURLString: AUTHENTICATED_SOCKET_URL)
-        session = AssuranceSession(sessionDetails: sessionDetails, stateManager: stateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: nil)
+        session = AssuranceSession(sessionDetails: sessionDetails, stateManager: stateManager, sessionOrchestrator: mockSessionOrchestrator, outboundEvents: nil)
         
         // initiate the properties
         mockSocket = MockSocket(withDelegate: session)
@@ -361,7 +361,7 @@ class AssuranceSessionTests: XCTestCase {
     
     private func initNonAuthenticatedSession() throws {
         sessionDetails = AssuranceSessionDetails(sessionId: "mockSessionId", clientId: "mockClientId", environment: .prod)
-        session = AssuranceSession(sessionDetails: sessionDetails, stateManager: stateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: nil)
+        session = AssuranceSession(sessionDetails: sessionDetails, stateManager: stateManager, sessionOrchestrator: mockSessionOrchestrator, outboundEvents: nil)
         
         // initiate the properties
         mockSocket = MockSocket(withDelegate: session)
