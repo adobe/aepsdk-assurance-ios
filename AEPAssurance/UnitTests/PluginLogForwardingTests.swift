@@ -149,6 +149,7 @@ class PluginLogForwardingTests: XCTestCase {
         XCTAssertTrue(logMessage!.contains("secret log message"))
 
         sleep(1)
+        mockSession.sendEventCalled = XCTestExpectation(description: "SendEvent shouldnot be called")
         mockSession.sendEventCalled.isInverted = true
 
         // now send event to stop forwarding

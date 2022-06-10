@@ -72,7 +72,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     ///
     /// Dissolve the active session (if one exists) and its associated states.
     ///
-    /// Thread:
+    /// Thread: Called on AssuranceQueue. See : ``Assurance``
     func terminateSession() {
         hasEverTerminated = true
         self.outboundEventBuffer = nil
@@ -83,7 +83,11 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
         session = nil
     }
 
-    
+    ///
+    /// Queues the event until a successful is made.
+    /// If `AssuranceSession` already exists then immediately sends the event to the connected session.
+    ///
+    /// Thread: Called on AssuranceQueue. See : ``Assurance``
     func queueEvent(_ assuranceEvent: AssuranceEvent) {
         /// Queue this event to the active session if one exists.
         if let session = session {
@@ -103,6 +107,8 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     /// - Returns  true if extension is waiting for the first session to be established on launch (before shutting down)
     ///           or, if an active session exists.
     ///           false if extension is shutdown or no active session exists.
+    ///
+    /// Thread: Called on AssuranceQueue. See : ``Assurance``
     func canProcessSDKEvents() -> Bool {
         return session != nil || outboundEventBuffer != nil
     }
@@ -112,6 +118,8 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     /// Invoked when Connect button is clicked on the PinCode screen.
     /// - Parameters:
     ///    - pin: A `String` value representing 4 digit pin entered in the PinCode screen
+    ///
+    /// Thread: Called on application's UI Thread.
     func pinScreenConnectClicked(_ pin: String) {
         assuranceQueue.async { [self] in
             guard let session = session else {
@@ -143,6 +151,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     ///
     /// Invoked when Cancel button is clicked on the PinCode screen.
     ///
+    ///Thread: Called on application's UI Thread.
     func pinScreenCancelClicked() {
         assuranceQueue.async { [self] in
             Log.trace(label: AssuranceConstants.LOG_TAG, "Cancel clicked. Terminating session and dismissing the PinCode Screen.")
@@ -153,6 +162,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     ///
     /// Invoked when Disconnect button is clicked on the Status UI.
     ///
+    ///Thread: Called on application's UI Thread.
     func disconnectClicked() {
         assuranceQueue.async { [self] in
             Log.trace(label: AssuranceConstants.LOG_TAG, "Disconnect clicked. Terminating session.")

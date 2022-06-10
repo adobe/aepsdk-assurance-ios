@@ -250,10 +250,12 @@ public class Assurance: NSObject, Extension {
     /// are listened by assurance extension
     /// @see readyForEvent
     private func shutDownAssurance() {
-        Log.debug(label: AssuranceConstants.LOG_TAG, "Timeout - Assurance extension did not receive session url. Shutting down from processing any further events.")
-        invalidateTimer()
-        Log.debug(label: AssuranceConstants.LOG_TAG, "Clearing the queued events and purging Assurance shared state.")
-        sessionOrchestrator.terminateSession()
+        assuranceQueue.async{ [self] in
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Timeout - Assurance extension did not receive session url. Shutting down from processing any further events.")
+            invalidateTimer()
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Clearing the queued events and purging Assurance shared state.")
+            sessionOrchestrator.terminateSession()
+        }
     }
 
     /// Invalidate the ongoing timer and cleans it from memory
