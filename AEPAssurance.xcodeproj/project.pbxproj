@@ -224,6 +224,7 @@
 		B63ADAB826726B9B00A1281A /* iOSStatusUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSStatusUITests.swift; sourceTree = "<group>"; };
 		B63ADABB26731A0400A1281A /* MockSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSocket.swift; sourceTree = "<group>"; };
 		B63ADABD26732C8100A1281A /* AssuranceSession+EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssuranceSession+EventHandler.swift"; sourceTree = "<group>"; };
+		B63C8C2C285784BD00FC4CFC /* TestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestApp.entitlements; sourceTree = "<group>"; };
 		B63EB79A2668C67A005BE2C5 /* AssuranceClientLogVisibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceClientLogVisibility.swift; sourceTree = "<group>"; };
 		B63EB79C2668D524005BE2C5 /* AssuranceClientLogMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceClientLogMessageTests.swift; sourceTree = "<group>"; };
 		B6407199262C313E00C43183 /* AEPAssurance.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AEPAssurance.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -517,6 +518,7 @@
 		B64071E5262C8F8B00C43183 /* TestApp */ = {
 			isa = PBXGroup;
 			children = (
+				B63C8C2C285784BD00FC4CFC /* TestApp.entitlements */,
 				B64071E6262C8F8B00C43183 /* AppDelegate.swift */,
 				B64071E8262C8F8B00C43183 /* SceneDelegate.swift */,
 				B64071EA262C8F8B00C43183 /* ContentView.swift */,
@@ -1577,6 +1579,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TestApp/TestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TestApp/Preview Content\"";
 				DEVELOPMENT_TEAM = FKGEE875K4;
@@ -1586,7 +1589,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.assurance.TestApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.assurance.testApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1599,6 +1602,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TestApp/TestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TestApp/Preview Content\"";
 				DEVELOPMENT_TEAM = FKGEE875K4;
@@ -1608,7 +1612,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.assurance.TestApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.assurance.testApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

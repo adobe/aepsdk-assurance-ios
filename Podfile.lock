@@ -16,6 +16,11 @@ PODS:
     - AEPCore (= 3.3.2)
   - AEPLifecycle (3.3.2):
     - AEPCore (= 3.3.2)
+  - AEPMessaging (1.0.0):
+    - AEPCore
+    - AEPEdge (>= 1.1.0)
+    - AEPEdgeIdentity (>= 1.0.0)
+    - AEPServices
   - AEPPlaces (3.0.1):
     - AEPCore
     - AEPServices
@@ -37,6 +42,7 @@ DEPENDENCIES:
   - AEPEdgeIdentity
   - AEPIdentity
   - AEPLifecycle
+  - AEPMessaging
   - AEPPlaces
   - AEPServices
   - AEPSignal
@@ -53,6 +59,7 @@ SPEC REPOS:
     - AEPEdgeIdentity
     - AEPIdentity
     - AEPLifecycle
+    - AEPMessaging
     - AEPPlaces
     - AEPRulesEngine
     - AEPServices
@@ -69,6 +76,7 @@ SPEC CHECKSUMS:
   AEPEdgeIdentity: 40d312b4434b710a46c1738ab2a221dda4cfd67e
   AEPIdentity: 5f7af2b937713ff82aa0788a6ee0b7e0d8fcd86e
   AEPLifecycle: 8200df6d8f4579d4ee1eb924d6c46247b1fe102b
+  AEPMessaging: 661cc08435254f3c9cc0899785c20a7952952e95
   AEPPlaces: 04294020832c78249732c80aec86928114698cbf
   AEPRulesEngine: 5075ed294026a12e37bd26fe260f74604d205354
   AEPServices: 7ac2a251b71a422ddaee316eac39f7a66a0d3a90
@@ -77,6 +85,6 @@ SPEC CHECKSUMS:
   AEPUserProfile: 2ddb5ba8e2c22dd8f942992306b050f4be2c2403
   SwiftLint: e96c0a8c770c7ebbc4d36c55baf9096bb65c4584
 
-PODFILE CHECKSUM: 7246765c5522b0ca7aaf915d698263457c335c5c
+PODFILE CHECKSUM: 333a00844252cadd85cdd4330a47b3287a3556db
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
