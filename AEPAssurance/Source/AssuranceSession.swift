@@ -24,7 +24,7 @@ class AssuranceSession {
     let pluginHub: PluginHub = PluginHub()
 
     lazy var socket: SocketConnectable  = {
-        return WebViewSocket(withDelegate: self)
+        return NativeSocket(withDelegate: self)
     }()
 
     lazy var statusUI: iOSStatusUI  = {
