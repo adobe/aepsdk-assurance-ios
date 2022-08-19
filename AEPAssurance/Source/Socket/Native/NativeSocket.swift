@@ -15,7 +15,7 @@
 import AEPServices
 import Foundation
 //import WebKit
-import WatchKit
+//import WatchKit
 
 @available(watchOS 6.0, *)
 @available(iOS 13.0, *)

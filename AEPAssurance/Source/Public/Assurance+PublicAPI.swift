@@ -14,6 +14,7 @@ import AEPCore
 import AEPServices
 import Foundation
 
+@available(watchOS 6.0, *)
 @objc public extension Assurance {
 
     /// Starts an AEPAssurance session.
@@ -35,6 +36,7 @@ import Foundation
         }
 
         Log.trace(label: AssuranceConstants.LOG_TAG, "Start Session API called with deeplink URL : \(urlString)")
+        
         let eventData = [AssuranceConstants.EventDataKey.START_SESSION_URL: urlString]
         let event = Event(name: "Assurance Start Session",
                           type: AssuranceConstants.SDKEventType.ASSURANCE,

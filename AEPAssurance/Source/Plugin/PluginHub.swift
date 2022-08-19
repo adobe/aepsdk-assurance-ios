@@ -18,6 +18,7 @@ import Foundation
 ///  It also notifies the plugins about the on going `AssuranceSession` status
 ///
 /// @see AssurancePlugin
+@available(watchOS 6.0, *)
 class PluginHub {
     let pluginCollection = ThreadSafeDictionary<Int, ThreadSafeArray<AssurancePlugin>>(identifier: "com.adobe.assurance.pluginCollection")
 

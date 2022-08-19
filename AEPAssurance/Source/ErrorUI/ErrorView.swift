@@ -10,10 +10,11 @@
  governing permissions and limitations under the License.
  */
 
+
 import AEPServices
 import Foundation
-//import WebKit
-import WatchKit
+#if os(iOS)
+import WebKit
 
 
 class ErrorView: FullscreenMessageDelegate {
@@ -73,3 +74,4 @@ class ErrorView: FullscreenMessageDelegate {
     }
 
 }
+#endif

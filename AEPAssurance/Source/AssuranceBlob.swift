@@ -13,6 +13,7 @@
 import AEPServices
 import Foundation
 
+@available(watchOS 6.0, *)
 enum AssuranceBlob {
 
     static let HTTPS_SCHEME = "https"

@@ -10,10 +10,12 @@
  governing permissions and limitations under the License.
  */
 
+
 import AEPServices
 import Foundation
-//import WebKit
-import WatchKit
+#if os(iOS)
+import WebKit
+
 
 extension iOSStatusUI: FullscreenMessageDelegate {
 
@@ -44,6 +46,7 @@ extension iOSStatusUI: FullscreenMessageDelegate {
 
         // when the user hits "Cancel" on statusUI screen. Dismiss the fullscreen message
         // return false, to indicate that the URL has been handled
+       
         if host == AssuranceConstants.HTMLURLPath.CANCEL {
             message.hide()
             floatingButton?.show()
@@ -75,3 +78,5 @@ extension iOSStatusUI: FullscreenMessageDelegate {
         Log.warning(label: AssuranceConstants.LOG_TAG, "Unable to display the statusUI screen, onShowFailure delegate method is invoked")
     }
 }
+
+#endif

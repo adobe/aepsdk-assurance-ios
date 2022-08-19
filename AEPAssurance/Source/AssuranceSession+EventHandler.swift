@@ -13,6 +13,8 @@
 import AEPServices
 import Foundation
 
+
+@available(watchOS 6.0, *)
 extension AssuranceSession {
 
     ///
@@ -71,6 +73,7 @@ extension AssuranceSession {
                     // 1. Remove the WebView UI and display the floating button
                     // 2. Share the Assurance shared state
                     // 3. Notify the client plugins on successful connection
+                    
                     self.pinCodeScreen?.connectionSucceeded()
                     self.statusUI.display()
                     self.statusUI.updateForSocketConnected()
@@ -90,7 +93,7 @@ extension AssuranceSession {
                     return
                 }
 
-                self.pluginHub.notifyPluginsOfEvent(event)
+               self.pluginHub.notifyPluginsOfEvent(event)
             }
         })
         inboundSource.resume()

@@ -10,10 +10,13 @@
  governing permissions and limitations under the License.
  */
 
+import UIKit
 import AEPServices
 import CoreLocation
 import Foundation
-import UIKit
+import WatchKit
+
+
 
 enum AssuranceClientInfo {
 
@@ -61,7 +64,7 @@ enum AssuranceClientInfo {
         let screenSize = systemInfoService.getDisplayInformation()
         var deviceInfo: [String: Any] = [:]
         deviceInfo[PLATFORM_NAME] = PLATFORM_IOS
-        deviceInfo[DEVICE_NAME] = UIDevice.current.name
+        deviceInfo[DEVICE_NAME] = WKInterfaceDevice.current().name
         deviceInfo[OPERATING_SYSTEM] = ("\(systemInfoService.getOperatingSystemName()) \(systemInfoService.getOperatingSystemVersion())")
         deviceInfo[DEVICE_TYPE] = getDeviceType()
         deviceInfo[MODEL] = systemInfoService.getDeviceModelNumber()
@@ -79,7 +82,7 @@ enum AssuranceClientInfo {
     ///
     /// - Returns: An `Int` representing the battery level of the device
     private static func getBatteryLevel() -> Int {
-        let batteryPercentage = Int(UIDevice.current.batteryLevel * 100)
+        let batteryPercentage = Int(WKInterfaceDevice.current().batteryLevel * 100)
         return (batteryPercentage) > 0 ? batteryPercentage : -1
     }
 
@@ -103,22 +106,26 @@ enum AssuranceClientInfo {
 
     /// - Returns: A `String` representing the Apple's device type
     private static func getDeviceType() -> String {
-        switch UIDevice.current.userInterfaceIdiom {
-        case .unspecified:
-            return "Unspecified"
-        case .phone:
-            return "iPhone or iPod touch"
-        case .pad:
-            return "iPad"
-        case .tv:
-            return "Apple TV"
-        case .carPlay:
-            return "Apple Car Play"
-        case .mac:
-            return "Mac"
-        @unknown default:
-            return "Unspecified"
-        }
+        return "Watch"
+//        switch UIDevice.current.userInterfaceIdiom {
+//        case .unspecified:
+//            return "Unspecified"
+//        case .phone:
+//            return "iPhone or iPod touch"
+//        case .pad:
+//            return "iPad"
+//        case .tv:
+//            return "Apple TV"
+//        case .carPlay:
+//            return "Apple Car Play"
+//        case .mac:
+//            return "Mac"
+//        case .watch:
+//            return "Watch"
+//        @unknown default:
+//            return "Unspecified"
+//        }
+        
     }
 
 }

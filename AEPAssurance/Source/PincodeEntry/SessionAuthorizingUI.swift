@@ -12,6 +12,7 @@
 
 import Foundation
 
+@available(watchOS 6.0, *)
 protocol SessionAuthorizingUI {
     /// Callback to be invoked after pinCode interaction
     typealias PinCodeCallback = (URL?, AssuranceConnectionError?) -> Void

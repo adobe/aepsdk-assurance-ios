@@ -14,6 +14,7 @@ import AEPCore
 import AEPServices
 import Foundation
 
+@available(watchOS 6.0, *)
 @objc(AEPMobileAssurance)
 public class Assurance: NSObject, Extension {
 

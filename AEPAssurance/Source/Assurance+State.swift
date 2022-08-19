@@ -14,6 +14,7 @@ import AEPCore
 import AEPServices
 import Foundation
 
+@available(watchOS 6.0, *)
 extension Assurance {
 
     /// Call this function to create a new shared state for Assurance

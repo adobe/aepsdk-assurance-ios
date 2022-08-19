@@ -25,6 +25,7 @@ import Foundation
 /// This plugin extracts the SDK event details from the command, creates an `Event` and dispatches to `MobileCore`.
 ///
 /// @see AssuranceConstants.PluginFakeEvent
+@available(watchOS 6.0, *)
 struct PluginFakeEvent: AssurancePlugin {
 
     var vendor: String = AssuranceConstants.Vendor.MOBILE

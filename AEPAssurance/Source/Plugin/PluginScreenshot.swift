@@ -3,7 +3,6 @@
  This file is licensed to you under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License. You may obtain a copy
  of the License at http://www.apache.org/licenses/LICENSE-2.0
-
  Unless required by applicable law or agreed to in writing, software distributed under
  the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
  OF ANY KIND, either express or implied. See the License for the specific language
@@ -24,10 +23,13 @@ import UIKit
 /// Once the command to capture a screenshot is received, this plugin uses the `AssuranceBlob` service to upload the screenshot data.
 /// The ` AssuranceBlob` service then responds with the blobID of the uploaded screenshot image. This blobID is then forwarded to the ongoing assurance session.
 /// Failure to upload the screenshot will result in not sending any event to assurance session.
+@available(watchOS 6.0, *)
 class PluginScreenshot: AssurancePlugin {
 
     weak var session: AssuranceSession?
+    #if os(iOS)
     var uiUtil = AssuranceUIUtil()
+    #endif
     var vendor: String = AssuranceConstants.Vendor.MOBILE
     var commandType: String = AssuranceConstants.CommandType.SCREENSHOT
 
@@ -39,6 +41,7 @@ class PluginScreenshot: AssurancePlugin {
             return
         }
 
+        #if os(iOS)
         uiUtil.takeScreenshot({ imageData in
 
             guard let imageData = imageData else {
@@ -54,11 +57,13 @@ class PluginScreenshot: AssurancePlugin {
                     Log.debug(label: AssuranceConstants.LOG_TAG, "Uploading screenshot failed. Ignoring the screenShot request.")
                 }
             })
-        })
+    })
+        #endif
     }
 
     /// protocol method is called from this Plugin is registered with `PluginHub`
-    func onRegistered(_ session: AssuranceSession) {
+@available(watchOS 6.0, *)
+func onRegistered(_ session: AssuranceSession) {
         self.session = session
     }
 
