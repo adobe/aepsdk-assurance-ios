@@ -16,7 +16,8 @@ import Foundation
 
 @available(watchOS 6.0, *)
 @objc public extension Assurance {
-
+    
+    
     /// Starts an AEPAssurance session.
     ///
     /// Calling this method when a session has already been started results in a no-op, otherwise it attempts to initiate a new AEPAssurance session.
@@ -24,26 +25,31 @@ import Foundation
     ///
     /// - Parameter url: a valid AEPAssurance URL to start a session
     ///
-    static func startSession(url: URL?) {
+    static func startSession(url: URL?, pin: String? = nil) {
         guard let urlString = url?.absoluteString else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Start Session API called with invalid Assurance deeplink, ignoring the API call.")
             return
         }
-
+        
+        guard let pincodeString = pin else {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Start Session API called with no optional pincode parameter.")
+            return
+        }
+        
         if !urlString.contains(AssuranceConstants.Deeplink.SESSIONID_KEY) {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Start Session API called with missing assurance sessionID, ignoring the API call. URL : \(urlString)")
             return
         }
-
-        Log.trace(label: AssuranceConstants.LOG_TAG, "Start Session API called with deeplink URL : \(urlString)")
         
-        let eventData = [AssuranceConstants.EventDataKey.START_SESSION_URL: urlString]
+        Log.trace(label: AssuranceConstants.LOG_TAG, "Start Session API called with deeplink URL : \(urlString)")
+        let eventData = [AssuranceConstants.EventDataKey.START_SESSION_URL: urlString, AssuranceConstants.EventDataKey.PINCODE: pincodeString]
         let event = Event(name: "Assurance Start Session",
                           type: AssuranceConstants.SDKEventType.ASSURANCE,
                           source: EventSource.requestContent,
                           data: eventData)
-
+        
         MobileCore.dispatch(event: event)
     }
+
 
 }

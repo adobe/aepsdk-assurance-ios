@@ -40,11 +40,20 @@ extension Assurance {
         guard let sessionId = sessionId else {
             return nil
         }
+        
+        // Used for Native Socket Connection
+        guard let pincode = pincode else {
+            return nil
+        }
 
         var shareStateData: [String: String] = [:]
         shareStateData[AssuranceConstants.SharedStateKeys.CLIENT_ID] = clientID
         shareStateData[AssuranceConstants.SharedStateKeys.SESSION_ID] = sessionId
         shareStateData[AssuranceConstants.SharedStateKeys.INTEGRATION_ID] = sessionId + "|" + clientID
+        
+        // Used for Native Socket Connection
+        shareStateData[AssuranceConstants.SharedStateKeys.PINCODE] = pincode
+        
         return shareStateData
     }
 

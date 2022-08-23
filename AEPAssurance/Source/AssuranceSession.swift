@@ -24,6 +24,7 @@ class AssuranceSession {
     let inboundSource: DispatchSourceUserDataAdd = DispatchSource.makeUserDataAddSource(queue: DispatchQueue.global(qos: .default))
     let outboundSource: DispatchSourceUserDataAdd = DispatchSource.makeUserDataAddSource(queue: DispatchQueue.global(qos: .default))
     let pluginHub: PluginHub = PluginHub()
+    
    
 
     lazy var socket: SocketConnectable  = {
@@ -77,6 +78,9 @@ class AssuranceSession {
     ///
     ///
     func startSession() {
+        
+        // assuranceExtension.shareState()
+        
         canProcessSDKEvents = true
 
         if socket.socketState == .open || socket.socketState == .connecting {
@@ -126,27 +130,58 @@ class AssuranceSession {
 //            self?.socket.connect(withUrl: socketURL)
 //            pinCodeScreen.connectionInitialized()
 //        })
+        
 
         
-        let someURL: String = "wss://connect.griffon.adobe.com/client/v1?sessionId=6ad1113f-881c-4b60-8a13-7827659cfefd&token=2310&orgId=906E3A095DC834230A495FD6@AdobeOrg&clientId=D33D6D57-111F-463E-88B6-5843BF4826F4"
+
+//        
+//        let someURL: String = "wss://connect.griffon.adobe.com/client/v1?sessionId=6ad1113f-881c-4b60-8a13-7827659cfefd&token=2310&orgId=906E3A095DC834230A495FD6@AdobeOrg&clientId=D33D6D57-111F-463E-88B6-5843BF4826F4"
+//
         
-        guard let url = URL(string: someURL) else {
+        guard let TESTER = assuranceExtension.pincode else {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Start Session API called with no Pincode")
+            return
+        }
+        
+        guard let orgID = getURLEncodedOrgID() else {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Start Session API called with no OrgId")
+            return
+        }
+        
+        guard let sessionId = assuranceExtension.sessionId else {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Start Session API called with no SessionId")
+            return
+        }
+        
+        let socketURL = String(format: AssuranceConstants.BASE_SOCKET_URL,
+                               assuranceExtension.environment.urlFormat,
+                               sessionId,
+                               TESTER,
+                               orgID,
+                               assuranceExtension.clientID)
+        
+        guard let url = URL(string: socketURL) else {
             Log.warning(label: AssuranceConstants.LOG_TAG, "Invalid socket url. Ignoring to start new session.")
             return
         }
-        
-        print("THIS IS MY SOCKETURL--->>>", url)
-        
+
         socket.connect(withUrl: url)
         
-        print("This is the socket state after calling connect----->", socket.socketState)
-        
         if socket.socketState == .unknown {
-            print("Disconnecting Socket cause it's in an unknown state.")
             socket.disconnect()
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Disconnecting Socket cause it's in an unknown state.")
             return
         }
     }
+        
+
+    func getURLEncodedOrgID() -> String? {
+        let configState = assuranceExtension.runtime.getSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, barrier: false)
+        let orgID = configState?.value?[AssuranceConstants.EventDataKey.CONFIG_ORG_ID] as? String
+        return orgID?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+    }
+
+    
     ///
     /// Terminates the ongoing Assurance session.
     ///
