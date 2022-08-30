@@ -17,7 +17,7 @@ import PackageDescription
 
 let package = Package(
     name: "AEPAssurance",
-    platforms: [.iOS(.v10)],
+    platforms: [.iOS(.v10), .watchOS(.v3)],
     products: [
         .library(name: "AEPAssurance", targets: ["AEPAssurance"])
     ],
