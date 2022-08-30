@@ -14,10 +14,8 @@
 @testable import AEPCore
 @testable import AEPServices
 import Foundation
-//import WebKit
+import WebKit
 import XCTest
-import WatchKit
-
 
 class ErrorViewTests: XCTestCase {
 
