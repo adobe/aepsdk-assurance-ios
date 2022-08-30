@@ -69,6 +69,13 @@ class AssuranceSession {
         handleOutBoundEvents()
         registerInternalPlugins()
     }
+    
+    
+    
+    func getSocketState() -> SocketState {
+        let currentSocketState = socket.socketState
+        return currentSocketState
+    }
 
     ///
     /// Called this method to start an Assurance session.
@@ -131,14 +138,8 @@ class AssuranceSession {
 //            pinCodeScreen.connectionInitialized()
 //        })
         
-
         
-
-//        
-//        let someURL: String = "wss://connect.griffon.adobe.com/client/v1?sessionId=6ad1113f-881c-4b60-8a13-7827659cfefd&token=2310&orgId=906E3A095DC834230A495FD6@AdobeOrg&clientId=D33D6D57-111F-463E-88B6-5843BF4826F4"
-//
-        
-        guard let TESTER = assuranceExtension.pincode else {
+        guard let pincode = assuranceExtension.pincode else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Start Session API called with no Pincode")
             return
         }
@@ -156,7 +157,7 @@ class AssuranceSession {
         let socketURL = String(format: AssuranceConstants.BASE_SOCKET_URL,
                                assuranceExtension.environment.urlFormat,
                                sessionId,
-                               TESTER,
+                               pincode,
                                orgID,
                                assuranceExtension.clientID)
         
@@ -165,7 +166,13 @@ class AssuranceSession {
             return
         }
 
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to make a socket connection with URL : \(url)")
+        
         socket.connect(withUrl: url)
+        
+        // Save socketURL in State
+        assuranceExtension.connectedWebSocketURL = socketURL
+        
         
         if socket.socketState == .unknown {
             socket.disconnect()
@@ -207,9 +214,9 @@ class AssuranceSession {
     func handleConnectionError(error: AssuranceConnectionError, closeCode: Int) {
         // if the pinCode screen is still being displayed. Then use the same webView to display error
         Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with error :\(error.info.name) \n description : \(error.info.description) \n close code: \(closeCode)")
-        if pinCodeScreen?.isDisplayed == true {
-            pinCodeScreen?.connectionFailedWithError(error)
-        }
+//        if pinCodeScreen?.isDisplayed == true {
+//            pinCodeScreen?.connectionFailedWithError(error)
+//        }
         // Error View not available with watchOS
 //        else {
 //            let errorView = ErrorView.init(AssuranceConnectionError.clientError)

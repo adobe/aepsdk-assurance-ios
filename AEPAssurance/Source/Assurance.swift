@@ -18,6 +18,8 @@ import Foundation
 @objc(AEPMobileAssurance)
 public class Assurance: NSObject, Extension {
 
+    
+
     /// Time before assurance shuts down on non receipt of start session event.
     let shutdownTime: Int
 
@@ -40,7 +42,6 @@ public class Assurance: NSObject, Extension {
         }
     }
     
-    
     var pincode: String? {
         get {
             datastore.getString(key: AssuranceConstants.DataStoreKeys.PINCODE)
@@ -49,7 +50,6 @@ public class Assurance: NSObject, Extension {
             datastore.set(key: AssuranceConstants.DataStoreKeys.PINCODE, value: newValue)
         }
     }
-    
     
     private let DEFAULT_ENVIRONMENT = AssuranceEnvironment.prod
     var environment: AssuranceEnvironment {

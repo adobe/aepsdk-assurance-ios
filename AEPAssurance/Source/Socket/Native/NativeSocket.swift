@@ -14,8 +14,6 @@
 
 import AEPServices
 import Foundation
-//import WebKit
-//import WatchKit
 
 @available(watchOS 6.0, *)
 @available(iOS 13.0, *)
@@ -55,8 +53,25 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
        socketTask?.resume()
        registerCallbacks()
        socketState = .connecting
+       ping()
    }
+    
+    
+    private func ping() {
+        socketTask?.sendPing { (error) in
+                if let error = error {
+                    print("Ping failed: \(error)")
+                }
+                self.scheduleNextPing()
+            }
+        }
 
+    private func scheduleNextPing() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+            self?.ping()
+        }
+    }
+    
    /// Disconnect the ongoing socket connection.
    /// Sets the socket state to `CLOSING` and attempts for disconnection
    /// On successful disconnection  the socketDelegate's `webSocketDidDisconnect`method is invoked. And the socket state is set to`CLOSED`.
@@ -107,12 +122,16 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
            case .failure(let error):
                self?.didReceiveError(error)
            }
+           self?.registerCallbacks()
        }
    }
+    
+
 
    /// Handle the error from socket connection
    private func didReceiveError(_ error: Error) {
        self.delegate.webSocketOnError(self)
+//       self.delegate.webSocketDidDisconnect(self, 1006, "UNKNOWN", true)
    }
 
    /// Handle the incoming string message from socket

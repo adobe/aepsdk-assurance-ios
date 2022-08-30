@@ -86,7 +86,7 @@ extension AssuranceSession: SocketDelegate {
         // For all other abnormal closures, display error back to UI and attempt to reconnect.
         default:
             Log.debug(label: AssuranceConstants.LOG_TAG, "Abnormal closure of webSocket. Reason - \(reason) and closeCode - \(closeCode)")
-            pinCodeScreen?.connectionFailedWithError(AssuranceConnectionError.genericError)
+            //pinCodeScreen?.connectionFailedWithError(AssuranceConnectionError.genericError)
 
             // do the reconnect logic only if session is already connected
             guard let _ = assuranceExtension.connectedWebSocketURL else {
