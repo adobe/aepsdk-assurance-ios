@@ -3,7 +3,6 @@
  This file is licensed to you under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License. You may obtain a copy
  of the License at http://www.apache.org/licenses/LICENSE-2.0
-
  Unless required by applicable law or agreed to in writing, software distributed under
  the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
  OF ANY KIND, either express or implied. See the License for the specific language
@@ -12,7 +11,10 @@
 
 import AEPServices
 import Foundation
+
+#if os(iOS)
 import WebKit
+
 
 class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScriptMessageHandler {
 
@@ -37,7 +39,6 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     }
 
     // MARK: - Private properties
-
     private var webView: WKWebView?
     private var loadNav: WKNavigation?
     private var socketEventHandlers = ThreadSafeDictionary<String, messageHandlerBlock>(identifier: "com.adobe.assurance.socketEventHandler")
@@ -46,7 +47,6 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     typealias messageHandlerBlock = (WKScriptMessage) -> Void
 
     // MARK: - SocketConnectable Interfaces
-
     /// Initialization of webView socket connection.
     /// - Parameters:
     ///     - delegate: the delegate instance to get notified on essential socket events
@@ -128,7 +128,6 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     }
 
     // MARK: - WebView Delegate methods
-
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         let block = self.socketEventHandlers[message.name]
         block?(message)
@@ -149,7 +148,6 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     }
 
     // MARK: - Private methods
-
     private func setupCallbacks() {
         registerSocketCallback("log", with: { message in
             Log.debug(label: AssuranceConstants.LOG_TAG, "Javascript log output : \(message.body)")
@@ -231,3 +229,4 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     }
 
 }
+#endif

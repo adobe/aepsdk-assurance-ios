@@ -10,6 +10,7 @@
  governing permissions and limitations under the License.
  */
 
+#if os(iOS)
 import AEPServices
 import Foundation
 
@@ -36,3 +37,5 @@ extension iOSStatusUI: FloatingButtonDelegate {
     /// Invoked when the floating button is removed
     func onDismiss() {}
 }
+
+#endif

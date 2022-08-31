@@ -12,8 +12,11 @@
 
 import AEPServices
 import Foundation
+#if os(iOS)
 import WebKit
 
+
+@available(watchOS 6.0, *)
 class iOSPinCodeScreen: SessionAuthorizingUI {
     var isDisplayed: Bool = false
     var assuranceExtension: Assurance
@@ -63,3 +66,4 @@ class iOSPinCodeScreen: SessionAuthorizingUI {
         fullscreenMessage?.show()
     }
 }
+#endif

@@ -25,6 +25,7 @@ import Foundation
 /// the `MobileCore.updateConfiguration` API to modify the demanded configuration from the connected  assurance session.
 /// The modified configuration keys are stored in datastore, hence when assurance session is terminated the modified configuration is
 /// reverted back.
+@available(watchOS 6.0, *)
 class PluginConfigModify: AssurancePlugin {
 
     weak var session: AssuranceSession?
@@ -57,7 +58,8 @@ class PluginConfigModify: AssurancePlugin {
         for (configKey) in commandDetails.keys {
             logString.append("<br> &emsp; \(configKey)")
         }
-        session?.statusUI.addClientLog(logString, visibility: .high)
+        //
+        // session?.statusUI.addClientLog(logString, visibility: .high)
         saveModifiedConfigKeys(commandDetails)
     }
 
@@ -112,5 +114,4 @@ class PluginConfigModify: AssurancePlugin {
     private func clearModifiedKeys() {
         datastore.remove(key: AssuranceConstants.DataStoreKeys.CONFIG_MODIFIED_KEYS)
     }
-
 }

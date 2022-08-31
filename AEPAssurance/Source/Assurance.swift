@@ -14,8 +14,11 @@ import AEPCore
 import AEPServices
 import Foundation
 
+@available(watchOS 6.0, *)
 @objc(AEPMobileAssurance)
 public class Assurance: NSObject, Extension {
+
+    
 
     /// Time before assurance shuts down on non receipt of start session event.
     let shutdownTime: Int
@@ -38,7 +41,16 @@ public class Assurance: NSObject, Extension {
             datastore.set(key: AssuranceConstants.DataStoreKeys.SESSION_ID, value: newValue)
         }
     }
-
+    
+    var pincode: String? {
+        get {
+            datastore.getString(key: AssuranceConstants.DataStoreKeys.PINCODE)
+        }
+        set {
+            datastore.set(key: AssuranceConstants.DataStoreKeys.PINCODE, value: newValue)
+        }
+    }
+    
     private let DEFAULT_ENVIRONMENT = AssuranceEnvironment.prod
     var environment: AssuranceEnvironment {
         get {
@@ -174,9 +186,16 @@ public class Assurance: NSObject, Extension {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance start session event received with empty data. Dropping event.")
             return
         }
+        
 
         guard let deeplinkUrlString = startSessionData[AssuranceConstants.EventDataKey.START_SESSION_URL] as? String else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance start session event received with no deeplink url. Dropping event.")
+            return
+        }
+        
+        
+        guard let pincodeString = startSessionData[AssuranceConstants.EventDataKey.PINCODE] as? String else {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance start session event received with no pincode. Dropping event.")
             return
         }
 
@@ -201,6 +220,7 @@ public class Assurance: NSObject, Extension {
         // save the environment and sessionID
         environment = AssuranceEnvironment.init(envString: environmentString)
         self.sessionId = sessionId
+        self.pincode = pincodeString
         shareState()
 
         Log.trace(label: AssuranceConstants.LOG_TAG, "Received sessionID, Initializing Assurance session. \(sessionId)")

@@ -10,9 +10,12 @@
  governing permissions and limitations under the License.
  */
 
+
 import AEPServices
 import Foundation
+#if os(iOS)
 import WebKit
+
 
 extension iOSPinCodeScreen: FullscreenMessageDelegate {
 
@@ -114,5 +117,5 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
         let orgID = configState?.value?[AssuranceConstants.EventDataKey.CONFIG_ORG_ID] as? String
         return orgID?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
     }
-
 }
+#endif

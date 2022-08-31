@@ -71,6 +71,9 @@ enum AssuranceConstants {
         static let SHARED_STATE_OWNER = "stateowner"
         static let EXTENSIONS = "extensions"
         static let FRIENDLY_NAME = "friendlyName"
+        
+        //Pincode for NativeSocket Connection
+        static let PINCODE = "pincode"
     }
 
     enum DataStoreKeys {
@@ -79,12 +82,17 @@ enum AssuranceConstants {
         static let ENVIRONMENT = "assurance.environment"
         static let SOCKETURL = "assurance.socketurl"
         static let CONFIG_MODIFIED_KEYS = "assurance.control.modifiedConfigKeys"
+        
+        static let PINCODE = "assurance.pincode"
     }
 
     enum SharedStateKeys {
         static let CLIENT_ID = "sessionid"
         static let SESSION_ID = "clientid"
         static let INTEGRATION_ID = "integrationid"
+        //Pincode for NativeSocket Connection
+        
+        static let PINCODE = "pincode"
     }
 
     enum EventType {

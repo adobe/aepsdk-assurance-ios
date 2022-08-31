@@ -23,6 +23,7 @@ import Foundation
 /// Note: The debug logs through AEPServices goes to STDERR
 /// Once the command to forward logs is received, this plugin interrupts the logs by creating a Pipe and replacing the STDERR file descriptor to pipe's file descriptor.
 /// Plugin then reads the input to the pipe and forwards the logs to the connected assurance session.
+@available(watchOS 6.0, *)
 class PluginLogForwarder: AssurancePlugin {
     weak var session: AssuranceSession?
     var vendor: String = AssuranceConstants.Vendor.MOBILE

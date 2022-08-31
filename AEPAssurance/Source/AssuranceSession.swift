@@ -13,7 +13,9 @@
 import AEPServices
 import Foundation
 
+@available(watchOS 6.0, *)
 class AssuranceSession {
+    
     let RECONNECT_TIMEOUT = 5
     let assuranceExtension: Assurance
     var pinCodeScreen: SessionAuthorizingUI?
@@ -22,14 +24,19 @@ class AssuranceSession {
     let inboundSource: DispatchSourceUserDataAdd = DispatchSource.makeUserDataAddSource(queue: DispatchQueue.global(qos: .default))
     let outboundSource: DispatchSourceUserDataAdd = DispatchSource.makeUserDataAddSource(queue: DispatchQueue.global(qos: .default))
     let pluginHub: PluginHub = PluginHub()
+    
+   
 
     lazy var socket: SocketConnectable  = {
-        return WebViewSocket(withDelegate: self)
+        return NativeSocket(withDelegate: self)
     }()
 
-    lazy var statusUI: iOSStatusUI  = {
-        iOSStatusUI.init(withSession: self)
-    }()
+     lazy var statusUI: iOSStatusUI  = {
+         iOSStatusUI.init(withSession: self)
+     }()
+
+    
+    
 
     // MARK: - boolean flags
 
@@ -62,13 +69,25 @@ class AssuranceSession {
         handleOutBoundEvents()
         registerInternalPlugins()
     }
+    
+    
+    
+    func getSocketState() -> SocketState {
+        let currentSocketState = socket.socketState
+        return currentSocketState
+    }
 
     ///
     /// Called this method to start an Assurance session.
     /// If the session was already connected, It will resume the connection.
     /// Otherwise PinCode screen is presented for establishing a new connection.
     ///
+    ///
+    ///
     func startSession() {
+        
+        // assuranceExtension.shareState()
+        
         canProcessSDKEvents = true
 
         if socket.socketState == .open || socket.socketState == .connecting {
@@ -76,9 +95,10 @@ class AssuranceSession {
             return
         }
 
-        // if there is a socket URL already connected in the previous session, reuse it.
+        //if there is a socket URL already connected in the previous session, reuse it.
+        
         if let socketURL = assuranceExtension.connectedWebSocketURL {
-            self.statusUI.display()
+            // self.statusUI.display()
             guard let url = URL(string: socketURL) else {
                 Log.warning(label: AssuranceConstants.LOG_TAG, "Invalid socket url. Ignoring to start new session.")
                 return
@@ -96,28 +116,79 @@ class AssuranceSession {
     ///
     /// Thread : Listener thread from EventHub
     func beginNewSession() {
-        let pinCodeScreen = iOSPinCodeScreen.init(withExtension: assuranceExtension)
-        self.pinCodeScreen = pinCodeScreen
-
+        //let pinCodeScreen = iOSPinCodeScreen.init(withExtension: assuranceExtension)
+        //self.pinCodeScreen = pinCodeScreen
+        
         // invoke the pinpad screen and create a socketURL with the pincode and other essential parameters
-        pinCodeScreen.show(callback: { [weak self]  socketURL, error in
-            if let error = error {
-                self?.handleConnectionError(error: error, closeCode: -1)
-                return
-            }
 
-            guard let socketURL = socketURL else {
-                Log.debug(label: AssuranceConstants.LOG_TAG, "SocketURL to connect to session is empty. Ignoring to start Assurance session.")
-                return
-            }
+//        pinCodeScreen.show(callback: { [weak self]  socketURL, error in
+//            if let error = error {
+//                self?.handleConnectionError(error: error, closeCode: -1)
+//                return
+//            }
+//
+//            guard let socketURL = socketURL else {
+//                Log.debug(label: AssuranceConstants.LOG_TAG, "SocketURL to connect to session is empty. Ignoring to start Assurance session.")
+//                return
+//            }
+//
+//            // Thread : main thread (this callback is called from `overrideUrlLoad` method of WKWebView)
+//            Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to make a socket connection with URL : \(socketURL)")
+//            self?.socket.connect(withUrl: socketURL)
+//            pinCodeScreen.connectionInitialized()
+//        })
+        
+        
+        guard let pincode = assuranceExtension.pincode else {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Start Session API called with no Pincode")
+            return
+        }
+        
+        guard let orgID = getURLEncodedOrgID() else {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Start Session API called with no OrgId")
+            return
+        }
+        
+        guard let sessionId = assuranceExtension.sessionId else {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Start Session API called with no SessionId")
+            return
+        }
+        
+        let socketURL = String(format: AssuranceConstants.BASE_SOCKET_URL,
+                               assuranceExtension.environment.urlFormat,
+                               sessionId,
+                               pincode,
+                               orgID,
+                               assuranceExtension.clientID)
+        
+        guard let url = URL(string: socketURL) else {
+            Log.warning(label: AssuranceConstants.LOG_TAG, "Invalid socket url. Ignoring to start new session.")
+            return
+        }
 
-            // Thread : main thread (this callback is called from `overrideUrlLoad` method of WKWebView)
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to make a socket connection with URL : \(socketURL)")
-            self?.socket.connect(withUrl: socketURL)
-            pinCodeScreen.connectionInitialized()
-        })
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to make a socket connection with URL : \(url)")
+        
+        socket.connect(withUrl: url)
+        
+        // Save socketURL in State
+        assuranceExtension.connectedWebSocketURL = socketURL
+        
+        
+        if socket.socketState == .unknown {
+            socket.disconnect()
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Disconnecting Socket cause it's in an unknown state.")
+            return
+        }
+    }
+        
+
+    func getURLEncodedOrgID() -> String? {
+        let configState = assuranceExtension.runtime.getSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, barrier: false)
+        let orgID = configState?.value?[AssuranceConstants.EventDataKey.CONFIG_ORG_ID] as? String
+        return orgID?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
     }
 
+    
     ///
     /// Terminates the ongoing Assurance session.
     ///
@@ -143,19 +214,21 @@ class AssuranceSession {
     func handleConnectionError(error: AssuranceConnectionError, closeCode: Int) {
         // if the pinCode screen is still being displayed. Then use the same webView to display error
         Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with error :\(error.info.name) \n description : \(error.info.description) \n close code: \(closeCode)")
-        if pinCodeScreen?.isDisplayed == true {
-            pinCodeScreen?.connectionFailedWithError(error)
-        } else {
-            let errorView = ErrorView.init(AssuranceConnectionError.clientError)
-            errorView.display()
-        }
+//        if pinCodeScreen?.isDisplayed == true {
+//            pinCodeScreen?.connectionFailedWithError(error)
+//        }
+        // Error View not available with watchOS
+//        else {
+//            let errorView = ErrorView.init(AssuranceConnectionError.clientError)
+//            errorView.display()
+//        }
 
         pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
 
         // since we don't give retry option for these errors and UI will be dismissed anyway, hence notify plugins for onSessionTerminated
         if !error.info.shouldRetry {
             clearSessionData()
-            statusUI.remove()
+            //statusUI.remove()
             pluginHub.notifyPluginsOnSessionTerminated()
         }
     }
@@ -167,7 +240,7 @@ class AssuranceSession {
     ///     - visibility: an `AssuranceClientLogVisibility` determining the importance of the log message
     ///
     func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
-        statusUI.addClientLog(message, visibility: visibility)
+        //statusUI.addClientLog(message, visibility: visibility)
     }
 
     ///
