@@ -130,12 +130,18 @@ public class QuickConnectView {
     }
     
     @objc func cancelClicked(_ sender: AnyObject?) {
+        manager.cancelRetryGetDeviceStatus()
         dismiss()
      }
     
     @objc func connectClicked(_ sender: AnyObject?) {
         waitingState()
-        manager.createDevice()
+        manager.createDevice { error in
+            if let error = error {
+                self.onFailedDeviceRegistration(error: error)
+                return
+            }
+        }
      }
         
         
@@ -276,7 +282,7 @@ public class QuickConnectView {
 //          }
 //      }
       
-      func onFailedDeviceRegistration() {
+    func onFailedDeviceRegistration(error: AssuranceNetworkError) {
           DispatchQueue.main.async {
               
           }

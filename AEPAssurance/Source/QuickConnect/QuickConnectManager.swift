@@ -12,12 +12,13 @@
 
 import Foundation
 import UIKit
+import AEPServices
 
 class QuickConnectManager {
 
     private let quickConnectService = QuickConnectService()
-    private lazy var quickConnectView = QuickConnectView(manager: self)
     private let parentExtension: Assurance
+    private let LOG_TAG = "QuickConnectManager"
 
     init(assurance: Assurance) {
         parentExtension = assurance
@@ -30,18 +31,13 @@ class QuickConnectManager {
                                                object: nil)
     }
     
-    func createDevice() {
-        quickConnectService.registerDevice(clientID: parentExtension.clientID, orgID: parentExtension.getURLEncodedOrgID() ?? "changeme", callback: { result in
-             
-             switch result {
-             case .success(_):
-                 self.quickConnectView.waitingState()
-                 self.checkDeviceStatus()
-                 break
-             case .failure(_):
-                 self.quickConnectView.onFailedDeviceRegistration()
-             }
-             
+    func createDevice(completion: @escaping (AssuranceNetworkError?)-> Void) {
+        quickConnectService.registerDevice(clientID: parentExtension.clientID, orgID: parentExtension.getURLEncodedOrgID() ?? "changeme", completion: { error in
+            // Let the view decide how to handle the completion
+            completion(error)
+            if error == nil {
+                self.checkDeviceStatus()
+            }
          })
      }
     
@@ -49,9 +45,10 @@ class QuickConnectManager {
         
         guard let orgID = parentExtension.getURLEncodedOrgID() else {
             // log here
+            Log.debug(label: LOG_TAG, "orgID is unexpectedly nil")
             return
         }
-        quickConnectService.getDeviceStatus(clientID: parentExtension.clientID, orgID: orgID, callback: { [self] result in
+        quickConnectService.getDeviceStatus(clientID: parentExtension.clientID, orgID: orgID, completion: { [self] result in
             switch result {
             case .success((let sessionId, let token)):
                 
@@ -82,27 +79,29 @@ class QuickConnectManager {
     
     func deleteDevice() {
         guard let orgID = parentExtension.getURLEncodedOrgID() else {
-            // log here
+            Log.debug(label: LOG_TAG, "orgID is unexpectedly nil")
             return
         }
         
-        quickConnectService.deleteDevice(clientID: parentExtension.clientID, orgID: orgID, callback: { [self] result in
-        switch result {
-            case .success(_):
-                // log here
-                break
-            case .failure(_):
-                // log here\
-                break
+        quickConnectService.deleteDevice(clientID: parentExtension.clientID, orgID: orgID, callback: { error in
+            guard let error = error else {
+                return
             }
+
+            Log.debug(label: self.LOG_TAG, "Failed to delete device with error: \(error)")
         })
 
+    }
+
+    func cancelRetryGetDeviceStatus() {
+        quickConnectService.shouldRetryGetDeviceStatus = false
     }
     
 
     @objc private func handleShakeGesture() {
         parentExtension.shouldProcessEvents = true
         parentExtension.invalidateTimer()
+        quickConnectService.shouldRetryGetDeviceStatus = true
         DispatchQueue.main.async {
              self.quickConnectView.show()
         }

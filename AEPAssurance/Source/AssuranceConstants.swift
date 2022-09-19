@@ -179,6 +179,9 @@ enum AssuranceConstants {
 
     enum QuickConnect {
         static let SHAKE_NOTIFICATION_KEY = "AdobeAssuranceShakeDetector"
+        static let KEY_ORGID = "orgId"
+        static let KEY_DEVICE_NAME = "deviceName"
+        static let KEY_CLIENT_ID = "clientId"
     }
 
     enum Network {
