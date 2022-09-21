@@ -141,6 +141,7 @@ public class QuickConnectView {
                 self.onFailedDeviceRegistration(error: error)
                 return
             }
+            self.onSuccessfulApproval()
         }
      }
         

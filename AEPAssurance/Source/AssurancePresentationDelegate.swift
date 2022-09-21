@@ -1,5 +1,5 @@
 //
-// Copyright 2021 Adobe. All rights reserved.
+// Copyright 2022 Adobe. All rights reserved.
 // This file is licensed to you under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License. You may obtain a copy
 // of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -10,22 +10,10 @@
 // governing permissions and limitations under the License.
 //
 
-@testable import AEPAssurance
-@testable import AEPCore
 import Foundation
-import XCTest
 
-class MockAssurance: Assurance {
-    var expectation: XCTestExpectation?
-    required init?(runtime: ExtensionRuntime) {
-        super.init(runtime: runtime)
-    }
-
-    var getAllExtensionStateDataCalled = false
-    override func getAllExtensionStateData() -> [AssuranceEvent] {
-        expectation?.fulfill()
-        getAllExtensionStateDataCalled = true
-        return []
-    }
-
+protocol AssurancePresentationDelegate {
+    func pinScreenConnectClicked(_ pin: String)
+    func pinScreenCancelClicked()
+    func disconnectClicked()
 }

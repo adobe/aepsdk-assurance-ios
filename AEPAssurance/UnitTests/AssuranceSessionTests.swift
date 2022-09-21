@@ -17,41 +17,59 @@ import Foundation
 import XCTest
 
 class AssuranceSessionTests: XCTestCase {
+    
+    let AUTHENTICATED_SOCKET_URL = "wss://connect.griffon.adobe.com/client/v1?sessionId=sampleSessionId&token=8706&orgId=sample@AdobeOrg&clientId=sampleClientId"
 
     let runtime = TestableExtensionRuntime()
     var session: AssuranceSession!
-    var assuranceExtension: MockAssurance!
+    var stateManager: MockStateManager!
+    var sessionDetails: AssuranceSessionDetails!
     var mockSocket: MockSocket!
-    var mockStatusUI: MockStatusUI!
-    var mockPinPad: MockPinPad!
+    var mockPresentation: MockPresentation!
+    var sessionOrchestrator: AssuranceSessionOrchestrator!
     let mockUIService = MockUIService()
     let mockMessagePresentable = MockFullscreenMessagePresentable()
     let mockPlugin = PluginTaco()
 
-    override func setUp() {
+    override func setUpWithError() throws {
+        // create the required mocks
         ServiceProvider.shared.uiService = mockUIService
         mockUIService.fullscreenMessage = mockMessagePresentable
-        assuranceExtension = MockAssurance(runtime: runtime)
-        session = AssuranceSession(assuranceExtension)
-        mockSocket = MockSocket(withDelegate: session)
-        mockStatusUI = MockStatusUI(withSession: session)
-        session.socket = mockSocket
-        mockPinPad = MockPinPad(withExtension: assuranceExtension)
+        stateManager = MockStateManager(runtime)
+        sessionOrchestrator = AssuranceSessionOrchestrator(stateManager: stateManager)
+        mockPresentation = MockPresentation(sessionOrchestrator:sessionOrchestrator)
+        try initNonAuthenticatedSession()
     }
-
+    
     override func tearDown() {
+        mockSocket = nil
+        session = nil
+        stateManager = nil
+        mockPresentation = nil
     }
 
-    func test_startSession() throws {
+
+    func test_startSession_whenSessionDetailsNotAuthenticated() throws {
+        // setup is already initialized with non authenticated session
+        
+        // test
+        session.startSession()
+
+        // verify the presentation layer is called to invoke the pinCode screen
+        XCTAssertTrue(mockPresentation.sessionInitializedCalled)
+        XCTAssertFalse(mockSocket.connectCalled)
+    }
+    
+    func test_startSession_whenSessionDetailsAuthenticated() throws {
         // setup
-        assuranceExtension.connectedWebSocketURL = nil
+        try initAuthenticatedSession()
 
         // test
         session.startSession()
 
-        // verify
-        XCTAssertTrue(mockUIService.createFullscreenMessageCalled)
-        XCTAssertTrue(mockMessagePresentable.showCalled)
+        // verify 
+        XCTAssertTrue(mockSocket.connectCalled)
+        XCTAssertEqual(AUTHENTICATED_SOCKET_URL, mockSocket.connectURL?.absoluteString)
     }
 
     func test_startSession_whenAlreadyConnected() throws {
@@ -63,47 +81,23 @@ class AssuranceSessionTests: XCTestCase {
 
         // verify
         XCTAssertFalse(mockUIService.createFullscreenMessageCalled)
-    }
-
-    func test_startSession_whenConnectionURLExist() throws {
-        // setup
-        assuranceExtension.connectedWebSocketURL = "wss://socket/connection"
-
-        // test
-        session.startSession()
-
-        // verify
-        XCTAssertTrue(mockSocket.connectCalled)
-        XCTAssertEqual("wss://socket/connection", mockSocket.connectURL?.absoluteString)
+        XCTAssertFalse(mockSocket.connectCalled)
     }
 
     func test_session_RegistersPlugins() throws {
-        // verify that 3 internal plugins are registered
+        // setup
+        try initNonAuthenticatedSession()
+        
+        // verify that 4 internal plugins are registered
         XCTAssertEqual(4, session.pluginHub.pluginCollection[AssuranceConstants.Vendor.MOBILE.hash]?.count)
     }
 
-    func test_assuranceSession_queuesOutBoundEvents() throws {
+    func test_session_queuesOutBoundEvents() throws {
         // test
         session.sendEvent(sampleAssuranceEvent())
         session.sendEvent(sampleAssuranceEvent())
 
         XCTAssertEqual(2, session.outboundQueue.size())
-    }
-
-    func test_session_clearQueueEvents() throws {
-        // setup
-        session.outboundQueue.enqueue(newElement: sampleAssuranceEvent())
-        session.inboundQueue.enqueue(newElement: sampleAssuranceEvent())
-        XCTAssertEqual(1, session.outboundQueue.size())
-        XCTAssertEqual(1, session.inboundQueue.size())
-
-        // test
-        session.clearQueueEvents()
-
-        // verify
-        XCTAssertEqual(0, session.outboundQueue.size())
-        XCTAssertEqual(0, session.inboundQueue.size())
-        XCTAssertTrue(session.didClearBootEvent)
     }
 
     func test_session_outBoundEventsAreQueued_until_socketConnected() throws {
@@ -179,7 +173,6 @@ class AssuranceSessionTests: XCTestCase {
     func test_session_receives_startForwardingEvent() throws {
         // setup
         session.pluginHub.registerPlugin(mockPlugin, toSession: session)
-        session.statusUI = mockStatusUI
         mockPlugin.expectation = XCTestExpectation(description: "Calls SessionConnected delegate method on plugin")
 
         // test
@@ -188,53 +181,37 @@ class AssuranceSessionTests: XCTestCase {
         // verify
         wait(for: [mockPlugin.expectation!], timeout: 1.0)
         XCTAssertTrue(session.canStartForwarding)
-        XCTAssertTrue(mockStatusUI.displayCalled)
-        XCTAssertTrue(mockStatusUI.updateForSocketConnectedCalled)
+        XCTAssertTrue(mockPresentation.sessionConnectedCalled)
         XCTAssertTrue(mockPlugin.isSessionConnectedCalled)
     }
 
-    func test_session_receives_startForwardingEvent_AfterBootEventsAreCleared() throws {
+    func test_session_receives_startForwardingEvent_sessionWasOnceTerminated() throws {
         // setup
-        session.didClearBootEvent = true
-        assuranceExtension.expectation = XCTestExpectation(description: "Calls extension to get the shared state events")
+        sessionOrchestrator.hasEverTerminated = true
+        stateManager.expectation = XCTestExpectation(description: "Calls extension to get the shared state events")
 
         // test
         session.webSocket(mockSocket, didReceiveEvent: startForwardingEvent)
 
         // verify
-        wait(for: [assuranceExtension.expectation!], timeout: 2.0)
-        XCTAssertTrue(assuranceExtension.getAllExtensionStateDataCalled)
+        wait(for: [stateManager.expectation!], timeout: 2.0)
+        XCTAssertTrue(stateManager.getAllExtensionStateDataCalled)
     }
 
-    func test_session_addsClientLogs() throws {
-        // setup
-        session.statusUI = mockStatusUI
 
-        // test
-        session.addClientLog("message", visibility: .high)
-
-        // verify
-        XCTAssertTrue(mockStatusUI.addClientLogCalled)
-    }
-
-    func test_session_terminateSession() throws {
+    func test_session_disconnect() throws {
         // setup
         session.pluginHub.registerPlugin(mockPlugin, toSession: session)
-        assuranceExtension.sessionId = "mockSessionID"
-        assuranceExtension.connectedWebSocketURL = "mockConnectedSocketURL"
-        assuranceExtension.environment = AssuranceEnvironment.prod
         session.canStartForwarding = true
 
         // test
-        session.terminateSession()
+        session.disconnect()
 
         // verify
         XCTAssertTrue(mockPlugin.isSessionTerminatedCalled)
         XCTAssertTrue(mockSocket.disconnectCalled)
         XCTAssertFalse(session.canStartForwarding)
-        XCTAssertNil(assuranceExtension.sessionId)
-        XCTAssertNil(assuranceExtension.connectedWebSocketURL)
-        XCTAssertEqual(AssuranceConstants.DEFAULT_ENVIRONMENT, assuranceExtension.environment)
+        XCTAssertNil(stateManager.connectedWebSocketURL)
     }
 
     func test_session_whenConnected_sendsClientInfoEvent() throws {
@@ -260,128 +237,103 @@ class AssuranceSessionTests: XCTestCase {
         session.webSocket(mockSocket, didChangeState: .open)
 
         // verify
-        XCTAssertEqual(sampleURL?.absoluteString, assuranceExtension.connectedWebSocketURL)
+        XCTAssertEqual(sampleURL?.absoluteString, stateManager.connectedWebSocketURL)
     }
 
     func test_session_whenSocketDisconnect_NormalClosure() throws {
         // setup
         session.pluginHub.registerPlugin(mockPlugin, toSession: session)
-        session.statusUI = mockStatusUI
-        session.pinCodeScreen = mockPinPad
 
         // test
         session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.NORMAL_CLOSURE, "Normal Closure", true)
 
         // verify
-        XCTAssertTrue(mockStatusUI.removeCalled)
+        XCTAssertTrue(mockPresentation.sessionDisconnectedCalled)
         XCTAssertTrue(mockPlugin.isSessionDisconnectCalled)
-        XCTAssertTrue(mockPinPad.connectionFinishedCalled)
     }
 
     func test_session_whenSocketDisconnect_OrgMismatch() throws {
         // setup
         session.pluginHub.registerPlugin(mockPlugin, toSession: session)
-        session.statusUI = mockStatusUI
-        mockPinPad.isDisplayed = true
-        session.pinCodeScreen = mockPinPad
-        assuranceExtension.sessionId = "sampleSessionID"
-        assuranceExtension.connectedWebSocketURL = "url://with/sampleSessionID"
 
         // test
         session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.ORG_MISMATCH, "", true)
 
         // verify
-        XCTAssertTrue(mockStatusUI.removeCalled)
-        XCTAssertTrue(mockPinPad.connectionFailedWithErrorCalled)
-        XCTAssertEqual(AssuranceConnectionError.orgIDMismatch, mockPinPad.connectionFailedWithErrorValue)
+        XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
+        XCTAssertEqual(mockPresentation.sessionConnectionErrorValue, AssuranceConnectionError.orgIDMismatch)
         XCTAssertFalse(session.canStartForwarding)
-        XCTAssertNil(assuranceExtension.sessionId)
-        XCTAssertNil(assuranceExtension.connectedWebSocketURL)
-        XCTAssertEqual(AssuranceConstants.DEFAULT_ENVIRONMENT, assuranceExtension.environment)
+        XCTAssertNil(stateManager.connectedWebSocketURL)
     }
 
-    func test_session_whenSocketDisconnect_ConnectionLimit() throws {
-        // setup
-        session.statusUI = mockStatusUI
-        mockPinPad.isDisplayed = true
-        session.pinCodeScreen = mockPinPad
-
+    func test_session_socketDisconnect_ConnectionLimit() throws {
         // test
         session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.CONNECTION_LIMIT, "", true)
 
         // verify
-        XCTAssertTrue(mockStatusUI.removeCalled)
-        XCTAssertTrue(mockPinPad.connectionFailedWithErrorCalled)
-        XCTAssertEqual(AssuranceConnectionError.connectionLimit, mockPinPad.connectionFailedWithErrorValue)
+        XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
+        XCTAssertEqual(mockPresentation.sessionConnectionErrorValue, AssuranceConnectionError.connectionLimit)
     }
 
-    func test_session_whenSocketDisconnect_EventLimit() throws {
-        // setup
-        session.statusUI = mockStatusUI
-        mockPinPad.isDisplayed = true
-        session.pinCodeScreen = mockPinPad
-
+    func test_session_socketDisconnect_EventLimit() throws {
         // test
         session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.EVENTS_LIMIT, "", true)
 
         // verify
-        XCTAssertTrue(mockStatusUI.removeCalled)
-        XCTAssertTrue(mockPinPad.connectionFailedWithErrorCalled)
-        XCTAssertEqual(AssuranceConnectionError.eventLimit, mockPinPad.connectionFailedWithErrorValue)
+        XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
+        XCTAssertEqual(mockPresentation.sessionConnectionErrorValue, AssuranceConnectionError.eventLimit)
     }
 
-    func test_session_whenSocketDisconnect_ClientError() throws {
-        // setup
-        session.statusUI = mockStatusUI
-        mockPinPad.isDisplayed = true
-        session.pinCodeScreen = mockPinPad
-
+    func test_session_socketDisconnect_ClientError() throws {
         // test
         session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.CLIENT_ERROR, "", true)
 
         // verify
-        XCTAssertTrue(mockStatusUI.removeCalled)
-        XCTAssertTrue(mockPinPad.connectionFailedWithErrorCalled)
-        XCTAssertEqual(AssuranceConnectionError.clientError, mockPinPad.connectionFailedWithErrorValue)
+        XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
+        XCTAssertEqual(mockPresentation.sessionConnectionErrorValue, AssuranceConnectionError.clientError)
     }
-    
-    
-    func test_session_whenSocketDisconnect_DeletedSession() throws {
-        // setup
-        session.statusUI = mockStatusUI
-        mockPinPad.isDisplayed = true
-        session.pinCodeScreen = mockPinPad
 
+
+    func test_session_socketDisconnect_DeletedSession() throws {
         // test
         session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.DELETED_SESSION, "", true)
 
         // verify
-        XCTAssertTrue(mockStatusUI.removeCalled)
-        XCTAssertTrue(mockPinPad.connectionFailedWithErrorCalled)
-        XCTAssertEqual(AssuranceConnectionError.deletedSession, mockPinPad.connectionFailedWithErrorValue)
+        XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
+        XCTAssertEqual(mockPresentation.sessionConnectionErrorValue, AssuranceConnectionError.deletedSession)
     }
-     
 
-    func test_session_whenSocketDisconnect_AbnormalClosure() throws {
+
+    func test_session_socketDisconnect_AbnormalClosure_thenReconnects() throws {
         // setup
-        let sampleSocketURL = "wss://socketURL"
+        try initAuthenticatedSession()
+        stateManager.setConnectedURLString("someConnectedURLString")
         mockSocket.expectation = XCTestExpectation(description: "Attempts to reconnect")
-        session.statusUI = mockStatusUI
-        mockPinPad.isDisplayed = true
-        session.pinCodeScreen = mockPinPad
-        assuranceExtension.connectedWebSocketURL = sampleSocketURL
+
+        // test
+        session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.ABNORMAL_CLOSURE, "", true)
+
+        // verify the the session attempts to reconnect
+        wait(for: [mockSocket.expectation!], timeout: 2.0)
+        XCTAssertTrue(mockPresentation.sessionReconnectingCalled)
+        XCTAssertTrue(session.isAttemptingToReconnect)
+        XCTAssertFalse(session.canStartForwarding)
+        XCTAssertTrue(mockSocket.connectCalled)
+        XCTAssertEqual(AUTHENTICATED_SOCKET_URL, mockSocket.connectURL?.absoluteString)
+    }
+    
+    func test_session_socketDisconnect_AbnormalClosure_whenNotConnected_showsError() throws {
+        // setup
+        try initAuthenticatedSession()
+        stateManager.setConnectedURLString(nil)
 
         // test
         session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.ABNORMAL_CLOSURE, "", true)
 
         // verify
-        wait(for: [mockSocket.expectation!], timeout: 2.0)
-        XCTAssertTrue(session.isAttemptingToReconnect)
-        XCTAssertFalse(session.canStartForwarding)
-        XCTAssertTrue(mockPinPad.connectionFailedWithErrorCalled)
-        XCTAssertTrue(mockSocket.connectCalled)
-        XCTAssertEqual(sampleSocketURL, mockSocket.connectURL?.absoluteString)
-
+        XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
+        XCTAssertFalse(session.isAttemptingToReconnect)
+        XCTAssertEqual(.genericError, mockPresentation.sessionConnectionErrorValue)
     }
 
     private func sampleAssuranceEvent() -> AssuranceEvent {
@@ -396,4 +348,25 @@ class AssuranceSessionTests: XCTestCase {
         return AssuranceEvent(type: "control", payload: ["type": AnyCodable.init(AssuranceConstants.CommandType.START_EVENT_FORWARDING)], vendor: AssuranceConstants.Vendor.MOBILE)
     }
 
+    private func initAuthenticatedSession() throws {
+        sessionDetails = try AssuranceSessionDetails(withURLString: AUTHENTICATED_SOCKET_URL)
+        session = AssuranceSession(sessionDetails: sessionDetails, stateManager: stateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: nil)
+        
+        // initiate the properties
+        mockSocket = MockSocket(withDelegate: session)
+        session.socket = mockSocket
+        session.presentation = mockPresentation
+    }
+    
+    
+    private func initNonAuthenticatedSession() throws {
+        sessionDetails = AssuranceSessionDetails(sessionId: "mockSessionId", clientId: "mockClientId", environment: .prod)
+        session = AssuranceSession(sessionDetails: sessionDetails, stateManager: stateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: nil)
+        
+        // initiate the properties
+        mockSocket = MockSocket(withDelegate: session)
+        session.socket = mockSocket
+        session.presentation = mockPresentation
+    }
+    
 }

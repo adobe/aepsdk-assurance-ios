@@ -11,26 +11,44 @@
 //
 
 @testable import AEPAssurance
+@testable import AEPCore
 import Foundation
 import XCTest
 
-class MockAssuranceSession: AssuranceSession {
-
+class MockPresentation : AssurancePresentation {
+    
     var expectation: XCTestExpectation?
-    override init(_ assuranceExtension: Assurance) {
-        super.init(assuranceExtension)
-        self.socket = MockSocket(withDelegate: self)
+    required override  init(sessionOrchestrator: AssuranceSessionOrchestrator) {
+        super.init(sessionOrchestrator: sessionOrchestrator)
     }
-
-    var sendEventCalled = false
-    var sentEvent: AssuranceEvent?
-
-    override func sendEvent(_ assuranceEvent: AssuranceEvent) {
-        expectation?.fulfill()
-        sendEventCalled = true
-        sentEvent = assuranceEvent
+    
+    var sessionInitializedCalled = false
+    override func sessionInitialized() {
+        sessionInitializedCalled = true
     }
-
+    
+    var sessionConnectedCalled = false
+    override func sessionConnected() {
+        sessionConnectedCalled = true
+    }
+    
+    var sessionReconnectingCalled = false
+    override func sessionReconnecting() {
+        sessionReconnectingCalled = true
+    }
+    
+    var sessionDisconnectedCalled = false
+    override func sessionDisconnected() {
+        sessionDisconnectedCalled = true
+    }
+    
+    var sessionConnectionErrorCalled = false
+    var sessionConnectionErrorValue : AssuranceConnectionError?
+    override func sessionConnectionError(error: AssuranceConnectionError) {
+        sessionConnectionErrorCalled = true
+        sessionConnectionErrorValue = error
+    }
+    
     var addClientLogCalled = false
     var addClientLogMessage: String?
     var addClientLogVisibility: AssuranceClientLogVisibility?
@@ -39,15 +57,5 @@ class MockAssuranceSession: AssuranceSession {
         addClientLogMessage = message
         addClientLogVisibility = visibility
     }
-
-    var terminateSessionCalled = false
-    override func terminateSession() {
-        terminateSessionCalled = true
-    }
-
-    func mockSocketState(state: SocketState) {
-        if let mockSocket = socket as? MockSocket {
-            mockSocket.mockSocketState(state: state)
-        }
-    }
 }
+

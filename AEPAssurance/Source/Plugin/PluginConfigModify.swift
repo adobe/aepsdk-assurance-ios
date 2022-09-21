@@ -3,7 +3,6 @@
  This file is licensed to you under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License. You may obtain a copy
  of the License at http://www.apache.org/licenses/LICENSE-2.0
-
  Unless required by applicable law or agreed to in writing, software distributed under
  the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
  OF ANY KIND, either express or implied. See the License for the specific language
@@ -25,7 +24,9 @@ import Foundation
 /// the `MobileCore.updateConfiguration` API to modify the demanded configuration from the connected  assurance session.
 /// The modified configuration keys are stored in datastore, hence when assurance session is terminated the modified configuration is
 /// reverted back.
-struct PluginConfigModify: AssurancePlugin {
+class PluginConfigModify: AssurancePlugin {
+
+    weak var session: AssuranceSession?
 
     let datastore = NamedCollectionDataStore(name: AssuranceConstants.EXTENSION_NAME)
 
@@ -35,13 +36,11 @@ struct PluginConfigModify: AssurancePlugin {
     }
 
     // MARK: - AssurancePlugin protocol properties
-
     var vendor: String = AssuranceConstants.Vendor.MOBILE
 
     var commandType: String = AssuranceConstants.CommandType.CONFIG_UPDATE
 
     // MARK: - AssurancePlugin protocol methods
-
     /// Delegate method called when a command is received to modify the configuration of Mobile SDK
     /// - Parameter event  An `AssuranceEvent` that contains the details about the configuration that need to be modified
     func receiveEvent(_ event: AssuranceEvent) {
@@ -51,6 +50,11 @@ struct PluginConfigModify: AssurancePlugin {
         }
 
         MobileCore.updateConfigurationWith(configDict: commandDetails)
+        var logString = "Configuration updated for \(commandDetails.count > 1 ? "keys" : "key")"
+        for (configKey) in commandDetails.keys {
+            logString.append("<br> &emsp; \(configKey)")
+        }
+        session?.presentation.statusUI.addClientLog(logString, visibility: .high)
         saveModifiedConfigKeys(commandDetails)
     }
 
@@ -70,9 +74,12 @@ struct PluginConfigModify: AssurancePlugin {
         }
     }
 
-    // no op - protocol methods
-    func onRegistered(_ session: AssuranceSession) {}
+    /// protocol method is called from this Plugin is registered with `PluginHub`
+    func onRegistered(_ session: AssuranceSession) {
+        self.session = session
+    }
 
+    // no op - protocol methods
     func onSessionConnected() {}
 
     func onSessionDisconnectedWithCloseCode(_ closeCode: Int) {}

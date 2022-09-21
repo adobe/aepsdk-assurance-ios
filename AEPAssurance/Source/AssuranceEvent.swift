@@ -14,6 +14,11 @@ import AEPCore
 import AEPServices
 import Foundation
 
+/// Event object used to transport data to/from Assurance server.
+///
+/// This object is intentionally opaque (internal). If this needs to be public,
+/// refactor this class to reflect a builder pattern enforcing size limits on
+/// constituents of the AssuranceEvent like metadata.
 struct AssuranceEvent: Codable {
     var eventID: String = UUID().uuidString
     var vendor: String

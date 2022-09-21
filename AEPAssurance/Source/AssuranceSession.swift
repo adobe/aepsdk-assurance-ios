@@ -3,7 +3,6 @@
  This file is licensed to you under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License. You may obtain a copy
  of the License at http://www.apache.org/licenses/LICENSE-2.0
-
  Unless required by applicable law or agreed to in writing, software distributed under
  the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
  OF ANY KIND, either express or implied. See the License for the specific language
@@ -15,7 +14,9 @@ import Foundation
 
 class AssuranceSession {
     let RECONNECT_TIMEOUT = 5
-    let assuranceExtension: Assurance
+    let stateManager: AssuranceStateManager
+    let sessionDetails: AssuranceSessionDetails
+    let sessionOrchestrator: AssuranceSessionOrchestrator
     var pinCodeScreen: SessionAuthorizingUI?
     let outboundQueue: ThreadSafeQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
     let inboundQueue: ThreadSafeQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
@@ -23,12 +24,13 @@ class AssuranceSession {
     let outboundSource: DispatchSourceUserDataAdd = DispatchSource.makeUserDataAddSource(queue: DispatchQueue.global(qos: .default))
     let pluginHub: PluginHub = PluginHub()
 
+    #if DEBUG
+    var presentation: AssurancePresentation
+    #else
+    let presentation: AssurancePresentation
+    #endif
     lazy var socket: SocketConnectable  = {
         return WebViewSocket(withDelegate: self)
-    }()
-
-    lazy var statusUI: iOSStatusUI  = {
-        iOSStatusUI.init(withSession: self)
     }()
 
     // MARK: - boolean flags
@@ -40,74 +42,55 @@ class AssuranceSession {
     /// indicates if Assurance SDK can start forwarding events to the session. This flag is set when a command `startForwarding` is received from the socket.
     var canStartForwarding: Bool = false
 
-    /// true indicates Assurance SDK has timeout and shutdown after non-reception of deep link URL because of which it  has cleared all the queued initial SDK events from memory.
-    var didClearBootEvent: Bool = false
-
-    /// Initializer with instance of  `Assurance` extension
-    init(_ assuranceExtension: Assurance) {
-        self.assuranceExtension = assuranceExtension
+    /// Initializer
+    /// - Parameters:
+    ///    - sessionDetails: A valid `AssuranceSessionDetails` instance that contains at least sessionId and clientId to start a session
+    ///    - stateManager: `AssuranceStateManager` instance responsible for managing Assurance shared state and fetching other extension shared states
+    ///    - sessionOrchestrator: an orchestrating component that manages this session
+    ///    - outboundEvents: events that are queued before this session is initiated
+    init(sessionDetails: AssuranceSessionDetails, stateManager: AssuranceStateManager, sessionOrchestrator: AssuranceSessionOrchestrator, outboundEvents: ThreadSafeArray<AssuranceEvent>?) {
+        self.sessionDetails = sessionDetails
+        self.stateManager = stateManager
+        self.sessionOrchestrator = sessionOrchestrator
+        presentation = AssurancePresentation(sessionOrchestrator: sessionOrchestrator)
         handleInBoundEvents()
         handleOutBoundEvents()
         registerInternalPlugins()
+
+        /// Queue the outboundEvents to outboundQueue
+        if let outboundEvents = outboundEvents {
+            for eachEvent in outboundEvents.shallowCopy {
+                outboundQueue.enqueue(newElement: eachEvent)
+            }
+        }
     }
 
+    /// Starts an assurance session connection with the provided sessionDetails.
     ///
-    /// Called this method to start an Assurance session.
-    /// If the session was already connected, It will resume the connection.
-    /// Otherwise PinCode screen is presented for establishing a new connection.
-    ///
+    /// If the sessionDetails is not authenticated (doesn't have pin or orgId), it triggers the presentation to launch the pinCode screen
+    /// If the sessionDetails is already authenticated, then connects directly without pin prompt.
     func startSession() {
         if socket.socketState == .open || socket.socketState == .connecting {
             Log.debug(label: AssuranceConstants.LOG_TAG, "There is already an ongoing Assurance session. Ignoring to start new session.")
             return
         }
 
-        // if there is a socket URL already connected in the previous session, reuse it.
-        if let socketURL = assuranceExtension.connectedWebSocketURL {
-            self.statusUI.display()
-            guard let url = URL(string: socketURL) else {
-                Log.warning(label: AssuranceConstants.LOG_TAG, "Invalid socket url. Ignoring to start new session.")
-                return
-            }
+        switch sessionDetails.getAuthenticatedSocketURL() {
+        case .success(let url):
+            // if the URL is already authenticated with Pin and OrgId,
+            // then immediately make the socket connection
             socket.connect(withUrl: url)
-            return
+            self.presentation.statusUI.display()
+        case .failure:
+            // if the URL is not authenticated, then bring up the pinpad screen
+            presentation.sessionInitialized()
         }
-
-        // if there were no previous connected URL then start a new session
-        beginNewSession()
-    }
-
-    /// Called when a valid assurance deep link url is received from the startSession API
-    /// Calling this method will attempt to display the pinCode screen for session authentication
-    ///
-    /// Thread : Listener thread from EventHub
-    func beginNewSession() {
-        let pinCodeScreen = iOSPinCodeScreen.init(withExtension: assuranceExtension)
-        self.pinCodeScreen = pinCodeScreen
-
-        // invoke the pinpad screen and create a socketURL with the pincode and other essential parameters
-        pinCodeScreen.show(callback: { [weak self]  socketURL, error in
-            if let error = error {
-                self?.handleConnectionError(error: error, closeCode: -1)
-                return
-            }
-
-            guard let socketURL = socketURL else {
-                Log.debug(label: AssuranceConstants.LOG_TAG, "SocketURL to connect to session is empty. Ignoring to start Assurance session.")
-                return
-            }
-
-            // Thread : main thread (this callback is called from `overrideUrlLoad` method of WKWebView)
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Attempting to make a socket connection with URL : \(socketURL)")
-            self?.socket.connect(withUrl: socketURL)
-            pinCodeScreen.connectionInitialized()
-        })
     }
 
     ///
     /// Terminates the ongoing Assurance session.
     ///
-    func terminateSession() {
+    func disconnect() {
         socket.disconnect()
         clearSessionData()
     }
@@ -121,61 +104,33 @@ class AssuranceSession {
         outboundSource.add(data: 1)
     }
 
-    /// Handles the Assurance socket connection error by showing the appropriate UI to the user.
-    /// - Parameters:
-    ///   - error: The `AssurancConnectionError` representing the error
-    ///   - closeCode: close code defining the reason for socket closure.
-    func handleConnectionError(error: AssuranceConnectionError, closeCode: Int) {
-        // if the pinCode screen is still being displayed. Then use the same webView to display error
-        Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with error :\(error.info.name) \n description : \(error.info.description) \n close code: \(closeCode)")
-        if pinCodeScreen?.isDisplayed == true {
-            pinCodeScreen?.connectionFailedWithError(error)
-        } else {
-            let errorView = ErrorView.init(AssuranceConnectionError.clientError)
-            errorView.display()
-        }
-
-        pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
-
-        // since we don't give retry option for these errors and UI will be dismissed anyway, hence notify plugins for onSessionTerminated
-        if !error.info.shouldRetry {
-            clearSessionData()
-            statusUI.remove()
-            pluginHub.notifyPluginsOnSessionTerminated()
-        }
-    }
-
-    ///
-    /// Adds the log to Assurance Status UI.
-    /// - Parameters:
-    ///     - message: `String` log message
-    ///     - visibility: an `AssuranceClientLogVisibility` determining the importance of the log message
-    ///
-    func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
-        statusUI.addClientLog(message, visibility: visibility)
-    }
-
-    ///
-    /// Clears the queued SDK events from memory. Call this method once Assurance shut down timer is triggered.
-    ///
-    func clearQueueEvents() {
-        inboundQueue.clear()
-        outboundQueue.clear()
-        didClearBootEvent = true
-    }
-
     ///
     /// Clears all the data related to the current Assurance Session.
     /// Call this method when user terminates the Assurance session or when non-recoverable socket error occurs.
     ///
     func clearSessionData() {
-        assuranceExtension.clearState()
+        inboundQueue.clear()
+        outboundQueue.clear()
         canStartForwarding = false
         pluginHub.notifyPluginsOnSessionTerminated()
-        assuranceExtension.sessionId = nil
-        assuranceExtension.connectedWebSocketURL = nil
-        assuranceExtension.environment = AssuranceConstants.DEFAULT_ENVIRONMENT
-        pinCodeScreen = nil
+        stateManager.connectedWebSocketURL = nil
+    }
+
+    /// Handles the Assurance socket connection error by showing the appropriate UI to the user.
+    /// - Parameters:
+    ///   - error: The `AssuranceConnectionError` representing the error
+    ///   - closeCode: close code defining the reason for socket closure.
+    func handleConnectionError(error: AssuranceConnectionError, closeCode: Int) {
+        // if the pinCode screen is still being displayed. Then use the same webView to display error
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with error :\(error.info.name) \n description : \(error.info.description) \n close code: \(closeCode)")
+
+        presentation.sessionConnectionError(error: error)
+        pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
+
+        // since we don't give retry option for these errors and UI will be dismissed anyway, hence notify plugins for onSessionTerminated
+        if !error.info.shouldRetry {
+            clearSessionData()
+        }
     }
 
     // MARK: - Private methods

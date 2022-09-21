@@ -118,16 +118,11 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     ///     - event : the event to be sent to Assurance session
     func sendEvent(_ event: AssuranceEvent) {
         socketQueue.async { [self] in
-            let jsonData = event.jsonData
-            // Chunk the event if it exceeds the size limit
-            if jsonData.count < AssuranceConstants.AssuranceEvent.SIZE_LIMIT {
+            /// Pass the event through the chunker to chunk large events if necessary
+            let chunkedEvents = self.eventChunker.chunk(event)
+            for eachEvent in chunkedEvents {
+                let jsonData = eachEvent.jsonData
                 self.sendDataOverSocket(jsonData)
-            } else {
-                let chunkedEvents = self.eventChunker.chunk(event)
-                for eachEvent in chunkedEvents {
-                    let jsonData = eachEvent.jsonData
-                    self.sendDataOverSocket(jsonData)
-                }
             }
         }
     }

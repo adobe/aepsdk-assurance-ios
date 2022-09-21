@@ -20,8 +20,8 @@ enum AssuranceConstants {
     static let DEFAULT_ENVIRONMENT = AssuranceEnvironment.prod
 
     static let BASE_SOCKET_URL = "wss://connect%@.griffon.adobe.com/client/v1?sessionId=%@&token=%@&orgId=%@&clientId=%@"
-    static let SHUTDOWN_TIME = 5
     static let QUICK_CONNECT_BASE_URL = "https://device.griffon.adobe.com/device"
+    static let SHUTDOWN_TIME = TimeInterval(5)
 
     enum Deeplink {
         static let SESSIONID_KEY = "adb_validation_sessionid"

@@ -16,12 +16,12 @@ import AEPServices
 
 class QuickConnectManager {
 
+    private let stateManager: AssuranceStateManager
     private let quickConnectService = QuickConnectService()
-    private let parentExtension: Assurance
     private let LOG_TAG = "QuickConnectManager"
 
-    init(assurance: Assurance) {
-        parentExtension = assurance
+    init(stateManager: AssuranceStateManager) {
+        self.stateManager = stateManager
     }
 
     func detectShakeGesture() {
@@ -32,28 +32,32 @@ class QuickConnectManager {
     }
     
     func createDevice(completion: @escaping (AssuranceNetworkError?)-> Void) {
-        quickConnectService.registerDevice(clientID: parentExtension.clientID, orgID: parentExtension.getURLEncodedOrgID() ?? "changeme", completion: { error in
-            // Let the view decide how to handle the completion
-            completion(error)
-            if error == nil {
-                self.checkDeviceStatus()
-            }
-         })
-     }
-    
-    func checkDeviceStatus() {
-        
-        guard let orgID = parentExtension.getURLEncodedOrgID() else {
+        guard let orgID = stateManager.getURLEncodedOrgID() else {
             // log here
             Log.debug(label: LOG_TAG, "orgID is unexpectedly nil")
             return
         }
-        quickConnectService.getDeviceStatus(clientID: parentExtension.clientID, orgID: orgID, completion: { [self] result in
+        quickConnectService.registerDevice(clientID: stateManager.clientID, orgID: orgID, completion: { error in
+            guard let error = error else {
+                checkDeviceStatus(completion: completion)
+                return
+            }
+            completion(error)
+         })
+     }
+    
+    func checkDeviceStatus(completion: @escaping (AssuranceNetworkError?) -> Void) {
+        
+        guard let orgID = stateManager.getURLEncodedOrgID() else {
+            // log here
+            Log.debug(label: LOG_TAG, "orgID is unexpectedly nil")
+            return
+        }
+        quickConnectService.getDeviceStatus(clientID: stateManager.clientID, orgID: orgID, completion: { [self] result in
             switch result {
             case .success((let sessionId, let token)):
-                
                 deleteDevice()
-                self.quickConnectView.onSuccessfulApproval()
+                completion(nil)
                 //wss://connect%@.griffon.adobe.com/client/v1?sessionId=%@&token=%@&orgId=%@&clientId=%@
                 let socketURL = String(format: AssuranceConstants.BASE_SOCKET_URL,
                                        self.parentExtension.environment.urlFormat,
@@ -78,12 +82,12 @@ class QuickConnectManager {
     }
     
     func deleteDevice() {
-        guard let orgID = parentExtension.getURLEncodedOrgID() else {
+        guard let orgID = stateManager.getURLEncodedOrgID() else {
             Log.debug(label: LOG_TAG, "orgID is unexpectedly nil")
             return
         }
         
-        quickConnectService.deleteDevice(clientID: parentExtension.clientID, orgID: orgID, callback: { error in
+        quickConnectService.deleteDevice(clientID: stateManager.clientID, orgID: orgID, completion: { error in
             guard let error = error else {
                 return
             }

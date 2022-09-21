@@ -35,11 +35,11 @@ opt_in_rules: # some rules are opt-in only
 - vertical_parameter_alignment_on_call
 excluded: # paths to ignore during linting
 - Carthage
-- AEPAssurance/UnitTests/
-- SampleApps/*/Pods
-- SampleApps/*/xdmlib
+- AEPAssurance/UnitTests
+- TestAppObjC
 - SampleApps/*/libs
 - Pods
+- .build
 
 empty_count:
     severity: warning
