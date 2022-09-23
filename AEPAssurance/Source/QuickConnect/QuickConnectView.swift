@@ -286,7 +286,7 @@ public class QuickConnectView {
 //          }
 //      }
       
-    func onFailedDeviceRegistration(error: AssuranceNetworkError) {
+    func onFailedDeviceRegistration(error: AssuranceQuickConnectNetworkError) {
           DispatchQueue.main.async {
               
           }

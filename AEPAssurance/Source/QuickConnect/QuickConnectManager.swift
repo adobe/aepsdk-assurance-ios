@@ -33,7 +33,7 @@ class QuickConnectManager {
                                                object: nil)
     }
     
-    func createDevice(completion: @escaping (AssuranceNetworkError?)-> Void) {
+    func createDevice(completion: @escaping (AssuranceQuickConnectNetworkError?)-> Void) {
         guard let orgID = stateManager.getURLEncodedOrgID() else {
             // log here
             Log.debug(label: LOG_TAG, "orgID is unexpectedly nil")
@@ -48,7 +48,7 @@ class QuickConnectManager {
          })
      }
     
-    func checkDeviceStatus(completion: @escaping (AssuranceNetworkError?) -> Void) {
+    func checkDeviceStatus(completion: @escaping (AssuranceQuickConnectNetworkError?) -> Void) {
         
         guard let orgID = stateManager.getURLEncodedOrgID() else {
             // log here
