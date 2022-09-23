@@ -14,6 +14,7 @@ import Foundation
 
 protocol AssurancePresentationDelegate {
     func pinScreenConnectClicked(_ pin: String)
+    func quickConnectClicked(sessionID: String, environment: String, token: String)
     func pinScreenCancelClicked()
     func disconnectClicked()
 }

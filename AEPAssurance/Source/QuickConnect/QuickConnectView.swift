@@ -138,6 +138,9 @@ public class QuickConnectView {
         waitingState()
         manager.createDevice { error in
             if let error = error {
+//                switch error {
+//
+//                }
                 self.onFailedDeviceRegistration(error: error)
                 return
             }

@@ -57,7 +57,7 @@ public class Assurance: NSObject, Extension {
         }
         
         #if DEBUG
-        self.quickConnect = QuickConnectManager(stateManager: stateManager)
+        self.quickConnect = QuickConnectManager(stateManager: stateManager, uiDelegate: sessionOrchestrator)
         quickConnect?.detectShakeGesture()
         #endif
 

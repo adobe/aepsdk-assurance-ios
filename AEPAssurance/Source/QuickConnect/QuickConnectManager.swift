@@ -17,11 +17,13 @@ import AEPServices
 class QuickConnectManager {
 
     private let stateManager: AssuranceStateManager
+    private let uiDelegate: AssurancePresentationDelegate
     private let quickConnectService = QuickConnectService()
     private let LOG_TAG = "QuickConnectManager"
 
-    init(stateManager: AssuranceStateManager) {
+    init(stateManager: AssuranceStateManager, uiDelegate: AssurancePresentationDelegate) {
         self.stateManager = stateManager
+        self.uiDelegate = uiDelegate
     }
 
     func detectShakeGesture() {
@@ -39,7 +41,7 @@ class QuickConnectManager {
         }
         quickConnectService.registerDevice(clientID: stateManager.clientID, orgID: orgID, completion: { error in
             guard let error = error else {
-                checkDeviceStatus(completion: completion)
+                self.checkDeviceStatus(completion: completion)
                 return
             }
             completion(error)
@@ -58,22 +60,24 @@ class QuickConnectManager {
             case .success((let sessionId, let token)):
                 deleteDevice()
                 completion(nil)
+                uiDelegate.quickConnectClicked(sessionID: sessionId, environment: AssuranceEnvironment.prod.rawValue, token: token)
                 //wss://connect%@.griffon.adobe.com/client/v1?sessionId=%@&token=%@&orgId=%@&clientId=%@
-                let socketURL = String(format: AssuranceConstants.BASE_SOCKET_URL,
-                                       self.parentExtension.environment.urlFormat,
-                                       sessionId,
-                                       token,
-                                       orgID,
-                                       self.parentExtension.clientID)
-
-                guard let url = URL(string: socketURL) else {
-                    return
-                }
-                
-                self.parentExtension.assuranceSession?.connectToSocketWith(url: url)
+//                let socketURL = String(format: AssuranceConstants.BASE_SOCKET_URL,
+//                                       sessionOrchestrator.session?.sessionDetails.environment.urlFormat,
+//                                       sessionId,
+//                                       token,
+//                                       orgID,
+//                                       stateManager.clientID)
+//
+//                guard let url = URL(string: socketURL) else {
+//                    return
+//                }
+//
+//                self.parentExtension.assuranceSession?.connectToSocketWith(url: url)
                 break
-            case .failure(_):
-                self.quickConnectView.onFailedApproval()
+            case .failure(let error):
+                completion(error)
+//                self.quickConnectView.onFailedApproval()
                     //self.registrationUI?.showStatus(status: "API failure to check the device status.")
                 break
             }
@@ -103,11 +107,9 @@ class QuickConnectManager {
     
 
     @objc private func handleShakeGesture() {
-        parentExtension.shouldProcessEvents = true
-        parentExtension.invalidateTimer()
         quickConnectService.shouldRetryGetDeviceStatus = true
         DispatchQueue.main.async {
-             self.quickConnectView.show()
+//             self.quickConnectView.show()
         }
     }
 }
