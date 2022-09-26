@@ -49,17 +49,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                           Messaging.self
         ]
         MobileCore.registerExtensions(extensions, {
-<<<<<<< HEAD
             MobileCore.configureWith(appId: "94f571f308d5/f986c2be4925/launch-e96cdeaddea9-development")
         })
         MobileCore.lifecycleStart(additionalContextData: nil)
 
         //MobileCore.updateConfigurationWith(configDict: ["experienceCloud.org": "056F3DD059CB22060A494021@AdobeOrg"])
-=======
-            MobileCore.configureWith(appId: "launch-EN516bfbc0fe2b42449bf171a4f8cb9cef-development")
-        })
-        MobileCore.lifecycleStart(additionalContextData: nil)
->>>>>>> dev
+//            MobileCore.configureWith(appId: "launch-EN516bfbc0fe2b42449bf171a4f8cb9cef-development")
+//        })
         return true
     }
 

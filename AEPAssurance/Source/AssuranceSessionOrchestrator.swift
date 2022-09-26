@@ -131,13 +131,13 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
         session.startSession()
     }
 
-
-    func quickConnectClicked(sessionID: String, environment: String, token: String) {
+    func quickConnectClicked(sessionID: String, environment: String, token: Int) {
         if session != nil {
             Log.warning(label: AssuranceConstants.LOG_TAG, "Quick connect attempted when active session exists")
             return
         }
 
+        // TODO: - Expose token in assurance details object
         let assuranceDetails = AssuranceSessionDetails(sessionId: sessionID, clientId: stateManager.clientID, environment: AssuranceEnvironment.prod)
         createSession(withDetails: assuranceDetails)
     }

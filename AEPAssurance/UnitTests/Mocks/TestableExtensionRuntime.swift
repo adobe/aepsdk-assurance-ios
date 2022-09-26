@@ -14,6 +14,7 @@
 import Foundation
 
 class TestableExtensionRuntime: ExtensionRuntime {
+
     var listeners: [String: EventListener] = [:]
     var dispatchedEvents: [Event] = []
     var sharedStates: [[String: Any]?] = []
@@ -53,12 +54,21 @@ class TestableExtensionRuntime: ExtensionRuntime {
     }
 
     func getSharedState(extensionName: String, event: Event?, barrier: Bool) -> SharedStateResult? {
-        return otherSharedStates["\(extensionName)-\(String(describing: event?.id))"] ?? nil
+        return getSharedState(extensionName: extensionName, event: event, barrier: barrier, resolution: .any)
+    }
+
+    func getSharedState(extensionName: String, event: AEPCore.Event?, barrier: Bool, resolution: AEPCore.SharedStateResolution) -> AEPCore.SharedStateResult? {
+        // if there is an shared state setup for the specific (extension, event id) pair, return it. Otherwise, return the shared state that is setup for the extension.
+        if let id = event?.id {
+            return otherSharedStates["\(extensionName)-\(id)"] ?? otherSharedStates["\(extensionName)"]
+        }
+        return otherSharedStates["\(extensionName)"]
     }
 
     public func createXDMSharedState(data: [String: Any], event: Event?) {
         createdXdmSharedStates += [data]
     }
+
 
     func createPendingXDMSharedState(event: Event?) -> SharedStateResolver {
         return { data in
@@ -67,7 +77,16 @@ class TestableExtensionRuntime: ExtensionRuntime {
     }
 
     func getXDMSharedState(extensionName: String, event: Event?, barrier: Bool) -> SharedStateResult? {
-        return otherXDMSharedStates["\(extensionName)"] ?? nil
+        return getXDMSharedState(extensionName: extensionName, event: event, barrier: barrier, resolution: .any)
+    }
+
+    func getXDMSharedState(extensionName: String, event: AEPCore.Event?, barrier: Bool, resolution: AEPCore.SharedStateResolution) -> AEPCore.SharedStateResult? {
+        // if there is an shared state setup for the specific (extension, event id) pair, return it. Otherwise, return the shared state that is setup for the extension.
+        if let id = event?.id {
+            return otherXDMSharedStates["\(extensionName)-\(id)"] ?? otherXDMSharedStates["\(extensionName)"]
+        }
+        return otherXDMSharedStates["\(extensionName)"]
+
     }
 
     func simulateSharedState(extensionName: String, event: Event?, data: (value: [String: Any]?, status: SharedStateStatus)) {

@@ -16,6 +16,8 @@ import AEPServices
 
 class QuickConnectManager {
 
+    // TODO: - Get rid of cyclical dependency here
+    private lazy var quickConnectView = QuickConnectView(manager: self)
     private let stateManager: AssuranceStateManager
     private let uiDelegate: AssurancePresentationDelegate
     private let quickConnectService = QuickConnectService()
@@ -109,7 +111,7 @@ class QuickConnectManager {
     @objc private func handleShakeGesture() {
         quickConnectService.shouldRetryGetDeviceStatus = true
         DispatchQueue.main.async {
-//             self.quickConnectView.show()
+             self.quickConnectView.show()
         }
     }
 }

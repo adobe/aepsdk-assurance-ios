@@ -17,7 +17,6 @@ import Foundation
 @objc(AEPMobileAssurance)
 public class Assurance: NSObject, Extension {
     
-    var quickConnect :QuickConnectManager?
 
     public var name = AssuranceConstants.EXTENSION_NAME
     public var friendlyName = AssuranceConstants.FRIENDLY_NAME
@@ -32,6 +31,7 @@ public class Assurance: NSObject, Extension {
     var shutdownTime: TimeInterval /// Time before which Assurance extension shuts down on non receipt of start session event.
     var stateManager: AssuranceStateManager
     var sessionOrchestrator: AssuranceSessionOrchestrator
+    var quickConnect :QuickConnectManager?
     #else
     let shutdownTime: TimeInterval
     let stateManager: AssuranceStateManager
