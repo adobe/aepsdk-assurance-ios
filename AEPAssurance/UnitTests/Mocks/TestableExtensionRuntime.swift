@@ -54,15 +54,12 @@ class TestableExtensionRuntime: ExtensionRuntime {
     }
 
     func getSharedState(extensionName: String, event: Event?, barrier: Bool) -> SharedStateResult? {
-        return getSharedState(extensionName: extensionName, event: event, barrier: barrier, resolution: .any)
+        return otherSharedStates["\(extensionName)-\(String(describing: event?.id))"] ?? nil
     }
 
     func getSharedState(extensionName: String, event: AEPCore.Event?, barrier: Bool, resolution: AEPCore.SharedStateResolution) -> AEPCore.SharedStateResult? {
-        // if there is an shared state setup for the specific (extension, event id) pair, return it. Otherwise, return the shared state that is setup for the extension.
-        if let id = event?.id {
-            return otherSharedStates["\(extensionName)-\(id)"] ?? otherSharedStates["\(extensionName)"]
-        }
-        return otherSharedStates["\(extensionName)"]
+        // TODO: - Update this API if tests need it
+        return otherSharedStates["\(extensionName)-\(String(describing: event?.id))"] ?? nil
     }
 
     public func createXDMSharedState(data: [String: Any], event: Event?) {
@@ -77,16 +74,12 @@ class TestableExtensionRuntime: ExtensionRuntime {
     }
 
     func getXDMSharedState(extensionName: String, event: Event?, barrier: Bool) -> SharedStateResult? {
-        return getXDMSharedState(extensionName: extensionName, event: event, barrier: barrier, resolution: .any)
+        return otherXDMSharedStates["\(extensionName)"] ?? nil
     }
 
     func getXDMSharedState(extensionName: String, event: AEPCore.Event?, barrier: Bool, resolution: AEPCore.SharedStateResolution) -> AEPCore.SharedStateResult? {
-        // if there is an shared state setup for the specific (extension, event id) pair, return it. Otherwise, return the shared state that is setup for the extension.
-        if let id = event?.id {
-            return otherXDMSharedStates["\(extensionName)-\(id)"] ?? otherXDMSharedStates["\(extensionName)"]
-        }
-        return otherXDMSharedStates["\(extensionName)"]
-
+        // TODO: - Update this API if tests need it
+        return otherXDMSharedStates["\(extensionName)"] ?? nil
     }
 
     func simulateSharedState(extensionName: String, event: Event?, data: (value: [String: Any]?, status: SharedStateStatus)) {
