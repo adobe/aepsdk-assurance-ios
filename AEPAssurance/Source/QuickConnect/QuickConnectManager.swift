@@ -63,24 +63,9 @@ class QuickConnectManager {
                 deleteDevice()
                 completion(nil)
                 uiDelegate.quickConnectClicked(sessionID: sessionId, environment: AssuranceEnvironment.prod.rawValue, token: token)
-                //wss://connect%@.griffon.adobe.com/client/v1?sessionId=%@&token=%@&orgId=%@&clientId=%@
-//                let socketURL = String(format: AssuranceConstants.BASE_SOCKET_URL,
-//                                       sessionOrchestrator.session?.sessionDetails.environment.urlFormat,
-//                                       sessionId,
-//                                       token,
-//                                       orgID,
-//                                       stateManager.clientID)
-//
-//                guard let url = URL(string: socketURL) else {
-//                    return
-//                }
-//
-//                self.parentExtension.assuranceSession?.connectToSocketWith(url: url)
                 break
             case .failure(let error):
                 completion(error)
-//                self.quickConnectView.onFailedApproval()
-                    //self.registrationUI?.showStatus(status: "API failure to check the device status.")
                 break
             }
             

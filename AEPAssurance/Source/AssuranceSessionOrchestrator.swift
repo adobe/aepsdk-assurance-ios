@@ -130,7 +130,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
         session.sessionDetails.authenticate(withPIN: pin, andOrgID: orgID)
         session.startSession()
     }
-
+    #if DEBUG
     func quickConnectClicked(sessionID: String, environment: String, token: Int) {
         if session != nil {
             Log.warning(label: AssuranceConstants.LOG_TAG, "Quick connect attempted when active session exists")
@@ -141,7 +141,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
         let assuranceDetails = AssuranceSessionDetails(sessionId: sessionID, clientId: stateManager.clientID, environment: AssuranceEnvironment.prod)
         createSession(withDetails: assuranceDetails)
     }
-
+    #endif
     ///
     /// Invoked when Cancel button is clicked on the PinCode screen.
     ///

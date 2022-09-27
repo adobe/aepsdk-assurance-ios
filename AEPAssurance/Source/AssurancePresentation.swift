@@ -55,7 +55,7 @@ class AssurancePresentation {
 
     /// Call this to show the UI elements that are required when a session is attempting to reconnect.
     func sessionReconnecting() {
-        if !statusUI.isDisplayed {
+        if !statusUI.displayed {
             statusUI.display()
         }
         statusUI.updateForSocketInActive()

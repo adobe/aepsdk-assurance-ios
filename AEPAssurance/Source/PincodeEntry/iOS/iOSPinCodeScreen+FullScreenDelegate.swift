@@ -59,11 +59,7 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
         // return false, to indicate that the URL has been handled
         if host == AssuranceConstants.HTMLURLPath.CONFIRM {
             // get the entered 4 digit code from url
-            guard let pin = URL(string: url ?? "")?.params["code"] else {
-                self.presentationDelegate.pinScreenConnectClicked("")
-                return false
-            }
-
+            let pin = URL(string: url ?? "")?.params["code"] ?? ""
             self.presentationDelegate.pinScreenConnectClicked(pin)
             return false
         }

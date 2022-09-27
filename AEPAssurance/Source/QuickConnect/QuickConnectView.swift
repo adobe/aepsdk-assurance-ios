@@ -138,9 +138,6 @@ public class QuickConnectView {
         waitingState()
         manager.createDevice { error in
             if let error = error {
-//                switch error {
-//
-//                }
                 self.onFailedDeviceRegistration(error: error)
                 return
             }
@@ -288,7 +285,7 @@ public class QuickConnectView {
       
     func onFailedDeviceRegistration(error: AssuranceQuickConnectNetworkError) {
           DispatchQueue.main.async {
-              
+            // TODO: - Switch on error and handle appropriately
           }
       }
             

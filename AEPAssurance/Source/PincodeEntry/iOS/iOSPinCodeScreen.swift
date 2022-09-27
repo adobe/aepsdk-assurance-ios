@@ -18,7 +18,7 @@ class iOSPinCodeScreen: SessionAuthorizingUI {
     var displayed: Bool = false
     var fullscreenMessage: FullscreenPresentable?
     var fullscreenWebView: WKWebView?
-    var presentationDelegate: AssurancePresentationDelegate
+    let presentationDelegate: AssurancePresentationDelegate
 
     /// Initializer
     required init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate) {

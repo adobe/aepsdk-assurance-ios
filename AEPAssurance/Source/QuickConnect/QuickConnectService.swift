@@ -14,6 +14,7 @@ import AEPServices
 import Foundation
 import UIKit
 
+#if DEBUG
 ///
 /// QuickConnectService is used to handle the Device APIs to connect with Assurance
 ///
@@ -248,3 +249,4 @@ extension AssuranceQuickConnectNetworkError: LocalizedError {
         }
     }
 }
+#endif
