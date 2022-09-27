@@ -83,6 +83,7 @@ class PluginConfigModifyTest: XCTestCase {
         let configKeys = mockDataStore.dict[AssuranceConstants.DataStoreKeys.CONFIG_MODIFIED_KEYS] as? [String]
         XCTAssertEqual(3, configKeys?.count)
 
+        wait(for: [expectationBeforeSessionTerminated], timeout: 0.2)
         //
         let expectationAfterSessionTerminated = XCTestExpectation(description: "PluginConfigModify should dispatch a configuration update event to reset the modified config.")
 
@@ -102,7 +103,7 @@ class PluginConfigModifyTest: XCTestCase {
         XCTAssertEqual(0, mockDataStore.dict.count)
 
         // assert on expectation
-        wait(for: [expectationBeforeSessionTerminated, expectationAfterSessionTerminated], timeout: 0.2)
+        wait(for: [expectationAfterSessionTerminated], timeout: 0.2)
 
     }
 
