@@ -165,7 +165,12 @@ enum AssuranceConstants {
         /// The maximum size of an event that can get through the socket is 32KB.
         /// The factor 0.75 is introduced to accommodate blowing up of size due to the mandatory base64 encoding of AssuranceEvent before sending through the socket.
         static let SIZE_LIMIT = (Int) ((32 * 1024) * 0.75)
-
+        
+        enum Name {
+            static let DEEPLINK_START_SESSION = "Assurance Start Session"
+            static let QUICKCONNECT_START_SESSION = "Assurance Quick Connect Start Session"
+        }
+        
         enum PayloadKey {
             static let CHUNK_DATA = "chunkData"
         }
@@ -182,11 +187,35 @@ enum AssuranceConstants {
         static let KEY_ORGID = "orgId"
         static let KEY_DEVICE_NAME = "deviceName"
         static let KEY_CLIENT_ID = "clientId"
+
+        enum QuickConnectView {
+            static let HEADER_HEIGHT = 110.0
+            static let HEADER_LABEL_HEIGHT = 60.0
+
+            static let DESCRIPTION_TEXTVIEW_TOP_MARGIN = 30.0
+            static let DESCRIPTION_TEXTVIEW_HEIGHT = 50.0
+
+            static let CONNECTION_IMAGE_TOP_MARGIN = 10.0
+            static let CONNECTION_IMAGE_HEIGHT = 70.0
+
+            static let BUTTON_HOLDER_TOP_MARGIN = 30.0
+            static let BUTTON_HOLDER_HEIGHT = 60.0
+
+            static let ADOBE_LOGO_IMAGE_BOTTOM_MARGIN = -60.0
+            static let ADOBE_LOGO_IMAGE_HEIGHT = 20.0
+
+            static let CANCEL_BUTTON_TOP_MARGIN = 10
+            static let CANCEL_BUTTON_HEIGHT = 45.0
+            static let BUTTON_CORNER_RADIUS = 22.5
+
+            static let BUTTON_FONT_SIZE = 17.0
+        }
     }
 
     enum Network {
         static let CONNECTION_TIMEOUT = TimeInterval(10)
         static let READ_TIMEOUT = TimeInterval(10)
     }
+
 
 }

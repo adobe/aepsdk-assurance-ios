@@ -14,12 +14,12 @@ import Foundation
 
 protocol SessionAuthorizingUI {
 
-    /// property that indicated if the pinCode screen is currently displayed
+    /// property that indicated if the session authorizing ui screen is currently displayed
     var displayed: Bool { get }
 
     init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate)
 
-    /// Invoke this during start session to display the pinCode screen
+    /// Invoke this during start session to display the authorizing screen
     func show()
 
     /// Invoked when the a socket connection is initialized. Typically calling this method shows user the loading screen.

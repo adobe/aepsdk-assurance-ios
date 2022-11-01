@@ -17,7 +17,6 @@ class AssuranceSession {
     let stateManager: AssuranceStateManager
     let sessionDetails: AssuranceSessionDetails
     let sessionOrchestrator: AssuranceSessionOrchestrator
-    var pinCodeScreen: SessionAuthorizingUI?
     let outboundQueue: ThreadSafeQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
     let inboundQueue: ThreadSafeQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
     let inboundSource: DispatchSourceUserDataAdd = DispatchSource.makeUserDataAddSource(queue: DispatchQueue.global(qos: .default))
@@ -52,7 +51,7 @@ class AssuranceSession {
         self.sessionDetails = sessionDetails
         self.stateManager = stateManager
         self.sessionOrchestrator = sessionOrchestrator
-        presentation = AssurancePresentation(sessionOrchestrator: sessionOrchestrator)
+        presentation = AssurancePresentation(presentationDelegate: sessionOrchestrator)
         handleInBoundEvents()
         handleOutBoundEvents()
         registerInternalPlugins()

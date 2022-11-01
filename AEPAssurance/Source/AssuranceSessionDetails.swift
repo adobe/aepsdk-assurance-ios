@@ -16,7 +16,7 @@ import Foundation
 class AssuranceSessionDetails {
 
     private let SESSION_ID_KEY = "sessionId"
-    private let PINCODE_KEY = "token"
+    private let TOKEN_KEY = "token"
     private let CLIENT_ID_KEY = "clientId"
     private let ORG_ID_KEY = "orgId"
 
@@ -37,7 +37,7 @@ class AssuranceSessionDetails {
     /// The 4 digit authentication code to connect to a session.
     ///
     /// pinCode is obtained as user input from PinCode screen.
-    var pinCode: String?
+    var token: String?
 
     /// A Unique ID representing the Adobe Org under which the Assurance session is created.
     var orgId: String?
@@ -82,8 +82,8 @@ class AssuranceSessionDetails {
             throw AssuranceSessionDetailBuilderError(message: "No OrgId")
         }
 
-        guard let pinCode = socketURL.params[PINCODE_KEY] else {
-            throw AssuranceSessionDetailBuilderError(message: "No PinCode")
+        guard let token = socketURL.params[TOKEN_KEY] else {
+            throw AssuranceSessionDetailBuilderError(message: "No Token")
         }
 
         guard let host = socketURL.host else {
@@ -93,7 +93,7 @@ class AssuranceSessionDetails {
         self.sessionId = sessionId
         self.clientID = clientId
         self.orgId = orgId
-        self.pinCode = pinCode
+        self.token = token
         self.environment = AssuranceSessionDetails.readEnvironment(fromHost: host)
     }
 
@@ -101,7 +101,7 @@ class AssuranceSessionDetails {
     /// - Returns: Success Result with URL if the session details contains all the necessary data
     ///            Failure Result with AssuranceSessionDetailAuthenticationError if any authentication parameters were missing.
     func getAuthenticatedSocketURL() -> Result<URL, AssuranceSessionDetailAuthenticationError> {
-        guard let pin = pinCode else {
+        guard let pin = token else {
             return .failure(.noPinCode)
         }
 
@@ -132,7 +132,7 @@ class AssuranceSessionDetails {
     ///   - pinCode: The 4 digit authentication code obtained from input of pinCode screen.
     ///   - orgId: The Adobe OrgId obtained from DataCollection(Launch) UI configuration.
     func authenticate(withPIN pinCode: String, andOrgID orgId: String) {
-        self.pinCode = pinCode
+        self.token = pinCode
         self.orgId = orgId
     }
 

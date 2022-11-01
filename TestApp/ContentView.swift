@@ -81,6 +81,8 @@ struct AssuranceCard: View {
                 Button(action: {
                     if let url = URL(string: self.assuranceURL) {
                         Assurance.startSession(url: url)
+                    } else {
+                        Assurance.startSession()
                     }
                 }, label: {
                     Text("Connect")

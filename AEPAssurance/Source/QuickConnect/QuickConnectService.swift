@@ -124,7 +124,6 @@ class QuickConnectService {
                                      readTimeout: AssuranceConstants.Network.READ_TIMEOUT)
 
         ServiceProvider.shared.networkService.connectAsync(networkRequest: request) { connection in
-
             if !(connection.responseCode == HTTP_RESPONSE_CODES.HTTP_OK || connection.responseCode == 201) {
                 let error = AssuranceQuickConnectNetworkError.failedToGetDeviceStatus(statusCode: connection.responseCode ?? -1, responseMessage: connection.responseMessage ?? "Unknown error")
                 Log.error(label: self.LOG_TAG, error.localizedDescription)

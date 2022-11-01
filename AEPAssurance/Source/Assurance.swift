@@ -37,6 +37,13 @@ public class Assurance: NSObject, Extension {
     let stateManager: AssuranceStateManager
     let sessionOrchestrator: AssuranceSessionOrchestrator
     #endif
+    
+    public required init?(runtime: ExtensionRuntime) {
+        self.runtime = runtime
+        self.shutdownTime = AssuranceConstants.SHUTDOWN_TIME
+        self.stateManager = AssuranceStateManager(runtime)
+        self.sessionOrchestrator = AssuranceSessionOrchestrator(stateManager: stateManager)
+    }
 
     public func onRegistered() {
         registerListener(type: EventType.wildcard, source: EventSource.wildcard, listener: handleWildcardEvent)
@@ -56,23 +63,12 @@ public class Assurance: NSObject, Extension {
             }
         }
         
-        #if DEBUG
-        self.quickConnect = QuickConnectManager(stateManager: stateManager, uiDelegate: sessionOrchestrator)
-        quickConnect?.detectShakeGesture()
-        #endif
-
         /// if the Assurance session is not previously connected, turn on 5 sec timer to wait for Assurance deeplink
         startShutDownTimer()
     }
 
     public func onUnregistered() {}
 
-    public required init?(runtime: ExtensionRuntime) {
-        self.runtime = runtime
-        self.shutdownTime = AssuranceConstants.SHUTDOWN_TIME
-        self.stateManager = AssuranceStateManager(runtime)
-        self.sessionOrchestrator = AssuranceSessionOrchestrator(stateManager: stateManager)
-    }
 
     public func readyForEvent(_ event: Event) -> Bool {
         return true
@@ -126,6 +122,12 @@ public class Assurance: NSObject, Extension {
     private func handleAssuranceRequestContent(event: Event) {
         /// early bail out if eventData is nil
         guard let startSessionData = event.data else {
+            #if DEBUG
+            if event.name == AssuranceConstants.AssuranceEvent.Name.QUICKCONNECT_START_SESSION {
+                sessionOrchestrator.startQuickConnect()
+                return
+            }
+            #endif
             Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance start session event received with empty data. Dropping event.")
             return
         }

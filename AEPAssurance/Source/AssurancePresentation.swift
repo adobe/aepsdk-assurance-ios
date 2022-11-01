@@ -15,18 +15,18 @@ import Foundation
 
 class AssurancePresentation {
 
-    let sessionOrchestrator: AssuranceSessionOrchestrator
+    let delegate: AssurancePresentationDelegate
 
     lazy var pinCodeScreen: SessionAuthorizingUI = {
-        iOSPinCodeScreen.init(withPresentationDelegate: sessionOrchestrator)
+        iOSPinCodeScreen.init(withPresentationDelegate: delegate)
     }()
 
     lazy var statusUI: iOSStatusUI  = {
-        iOSStatusUI.init(withSessionOrchestrator: sessionOrchestrator)
+        iOSStatusUI.init(presentationDelegate: delegate)
     }()
 
-    init(sessionOrchestrator: AssuranceSessionOrchestrator) {
-        self.sessionOrchestrator = sessionOrchestrator
+    init(presentationDelegate: AssurancePresentationDelegate) {
+        self.delegate = presentationDelegate
     }
 
     /// Adds the log message o Assurance session's Status UI.

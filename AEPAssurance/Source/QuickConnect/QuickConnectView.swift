@@ -15,36 +15,19 @@ import Foundation
 import UIKit
 
 public class QuickConnectView {
-    
-    private let HEADER_HEIGHT = 110.0
-    private let HEADER_LABEL_HEIGHT = 60.0
-    
-    private let DESCRIPTION_TEXTVIEW_TOP_MARGIN = 30.0
-    private let DESCRIPTION_TEXTVIEW_HEIGHT = 50.0
-    
-    private let CONNECTION_IMAGE_TOP_MARGIN = 10.0
-    private let CONNECTION_IMAGE_HEIGHT = 70.0
-    
-    private let BUTTON_HOLDER_TOP_MARGIN = 30.0
-    private let BUTTON_HOLDER_HEIGHT = 60.0
-    
-    private let ADOBE_LOGO_IMAGE_BOTTOM_MARGIN = -60.0
-    private let ADOBE_LOGO_IMAGE_HEIGHT = 20.0
-    
-    private let CANCEL_BUTTON_TOP_MARGIN = 10
-    private let CANCEL_BUTTON_HEIGHT = 45.0
-    private let BUTTON_CORNER_RADIUS = 22.5
-    
-    private let BUTTON_FONT_SIZE = 17.0
-    
-    private let manager : QuickConnectManager
 
+    typealias uiConstants = AssuranceConstants.QuickConnect.QuickConnectView
+    private let presentationDelegate: AssurancePresentationDelegate
+    private let manager: QuickConnectManager
+    private var isDisplayed: Bool = false
     
-    init(manager : QuickConnectManager) {
-         self.manager = manager
-     }
-    
-    public func show() {
+    init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate, stateManager: AssuranceStateManager) {
+        self.presentationDelegate = presentationDelegate
+        self.manager = QuickConnectManager(stateManager: stateManager, uiDelegate: presentationDelegate)
+    }
+
+    func show() {
+        self.isDisplayed = true
         guard let window = UIApplication.shared.assuranceGetKeyWindow() else {
             Log.warning(label: AssuranceConstants.LOG_TAG, "QuickConnect View unable to get the keyWindow, ")
             return
@@ -62,7 +45,7 @@ public class QuickConnectView {
         NSLayoutConstraint.activate([
             headerView.leftAnchor.constraint(equalTo: baseView.leftAnchor),
             headerView.rightAnchor.constraint(equalTo: baseView.rightAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: HEADER_HEIGHT),
+            headerView.heightAnchor.constraint(equalToConstant: uiConstants.HEADER_HEIGHT),
             headerView.topAnchor.constraint(equalTo: baseView.topAnchor)
         ])
         
@@ -70,7 +53,7 @@ public class QuickConnectView {
         NSLayoutConstraint.activate([
             headerLabel.leftAnchor.constraint(equalTo: headerView.leftAnchor),
             headerLabel.rightAnchor.constraint(equalTo: headerView.rightAnchor),
-            headerLabel.heightAnchor.constraint(equalToConstant: HEADER_LABEL_HEIGHT),
+            headerLabel.heightAnchor.constraint(equalToConstant: uiConstants.HEADER_LABEL_HEIGHT),
             headerLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor)
         ])
         
@@ -78,35 +61,35 @@ public class QuickConnectView {
         NSLayoutConstraint.activate([
             descriptionTextView.leftAnchor.constraint(equalTo: baseView.leftAnchor),
             descriptionTextView.rightAnchor.constraint(equalTo: baseView.rightAnchor),
-            descriptionTextView.topAnchor.constraint(equalTo: baseView.topAnchor, constant: HEADER_HEIGHT + DESCRIPTION_TEXTVIEW_TOP_MARGIN),
-            descriptionTextView.heightAnchor.constraint(equalToConstant: DESCRIPTION_TEXTVIEW_HEIGHT)
+            descriptionTextView.topAnchor.constraint(equalTo: baseView.topAnchor, constant: uiConstants.HEADER_HEIGHT + uiConstants.DESCRIPTION_TEXTVIEW_TOP_MARGIN),
+            descriptionTextView.heightAnchor.constraint(equalToConstant: uiConstants.DESCRIPTION_TEXTVIEW_HEIGHT)
         ])
         
         baseView.addSubview(connectionImageView)
         NSLayoutConstraint.activate([
             connectionImageView.leftAnchor.constraint(equalTo: baseView.leftAnchor),
             connectionImageView.rightAnchor.constraint(equalTo: baseView.rightAnchor),
-            connectionImageView.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: CONNECTION_IMAGE_TOP_MARGIN),
-            connectionImageView.heightAnchor.constraint(equalToConstant: CONNECTION_IMAGE_HEIGHT)
+            connectionImageView.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: uiConstants.CONNECTION_IMAGE_TOP_MARGIN),
+            connectionImageView.heightAnchor.constraint(equalToConstant: uiConstants.CONNECTION_IMAGE_HEIGHT)
         ])
         
         baseView.addSubview(buttonStackView)
         NSLayoutConstraint.activate([
             buttonStackView.leadingAnchor.constraint(equalTo: baseView.leadingAnchor, constant: 40.0),
             buttonStackView.trailingAnchor.constraint(equalTo: baseView.trailingAnchor, constant: -40.0),
-            buttonStackView.topAnchor.constraint(equalTo: connectionImageView.bottomAnchor, constant: BUTTON_HOLDER_TOP_MARGIN),
-            buttonStackView.heightAnchor.constraint(equalToConstant: BUTTON_HOLDER_HEIGHT)
+            buttonStackView.topAnchor.constraint(equalTo: connectionImageView.bottomAnchor, constant: uiConstants.BUTTON_HOLDER_TOP_MARGIN),
+            buttonStackView.heightAnchor.constraint(equalToConstant: uiConstants.BUTTON_HOLDER_HEIGHT)
         ])
         
         buttonStackView.addArrangedSubview(cancelButton)
         NSLayoutConstraint.activate([
-            cancelButton.heightAnchor.constraint(equalToConstant: CANCEL_BUTTON_HEIGHT)
+            cancelButton.heightAnchor.constraint(equalToConstant: uiConstants.CANCEL_BUTTON_HEIGHT)
         ])
         
 
         buttonStackView.addArrangedSubview(connectButton)
         NSLayoutConstraint.activate([
-            connectButton.heightAnchor.constraint(equalToConstant: CANCEL_BUTTON_HEIGHT)
+            connectButton.heightAnchor.constraint(equalToConstant: uiConstants.CANCEL_BUTTON_HEIGHT)
         ])
         initialState()
         
@@ -114,8 +97,8 @@ public class QuickConnectView {
         NSLayoutConstraint.activate([
             adobeLogo.leftAnchor.constraint(equalTo: baseView.leftAnchor),
             adobeLogo.rightAnchor.constraint(equalTo: baseView.rightAnchor),
-            adobeLogo.bottomAnchor.constraint(equalTo: baseView.bottomAnchor, constant: ADOBE_LOGO_IMAGE_BOTTOM_MARGIN),
-            adobeLogo.heightAnchor.constraint(equalToConstant: ADOBE_LOGO_IMAGE_HEIGHT)
+            adobeLogo.bottomAnchor.constraint(equalTo: baseView.bottomAnchor, constant: uiConstants.ADOBE_LOGO_IMAGE_BOTTOM_MARGIN),
+            adobeLogo.heightAnchor.constraint(equalToConstant: uiConstants.ADOBE_LOGO_IMAGE_HEIGHT)
         ])
         
         self.baseView.frame.origin.y = window.frame.size.height
@@ -128,10 +111,11 @@ public class QuickConnectView {
         }, completion: nil)
             
     }
-    
+
     @objc func cancelClicked(_ sender: AnyObject?) {
         manager.cancelRetryGetDeviceStatus()
         dismiss()
+        self.isDisplayed = false
      }
     
     @objc func connectClicked(_ sender: AnyObject?) {
@@ -222,8 +206,8 @@ public class QuickConnectView {
         button.backgroundColor = .clear
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.white.cgColor
-        button.layer.cornerRadius = BUTTON_CORNER_RADIUS
-        button.titleLabel?.font = UIFont(name: "Helvetica", size: BUTTON_FONT_SIZE)
+        button.layer.cornerRadius = uiConstants.BUTTON_CORNER_RADIUS
+        button.titleLabel?.font = UIFont(name: "Helvetica", size: uiConstants.BUTTON_FONT_SIZE)
         button.setTitle("Cancel", for: .normal)
         button.accessibilityLabel = "AssuranceQuickConnectButtonCancel"
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
@@ -236,8 +220,8 @@ public class QuickConnectView {
         let button = UIButton()
         button.contentMode = .scaleAspectFit
         button.backgroundColor = UIColor(red: 20.0/256.0, green: 115.0/256.0, blue: 230.0/256.0, alpha: 1)
-        button.layer.cornerRadius = BUTTON_CORNER_RADIUS
-        button.titleLabel?.font = UIFont(name: "Helvetica", size: BUTTON_FONT_SIZE)
+        button.layer.cornerRadius = uiConstants.BUTTON_CORNER_RADIUS
+        button.titleLabel?.font = UIFont(name: "Helvetica", size: uiConstants.BUTTON_FONT_SIZE)
         button.setTitle("Connect", for: .normal)
         button.accessibilityLabel = "AssuranceQuickConnectButtonConnect"
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
@@ -293,6 +277,7 @@ public class QuickConnectView {
               self.connectionSuccessfulState()
           DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
               self.dismiss()
+              self.isDisplayed = false
           }
       }
       
