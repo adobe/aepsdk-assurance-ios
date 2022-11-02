@@ -18,12 +18,9 @@ public class QuickConnectView {
 
     typealias uiConstants = AssuranceConstants.QuickConnect.QuickConnectView
     private let presentationDelegate: AssurancePresentationDelegate
-    private let manager: QuickConnectManager
-    private var isDisplayed: Bool = false
-    
-    init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate, stateManager: AssuranceStateManager) {
+    private var isDisplayed = false
+    init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate) {
         self.presentationDelegate = presentationDelegate
-        self.manager = QuickConnectManager(stateManager: stateManager, uiDelegate: presentationDelegate)
     }
 
     func show() {
@@ -113,20 +110,13 @@ public class QuickConnectView {
     }
 
     @objc func cancelClicked(_ sender: AnyObject?) {
-        manager.cancelRetryGetDeviceStatus()
+        presentationDelegate.quickConnectCancelled()
         dismiss()
-        self.isDisplayed = false
      }
     
     @objc func connectClicked(_ sender: AnyObject?) {
         waitingState()
-        manager.createDevice { error in
-            if let error = error {
-                self.onFailedDeviceRegistration(error: error)
-                return
-            }
-            self.onSuccessfulApproval()
-        }
+        presentationDelegate.quickConnectBegin()
      }
         
         
@@ -302,9 +292,9 @@ public class QuickConnectView {
                 self.baseView.frame.origin.y = window.frame.size.height
             }, completion: { [self] _ in
                 self.baseView.removeFromSuperview()
+                self.isDisplayed = false
             })
         }
     
     }
-
 }

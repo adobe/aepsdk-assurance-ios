@@ -26,7 +26,7 @@ class QuickConnectManager {
         self.uiDelegate = uiDelegate
     }
 
-    func createDevice(completion: @escaping (AssuranceQuickConnectNetworkError?)-> Void) {
+    func createDevice() {
         quickConnectService.shouldRetryGetDeviceStatus = true
         guard let orgID = stateManager.getURLEncodedOrgID() else {
             // log here
@@ -35,14 +35,14 @@ class QuickConnectManager {
         }
         quickConnectService.registerDevice(clientID: stateManager.clientID, orgID: orgID, completion: { error in
             guard let error = error else {
-                self.checkDeviceStatus(completion: completion)
+                self.checkDeviceStatus()
                 return
             }
-            completion(error)
+            self.uiDelegate.quickConnectError(error: error)
          })
      }
     
-    func checkDeviceStatus(completion: @escaping (AssuranceQuickConnectNetworkError?) -> Void) {
+    private func checkDeviceStatus() {
         
         guard let orgID = stateManager.getURLEncodedOrgID() else {
             // log here
@@ -53,11 +53,10 @@ class QuickConnectManager {
             switch result {
             case .success((let sessionId, let token)):
                 self.deleteDevice()
-                completion(nil)
-                self.uiDelegate.quickConnectClicked(clientID: self.stateManager.clientID, sessionID: sessionId, orgID: orgID, environment: AssuranceEnvironment.prod, token: String(token))
+                self.uiDelegate.createQuickConnectSession(clientID: self.stateManager.clientID, sessionID: sessionId, orgID: orgID, environment: AssuranceEnvironment.prod, token: String(token))
                 break
             case .failure(let error):
-                completion(error)
+                self.uiDelegate.quickConnectError(error: error)
                 break
             }
             

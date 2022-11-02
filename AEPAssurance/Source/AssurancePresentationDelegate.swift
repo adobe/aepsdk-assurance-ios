@@ -14,10 +14,13 @@ import Foundation
 
 protocol AssurancePresentationDelegate {
     func pinScreenConnectClicked(_ pin: String)
-    #if DEBUG
-    func quickConnectClicked(clientID: String, sessionID: String, orgID: String, environment: AssuranceEnvironment, token: String)
-    #endif
     func pinScreenCancelClicked()
     func disconnectClicked()
     var isConnected: Bool { get }
+#if DEBUG
+    func createQuickConnectSession(clientID: String, sessionID: String, orgID: String, environment: AssuranceEnvironment, token: String)
+    func quickConnectError(error: AssuranceQuickConnectNetworkError)
+    func quickConnectCancelled()
+    func quickConnectBegin()
+#endif
 }

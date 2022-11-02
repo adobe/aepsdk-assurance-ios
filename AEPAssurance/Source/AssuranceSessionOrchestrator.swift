@@ -34,6 +34,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
 
     #if DEBUG
     var quickConnectView: QuickConnectView?
+    var quickConnectManager: QuickConnectManager?
     var session: AssuranceSession?
     #else
     private(set) var session: AssuranceSession?
@@ -41,6 +42,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
 
     init(stateManager: AssuranceStateManager) {
         self.stateManager = stateManager
+        self.quickConnectManager = QuickConnectManager(stateManager: stateManager, uiDelegate: self)
         outboundEventBuffer = ThreadSafeArray(identifier: "Session Orchestrator's OutboundBuffer array")
     }
 
@@ -102,7 +104,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     }
     
     func startQuickConnect() {
-        self.quickConnectView = QuickConnectView(withPresentationDelegate: self, stateManager: stateManager)
+        self.quickConnectView = QuickConnectView(withPresentationDelegate: self)
         if let quickConnectView = self.quickConnectView {
             DispatchQueue.main.async {
                 quickConnectView.show()
@@ -140,29 +142,6 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
         session.sessionDetails.authenticate(withPIN: pin, andOrgID: orgID)
         session.startSession()
     }
-    #if DEBUG
-    func quickConnectClicked(clientID: String, sessionID: String, orgID: String, environment: AssuranceEnvironment, token: String) {
-        if session != nil {
-            Log.warning(label: AssuranceConstants.LOG_TAG, "Quick connect attempted when active session exists")
-            return
-        }
-
-        let socketURLString = String(format: AssuranceConstants.BASE_SOCKET_URL,
-                                     environment.urlFormat,
-                                     sessionID,
-                                     token,
-                                     orgID,
-                                     clientID)
-        do {
-            let sessionDetails = try AssuranceSessionDetails(withURLString: socketURLString)
-            createSession(withDetails: sessionDetails)
-        } catch let error as AssuranceSessionDetailBuilderError {
-            Log.error(label: AssuranceConstants.LOG_TAG, "QuickConnect failed with invalid URL: \(socketURLString), Error message: \(error.message)")
-        } catch {
-            Log.error(label: AssuranceConstants.LOG_TAG, "QuickConnect failed with invalid URL: \(socketURLString), Error message: \(error.localizedDescription)")
-        }
-    }
-    #endif
     ///
     /// Invoked when Cancel button is clicked on the PinCode screen.
     ///
@@ -185,4 +164,42 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
         }
     }
 
+#if DEBUG
+    
+    func quickConnectBegin() {
+        quickConnectManager?.createDevice()
+    }
+    
+    func quickConnectCancelled() {
+        quickConnectManager?.cancelRetryGetDeviceStatus()
+    }
+    
+    func createQuickConnectSession(clientID: String, sessionID: String, orgID: String, environment: AssuranceEnvironment, token: String) {
+        if session != nil {
+            Log.warning(label: AssuranceConstants.LOG_TAG, "Quick connect attempted when active session exists")
+            return
+        }
+        
+        let socketURLString = String(format: AssuranceConstants.BASE_SOCKET_URL,
+                                     environment.urlFormat,
+                                     sessionID,
+                                     token,
+                                     orgID,
+                                     clientID)
+        do {
+            let sessionDetails = try AssuranceSessionDetails(withURLString: socketURLString)
+            createSession(withDetails: sessionDetails)
+            // TODO: UI work should be done in session
+            quickConnectView?.onSuccessfulApproval()
+        } catch let error as AssuranceSessionDetailBuilderError {
+            Log.error(label: AssuranceConstants.LOG_TAG, "QuickConnect failed with invalid URL: \(socketURLString), Error message: \(error.message)")
+        } catch {
+            Log.error(label: AssuranceConstants.LOG_TAG, "QuickConnect failed with invalid URL: \(socketURLString), Error message: \(error.localizedDescription)")
+        }
+    }
+    
+    func quickConnectError(error: AssuranceQuickConnectNetworkError) {
+        quickConnectView?.onFailedDeviceRegistration(error: error)
+    }
+#endif
 }
