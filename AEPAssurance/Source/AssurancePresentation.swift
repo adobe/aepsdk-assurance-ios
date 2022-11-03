@@ -13,20 +13,27 @@
 import AEPServices
 import Foundation
 
+enum AssuranceViewType {
+    case pinCode
+    case quickConnect
+}
+
 class AssurancePresentation {
 
     let delegate: AssurancePresentationDelegate
-
-    lazy var pinCodeScreen: SessionAuthorizingUI = {
-        iOSPinCodeScreen.init(withPresentationDelegate: delegate)
-    }()
-
+    var sessionView: SessionAuthorizingUI
     lazy var statusUI: iOSStatusUI  = {
         iOSStatusUI.init(presentationDelegate: delegate)
     }()
 
-    init(presentationDelegate: AssurancePresentationDelegate) {
+    init(presentationDelegate: AssurancePresentationDelegate, viewType: AssuranceViewType) {
         self.delegate = presentationDelegate
+        switch viewType {
+        case .quickConnect:
+            self.sessionView = QuickConnectView(withPresentationDelegate: presentationDelegate)
+        case .pinCode:
+            self.sessionView = iOSPinCodeScreen(withPresentationDelegate: presentationDelegate)
+        }
     }
 
     /// Adds the log message o Assurance session's Status UI.
@@ -40,13 +47,16 @@ class AssurancePresentation {
     /// Call this to show the UI elements that are required when a session is initialized.
     func sessionInitialized() {
         // invoke the pinpad screen and create a socketURL with the pincode and other essential parameters
-        pinCodeScreen.show()
+        DispatchQueue.main.async {
+            self.sessionView.show()
+        }
     }
 
     /// Call this to show the UI elements that are required when a session connection has been successfully established.
     func sessionConnected() {
-        if pinCodeScreen.displayed {
-            self.pinCodeScreen.sessionConnected()
+        
+        if sessionView.displayed {
+            self.sessionView.sessionConnected()
         }
 
         self.statusUI.display()
@@ -63,14 +73,14 @@ class AssurancePresentation {
 
     /// Call this method to clear the UI elements when a session is disconnected.
     func sessionDisconnected() {
-        pinCodeScreen.sessionDisconnected()
+        sessionView.sessionDisconnected()
         statusUI.remove()
     }
 
     /// Call this to show the UI elements that are required when a session has connection error.
     func sessionConnectionError(error: AssuranceConnectionError) {
-        if pinCodeScreen.displayed == true {
-            pinCodeScreen.sessionConnectionFailed(withError: error)
+        if sessionView.displayed == true {
+            sessionView.sessionConnectionFailed(withError: error)
         } else {
             let errorView = ErrorView.init(AssuranceConnectionError.clientError)
             errorView.display()

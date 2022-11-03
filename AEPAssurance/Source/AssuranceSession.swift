@@ -15,7 +15,7 @@ import Foundation
 class AssuranceSession {
     let RECONNECT_TIMEOUT = 5
     let stateManager: AssuranceStateManager
-    let sessionDetails: AssuranceSessionDetails
+    var sessionDetails: AssuranceSessionDetails?
     let sessionOrchestrator: AssuranceSessionOrchestrator
     let outboundQueue: ThreadSafeQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
     let inboundQueue: ThreadSafeQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
@@ -51,7 +51,7 @@ class AssuranceSession {
         self.sessionDetails = sessionDetails
         self.stateManager = stateManager
         self.sessionOrchestrator = sessionOrchestrator
-        presentation = AssurancePresentation(presentationDelegate: sessionOrchestrator)
+        presentation = AssurancePresentation(presentationDelegate: sessionOrchestrator, viewType: .pinCode)
         handleInBoundEvents()
         handleOutBoundEvents()
         registerInternalPlugins()
@@ -63,7 +63,24 @@ class AssuranceSession {
             }
         }
     }
-
+    
+    init(stateManager: AssuranceStateManager, sessionOrchestrator: AssuranceSessionOrchestrator, outboundEvents: ThreadSafeArray<AssuranceEvent>?) {
+        self.stateManager = stateManager
+        self.sessionOrchestrator = sessionOrchestrator
+        self.sessionDetails = nil
+        presentation = AssurancePresentation(presentationDelegate: sessionOrchestrator, viewType: .quickConnect)
+        handleInBoundEvents()
+        handleOutBoundEvents()
+        registerInternalPlugins()
+        
+        /// Queue the outboundEvents to outboundQueue
+        if let outboundEvents = outboundEvents {
+            for eachEvent in outboundEvents.shallowCopy {
+                outboundQueue.enqueue(newElement: eachEvent)
+            }
+        }
+    }
+    
     /// Starts an assurance session connection with the provided sessionDetails.
     ///
     /// If the sessionDetails is not authenticated (doesn't have pin or orgId), it triggers the presentation to launch the pinCode screen
@@ -74,7 +91,7 @@ class AssuranceSession {
             return
         }
 
-        switch sessionDetails.getAuthenticatedSocketURL() {
+        switch sessionDetails?.getAuthenticatedSocketURL() {
         case .success(let url):
             // if the URL is already authenticated with Pin and OrgId,
             // then immediately make the socket connection
@@ -82,6 +99,8 @@ class AssuranceSession {
             self.presentation.statusUI.display()
         case .failure:
             // if the URL is not authenticated, then bring up the pinpad screen
+            presentation.sessionInitialized()
+        case .none:
             presentation.sessionInitialized()
         }
     }
@@ -114,7 +133,7 @@ class AssuranceSession {
         pluginHub.notifyPluginsOnSessionTerminated()
         stateManager.connectedWebSocketURL = nil
     }
-
+    
     /// Handles the Assurance socket connection error by showing the appropriate UI to the user.
     /// - Parameters:
     ///   - error: The `AssuranceConnectionError` representing the error

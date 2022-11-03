@@ -34,13 +34,13 @@ class QuickConnectService {
     ///     - completion: `(AssuranceNetworkError?) -> Void` the completion which is nil if successful or an `AssuranceNetworkError` if there is a failure
     func registerDevice(clientID: String,
                         orgID: String,
-                        completion: @escaping (AssuranceQuickConnectNetworkError?) -> Void) {
+                        completion: @escaping (AssuranceConnectionError?) -> Void) {
 
         /// Bail out with failure, if we are unable to form a valid create device API request URL
         let urlString = AssuranceConstants.QUICK_CONNECT_BASE_URL + "/create"
         guard let requestURL = URL(string: urlString) else {
-            let error = AssuranceQuickConnectNetworkError.invalidURL(url: urlString)
-            Log.error(label: LOG_TAG, error.localizedDescription)
+            let error = AssuranceConnectionError.invalidURL(url: urlString)
+            Log.error(label: LOG_TAG, error.info.description)
             completion(error)
             return
         }
@@ -51,8 +51,8 @@ class QuickConnectService {
 
         /// Bail out with failure, if we are unable to create the request body required for the API
         guard let body = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) else {
-            let error = AssuranceQuickConnectNetworkError.invalidRequestBody
-            Log.error(label: LOG_TAG, error.localizedDescription)
+            let error = AssuranceConnectionError.invalidRequestBody
+            Log.error(label: LOG_TAG, error.info.description)
             completion(error)
             return
         }
@@ -68,13 +68,13 @@ class QuickConnectService {
         ServiceProvider.shared.networkService.connectAsync(networkRequest: request) { connection in
 
             if !(connection.responseCode == HTTP_RESPONSE_CODES.HTTP_OK || connection.responseCode == 201) {
-                let error = AssuranceQuickConnectNetworkError.failedToRegisterDevice(statusCode: connection.responseCode ?? -1, responseMessage: connection.responseMessage ?? "Unkown error")
-                Log.error(label: self.LOG_TAG, error.localizedDescription)
+                let error = AssuranceConnectionError.failedToRegisterDevice(statusCode: connection.responseCode ?? -1, responseMessage: connection.responseMessage ?? "Unkown error")
+                Log.error(label: self.LOG_TAG, error.info.description)
                 completion(error)
                 return
             }
             guard let data = connection.data, let responseJson = try? JSONDecoder().decode([String: AnyCodable].self, from: data) else {
-                Log.error(label: self.LOG_TAG, AssuranceQuickConnectNetworkError.invalidResponseData.localizedDescription)
+                Log.error(label: self.LOG_TAG, AssuranceConnectionError.invalidResponseData.info.description)
                 completion(.invalidResponseData)
                 return
             }
@@ -94,13 +94,13 @@ class QuickConnectService {
     ///
     func getDeviceStatus(clientID: String,
                          orgID: String,
-                         completion: @escaping (Result<(sessionID: String, token: Int), AssuranceQuickConnectNetworkError>) -> Void) {
+                         completion: @escaping (Result<(sessionID: String, token: Int), AssuranceConnectionError>) -> Void) {
 
         /// Bail out with failure, if we are unable to form a valid create device API request URL
         let urlString = AssuranceConstants.QUICK_CONNECT_BASE_URL + "/status"
         guard let requestURL = URL(string: urlString) else {
-            let error = AssuranceQuickConnectNetworkError.invalidURL(url: urlString)
-            Log.error(label: self.LOG_TAG, error.localizedDescription)
+            let error = AssuranceConnectionError.invalidURL(url: urlString)
+            Log.error(label: self.LOG_TAG, error.info.description)
             completion(.failure(error))
             return
         }
@@ -109,8 +109,8 @@ class QuickConnectService {
 
         /// Bail out with failure, if we are unable to create the request body required for the API
         guard let body = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) else {
-            let error = AssuranceQuickConnectNetworkError.invalidRequestBody
-            Log.error(label: self.LOG_TAG, error.localizedDescription)
+            let error = AssuranceConnectionError.invalidRequestBody
+            Log.error(label: self.LOG_TAG, error.info.description)
             completion(.failure(error))
             return
         }
@@ -125,8 +125,8 @@ class QuickConnectService {
 
         ServiceProvider.shared.networkService.connectAsync(networkRequest: request) { connection in
             if !(connection.responseCode == HTTP_RESPONSE_CODES.HTTP_OK || connection.responseCode == 201) {
-                let error = AssuranceQuickConnectNetworkError.failedToGetDeviceStatus(statusCode: connection.responseCode ?? -1, responseMessage: connection.responseMessage ?? "Unknown error")
-                Log.error(label: self.LOG_TAG, error.localizedDescription)
+                let error = AssuranceConnectionError.failedToGetDeviceStatus(statusCode: connection.responseCode ?? -1, responseMessage: connection.responseMessage ?? "Unknown error")
+                Log.error(label: self.LOG_TAG, error.info.description)
                 completion(.failure(error))
                 return
             }
@@ -148,8 +148,8 @@ class QuickConnectService {
 
                 return
             }
-            let error = AssuranceQuickConnectNetworkError.invalidResponseData
-            Log.error(label: self.LOG_TAG, error.localizedDescription)
+            let error = AssuranceConnectionError.invalidResponseData
+            Log.error(label: self.LOG_TAG, error.info.description)
             completion(.failure(error))
             return
         }
@@ -163,13 +163,13 @@ class QuickConnectService {
     ///     - completion: `(AssuranceNetworkError?) -> Void` the completion which is nil if successful or an `AssuranceNetworkError` if there is a failure
     func deleteDevice(clientID: String,
                       orgID: String,
-                      completion: @escaping (AssuranceQuickConnectNetworkError?) -> Void) {
+                      completion: @escaping (AssuranceConnectionError?) -> Void) {
 
         /// Bail out with failure, if we are unable to form a valid create device API request URL
         let urlString = AssuranceConstants.QUICK_CONNECT_BASE_URL + "/delete"
         guard let requestURL = URL(string: urlString) else {
-            let error = AssuranceQuickConnectNetworkError.invalidURL(url: urlString)
-            Log.error(label: self.LOG_TAG, error.localizedDescription)
+            let error = AssuranceConnectionError.invalidURL(url: urlString)
+            Log.error(label: self.LOG_TAG, error.info.description)
             completion(error)
             return
         }
@@ -180,8 +180,8 @@ class QuickConnectService {
 
         /// Bail out with failure, if we are unable to create the request body required for the API
         guard let body = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) else {
-            let error = AssuranceQuickConnectNetworkError.invalidRequestBody
-            Log.error(label: self.LOG_TAG, error.localizedDescription)
+            let error = AssuranceConnectionError.invalidRequestBody
+            Log.error(label: self.LOG_TAG, error.info.description)
             completion(error)
             return
         }
@@ -197,13 +197,13 @@ class QuickConnectService {
         ServiceProvider.shared.networkService.connectAsync(networkRequest: request) { connection in
 
             if !(connection.responseCode == HTTP_RESPONSE_CODES.HTTP_OK || connection.responseCode == 201) {
-                let error = AssuranceQuickConnectNetworkError.failedToDeleteDevice(statusCode: connection.responseCode ?? -1, responseMessage: connection.responseMessage ?? "Unknown error")
-                Log.error(label: self.LOG_TAG, error.localizedDescription)
+                let error = AssuranceConnectionError.failedToDeleteDevice(statusCode: connection.responseCode ?? -1, responseMessage: connection.responseMessage ?? "Unknown error")
+                Log.error(label: self.LOG_TAG, error.info.description)
                 completion(error)
                 return
             }
             guard let data = connection.data, let responseJson = try? JSONDecoder().decode([String: AnyCodable].self, from: data) else {
-                Log.error(label: self.LOG_TAG, AssuranceQuickConnectNetworkError.invalidResponseData.localizedDescription)
+                Log.error(label: self.LOG_TAG, AssuranceConnectionError.invalidResponseData.info.description)
                 completion(.invalidResponseData)
                 return
             }
@@ -215,37 +215,4 @@ class QuickConnectService {
 
 }
 
-///
-/// Represents an `Error` which can occur when attempting quick connect network requests
-///
-enum AssuranceQuickConnectNetworkError: Error, Equatable {
-    case invalidURL(url: String)
-    case invalidRequestBody
-    case invalidResponseData
-    case getDeviceStatusCancelled
-    case failedToRegisterDevice(statusCode: Int, responseMessage: String)
-    case failedToGetDeviceStatus(statusCode: Int, responseMessage: String)
-    case failedToDeleteDevice(statusCode: Int, responseMessage: String)
-}
-
-extension AssuranceQuickConnectNetworkError: LocalizedError {
-    var errorDescription: String? {
-        switch self {
-        case .invalidURL(let url):
-            return NSLocalizedString("Invalid url: \(url)", comment: "")
-        case .invalidResponseData:
-            return NSLocalizedString("Invalid response data", comment: "")
-        case .invalidRequestBody:
-            return NSLocalizedString("Invalid request body", comment: "")
-        case .failedToRegisterDevice(let statusCode, let responseMessage):
-            return NSLocalizedString("Failed to register device with status code: \(statusCode), and response message: \(responseMessage)", comment: "")
-        case .failedToGetDeviceStatus(let statusCode, let responseMessage):
-            return NSLocalizedString("Failed to get device status with status code: \(statusCode), and response message: \(responseMessage)", comment: "")
-        case .failedToDeleteDevice(let statusCode, let responseMessage):
-            return NSLocalizedString("Failed to delete device with status code: \(statusCode), and response message: \(responseMessage)", comment: "")
-        case .getDeviceStatusCancelled:
-            return NSLocalizedString("Cancelled Quick Connect before getting device status", comment: "")
-        }
-    }
-}
 #endif

@@ -19,7 +19,7 @@ protocol AssurancePresentationDelegate {
     var isConnected: Bool { get }
 #if DEBUG
     func createQuickConnectSession(clientID: String, sessionID: String, orgID: String, environment: AssuranceEnvironment, token: String)
-    func quickConnectError(error: AssuranceQuickConnectNetworkError)
+    func quickConnectError(error: AssuranceConnectionError)
     func quickConnectCancelled()
     func quickConnectBegin()
 #endif

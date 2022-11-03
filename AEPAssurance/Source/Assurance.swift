@@ -124,7 +124,7 @@ public class Assurance: NSObject, Extension {
         guard let startSessionData = event.data else {
             #if DEBUG
             if event.name == AssuranceConstants.AssuranceEvent.Name.QUICKCONNECT_START_SESSION {
-                sessionOrchestrator.startQuickConnect()
+                sessionOrchestrator.createQuickConnectSession()
                 return
             }
             #endif

@@ -14,99 +14,14 @@ import AEPServices
 import Foundation
 import UIKit
 
-public class QuickConnectView {
+public class QuickConnectView: SessionAuthorizingUI {
 
     typealias uiConstants = AssuranceConstants.QuickConnect.QuickConnectView
     private let presentationDelegate: AssurancePresentationDelegate
-    private var isDisplayed = false
-    init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate) {
+    var displayed = false
+    
+    required init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate) {
         self.presentationDelegate = presentationDelegate
-    }
-
-    func show() {
-        self.isDisplayed = true
-        guard let window = UIApplication.shared.assuranceGetKeyWindow() else {
-            Log.warning(label: AssuranceConstants.LOG_TAG, "QuickConnect View unable to get the keyWindow, ")
-            return
-        }
-
-        window.addSubview(baseView)
-        NSLayoutConstraint.activate([
-            baseView.leftAnchor.constraint(equalTo: window.leftAnchor),
-            baseView.rightAnchor.constraint(equalTo: window.rightAnchor),
-            baseView.bottomAnchor.constraint(equalTo: window.bottomAnchor),
-            baseView.topAnchor.constraint(equalTo: window.topAnchor)
-        ])
-        
-        baseView.addSubview(headerView)
-        NSLayoutConstraint.activate([
-            headerView.leftAnchor.constraint(equalTo: baseView.leftAnchor),
-            headerView.rightAnchor.constraint(equalTo: baseView.rightAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: uiConstants.HEADER_HEIGHT),
-            headerView.topAnchor.constraint(equalTo: baseView.topAnchor)
-        ])
-        
-        headerView.addSubview(headerLabel)
-        NSLayoutConstraint.activate([
-            headerLabel.leftAnchor.constraint(equalTo: headerView.leftAnchor),
-            headerLabel.rightAnchor.constraint(equalTo: headerView.rightAnchor),
-            headerLabel.heightAnchor.constraint(equalToConstant: uiConstants.HEADER_LABEL_HEIGHT),
-            headerLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor)
-        ])
-        
-        baseView.addSubview(descriptionTextView)
-        NSLayoutConstraint.activate([
-            descriptionTextView.leftAnchor.constraint(equalTo: baseView.leftAnchor),
-            descriptionTextView.rightAnchor.constraint(equalTo: baseView.rightAnchor),
-            descriptionTextView.topAnchor.constraint(equalTo: baseView.topAnchor, constant: uiConstants.HEADER_HEIGHT + uiConstants.DESCRIPTION_TEXTVIEW_TOP_MARGIN),
-            descriptionTextView.heightAnchor.constraint(equalToConstant: uiConstants.DESCRIPTION_TEXTVIEW_HEIGHT)
-        ])
-        
-        baseView.addSubview(connectionImageView)
-        NSLayoutConstraint.activate([
-            connectionImageView.leftAnchor.constraint(equalTo: baseView.leftAnchor),
-            connectionImageView.rightAnchor.constraint(equalTo: baseView.rightAnchor),
-            connectionImageView.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: uiConstants.CONNECTION_IMAGE_TOP_MARGIN),
-            connectionImageView.heightAnchor.constraint(equalToConstant: uiConstants.CONNECTION_IMAGE_HEIGHT)
-        ])
-        
-        baseView.addSubview(buttonStackView)
-        NSLayoutConstraint.activate([
-            buttonStackView.leadingAnchor.constraint(equalTo: baseView.leadingAnchor, constant: 40.0),
-            buttonStackView.trailingAnchor.constraint(equalTo: baseView.trailingAnchor, constant: -40.0),
-            buttonStackView.topAnchor.constraint(equalTo: connectionImageView.bottomAnchor, constant: uiConstants.BUTTON_HOLDER_TOP_MARGIN),
-            buttonStackView.heightAnchor.constraint(equalToConstant: uiConstants.BUTTON_HOLDER_HEIGHT)
-        ])
-        
-        buttonStackView.addArrangedSubview(cancelButton)
-        NSLayoutConstraint.activate([
-            cancelButton.heightAnchor.constraint(equalToConstant: uiConstants.CANCEL_BUTTON_HEIGHT)
-        ])
-        
-
-        buttonStackView.addArrangedSubview(connectButton)
-        NSLayoutConstraint.activate([
-            connectButton.heightAnchor.constraint(equalToConstant: uiConstants.CANCEL_BUTTON_HEIGHT)
-        ])
-        initialState()
-        
-        baseView.addSubview(adobeLogo)
-        NSLayoutConstraint.activate([
-            adobeLogo.leftAnchor.constraint(equalTo: baseView.leftAnchor),
-            adobeLogo.rightAnchor.constraint(equalTo: baseView.rightAnchor),
-            adobeLogo.bottomAnchor.constraint(equalTo: baseView.bottomAnchor, constant: uiConstants.ADOBE_LOGO_IMAGE_BOTTOM_MARGIN),
-            adobeLogo.heightAnchor.constraint(equalToConstant: uiConstants.ADOBE_LOGO_IMAGE_HEIGHT)
-        ])
-        
-        self.baseView.frame.origin.y = window.frame.size.height
-        UIView.animate(withDuration: 0.2,
-                       delay: 0,
-                       options: [.curveEaseInOut],
-                       animations: { [] in
-            self.baseView.frame.origin.y = 0
-            self.baseView.backgroundColor = UIColor(red: 47.0/256.0, green: 47.0/256.0, blue: 47.0/256.0, alpha: 1)
-        }, completion: nil)
-            
     }
 
     @objc func cancelClicked(_ sender: AnyObject?) {
@@ -257,27 +172,25 @@ public class QuickConnectView {
 //          }
 //      }
       
-    func onFailedDeviceRegistration(error: AssuranceQuickConnectNetworkError) {
-          DispatchQueue.main.async {
-            // TODO: - Switch on error and handle appropriately
-          }
-      }
+//    func onFailedDeviceRegistration(error: AssuranceQuickConnectNetworkError) {
+//          DispatchQueue.main.async {
+//            // TODO: - Switch on error and handle appropriately
+//          }
+//      }
             
-      func onSuccessfulApproval() {
-              self.connectionSuccessfulState()
-          DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-              self.dismiss()
-              self.isDisplayed = false
-          }
+//    func onSuccessfulApproval() {
+//          self.connectionSuccessfulState()
+//      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+//          self.dismiss()
+//          self.displayed = false
+//      }
+//    }
+
+    func onFailedApproval() {
+      DispatchQueue.main.async {
+          
       }
-      
-      func onFailedApproval() {
-          DispatchQueue.main.async {
-              
-          }
-      }
-    
-    
+    }
     
     func dismiss() {
         DispatchQueue.main.async {
@@ -292,9 +205,117 @@ public class QuickConnectView {
                 self.baseView.frame.origin.y = window.frame.size.height
             }, completion: { [self] _ in
                 self.baseView.removeFromSuperview()
-                self.isDisplayed = false
+                self.displayed = false
             })
         }
     
+    }
+    
+    // MARK: - SessionAuthorizingUI
+    func show() {
+        self.displayed = true
+        guard let window = UIApplication.shared.assuranceGetKeyWindow() else {
+            Log.warning(label: AssuranceConstants.LOG_TAG, "QuickConnect View unable to get the keyWindow, ")
+            return
+        }
+
+        window.addSubview(baseView)
+        NSLayoutConstraint.activate([
+            baseView.leftAnchor.constraint(equalTo: window.leftAnchor),
+            baseView.rightAnchor.constraint(equalTo: window.rightAnchor),
+            baseView.bottomAnchor.constraint(equalTo: window.bottomAnchor),
+            baseView.topAnchor.constraint(equalTo: window.topAnchor)
+        ])
+        
+        baseView.addSubview(headerView)
+        NSLayoutConstraint.activate([
+            headerView.leftAnchor.constraint(equalTo: baseView.leftAnchor),
+            headerView.rightAnchor.constraint(equalTo: baseView.rightAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: uiConstants.HEADER_HEIGHT),
+            headerView.topAnchor.constraint(equalTo: baseView.topAnchor)
+        ])
+        
+        headerView.addSubview(headerLabel)
+        NSLayoutConstraint.activate([
+            headerLabel.leftAnchor.constraint(equalTo: headerView.leftAnchor),
+            headerLabel.rightAnchor.constraint(equalTo: headerView.rightAnchor),
+            headerLabel.heightAnchor.constraint(equalToConstant: uiConstants.HEADER_LABEL_HEIGHT),
+            headerLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor)
+        ])
+        
+        baseView.addSubview(descriptionTextView)
+        NSLayoutConstraint.activate([
+            descriptionTextView.leftAnchor.constraint(equalTo: baseView.leftAnchor),
+            descriptionTextView.rightAnchor.constraint(equalTo: baseView.rightAnchor),
+            descriptionTextView.topAnchor.constraint(equalTo: baseView.topAnchor, constant: uiConstants.HEADER_HEIGHT + uiConstants.DESCRIPTION_TEXTVIEW_TOP_MARGIN),
+            descriptionTextView.heightAnchor.constraint(equalToConstant: uiConstants.DESCRIPTION_TEXTVIEW_HEIGHT)
+        ])
+        
+        baseView.addSubview(connectionImageView)
+        NSLayoutConstraint.activate([
+            connectionImageView.leftAnchor.constraint(equalTo: baseView.leftAnchor),
+            connectionImageView.rightAnchor.constraint(equalTo: baseView.rightAnchor),
+            connectionImageView.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: uiConstants.CONNECTION_IMAGE_TOP_MARGIN),
+            connectionImageView.heightAnchor.constraint(equalToConstant: uiConstants.CONNECTION_IMAGE_HEIGHT)
+        ])
+        
+        baseView.addSubview(buttonStackView)
+        NSLayoutConstraint.activate([
+            buttonStackView.leadingAnchor.constraint(equalTo: baseView.leadingAnchor, constant: 40.0),
+            buttonStackView.trailingAnchor.constraint(equalTo: baseView.trailingAnchor, constant: -40.0),
+            buttonStackView.topAnchor.constraint(equalTo: connectionImageView.bottomAnchor, constant: uiConstants.BUTTON_HOLDER_TOP_MARGIN),
+            buttonStackView.heightAnchor.constraint(equalToConstant: uiConstants.BUTTON_HOLDER_HEIGHT)
+        ])
+        
+        buttonStackView.addArrangedSubview(cancelButton)
+        NSLayoutConstraint.activate([
+            cancelButton.heightAnchor.constraint(equalToConstant: uiConstants.CANCEL_BUTTON_HEIGHT)
+        ])
+        
+
+        buttonStackView.addArrangedSubview(connectButton)
+        NSLayoutConstraint.activate([
+            connectButton.heightAnchor.constraint(equalToConstant: uiConstants.CANCEL_BUTTON_HEIGHT)
+        ])
+        initialState()
+        
+        baseView.addSubview(adobeLogo)
+        NSLayoutConstraint.activate([
+            adobeLogo.leftAnchor.constraint(equalTo: baseView.leftAnchor),
+            adobeLogo.rightAnchor.constraint(equalTo: baseView.rightAnchor),
+            adobeLogo.bottomAnchor.constraint(equalTo: baseView.bottomAnchor, constant: uiConstants.ADOBE_LOGO_IMAGE_BOTTOM_MARGIN),
+            adobeLogo.heightAnchor.constraint(equalToConstant: uiConstants.ADOBE_LOGO_IMAGE_HEIGHT)
+        ])
+        
+        self.baseView.frame.origin.y = window.frame.size.height
+        UIView.animate(withDuration: 0.2,
+                       delay: 0,
+                       options: [.curveEaseInOut],
+                       animations: { [] in
+            self.baseView.frame.origin.y = 0
+            self.baseView.backgroundColor = UIColor(red: 47.0/256.0, green: 47.0/256.0, blue: 47.0/256.0, alpha: 1)
+        }, completion: nil)
+            
+    }
+    
+    func sessionInitialized() {
+        // TODO: - No op?
+    }
+    
+    func sessionConnected() {
+        self.connectionSuccessfulState()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+          self.dismiss()
+          self.displayed = false
+      }
+    }
+    
+    func sessionDisconnected() {
+        self.dismiss()
+        self.displayed = false
+    }
+    
+    func sessionConnectionFailed(withError error: AssuranceConnectionError) {
+        // TODO: - Handle errors here for view
     }
 }

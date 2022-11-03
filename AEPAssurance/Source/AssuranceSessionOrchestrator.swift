@@ -33,7 +33,6 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     var hasEverTerminated: Bool = false
 
     #if DEBUG
-    var quickConnectView: QuickConnectView?
     var quickConnectManager: QuickConnectManager?
     var session: AssuranceSession?
     #else
@@ -63,6 +62,17 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
         session = AssuranceSession(sessionDetails: sessionDetails, stateManager: stateManager, sessionOrchestrator: self, outboundEvents: outboundEventBuffer)
         session?.startSession()
 
+        outboundEventBuffer?.clear()
+        outboundEventBuffer = nil
+    }
+    
+    func createQuickConnectSession() {
+        if session != nil {
+            Log.warning(label: AssuranceConstants.LOG_TAG, "An active Assurance session already exists. Cannot create a new one. Ignoring to process the scanned deeplink.")
+            return
+        }
+        session = AssuranceSession(stateManager: stateManager, sessionOrchestrator: self, outboundEvents: outboundEventBuffer)
+        session?.startSession()
         outboundEventBuffer?.clear()
         outboundEventBuffer = nil
     }
@@ -103,15 +113,6 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
         return session != nil || outboundEventBuffer != nil
     }
     
-    func startQuickConnect() {
-        self.quickConnectView = QuickConnectView(withPresentationDelegate: self)
-        if let quickConnectView = self.quickConnectView {
-            DispatchQueue.main.async {
-                quickConnectView.show()
-            }
-        }
-    }
-
     // MARK: - AssurancePresentationDelegate methods
 
     /// Invoked when Connect button is clicked on the PinCode screen.
@@ -139,7 +140,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
         }
 
         Log.trace(label: AssuranceConstants.LOG_TAG, "Connect Button clicked. Starting a socket connection.")
-        session.sessionDetails.authenticate(withPIN: pin, andOrgID: orgID)
+        session.sessionDetails?.authenticate(withPIN: pin, andOrgID: orgID)
         session.startSession()
     }
     ///
@@ -187,10 +188,9 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
                                      orgID,
                                      clientID)
         do {
-            let sessionDetails = try AssuranceSessionDetails(withURLString: socketURLString)
-            createSession(withDetails: sessionDetails)
-            // TODO: UI work should be done in session
-            quickConnectView?.onSuccessfulApproval()
+            session?.sessionDetails = try AssuranceSessionDetails(withURLString: socketURLString)
+            session?.startSession()
+            //createSession(withDetails: sessionDetails)
         } catch let error as AssuranceSessionDetailBuilderError {
             Log.error(label: AssuranceConstants.LOG_TAG, "QuickConnect failed with invalid URL: \(socketURLString), Error message: \(error.message)")
         } catch {
@@ -198,8 +198,8 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
         }
     }
     
-    func quickConnectError(error: AssuranceQuickConnectNetworkError) {
-        quickConnectView?.onFailedDeviceRegistration(error: error)
+    func quickConnectError(error: AssuranceConnectionError) {
+        session?.handleConnectionError(error: error, closeCode: AssuranceConstants.SocketCloseCode.NORMAL_CLOSURE)
     }
 #endif
 }
