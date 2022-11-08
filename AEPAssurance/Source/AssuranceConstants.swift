@@ -21,6 +21,13 @@ enum AssuranceConstants {
 
     static let BASE_SOCKET_URL = "wss://connect%@.griffon.adobe.com/client/v1?sessionId=%@&token=%@&orgId=%@&clientId=%@"
     static let SHUTDOWN_TIME = TimeInterval(5)
+    
+    enum SocketURLKeys {
+        static let SESSION_ID_KEY = "sessionId"
+        static let TOKEN_KEY = "token"
+        static let CLIENT_ID_KEY = "clientId"
+        static let ORG_ID_KEY = "orgId"
+    }
 
     enum Deeplink {
         static let SESSIONID_KEY = "adb_validation_sessionid"
