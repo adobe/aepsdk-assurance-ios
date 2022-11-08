@@ -91,7 +91,9 @@ class URL_ParserTests: XCTestCase {
     }
     
     func test_queryParams_unsafeToken() {
-        
+        let unsafeToken = "someJSString"
+        let url = URL(string: "wss://connect.griffon.adobe.com/client/v1?sessionId=d600bba7-f90e-45a9-8022-78edda3edda5&token=\(unsafeToken)&orgId=972C898555E9F7BC7F000101@AdobeOrg&clientId=C8385D85-9CE3-409E-92C2-565E7E59D69C")!
+        XCTAssertFalse(url.isSafe)
     }
 
 }

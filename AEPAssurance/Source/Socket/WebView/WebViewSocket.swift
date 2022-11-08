@@ -237,4 +237,3 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     }
 
 }
-
