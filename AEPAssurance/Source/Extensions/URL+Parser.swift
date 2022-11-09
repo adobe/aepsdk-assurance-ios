@@ -128,10 +128,7 @@ extension URL {
     /// - Returns: true if the token is safe
     ///
     private func validate(token: String) -> Bool {
-        if token.count != 4 {
-            return false
-        }
-        guard Int(token) != nil else {
+        guard token.count == 4, Int(token) != nil else {
             return false
         }
         
