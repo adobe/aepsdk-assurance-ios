@@ -61,5 +61,39 @@ class URL_ParserTests: XCTestCase {
         // test
         XCTAssertEqual(0, url.params.count)
     }
+    
+    // JS Injection prevention tests
+    // Example of valid URL here for use with tests:
+    /**
+     wss://connect.griffon.adobe.com/client/v1?sessionId=d600bba7-f90e-45a9-8022-78edda3edda5&token=9124&orgId=972C898555E9F7BC7F000101@AdobeOrg&clientId=C8385D85-9CE3-409E-92C2-565E7E59D69C
+     */
+    func test_queryParams_safeURLPasses() {
+        let url = URL(string: "wss://connect.griffon.adobe.com/client/v1?sessionId=d600bba7-f90e-45a9-8022-78edda3edda5&token=9124&orgId=972C898555E9F7BC7F000101@AdobeOrg&clientId=C8385D85-9CE3-409E-92C2-565E7E59D69C")!
+        XCTAssertTrue(url.isSafe)
+    }
+    
+    func test_queryParams_unsafeSessionID() {
+        let unsafeSessionID = "someJSString"
+        let url = URL(string: "wss://connect.griffon.adobe.com/client/v1?sessionId=\(unsafeSessionID)&token=9124&orgId=972C898555E9F7BC7F000101@AdobeOrg&clientId=C8385D85-9CE3-409E-92C2-565E7E59D69C")!
+        XCTAssertFalse(url.isSafe)
+    }
+    
+    func test_queryParams_unsafeClientID() {
+        let unsafeClientID = "someJSString"
+        let url = URL(string: "wss://connect.griffon.adobe.com/client/v1?sessionId=d600bba7-f90e-45a9-8022-78edda3edda5&token=9124&orgId=972C898555E9F7BC7F000101@AdobeOrg&clientId=\(unsafeClientID)")!
+        XCTAssertFalse(url.isSafe)
+    }
+    
+    func test_queryParams_unsafeOrgID() {
+        let unsafeOrgID = "someJSString"
+        let url = URL(string: "wss://connect.griffon.adobe.com/client/v1?sessionId=d600bba7-f90e-45a9-8022-78edda3edda5&token=9124&orgId=\(unsafeOrgID)&clientId=C8385D85-9CE3-409E-92C2-565E7E59D69C")!
+        XCTAssertFalse(url.isSafe)
+    }
+    
+    func test_queryParams_unsafeToken() {
+        let unsafeToken = "someJSString"
+        let url = URL(string: "wss://connect.griffon.adobe.com/client/v1?sessionId=d600bba7-f90e-45a9-8022-78edda3edda5&token=\(unsafeToken)&orgId=972C898555E9F7BC7F000101@AdobeOrg&clientId=C8385D85-9CE3-409E-92C2-565E7E59D69C")!
+        XCTAssertFalse(url.isSafe)
+    }
 
 }

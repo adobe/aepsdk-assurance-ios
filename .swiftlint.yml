@@ -16,6 +16,7 @@ disabled_rules: # rule identifiers to exclude from running
 - type_body_length
 - weak_delegate
 - class_delegate_protocol
+- trailing_whitespace
 opt_in_rules: # some rules are opt-in only
 - closure_end_indentation
 - convenience_type

@@ -15,11 +15,8 @@ import Foundation
 
 class AssuranceSessionDetails {
 
-    private let SESSION_ID_KEY = "sessionId"
-    private let PINCODE_KEY = "token"
-    private let CLIENT_ID_KEY = "clientId"
-    private let ORG_ID_KEY = "orgId"
-
+    typealias SOCKET_URL_KEYS = AssuranceConstants.SocketURLKeys
+    
     /// A unique ID representing a session.
     let sessionId: String
 
@@ -70,19 +67,19 @@ class AssuranceSessionDetails {
             throw AssuranceSessionDetailBuilderError(message: "Not a vaild URL")
         }
 
-        guard let sessionId = socketURL.params[SESSION_ID_KEY] else {
+        guard let sessionId = socketURL.params[SOCKET_URL_KEYS.SESSION_ID_KEY] else {
             throw AssuranceSessionDetailBuilderError(message: "No SessionId")
         }
 
-        guard let clientId = socketURL.params[CLIENT_ID_KEY] else {
+        guard let clientId = socketURL.params[SOCKET_URL_KEYS.CLIENT_ID_KEY] else {
             throw AssuranceSessionDetailBuilderError(message: "No ClientId")
         }
 
-        guard let orgId = socketURL.params[ORG_ID_KEY] else {
+        guard let orgId = socketURL.params[SOCKET_URL_KEYS.ORG_ID_KEY] else {
             throw AssuranceSessionDetailBuilderError(message: "No OrgId")
         }
 
-        guard let pinCode = socketURL.params[PINCODE_KEY] else {
+        guard let pinCode = socketURL.params[SOCKET_URL_KEYS.TOKEN_KEY] else {
             throw AssuranceSessionDetailBuilderError(message: "No PinCode")
         }
 
