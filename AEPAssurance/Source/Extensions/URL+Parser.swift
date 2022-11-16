@@ -51,7 +51,7 @@ extension URL {
         let LOG_TAG = "Assurance URL Parser"
         
         guard let _ = self.env else {
-            Log.error(label: LOG_TAG, "env was not safe, malicious attempt to inject JS possible")
+            Log.error(label: LOG_TAG, "Socket url validation failed, malformed env parameter found.")
             return false
         }
         
@@ -59,26 +59,26 @@ extension URL {
             switch key {
             case SOCKET_URL_KEYS.SESSION_ID_KEY:
                 if !validate(sessionID: value) {
-                    Log.error(label: LOG_TAG, "sessionID was not safe, malicious attempt to inject JS possible")
+                    Log.error(label: LOG_TAG, "Socket url validation failed, malformed sessionID parameter found.")
                     return false
                 }
             case SOCKET_URL_KEYS.CLIENT_ID_KEY:
                 if !validate(clientID: value) {
-                    Log.error(label: LOG_TAG, "clientID was not safe, malicious attempt to inject JS possible")
+                    Log.error(label: LOG_TAG, "Socket url validation failed, malformed clientID parameter found.")
                     return false
                 }
             case SOCKET_URL_KEYS.ORG_ID_KEY:
                 if !validate(orgID: value) {
-                    Log.error(label: LOG_TAG, "orgID was not safe, malicious attempt to inject JS possible")
+                    Log.error(label: LOG_TAG, "Socket url validation failed, malformed orgID parameter found.")
                     return false
                 }
             case SOCKET_URL_KEYS.TOKEN_KEY:
                 if !validate(token: value) {
-                    Log.error(label: LOG_TAG, "token was not safe, malicious attempt to inject JS possible")
+                    Log.error(label: LOG_TAG, "Socket url validation failed, malformed token parameter found.")
                     return false
                 }
             default:
-                Log.error(label: LOG_TAG, "Extra parameters found in socket url, malicious attempt to inject JS possible")
+                Log.error(label: LOG_TAG, "Socket url validation failed, extra parameter(s) found.")
                 return false
             }
         }
