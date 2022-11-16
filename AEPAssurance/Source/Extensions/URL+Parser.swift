@@ -71,7 +71,6 @@ extension URL {
                 if !validate(orgID: value) {
                     Log.error(label: LOG_TAG, "orgID was not safe, malicious attempt to inject JS possible")
                     return false
-                    
                 }
             case SOCKET_URL_KEYS.TOKEN_KEY:
                 if !validate(token: value) {
