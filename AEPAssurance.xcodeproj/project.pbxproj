@@ -25,6 +25,8 @@
 		337C8C135446B45550172205 /* Pods_TestAppObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FEAA724C29B9FAC154C0556 /* Pods_TestAppObjC.framework */; };
 		3FF4F5C8E96A31D0A6E896C4 /* Pods_TestApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96C170474540581D23D5C489 /* Pods_TestApp.framework */; };
 		4A3445E6430F2FDC93CD6A1F /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F7044D49EBAEA4F53647EF2 /* Pods_UnitTests.framework */; };
+		753867C32925735D0021BC3F /* AssuranceAuthorizingPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753867C22925735D0021BC3F /* AssuranceAuthorizingPresentation.swift */; };
+		753867C529257CFE0021BC3F /* AssuranceStatusPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753867C429257CFE0021BC3F /* AssuranceStatusPresentation.swift */; };
 		7881FA5928D50C8D0051F902 /* QuickConnectServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7881FA5828D50C8D0051F902 /* QuickConnectServiceTests.swift */; };
 		B601172227BAE3EF006D3968 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B601172127BAE3EF006D3968 /* Connection.swift */; };
 		B601172527BAE4AA006D3968 /* AdobeLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B601172427BAE4AA006D3968 /* AdobeLogo.swift */; };
@@ -127,15 +129,15 @@
 		B6DDFAB5268139BA002D2757 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6DDFAB4268139BA002D2757 /* Assets.xcassets */; };
 		B6DDFAB8268139BA002D2757 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6DDFAB6268139BA002D2757 /* LaunchScreen.storyboard */; };
 		B6DDFABB268139BA002D2757 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B6DDFABA268139BA002D2757 /* main.m */; };
-		B6EC8D1D27B48FF40058FAC7 /* QuickConnectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EC8D1C27B48FF40058FAC7 /* QuickConnectManager.swift */; };
-		B6EC8D1F27B4918A0058FAC7 /* QuickConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EC8D1E27B4918A0058FAC7 /* QuickConnectView.swift */; };
-		B6EC8D2127B4925C0058FAC7 /* QuickConnectService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EC8D2027B4925C0058FAC7 /* QuickConnectService.swift */; };
 		B6EB1C122805F3FE0036337E /* AssurancePresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C102805F3FE0036337E /* AssurancePresentation.swift */; };
 		B6EB1C132805F3FE0036337E /* AssurancePresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C112805F3FE0036337E /* AssurancePresentationDelegate.swift */; };
 		B6EB1C152805F4FE0036337E /* AssuranceSessionOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C142805F4FE0036337E /* AssuranceSessionOrchestrator.swift */; };
 		B6EB1C1728060D2D0036337E /* AssurancePresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C1628060D2D0036337E /* AssurancePresentationTests.swift */; };
 		B6EB1C1928060DB10036337E /* MockPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C1828060DB10036337E /* MockPresentation.swift */; };
 		B6EB1C1B280611410036337E /* MockSessionOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C1A280611410036337E /* MockSessionOrchestrator.swift */; };
+		B6EC8D1D27B48FF40058FAC7 /* QuickConnectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EC8D1C27B48FF40058FAC7 /* QuickConnectManager.swift */; };
+		B6EC8D1F27B4918A0058FAC7 /* QuickConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EC8D1E27B4918A0058FAC7 /* QuickConnectView.swift */; };
+		B6EC8D2127B4925C0058FAC7 /* QuickConnectService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EC8D2027B4925C0058FAC7 /* QuickConnectService.swift */; };
 		B6F6F1B327A91E060040DCD4 /* AssuranceEventChunker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F6F1B227A91E060040DCD4 /* AssuranceEventChunker.swift */; };
 		B6F6F1B627A943C60040DCD4 /* AssuranceEventChunkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F6F1B427A942A10040DCD4 /* AssuranceEventChunkerTests.swift */; };
 		B6FEB8AC263A18E600F0F240 /* SocketScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FEB8AB263A18E600F0F240 /* SocketScript.swift */; };
@@ -214,6 +216,8 @@
 		2312E718FBB87722A8A55BE1 /* Pods-TestAppObjC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppObjC.release.xcconfig"; path = "Target Support Files/Pods-TestAppObjC/Pods-TestAppObjC.release.xcconfig"; sourceTree = "<group>"; };
 		493D855458BBA67C6F19F468 /* Pods-AEPAssurance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AEPAssurance.release.xcconfig"; path = "Target Support Files/Pods-AEPAssurance/Pods-AEPAssurance.release.xcconfig"; sourceTree = "<group>"; };
 		5ABE4461A8032C0B29C8BCF6 /* Pods-TestAppObjC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppObjC.debug.xcconfig"; path = "Target Support Files/Pods-TestAppObjC/Pods-TestAppObjC.debug.xcconfig"; sourceTree = "<group>"; };
+		753867C22925735D0021BC3F /* AssuranceAuthorizingPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceAuthorizingPresentation.swift; sourceTree = "<group>"; };
+		753867C429257CFE0021BC3F /* AssuranceStatusPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStatusPresentation.swift; sourceTree = "<group>"; };
 		7881FA5828D50C8D0051F902 /* QuickConnectServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectServiceTests.swift; sourceTree = "<group>"; };
 		96C170474540581D23D5C489 /* Pods_TestApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B601171F27BAE193006D3968 /* connection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connection.png; sourceTree = "<group>"; };
@@ -330,15 +334,15 @@
 		B6DDFAB7268139BA002D2757 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B6DDFAB9268139BA002D2757 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6DDFABA268139BA002D2757 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		B6EC8D1C27B48FF40058FAC7 /* QuickConnectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectManager.swift; sourceTree = "<group>"; };
-		B6EC8D1E27B4918A0058FAC7 /* QuickConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectView.swift; sourceTree = "<group>"; };
-		B6EC8D2027B4925C0058FAC7 /* QuickConnectService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectService.swift; sourceTree = "<group>"; };
 		B6EB1C102805F3FE0036337E /* AssurancePresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssurancePresentation.swift; sourceTree = "<group>"; };
 		B6EB1C112805F3FE0036337E /* AssurancePresentationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssurancePresentationDelegate.swift; sourceTree = "<group>"; };
 		B6EB1C142805F4FE0036337E /* AssuranceSessionOrchestrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceSessionOrchestrator.swift; sourceTree = "<group>"; };
 		B6EB1C1628060D2D0036337E /* AssurancePresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssurancePresentationTests.swift; sourceTree = "<group>"; };
 		B6EB1C1828060DB10036337E /* MockPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPresentation.swift; sourceTree = "<group>"; };
 		B6EB1C1A280611410036337E /* MockSessionOrchestrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSessionOrchestrator.swift; sourceTree = "<group>"; };
+		B6EC8D1C27B48FF40058FAC7 /* QuickConnectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectManager.swift; sourceTree = "<group>"; };
+		B6EC8D1E27B4918A0058FAC7 /* QuickConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectView.swift; sourceTree = "<group>"; };
+		B6EC8D2027B4925C0058FAC7 /* QuickConnectService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectService.swift; sourceTree = "<group>"; };
 		B6F6F1B227A91E060040DCD4 /* AssuranceEventChunker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEventChunker.swift; sourceTree = "<group>"; };
 		B6F6F1B427A942A10040DCD4 /* AssuranceEventChunkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEventChunkerTests.swift; sourceTree = "<group>"; };
 		B6FEB8AB263A18E600F0F240 /* SocketScript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketScript.swift; sourceTree = "<group>"; };
@@ -497,6 +501,8 @@
 				B6D6A01A265F027C005042BE /* AssuranceBlob.swift */,
 				B6D6A025265F9F14005042BE /* AssuranceUIUtil.swift */,
 				B6EB1C102805F3FE0036337E /* AssurancePresentation.swift */,
+				753867C429257CFE0021BC3F /* AssuranceStatusPresentation.swift */,
+				753867C22925735D0021BC3F /* AssuranceAuthorizingPresentation.swift */,
 				B6EB1C112805F3FE0036337E /* AssurancePresentationDelegate.swift */,
 				B6EB1C142805F4FE0036337E /* AssuranceSessionOrchestrator.swift */,
 				B61B7E652822D08F00E1A6B2 /* AssuranceSessionDetails.swift */,
@@ -1215,6 +1221,7 @@
 				B6D6A03F2660ED4D005042BE /* WebViewSocket.swift in Sources */,
 				B64071D3262C368C00C43183 /* Assurance.swift in Sources */,
 				B6D6A02F2660CFF5005042BE /* Event+Assurance.swift in Sources */,
+				753867C32925735D0021BC3F /* AssuranceAuthorizingPresentation.swift in Sources */,
 				B6B23ACE26414C8100EE8153 /* iOSPinCodeScreen+FullScreenDelegate.swift in Sources */,
 				B64071D7262C376A00C43183 /* AssuranceConstants.swift in Sources */,
 				B6EB1C122805F3FE0036337E /* AssurancePresentation.swift in Sources */,
@@ -1238,6 +1245,7 @@
 				B6F6F1B327A91E060040DCD4 /* AssuranceEventChunker.swift in Sources */,
 				B64FDF70264F341600D33192 /* PluginFakeEvent.swift in Sources */,
 				B6407223262CEBC600C43183 /* URL+Parser.swift in Sources */,
+				753867C529257CFE0021BC3F /* AssuranceStatusPresentation.swift in Sources */,
 				B6D6A03A2660ECBD005042BE /* SocketDelegate.swift in Sources */,
 				B6D6A0392660ECBD005042BE /* SocketState.swift in Sources */,
 				B6D6A022265F914D005042BE /* PluginScreenshot.swift in Sources */,

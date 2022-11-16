@@ -20,7 +20,7 @@ import Foundation
 class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
 
     let stateManager: AssuranceStateManager
-
+    private var authorizingPresentation: AssuranceAuthorizingPresentation?
     /// A buffer for holding the events until the initial Assurance session associated with
     /// the app launch happens. This is emptied once a session has been connected.
     var outboundEventBuffer: ThreadSafeArray<AssuranceEvent>?
@@ -38,7 +38,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     #else
     private(set) var session: AssuranceSession?
     #endif
-
+    
     init(stateManager: AssuranceStateManager) {
         self.stateManager = stateManager
         self.quickConnectManager = QuickConnectManager(stateManager: stateManager, uiDelegate: self)
@@ -66,15 +66,9 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
         outboundEventBuffer = nil
     }
     
-    func createQuickConnectSession() {
-        if session != nil {
-            Log.warning(label: AssuranceConstants.LOG_TAG, "An active Assurance session already exists. Cannot create a new one. Ignoring to process the scanned deeplink.")
-            return
-        }
-        session = AssuranceSession(stateManager: stateManager, sessionOrchestrator: self, outboundEvents: outboundEventBuffer)
-        session?.startSession()
-        outboundEventBuffer?.clear()
-        outboundEventBuffer = nil
+    func startQuickConnectFlow() {
+        self.authorizingPresentation = AssuranceAuthorizingPresentation(presentationDelegate: self, viewType: .quickConnect)
+        authorizingPresentation?.sessionInitialized()
     }
 
     ///

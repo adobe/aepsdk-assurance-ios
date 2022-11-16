@@ -72,6 +72,7 @@ enum AssuranceConstants {
         static let SHARED_STATE_OWNER = "stateowner"
         static let EXTENSIONS = "extensions"
         static let FRIENDLY_NAME = "friendlyName"
+        static let QUICK_CONNECT = "quickConnect"
     }
 
     enum DataStoreKeys {

@@ -24,9 +24,9 @@ class AssuranceSession {
     let pluginHub: PluginHub = PluginHub()
 
     #if DEBUG
-    var presentation: AssurancePresentation
+    var statusPresentation: AssuranceStatusPresentation
     #else
-    let presentation: AssurancePresentation
+    let statusPresentation: AssuranceStatusPresentation
     #endif
     lazy var socket: SocketConnectable  = {
         return WebViewSocket(withDelegate: self)
@@ -56,23 +56,6 @@ class AssuranceSession {
         handleOutBoundEvents()
         registerInternalPlugins()
 
-        /// Queue the outboundEvents to outboundQueue
-        if let outboundEvents = outboundEvents {
-            for eachEvent in outboundEvents.shallowCopy {
-                outboundQueue.enqueue(newElement: eachEvent)
-            }
-        }
-    }
-    
-    init(stateManager: AssuranceStateManager, sessionOrchestrator: AssuranceSessionOrchestrator, outboundEvents: ThreadSafeArray<AssuranceEvent>?) {
-        self.stateManager = stateManager
-        self.sessionOrchestrator = sessionOrchestrator
-        self.sessionDetails = nil
-        presentation = AssurancePresentation(presentationDelegate: sessionOrchestrator, viewType: .quickConnect)
-        handleInBoundEvents()
-        handleOutBoundEvents()
-        registerInternalPlugins()
-        
         /// Queue the outboundEvents to outboundQueue
         if let outboundEvents = outboundEvents {
             for eachEvent in outboundEvents.shallowCopy {

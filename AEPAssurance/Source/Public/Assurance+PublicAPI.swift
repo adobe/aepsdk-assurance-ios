@@ -45,12 +45,16 @@ import Foundation
     }
     
     #if DEBUG
-    // TODO: - Decide on API name / signature
+    /// Starts an AEPAssurance QuickConnect flow.
+    ///
+    /// Calling this method when a session has already been started results in a no-op, otherwise it initiates the quickConnect flow
+    ///
     static func startSession() {
+        let eventData = [AssuranceConstants.EventDataKey.QUICK_CONNECT: true]
         let event = Event(name: AssuranceConstants.AssuranceEvent.Name.QUICKCONNECT_START_SESSION,
                           type: AssuranceConstants.SDKEventType.ASSURANCE,
                           source: EventSource.requestContent,
-                          data: nil)
+                          data: eventData)
         MobileCore.dispatch(event: event)
     }
     #endif
