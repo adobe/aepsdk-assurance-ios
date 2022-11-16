@@ -56,19 +56,29 @@ extension URL {
         }
         
         for (key, value) in self.params {
-            if key == SOCKET_URL_KEYS.SESSION_ID_KEY, !(validate(sessionID: value)) {
-                Log.error(label: LOG_TAG, "sessionID was not safe, malicious attempt to inject JS possible")
-                return false
-            } else if key == SOCKET_URL_KEYS.CLIENT_ID_KEY, !(validate(clientID: value)) {
-                Log.error(label: LOG_TAG, "clientID was not safe, malicious attempt to inject JS possible")
-                return false
-            } else if key == SOCKET_URL_KEYS.ORG_ID_KEY, !(validate(orgID: value)) {
-                Log.error(label: LOG_TAG, "orgID was not safe, malicious attempt to inject JS possible")
-                return false
-            } else if key == SOCKET_URL_KEYS.TOKEN_KEY, !(validate(token: value)) {
-                Log.error(label: LOG_TAG, "token was not safe, malicious attempt to inject JS possible")
-                return false
-            } else {
+            switch key {
+            case SOCKET_URL_KEYS.SESSION_ID_KEY:
+                if !validate(sessionID: value) {
+                    Log.error(label: LOG_TAG, "sessionID was not safe, malicious attempt to inject JS possible")
+                    return false
+                }
+            case SOCKET_URL_KEYS.CLIENT_ID_KEY:
+                if !validate(clientID: value) {
+                    Log.error(label: LOG_TAG, "clientID was not safe, malicious attempt to inject JS possible")
+                    return false
+                }
+            case SOCKET_URL_KEYS.ORG_ID_KEY:
+                if !validate(orgID: value) {
+                    Log.error(label: LOG_TAG, "orgID was not safe, malicious attempt to inject JS possible")
+                    return false
+                    
+                }
+            case SOCKET_URL_KEYS.TOKEN_KEY:
+                if !validate(token: value) {
+                    Log.error(label: LOG_TAG, "token was not safe, malicious attempt to inject JS possible")
+                    return false
+                }
+            default:
                 Log.error(label: LOG_TAG, "Extra parameters found in socket url, malicious attempt to inject JS possible")
                 return false
             }
