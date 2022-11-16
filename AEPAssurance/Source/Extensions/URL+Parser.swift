@@ -50,29 +50,37 @@ extension URL {
     var isSafe: Bool {
         let LOG_TAG = "Assurance URL Parser"
         
-        guard let sessionId = self.params[SOCKET_URL_KEYS.SESSION_ID_KEY], validate(sessionID: sessionId) else {
-            Log.error(label: LOG_TAG, "sessionID was not safe, malicious attempt to inject JS possible")
-            return false
-        }
-
-        guard let clientId = self.params[SOCKET_URL_KEYS.CLIENT_ID_KEY], validate(clientID: clientId) else {
-            Log.error(label: LOG_TAG, "clientID was not safe, malicious attempt to inject JS possible")
-            return false
-        }
-
-        guard let orgId = self.params[SOCKET_URL_KEYS.ORG_ID_KEY], validate(orgID: orgId) else {
-            Log.error(label: LOG_TAG, "orgID was not safe, malicious attempt to inject JS possible")
-            return false
-        }
-
-        guard let token = self.params[SOCKET_URL_KEYS.TOKEN_KEY], validate(token: token) else {
-            Log.error(label: LOG_TAG, "token was not safe, malicious attempt to inject JS possible")
-            return false
-        }
-
         guard let _ = self.env else {
-            Log.error(label: LOG_TAG, "env was not safe, malicious attempt to inject JS possible")
+            Log.error(label: LOG_TAG, "Socket url validation failed, malformed env parameter found.")
             return false
+        }
+        
+        for (key, value) in self.params {
+            switch key {
+            case SOCKET_URL_KEYS.SESSION_ID_KEY:
+                if !validate(sessionID: value) {
+                    Log.error(label: LOG_TAG, "Socket url validation failed, malformed sessionID parameter found.")
+                    return false
+                }
+            case SOCKET_URL_KEYS.CLIENT_ID_KEY:
+                if !validate(clientID: value) {
+                    Log.error(label: LOG_TAG, "Socket url validation failed, malformed clientID parameter found.")
+                    return false
+                }
+            case SOCKET_URL_KEYS.ORG_ID_KEY:
+                if !validate(orgID: value) {
+                    Log.error(label: LOG_TAG, "Socket url validation failed, malformed orgID parameter found.")
+                    return false
+                }
+            case SOCKET_URL_KEYS.TOKEN_KEY:
+                if !validate(token: value) {
+                    Log.error(label: LOG_TAG, "Socket url validation failed, malformed token parameter found.")
+                    return false
+                }
+            default:
+                Log.error(label: LOG_TAG, "Socket url validation failed, extra parameter(s) found.")
+                return false
+            }
         }
         
         return true
