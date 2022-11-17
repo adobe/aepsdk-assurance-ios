@@ -13,18 +13,10 @@
 import Foundation
 
 ///
-/// AssurancePresentationDelegate to delegate the Assurance Presentation flow for both Pin and QuickConnect
+/// AssuranceConnectionDelegate to delegate Socket connection status
 ///
-protocol AssurancePresentationDelegate {
-    var isConnected: Bool { get }
-    func initializePinScreenFlow()
-    func pinScreenConnectClicked(_ pin: String)
-    func pinScreenCancelClicked()
-    func disconnectClicked()
-#if DEBUG
-    func createQuickConnectSession(with sessionDetails: AssuranceSessionDetails)
-    func quickConnectError(error: AssuranceConnectionError)
-    func quickConnectCancelled()
-    func quickConnectBegin()
-#endif
+protocol AssuranceConnectionDelegate {
+    func handleConnectionError(error: AssuranceConnectionError)
+    func handleSuccessfulConnection()
+    func handleSessionDisconnect()
 }

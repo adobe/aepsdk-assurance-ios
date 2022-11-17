@@ -144,6 +144,7 @@ class QuickConnectService {
                     completion(.failure(.getDeviceStatusCancelled))
                     return
                 }
+                self.shouldRetryGetDeviceStatus = false
                 completion(.success((sessionID: sessionID, token: token)))
 
                 return

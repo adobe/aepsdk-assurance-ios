@@ -189,7 +189,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     }
 #endif
     
-    /// MARK: - AssuranceConnectionDelegate Protocol Implementation
+    // MARK: - AssuranceConnectionDelegate Protocol Implementation
     func handleConnectionError(error: AssuranceConnectionError) {
         authorizingPresentation?.sessionConnectionError(error: error)
     }

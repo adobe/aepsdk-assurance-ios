@@ -306,13 +306,11 @@ public class QuickConnectView: SessionAuthorizingUI {
         self.connectionSuccessfulState()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
           self.dismiss()
-          self.displayed = false
       }
     }
     
     func sessionDisconnected() {
         self.dismiss()
-        self.displayed = false
     }
     
     func sessionConnectionFailed(withError error: AssuranceConnectionError) {
