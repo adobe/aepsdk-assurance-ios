@@ -88,7 +88,7 @@ extension AssuranceSession: SocketDelegate {
             // do the reconnect logic only if session was already connected
             guard let _ = stateManager.connectedWebSocketURL else {
                 statusPresentation.sessionConnectionError(error: AssuranceConnectionError.genericError)
-                presentationDelegate.handleConnectionError(error: AssuranceConnectionError.genericError)
+                connectionDelegate.handleConnectionError(error: AssuranceConnectionError.genericError)
                 return
             }
 
