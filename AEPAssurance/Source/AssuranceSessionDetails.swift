@@ -49,10 +49,11 @@ class AssuranceSessionDetails {
     ///  - sessionId:A string representing sessionId for a session
     ///  - clientId: A string representing  clientId
     ///  - environment: the AssuranceEnvironment
-    init(sessionId: String, clientId: String, environment: AssuranceEnvironment = AssuranceEnvironment.prod) {
+    init(sessionId: String, clientId: String, environment: AssuranceEnvironment = AssuranceEnvironment.prod, token: String? = nil) {
         self.sessionId = sessionId
         self.clientID = clientId
         self.environment = environment
+        self.token = token
     }
 
     /// Initializer

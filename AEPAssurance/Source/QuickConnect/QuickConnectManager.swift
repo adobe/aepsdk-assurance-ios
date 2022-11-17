@@ -52,7 +52,7 @@ class QuickConnectManager {
         quickConnectService.getDeviceStatus(clientID: stateManager.clientID, orgID: orgID, completion: { result in
             switch result {
             case .success((let sessionId, let token)):
-                //self.deleteDevice()
+                let sessionDetails = AssuranceSessionDetails(sessionId: sessionId, clientId: stateManager.clientID, environment: AssuranceEnvironment.prod, token: String(token))
                 self.uiDelegate.createQuickConnectSession(clientID: self.stateManager.clientID, sessionID: sessionId, orgID: orgID, environment: AssuranceEnvironment.prod, token: String(token))
                 break
             case .failure(let error):

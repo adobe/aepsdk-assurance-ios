@@ -33,7 +33,7 @@ class iOSPinCodeScreen: SessionAuthorizingUI {
     }
 
     /// Invoked when the a socket connection is initialized.
-    func sessionInitialized() {
+    func sessionConnecting() {
         fullscreenWebView?.evaluateJavaScript("showLoading();", completionHandler: nil)
     }
 

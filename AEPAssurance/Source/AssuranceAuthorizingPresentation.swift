@@ -40,11 +40,15 @@ class AssuranceAuthorizingPresentation: AssurancePresentation {
     }
     
     /// Call this to show the UI elements that are required when a session is initialized.
-    func sessionInitialized() {
+    func show() {
         // invoke the pinpad screen and create a socketURL with the pincode and other essential parameters
         DispatchQueue.main.async {
             self.sessionView.show()
         }
+    }
+    
+    func sessionConnecting() {
+        self.sessionView.sessionConnecting()
     }
     
     func sessionConnected() {

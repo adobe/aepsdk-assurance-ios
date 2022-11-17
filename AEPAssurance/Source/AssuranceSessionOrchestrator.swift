@@ -17,7 +17,7 @@ import Foundation
 /// events or work flows (scanning QR code, disconnection from PIN screen, shake gesture for QuickConnect etc).
 ///
 /// Acts as the source of truth for all operations related to active session.
-class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
+class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConnectionDelegate {
 
     let stateManager: AssuranceStateManager
     private var authorizingPresentation: AssuranceAuthorizingPresentation?
@@ -68,7 +68,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     
     func startQuickConnectFlow() {
         self.authorizingPresentation = AssuranceAuthorizingPresentation(presentationDelegate: self, viewType: .quickConnect)
-        authorizingPresentation?.sessionInitialized()
+        authorizingPresentation?.show()
     }
 
     ///
@@ -108,6 +108,10 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     }
     
     // MARK: - AssurancePresentationDelegate methods
+    func initializePinScreenFlow() {
+        self.authorizingPresentation = AssuranceAuthorizingPresentation(presentationDelegate: self, viewType: .pinCode)
+        self.authorizingPresentation?.show()
+    }
 
     /// Invoked when Connect button is clicked on the PinCode screen.
     /// - Parameters:
@@ -121,18 +125,19 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
 
         /// display the error if the pin is empty
         if pin.isEmpty {
-            session.presentation.sessionConnectionError(error: .noPincode)
+            self.authorizingPresentation?.sessionConnectionError(error: .noPincode)
             terminateSession()
             return
         }
 
         /// display error if the OrgID is missing.
         guard let orgID = stateManager.getURLEncodedOrgID() else {
-            session.presentation.sessionConnectionError(error: .noOrgId)
+            self.authorizingPresentation?.sessionConnectionError(error: .noOrgId)
             terminateSession()
             return
         }
-
+        
+        self.authorizingPresentation?.sessionConnecting()
         Log.trace(label: AssuranceConstants.LOG_TAG, "Connect Button clicked. Starting a socket connection.")
         session.sessionDetails?.authenticate(withPIN: pin, andOrgID: orgID)
         session.startSession()
@@ -158,7 +163,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
             return session?.socket.socketState == .open
         }
     }
-
+    
 #if DEBUG
     
     func quickConnectBegin() {
@@ -169,31 +174,31 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate {
         quickConnectManager?.cancelRetryGetDeviceStatus()
     }
     
-    func createQuickConnectSession(clientID: String, sessionID: String, orgID: String, environment: AssuranceEnvironment, token: String) {
+    func createQuickConnectSession(with sessionDetails: AssuranceSessionDetails) {
         if session != nil {
             Log.warning(label: AssuranceConstants.LOG_TAG, "Quick connect attempted when active session exists")
             return
         }
         
-        let socketURLString = String(format: AssuranceConstants.BASE_SOCKET_URL,
-                                     environment.urlFormat,
-                                     sessionID,
-                                     token,
-                                     orgID,
-                                     clientID)
-        do {
-            session?.sessionDetails = try AssuranceSessionDetails(withURLString: socketURLString)
-            session?.startSession()
-            //createSession(withDetails: sessionDetails)
-        } catch let error as AssuranceSessionDetailBuilderError {
-            Log.error(label: AssuranceConstants.LOG_TAG, "QuickConnect failed with invalid URL: \(socketURLString), Error message: \(error.message)")
-        } catch {
-            Log.error(label: AssuranceConstants.LOG_TAG, "QuickConnect failed with invalid URL: \(socketURLString), Error message: \(error.localizedDescription)")
-        }
+        authorizingPresentation?.sessionConnecting()
+        createSession(withDetails: sessionDetails)
     }
     
     func quickConnectError(error: AssuranceConnectionError) {
         session?.handleConnectionError(error: error, closeCode: AssuranceConstants.SocketCloseCode.NORMAL_CLOSURE)
     }
 #endif
+    
+    /// MARK: - AssuranceConnectionDelegate Protocol Implementation
+    func handleConnectionError(error: AssuranceConnectionError) {
+        authorizingPresentation?.sessionConnectionError(error: error)
+    }
+    
+    func handleSuccessfulConnection() {
+        authorizingPresentation?.sessionConnected()
+    }
+    
+    func handleSessionDisconnect() {
+        authorizingPresentation?.sessionDisconnected()
+    }
 }

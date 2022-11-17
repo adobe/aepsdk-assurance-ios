@@ -16,6 +16,8 @@ class AssuranceSession {
     let RECONNECT_TIMEOUT = 5
     let stateManager: AssuranceStateManager
     var sessionDetails: AssuranceSessionDetails?
+    let presentationDelegate: AssurancePresentationDelegate
+    let connectionDelegate: AssuranceConnectionDelegate
     let sessionOrchestrator: AssuranceSessionOrchestrator
     let outboundQueue: ThreadSafeQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
     let inboundQueue: ThreadSafeQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
@@ -51,7 +53,8 @@ class AssuranceSession {
         self.sessionDetails = sessionDetails
         self.stateManager = stateManager
         self.sessionOrchestrator = sessionOrchestrator
-        presentation = AssurancePresentation(presentationDelegate: sessionOrchestrator, viewType: .pinCode)
+        self.presentationDelegate = sessionOrchestrator
+        statusPresentation = AssuranceStatusPresentation(presentationDelegate: presentationDelegate)
         handleInBoundEvents()
         handleOutBoundEvents()
         registerInternalPlugins()
@@ -79,12 +82,12 @@ class AssuranceSession {
             // if the URL is already authenticated with Pin and OrgId,
             // then immediately make the socket connection
             socket.connect(withUrl: url)
-            self.presentation.statusUI.display()
+            self.statusPresentation.statusUI.display()
         case .failure:
             // if the URL is not authenticated, then bring up the pinpad screen
-            presentation.sessionInitialized()
+            presentationDelegate.initializePinScreenFlow()
         case .none:
-            presentation.sessionInitialized()
+            presentationDelegate.initializePinScreenFlow()
         }
     }
 
@@ -125,7 +128,7 @@ class AssuranceSession {
         // if the pinCode screen is still being displayed. Then use the same webView to display error
         Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with error :\(error.info.name) \n description : \(error.info.description) \n close code: \(closeCode)")
 
-        presentation.sessionConnectionError(error: error)
+        presentationDelegate.handleConnectionError(error: error)
         pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
 
         // since we don't give retry option for these errors and UI will be dismissed anyway, hence notify plugins for onSessionTerminated

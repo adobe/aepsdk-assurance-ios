@@ -298,7 +298,7 @@ public class QuickConnectView: SessionAuthorizingUI {
             
     }
     
-    func sessionInitialized() {
+    func sessionConnecting() {
         // TODO: - No op?
     }
     

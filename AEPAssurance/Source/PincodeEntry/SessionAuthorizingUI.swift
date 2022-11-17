@@ -23,7 +23,7 @@ protocol SessionAuthorizingUI {
     func show()
 
     /// Invoked when the a socket connection is initialized. Typically calling this method shows user the loading screen.
-    func sessionInitialized()
+    func sessionConnecting()
 
     /// Invoked when the a successful socket connection is established with a desired assurance session
     func sessionConnected()

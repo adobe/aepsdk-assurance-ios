@@ -12,13 +12,20 @@
 
 import Foundation
 
+protocol AssuranceConnectionDelegate {
+    func handleConnectionError(error: AssuranceConnectionError)
+    func handleSuccessfulConnection()
+    func handleSessionDisconnect()
+}
+
 protocol AssurancePresentationDelegate {
+    var isConnected: Bool { get }
+    func initializePinScreenFlow()
     func pinScreenConnectClicked(_ pin: String)
     func pinScreenCancelClicked()
     func disconnectClicked()
-    var isConnected: Bool { get }
 #if DEBUG
-    func createQuickConnectSession(clientID: String, sessionID: String, orgID: String, environment: AssuranceEnvironment, token: String)
+    func createQuickConnectSession(with sessionDetails: AssuranceSessionDetails)
     func quickConnectError(error: AssuranceConnectionError)
     func quickConnectCancelled()
     func quickConnectBegin()

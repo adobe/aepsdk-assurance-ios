@@ -52,6 +52,9 @@ extension AssuranceSession {
     /// Handles the queuing and receiving of inbound Assurance session events.
     ///
     func handleInBoundEvents() {
+        inboundSource.setEventHandler(handler: {[self] in
+            
+        })
         inboundSource.setEventHandler(handler: { [self] in
             while self.inboundQueue.size() > 0 {
                 guard let event = self.inboundQueue.dequeue() else {
@@ -70,7 +73,8 @@ extension AssuranceSession {
                     // 1. Remove the WebView UI and display the floating button
                     // 2. Share the Assurance shared state
                     // 3. Notify the client plugins on successful connection
-                    presentation.sessionConnected()
+                    self.presentationDelegate.handleSuccessfulConnection()
+                    self.statusPresentation.sessionConnected()
                     self.pluginHub.notifyPluginsOnConnect()
                     self.outboundSource.add(data: 1)
 
