@@ -132,7 +132,6 @@
 		B6DDFAB5268139BA002D2757 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6DDFAB4268139BA002D2757 /* Assets.xcassets */; };
 		B6DDFAB8268139BA002D2757 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6DDFAB6268139BA002D2757 /* LaunchScreen.storyboard */; };
 		B6DDFABB268139BA002D2757 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B6DDFABA268139BA002D2757 /* main.m */; };
-		B6EB1C122805F3FE0036337E /* AssurancePresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C102805F3FE0036337E /* AssurancePresentation.swift */; };
 		B6EB1C132805F3FE0036337E /* AssurancePresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C112805F3FE0036337E /* AssurancePresentationDelegate.swift */; };
 		B6EB1C152805F4FE0036337E /* AssuranceSessionOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C142805F4FE0036337E /* AssuranceSessionOrchestrator.swift */; };
 		B6EB1C1728060D2D0036337E /* AssurancePresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C1628060D2D0036337E /* AssurancePresentationTests.swift */; };
@@ -340,7 +339,6 @@
 		B6DDFAB7268139BA002D2757 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B6DDFAB9268139BA002D2757 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6DDFABA268139BA002D2757 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		B6EB1C102805F3FE0036337E /* AssurancePresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssurancePresentation.swift; sourceTree = "<group>"; };
 		B6EB1C112805F3FE0036337E /* AssurancePresentationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssurancePresentationDelegate.swift; sourceTree = "<group>"; };
 		B6EB1C142805F4FE0036337E /* AssuranceSessionOrchestrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceSessionOrchestrator.swift; sourceTree = "<group>"; };
 		B6EB1C1628060D2D0036337E /* AssurancePresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssurancePresentationTests.swift; sourceTree = "<group>"; };
@@ -506,7 +504,6 @@
 				B6D6A014265D8836005042BE /* AssuranceClientInfo.swift */,
 				B6D6A01A265F027C005042BE /* AssuranceBlob.swift */,
 				B6D6A025265F9F14005042BE /* AssuranceUIUtil.swift */,
-				B6EB1C102805F3FE0036337E /* AssurancePresentation.swift */,
 				753867C429257CFE0021BC3F /* AssuranceStatusPresentation.swift */,
 				753867C22925735D0021BC3F /* AssuranceAuthorizingPresentation.swift */,
 				B6EB1C112805F3FE0036337E /* AssurancePresentationDelegate.swift */,
@@ -1233,7 +1230,6 @@
 				753867C32925735D0021BC3F /* AssuranceAuthorizingPresentation.swift in Sources */,
 				B6B23ACE26414C8100EE8153 /* iOSPinCodeScreen+FullScreenDelegate.swift in Sources */,
 				B64071D7262C376A00C43183 /* AssuranceConstants.swift in Sources */,
-				B6EB1C122805F3FE0036337E /* AssurancePresentation.swift in Sources */,
 				B6D6A027265F9F32005042BE /* AssuranceUIUtil.swift in Sources */,
 				B601172527BAE4AA006D3968 /* AdobeLogo.swift in Sources */,
 				B6CECC652655A8D3000D517F /* ThreadSafeQueue.swift in Sources */,
