@@ -17,10 +17,10 @@ import Foundation
 /// events or work flows (scanning QR code, disconnection from PIN screen, shake gesture for QuickConnect etc).
 ///
 /// Acts as the source of truth for all operations related to active session.
-class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConnectionDelegate {
+class AssuranceSessionOrchestrator {
 
     let stateManager: AssuranceStateManager
-    private var authorizingPresentation: AssuranceAuthorizingPresentation?
+    var authorizingPresentation: AssuranceAuthorizingPresentation?
     /// A buffer for holding the events until the initial Assurance session associated with
     /// the app launch happens. This is emptied once a session has been connected.
     var outboundEventBuffer: ThreadSafeArray<AssuranceEvent>?
@@ -42,7 +42,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     init(stateManager: AssuranceStateManager) {
         self.stateManager = stateManager
         self.quickConnectManager = QuickConnectManager(stateManager: stateManager, uiDelegate: self)
-        outboundEventBuffer = ThreadSafeArray(identifier: "Session Orchestrator's OutboundBuffer array")
+        self.outboundEventBuffer = ThreadSafeArray(identifier: "Session Orchestrator's OutboundBuffer array")
     }
 
     /// Creates and starts a new  `AssuranceSession` with the provided `AssuranceSessionDetails`.
@@ -70,7 +70,11 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     /// Starts the quick connect flow
     ///
     func startQuickConnectFlow() {
-        self.authorizingPresentation = AssuranceAuthorizingPresentation(presentationDelegate: self, viewType: .quickConnect)
+        if session != nil {
+            Log.warning(label: AssuranceConstants.LOG_TAG, "An active Assurance session already exists. Cannot create a new one. Ignoring attempt to start quick connect flow.")
+            return
+        }
+        authorizingPresentation = AssuranceAuthorizingPresentation(presentationDelegate: self, viewType: .quickConnect)
         authorizingPresentation?.show()
     }
 
@@ -79,7 +83,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     ///
     func terminateSession() {
         hasEverTerminated = true
-        self.outboundEventBuffer = nil
+        outboundEventBuffer = nil
 
         stateManager.clearAssuranceState()
 
@@ -108,100 +112,5 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     ///           false if extension is shutdown or no active session exists.
     func canProcessSDKEvents() -> Bool {
         return session != nil || outboundEventBuffer != nil
-    }
-    
-    // MARK: - AssurancePresentationDelegate methods
-    func initializePinScreenFlow() {
-        self.authorizingPresentation = AssuranceAuthorizingPresentation(presentationDelegate: self, viewType: .pinCode)
-        self.authorizingPresentation?.show()
-    }
-
-    /// Invoked when Connect button is clicked on the PinCode screen.
-    /// - Parameters:
-    ///    - pin: A `String` value representing 4 digit pin entered in the PinCode screen
-    func pinScreenConnectClicked(_ pin: String) {
-        guard let session = session else {
-            Log.error(label: AssuranceConstants.LOG_TAG, "PIN confirmation without active session.")
-            terminateSession()
-            return
-        }
-
-        /// display the error if the pin is empty
-        if pin.isEmpty {
-            self.authorizingPresentation?.sessionConnectionError(error: .noPincode)
-            terminateSession()
-            return
-        }
-
-        /// display error if the OrgID is missing.
-        guard let orgID = stateManager.getURLEncodedOrgID() else {
-            self.authorizingPresentation?.sessionConnectionError(error: .noOrgId)
-            terminateSession()
-            return
-        }
-        
-        self.authorizingPresentation?.sessionConnecting()
-        Log.trace(label: AssuranceConstants.LOG_TAG, "Connect Button clicked. Starting a socket connection.")
-        session.sessionDetails?.authenticate(withPIN: pin, andOrgID: orgID)
-        session.startSession()
-    }
-    ///
-    /// Invoked when Cancel button is clicked on the PinCode screen.
-    ///
-    func pinScreenCancelClicked() {
-        Log.trace(label: AssuranceConstants.LOG_TAG, "Cancel clicked. Terminating session and dismissing the PinCode Screen.")
-        terminateSession()
-    }
-
-    ///
-    /// Invoked when Disconnect button is clicked on the Status UI.
-    ///
-    func disconnectClicked() {
-        Log.trace(label: AssuranceConstants.LOG_TAG, "Disconnect clicked. Terminating session.")
-        terminateSession()
-    }
-
-    var isConnected: Bool {
-        get {
-            return session?.socket.socketState == .open
-        }
-    }
-    
-#if DEBUG
-    
-    func quickConnectBegin() {
-        quickConnectManager?.createDevice()
-    }
-    
-    func quickConnectCancelled() {
-        quickConnectManager?.cancelRetryGetDeviceStatus()
-    }
-    
-    func createQuickConnectSession(with sessionDetails: AssuranceSessionDetails) {
-        if session != nil {
-            Log.warning(label: AssuranceConstants.LOG_TAG, "Quick connect attempted when active session exists")
-            return
-        }
-        
-        authorizingPresentation?.sessionConnecting()
-        createSession(withDetails: sessionDetails)
-    }
-    
-    func quickConnectError(error: AssuranceConnectionError) {
-        session?.handleConnectionError(error: error, closeCode: AssuranceConstants.SocketCloseCode.NORMAL_CLOSURE)
-    }
-#endif
-    
-    // MARK: - AssuranceConnectionDelegate Protocol Implementation
-    func handleConnectionError(error: AssuranceConnectionError) {
-        authorizingPresentation?.sessionConnectionError(error: error)
-    }
-    
-    func handleSuccessfulConnection() {
-        authorizingPresentation?.sessionConnected()
-    }
-    
-    func handleSessionDisconnect() {
-        authorizingPresentation?.sessionDisconnected()
     }
 }

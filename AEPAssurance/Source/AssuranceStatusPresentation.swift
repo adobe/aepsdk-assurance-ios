@@ -15,7 +15,7 @@ import Foundation
 ///
 /// Represents the Assurance Session's Status Presentation
 ///
-class AssuranceStatusPresentation: AssurancePresentation {
+class AssuranceStatusPresentation {
 
     let delegate: AssurancePresentationDelegate
     lazy var statusUI: iOSStatusUI  = {

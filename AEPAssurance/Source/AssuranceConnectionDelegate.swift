@@ -16,10 +16,21 @@ import Foundation
 /// AssuranceConnectionDelegate to delegate Socket connection status
 ///
 protocol AssuranceConnectionDelegate {
+    
     ///
-    /// 
+    /// Handles a connection error
+    ///
+    /// - Parameter: error `AssuranceConnectionError`
     ///
     func handleConnectionError(error: AssuranceConnectionError)
+    
+    ///
+    /// Handles a successful session connection
+    ///
     func handleSuccessfulConnection()
+    
+    ///
+    /// Handles a session disconnect
+    ///
     func handleSessionDisconnect()
 }

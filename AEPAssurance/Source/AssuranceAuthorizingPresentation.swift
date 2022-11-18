@@ -24,7 +24,7 @@ enum AssuranceAuthorizingView {
 ///
 /// Represents the Assurance Session's Authorizing Presentation
 ///
-class AssuranceAuthorizingPresentation: AssurancePresentation {
+class AssuranceAuthorizingPresentation {
     
     let delegate: AssurancePresentationDelegate
     var sessionView: SessionAuthorizingUI
