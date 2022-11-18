@@ -161,31 +161,6 @@ public class QuickConnectView: SessionAuthorizingUI {
         }
     }
     
-//    func onSuccessfulDeviceRegistration() {
-//          DispatchQueue.main.async {
-//              UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
-//                  self.labelRegisteringDevice.text = self.registerDeviceApproved
-//              }, completion: {resut in
-//                  self.labelDeviceApprovalStatus.isHidden = false
-//                  self.labelDeviceApprovalHint.isHidden = false
-//              })
-//          }
-//      }
-      
-//    func onFailedDeviceRegistration(error: AssuranceQuickConnectNetworkError) {
-//          DispatchQueue.main.async {
-//            // TODO: - Switch on error and handle appropriately
-//          }
-//      }
-            
-//    func onSuccessfulApproval() {
-//          self.connectionSuccessfulState()
-//      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-//          self.dismiss()
-//          self.displayed = false
-//      }
-//    }
-
     func onFailedApproval() {
       DispatchQueue.main.async {
           
