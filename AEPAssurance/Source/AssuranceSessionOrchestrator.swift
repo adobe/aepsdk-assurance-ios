@@ -66,6 +66,9 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
         outboundEventBuffer = nil
     }
     
+    ///
+    /// Starts the quick connect flow
+    ///
     func startQuickConnectFlow() {
         self.authorizingPresentation = AssuranceAuthorizingPresentation(presentationDelegate: self, viewType: .quickConnect)
         authorizingPresentation?.show()

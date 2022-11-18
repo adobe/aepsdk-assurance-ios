@@ -16,9 +16,21 @@ import Foundation
 /// An Assurance Session Presentation protocol which represents common presentation logic needed for an assurance presentation
 ///
 protocol AssurancePresentation {
-    /// Call this to show the UI elements that are required when a session connection has been successfully established.
+    ///
+    /// Called when a session connection has been successfully established.
+    ///
     func sessionConnected()
+    
+    ///
+    /// Called when a session has been disconnected
+    ///
     func sessionDisconnected()
+    
+    ///
+    /// Called when a session connection error has occurred
+    ///
+    /// - Parameter: the error `AssuranceConnectionError` which occurred
+    ///
     func sessionConnectionError(error: AssuranceConnectionError)
 }
 
