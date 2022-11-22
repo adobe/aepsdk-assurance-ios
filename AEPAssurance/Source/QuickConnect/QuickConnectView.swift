@@ -100,7 +100,7 @@ public class QuickConnectView: SessionAuthorizingUI {
         stackView.spacing = 15.0
         stackView.alignment = .center
         stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fillProportionally
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -109,7 +109,7 @@ public class QuickConnectView: SessionAuthorizingUI {
         let button = UIButton()
         button.contentMode = .scaleAspectFit
         button.backgroundColor = .clear
-        button.layer.borderWidth = 1
+        button.layer.borderWidth = 2
         button.layer.borderColor = UIColor.white.cgColor
         button.layer.cornerRadius = uiConstants.BUTTON_CORNER_RADIUS
         button.titleLabel?.font = UIFont(name: "Helvetica", size: uiConstants.BUTTON_FONT_SIZE)
@@ -135,6 +135,29 @@ public class QuickConnectView: SessionAuthorizingUI {
         return button
     }()
     
+    lazy private var errorTitle: UILabel = {
+        let label = UILabel()
+        label.accessibilityLabel = "AssuranceQuickConnectErrorLabel"
+        label.backgroundColor = .clear
+        label.text = "Error Details"
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = UIFont(name: "Helvetica-Bold", size: 20.0)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    lazy private var errorDescription: UITextView = {
+        let textView = UITextView()
+        textView.accessibilityLabel = "AssuranceQuickConnectErrorDescriptionTextView"
+        textView.backgroundColor = .clear
+        textView.textColor = .white
+        textView.textAlignment = .center
+        textView.textContainerInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        textView.font = UIFont(name: "Helvetica", size: 12.0)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        return textView
+    }()
     
     func initialState(){
         DispatchQueue.main.async {
@@ -161,10 +184,13 @@ public class QuickConnectView: SessionAuthorizingUI {
         }
     }
     
-    func onFailedApproval() {
-      DispatchQueue.main.async {
-          
-      }
+    func errorState(errorText: String) {
+        DispatchQueue.main.async {
+            self.errorTitle.isHidden = false
+            self.errorDescription.isHidden = false
+            self.errorDescription.text = errorText
+            self.connectButton.titleLabel?.text = "Retry"
+        }
     }
     
     func dismiss() {
@@ -234,10 +260,29 @@ public class QuickConnectView: SessionAuthorizingUI {
             connectionImageView.heightAnchor.constraint(equalToConstant: uiConstants.CONNECTION_IMAGE_HEIGHT)
         ])
         
+        baseView.addSubview(errorTitle)
+        NSLayoutConstraint.activate([
+            errorTitle.leftAnchor.constraint(equalTo: baseView.leftAnchor),
+            errorTitle.rightAnchor.constraint(equalTo: baseView.rightAnchor),
+            errorTitle.topAnchor.constraint(equalTo: connectionImageView.bottomAnchor, constant: uiConstants.ERROR_TITLE_TOP_MARGIN),
+            errorTitle.heightAnchor.constraint(equalToConstant: uiConstants.ERROR_TITLE_HEIGHT)
+        ])
+        
+        baseView.addSubview(errorDescription)
+        NSLayoutConstraint.activate([
+            errorDescription.leftAnchor.constraint(equalTo: baseView.leftAnchor),
+            errorDescription.rightAnchor.constraint(equalTo: baseView.rightAnchor),
+            errorDescription.topAnchor.constraint(equalTo: errorTitle.bottomAnchor, constant: uiConstants.ERROR_DESCRIPTION_TOP_MARGIN),
+            errorDescription.heightAnchor.constraint(equalToConstant: uiConstants.ERROR_DESCRIPTION_HEIGHT)
+        ])
+        
+        // Hide error views by default
+        errorTitle.isHidden = true
+        errorDescription.isHidden = true
+        
         baseView.addSubview(buttonStackView)
         NSLayoutConstraint.activate([
-            buttonStackView.leadingAnchor.constraint(equalTo: baseView.leadingAnchor, constant: 40.0),
-            buttonStackView.trailingAnchor.constraint(equalTo: baseView.trailingAnchor, constant: -40.0),
+            buttonStackView.centerXAnchor.constraint(equalTo: baseView.centerXAnchor),
             buttonStackView.topAnchor.constraint(equalTo: connectionImageView.bottomAnchor, constant: uiConstants.BUTTON_HOLDER_TOP_MARGIN),
             buttonStackView.heightAnchor.constraint(equalToConstant: uiConstants.BUTTON_HOLDER_HEIGHT)
         ])
@@ -289,6 +334,20 @@ public class QuickConnectView: SessionAuthorizingUI {
     }
     
     func sessionConnectionFailed(withError error: AssuranceConnectionError) {
-        // TODO: - Handle errors here for view
+        errorState(errorText: error.info.description)
+//        switch error {
+//        case .invalidRequestBody:
+//            errorDescription.text = error.info.description
+//        case .invalidResponseData:
+//            errorDescription.text = "Invalid response data"
+//        case .invalidURL(let url):
+//            errorDescription.text = "Invalid url"
+//        case .failedToRegisterDevice(let statusCode, let responseMessage):
+//            errorDescription.text =
+//        case .failedToGetDeviceStatus(let statusCode, let responseMessage):
+//        case . failedToDeleteDevice(let statusCode,  let responseMessage):
+//        case default:
+//            errorDescription.text = "Unknown error occured"
+//        }
     }
 }

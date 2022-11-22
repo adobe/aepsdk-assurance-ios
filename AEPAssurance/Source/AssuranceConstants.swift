@@ -198,6 +198,12 @@ enum AssuranceConstants {
 
             static let CONNECTION_IMAGE_TOP_MARGIN = 10.0
             static let CONNECTION_IMAGE_HEIGHT = 70.0
+            
+            static let ERROR_TITLE_TOP_MARGIN = 10.0
+            static let ERROR_TITLE_HEIGHT = 30.0
+            
+            static let ERROR_DESCRIPTION_TOP_MARGIN = 10.0
+            static let ERROR_DESCRIPTION_HEIGHT = 140.0
 
             static let BUTTON_HOLDER_TOP_MARGIN = 30.0
             static let BUTTON_HOLDER_HEIGHT = 60.0

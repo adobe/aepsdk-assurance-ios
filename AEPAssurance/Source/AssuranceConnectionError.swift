@@ -77,13 +77,13 @@ enum AssuranceConnectionError: Error {
                     "Attempted a network request with an invalid request body", false)
         case .failedToRegisterDevice(let statusCode, let responseMessage):
             return ("Failed to register device",
-                    "Failed to register device with status code: \(statusCode), and response message: \(responseMessage)", false)
+                    "Failed to register device with status code: \(statusCode), and response message: \(responseMessage)", true)
         case .failedToGetDeviceStatus(let statusCode, let responseMessage):
             return ("Failed to get device status",
-                    "Failed to get device status with status code: \(statusCode), and response message: \(responseMessage)", false)
+                    "Failed to get device status with status code: \(statusCode), and response message: \(responseMessage)", true)
         case .failedToDeleteDevice(let statusCode, let responseMessage):
             return ("Failed to delete device",
-                    "Failed to delete device with status code: \(statusCode), and response message: \(responseMessage)", false)
+                    "Failed to delete device with status code: \(statusCode), and response message: \(responseMessage)", true)
         case .getDeviceStatusCancelled:
             return ("Cancelled Quick Connect",
                     "Cancelled quick connect before getting device status", false)

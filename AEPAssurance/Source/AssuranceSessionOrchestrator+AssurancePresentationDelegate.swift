@@ -83,7 +83,7 @@ extension AssuranceSessionOrchestrator: AssurancePresentationDelegate {
     }
     
     func quickConnectError(error: AssuranceConnectionError) {
-        session?.handleConnectionError(error: error, closeCode: AssuranceConstants.SocketCloseCode.NORMAL_CLOSURE)
+        authorizingPresentation?.sessionConnectionError(error: error)
     }
 #endif
 }
