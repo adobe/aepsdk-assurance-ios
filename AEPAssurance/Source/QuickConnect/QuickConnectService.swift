@@ -19,6 +19,7 @@ import UIKit
 /// QuickConnectService is used to handle the Device APIs to connect with Assurance
 ///
 class QuickConnectService {
+    var errorCount = 0
     private let LOG_TAG = "QuickConnectService"
     var shouldRetryGetDeviceStatus = true
     typealias HTTP_RESPONSE_CODES = HttpConnectionConstants.ResponseCodes
@@ -35,11 +36,7 @@ class QuickConnectService {
     func registerDevice(clientID: String,
                         orgID: String,
                         completion: @escaping (AssuranceConnectionError?) -> Void) {
-            // TODO: - Remove this, just testing error view
-            let error = AssuranceConnectionError.invalidRequestBody
-            Log.error(label: LOG_TAG, error.info.description)
-            completion(error)
-            return
+        
         /// Bail out with failure, if we are unable to form a valid create device API request URL
         let urlString = AssuranceConstants.QUICK_CONNECT_BASE_URL + "/create"
         guard let requestURL = URL(string: urlString) else {
@@ -145,7 +142,6 @@ class QuickConnectService {
                         sleep(2)
                         self.getDeviceStatus(clientID: clientID, orgID: orgID, completion: completion)
                     }
-                    completion(.failure(.getDeviceStatusCancelled))
                     return
                 }
                 self.shouldRetryGetDeviceStatus = false
@@ -217,7 +213,5 @@ class QuickConnectService {
             return
         }
     }
-
 }
-
 #endif

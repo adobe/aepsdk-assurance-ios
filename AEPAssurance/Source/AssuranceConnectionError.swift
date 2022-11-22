@@ -13,7 +13,7 @@
 import Foundation
 
 // todo later: For better clarity separate out into two enums .. socketError vs clientSideError for socket connection
-enum AssuranceConnectionError: Error {
+enum AssuranceConnectionError: Error, Equatable {
     case genericError
     case noOrgId
     case noPincode
@@ -27,7 +27,6 @@ enum AssuranceConnectionError: Error {
     case invalidURL(url: String)
     case invalidRequestBody
     case invalidResponseData
-    case getDeviceStatusCancelled
     case failedToRegisterDevice(statusCode: Int, responseMessage: String)
     case failedToGetDeviceStatus(statusCode: Int, responseMessage: String)
     case failedToDeleteDevice(statusCode: Int, responseMessage: String)
@@ -77,16 +76,13 @@ enum AssuranceConnectionError: Error {
                     "Attempted a network request with an invalid request body", false)
         case .failedToRegisterDevice(let statusCode, let responseMessage):
             return ("Failed to register device",
-                    "Failed to register device with status code: \(statusCode), and response message: \(responseMessage)", true)
+                    "Failed to register device with status code: \(statusCode), and response message: \"\(responseMessage)\"", true)
         case .failedToGetDeviceStatus(let statusCode, let responseMessage):
             return ("Failed to get device status",
-                    "Failed to get device status with status code: \(statusCode), and response message: \(responseMessage)", true)
+                    "Failed to get device status with status code: \(statusCode), and response message: \"\(responseMessage)\"", true)
         case .failedToDeleteDevice(let statusCode, let responseMessage):
             return ("Failed to delete device",
-                    "Failed to delete device with status code: \(statusCode), and response message: \(responseMessage)", true)
-        case .getDeviceStatusCancelled:
-            return ("Cancelled Quick Connect",
-                    "Cancelled quick connect before getting device status", false)
+                    "Failed to delete device with status code: \(statusCode), and response message: \"\(responseMessage)\"", true)
         }
     }
 }

@@ -135,16 +135,18 @@ public class QuickConnectView: SessionAuthorizingUI {
         return button
     }()
     
-    lazy private var errorTitle: UILabel = {
-        let label = UILabel()
-        label.accessibilityLabel = "AssuranceQuickConnectErrorLabel"
-        label.backgroundColor = .clear
-        label.text = "Error Details"
-        label.textColor = .white
-        label.textAlignment = .center
-        label.font = UIFont(name: "Helvetica-Bold", size: 20.0)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    lazy private var errorTitle: UITextView = {
+        let textView = UITextView()
+        textView.accessibilityLabel = "AssuranceQuickConnectErrorLabel"
+        textView.backgroundColor = .clear
+        textView.text = "Error Details"
+        textView.textColor = .white
+        textView.isScrollEnabled = false
+        textView.textAlignment = .left
+        textView.textContainerInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        textView.font = UIFont(name: "Helvetica-Bold", size: 18.0)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        return textView
     }()
     
     lazy private var errorDescription: UITextView = {
@@ -152,11 +154,24 @@ public class QuickConnectView: SessionAuthorizingUI {
         textView.accessibilityLabel = "AssuranceQuickConnectErrorDescriptionTextView"
         textView.backgroundColor = .clear
         textView.textColor = .white
-        textView.textAlignment = .center
+        textView.textAlignment = .left
+        textView.isScrollEnabled = false
         textView.textContainerInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        textView.font = UIFont(name: "Helvetica", size: 12.0)
+        textView.font = UIFont(name: "Helvetica", size: 14.0)
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
+    }()
+    
+    lazy private var errorAndButtonsStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.accessibilityLabel = "AssuranceErrorAndButtonsStackView"
+        stackView.backgroundColor = .clear
+        stackView.spacing = 15.0
+        stackView.alignment = .center
+        stackView.axis = .vertical
+        stackView.distribution = .fillProportionally
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
     
     func initialState(){
@@ -170,6 +185,8 @@ public class QuickConnectView: SessionAuthorizingUI {
     
     func waitingState() {
         DispatchQueue.main.async {
+            self.errorTitle.isHidden = true
+            self.errorDescription.isHidden = true
             self.connectButton.setTitle("Waiting...", for: .normal)
             self.connectButton.backgroundColor = UIColor(red: 67.0/256.0, green: 67.0/256.0, blue: 67.0/256.0, alpha: 1)
             self.connectButton.isUserInteractionEnabled = false
@@ -189,7 +206,9 @@ public class QuickConnectView: SessionAuthorizingUI {
             self.errorTitle.isHidden = false
             self.errorDescription.isHidden = false
             self.errorDescription.text = errorText
-            self.connectButton.titleLabel?.text = "Retry"
+            self.connectButton.setTitle("Retry", for: .normal)
+            self.connectButton.backgroundColor = UIColor(red: 20.0/256.0, green: 115.0/256.0, blue: 230.0/256.0, alpha: 1)
+            self.connectButton.isUserInteractionEnabled = true
         }
     }
     
@@ -214,7 +233,6 @@ public class QuickConnectView: SessionAuthorizingUI {
     
     // MARK: - SessionAuthorizingUI
     func show() {
-        self.displayed = true
         guard let window = UIApplication.shared.assuranceGetKeyWindow() else {
             Log.warning(label: AssuranceConstants.LOG_TAG, "QuickConnect View unable to get the keyWindow, ")
             return
@@ -260,30 +278,30 @@ public class QuickConnectView: SessionAuthorizingUI {
             connectionImageView.heightAnchor.constraint(equalToConstant: uiConstants.CONNECTION_IMAGE_HEIGHT)
         ])
         
-        baseView.addSubview(errorTitle)
+        baseView.addSubview(errorAndButtonsStackView)
+        NSLayoutConstraint.activate([
+            errorAndButtonsStackView.leftAnchor.constraint(equalTo: baseView.leftAnchor),
+            errorAndButtonsStackView.rightAnchor.constraint(equalTo: baseView.rightAnchor),
+            errorAndButtonsStackView.topAnchor.constraint(equalTo: connectionImageView.bottomAnchor, constant: uiConstants.ERROR_TITLE_TOP_MARGIN)
+        ])
+        
+        errorAndButtonsStackView.addArrangedSubview(errorTitle)
         NSLayoutConstraint.activate([
             errorTitle.leftAnchor.constraint(equalTo: baseView.leftAnchor),
-            errorTitle.rightAnchor.constraint(equalTo: baseView.rightAnchor),
-            errorTitle.topAnchor.constraint(equalTo: connectionImageView.bottomAnchor, constant: uiConstants.ERROR_TITLE_TOP_MARGIN),
             errorTitle.heightAnchor.constraint(equalToConstant: uiConstants.ERROR_TITLE_HEIGHT)
         ])
         
-        baseView.addSubview(errorDescription)
+        errorAndButtonsStackView.addArrangedSubview(errorDescription)
         NSLayoutConstraint.activate([
-            errorDescription.leftAnchor.constraint(equalTo: baseView.leftAnchor),
-            errorDescription.rightAnchor.constraint(equalTo: baseView.rightAnchor),
-            errorDescription.topAnchor.constraint(equalTo: errorTitle.bottomAnchor, constant: uiConstants.ERROR_DESCRIPTION_TOP_MARGIN),
-            errorDescription.heightAnchor.constraint(equalToConstant: uiConstants.ERROR_DESCRIPTION_HEIGHT)
+            errorDescription.leftAnchor.constraint(equalTo: errorTitle.leftAnchor)
         ])
         
         // Hide error views by default
         errorTitle.isHidden = true
         errorDescription.isHidden = true
         
-        baseView.addSubview(buttonStackView)
+        errorAndButtonsStackView.addArrangedSubview(buttonStackView)
         NSLayoutConstraint.activate([
-            buttonStackView.centerXAnchor.constraint(equalTo: baseView.centerXAnchor),
-            buttonStackView.topAnchor.constraint(equalTo: connectionImageView.bottomAnchor, constant: uiConstants.BUTTON_HOLDER_TOP_MARGIN),
             buttonStackView.heightAnchor.constraint(equalToConstant: uiConstants.BUTTON_HOLDER_HEIGHT)
         ])
         
@@ -314,7 +332,9 @@ public class QuickConnectView: SessionAuthorizingUI {
                        animations: { [] in
             self.baseView.frame.origin.y = 0
             self.baseView.backgroundColor = UIColor(red: 47.0/256.0, green: 47.0/256.0, blue: 47.0/256.0, alpha: 1)
-        }, completion: nil)
+        }, completion: {_ in 
+            self.displayed = true
+        })
             
     }
     
