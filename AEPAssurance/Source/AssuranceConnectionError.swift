@@ -13,7 +13,7 @@
 import Foundation
 
 // todo later: For better clarity separate out into two enums .. socketError vs clientSideError for socket connection
-enum AssuranceConnectionError: Error, Equatable {
+enum AssuranceConnectionError: Error {
     case genericError
     case noOrgId
     case noPincode

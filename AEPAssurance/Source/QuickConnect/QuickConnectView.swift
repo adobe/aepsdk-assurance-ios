@@ -20,21 +20,6 @@ public class QuickConnectView: SessionAuthorizingUI {
     private let presentationDelegate: AssurancePresentationDelegate
     var displayed = false
     
-    required init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate) {
-        self.presentationDelegate = presentationDelegate
-    }
-
-    @objc func cancelClicked(_ sender: AnyObject?) {
-        presentationDelegate.quickConnectCancelled()
-        dismiss()
-     }
-    
-    @objc func connectClicked(_ sender: AnyObject?) {
-        waitingState()
-        presentationDelegate.quickConnectBegin()
-     }
-        
-        
     lazy private var baseView : UIView = {
         let view = UIView()
         view.accessibilityLabel = "AssuranceQuickConnectBaseView"
@@ -174,6 +159,20 @@ public class QuickConnectView: SessionAuthorizingUI {
         return stackView
     }()
     
+    required init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate) {
+        self.presentationDelegate = presentationDelegate
+    }
+
+    @objc func cancelClicked(_ sender: AnyObject?) {
+        presentationDelegate.quickConnectCancelled()
+        dismiss()
+     }
+    
+    @objc func connectClicked(_ sender: AnyObject?) {
+        waitingState()
+        presentationDelegate.quickConnectBegin()
+     }
+    
     func initialState(){
         DispatchQueue.main.async {
             self.connectButton.setTitle("Connect", for: .normal)
@@ -181,7 +180,6 @@ public class QuickConnectView: SessionAuthorizingUI {
             self.connectButton.isUserInteractionEnabled = true
         }
     }
-    
     
     func waitingState() {
         DispatchQueue.main.async {
@@ -228,16 +226,9 @@ public class QuickConnectView: SessionAuthorizingUI {
                 self.displayed = false
             })
         }
-    
     }
     
-    // MARK: - SessionAuthorizingUI
-    func show() {
-        guard let window = UIApplication.shared.assuranceGetKeyWindow() else {
-            Log.warning(label: AssuranceConstants.LOG_TAG, "QuickConnect View unable to get the keyWindow, ")
-            return
-        }
-
+    func setupLayout(with window: UIWindow) {
         window.addSubview(baseView)
         NSLayoutConstraint.activate([
             baseView.leftAnchor.constraint(equalTo: window.leftAnchor),
@@ -324,6 +315,16 @@ public class QuickConnectView: SessionAuthorizingUI {
             adobeLogo.bottomAnchor.constraint(equalTo: baseView.bottomAnchor, constant: uiConstants.ADOBE_LOGO_IMAGE_BOTTOM_MARGIN),
             adobeLogo.heightAnchor.constraint(equalToConstant: uiConstants.ADOBE_LOGO_IMAGE_HEIGHT)
         ])
+    }
+    
+    // MARK: - SessionAuthorizingUI
+    func show() {
+        guard let window = UIApplication.shared.assuranceGetKeyWindow() else {
+            Log.warning(label: AssuranceConstants.LOG_TAG, "QuickConnect View unable to get the keyWindow, ")
+            return
+        }
+        
+        setupLayout(with: window)
         
         self.baseView.frame.origin.y = window.frame.size.height
         UIView.animate(withDuration: 0.2,
@@ -335,11 +336,10 @@ public class QuickConnectView: SessionAuthorizingUI {
         }, completion: {_ in 
             self.displayed = true
         })
-            
     }
     
     func sessionConnecting() {
-        // TODO: - No op?
+        // No op for quick connect because the screen will have already been dismissed when we create the session
     }
     
     func sessionConnected() {
@@ -354,20 +354,13 @@ public class QuickConnectView: SessionAuthorizingUI {
     }
     
     func sessionConnectionFailed(withError error: AssuranceConnectionError) {
-        errorState(errorText: error.info.description)
-//        switch error {
-//        case .invalidRequestBody:
-//            errorDescription.text = error.info.description
-//        case .invalidResponseData:
-//            errorDescription.text = "Invalid response data"
-//        case .invalidURL(let url):
-//            errorDescription.text = "Invalid url"
-//        case .failedToRegisterDevice(let statusCode, let responseMessage):
-//            errorDescription.text =
-//        case .failedToGetDeviceStatus(let statusCode, let responseMessage):
-//        case . failedToDeleteDevice(let statusCode,  let responseMessage):
-//        case default:
-//            errorDescription.text = "Unknown error occured"
-//        }
+        switch error {
+        // These three cases can use the default info description as it is only related to quick connect
+        case .failedToRegisterDevice(_, _), .failedToDeleteDevice(_, _), .failedToGetDeviceStatus(_, _):
+            errorState(errorText: error.info.description)
+        // Other errors will be handled generically
+        default:
+            errorState(errorText: "Failed to create an Assurance session. Please refer to debug logs for more information.")
+        }
     }
 }
