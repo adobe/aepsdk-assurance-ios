@@ -19,7 +19,6 @@ import UIKit
 /// QuickConnectService is used to handle the Device APIs to connect with Assurance
 ///
 class QuickConnectService {
-    var errorCount = 0
     private let LOG_TAG = "QuickConnectService"
     var shouldRetryGetDeviceStatus = true
     typealias HTTP_RESPONSE_CODES = HttpConnectionConstants.ResponseCodes
