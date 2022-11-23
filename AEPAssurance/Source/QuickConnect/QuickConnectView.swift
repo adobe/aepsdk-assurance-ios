@@ -163,16 +163,25 @@ public class QuickConnectView: SessionAuthorizingUI {
         self.presentationDelegate = presentationDelegate
     }
 
+    ///
+    /// The cancel button interaction handler which tells the presentation delegate that the quickConnect flow has been cancelled by the user, and dismisses the QuickConnectView
+    ///
     @objc func cancelClicked(_ sender: AnyObject?) {
         presentationDelegate.quickConnectCancelled()
         dismiss()
      }
     
+    ///
+    /// The connect button interaction handler which tells the presentation delegate to begin the quick connect handshake
+    ///
     @objc func connectClicked(_ sender: AnyObject?) {
         waitingState()
         presentationDelegate.quickConnectBegin()
      }
     
+    ///
+    /// Sets the initial state for the QuickConnectView
+    ///
     func initialState(){
         DispatchQueue.main.async {
             self.connectButton.setTitle("Connect", for: .normal)
@@ -181,6 +190,9 @@ public class QuickConnectView: SessionAuthorizingUI {
         }
     }
     
+    ///
+    /// Sets the QuickConnectView to a waiting state where the connect button text changes to "Waiting..." and user interaction is disabled on it. It also hides any error dialogues that were previously present
+    ///
     func waitingState() {
         DispatchQueue.main.async {
             self.errorTitle.isHidden = true
@@ -191,6 +203,9 @@ public class QuickConnectView: SessionAuthorizingUI {
         }
     }
     
+    ///
+    /// Sets the QuickConnectView to a successful connection state, where the connect button changes to "Connected" and user interaction on the button is disabled
+    ///
     func connectionSuccessfulState(){
         DispatchQueue.main.async {
             self.connectButton.setTitle("Connected", for: .normal)
@@ -199,6 +214,10 @@ public class QuickConnectView: SessionAuthorizingUI {
         }
     }
     
+    ///
+    /// Sets the QuickConnectView to an error state, where the error dialogue is displayed with a given error, and the connect button
+    /// changes to "Retry"
+    ///
     func errorState(errorText: String) {
         DispatchQueue.main.async {
             self.errorTitle.isHidden = false
@@ -210,6 +229,9 @@ public class QuickConnectView: SessionAuthorizingUI {
         }
     }
     
+    ///
+    /// Dismisses the QuickConnectView with an animation
+    ///
     func dismiss() {
         DispatchQueue.main.async {
             guard let window = UIApplication.shared.assuranceGetKeyWindow() else {
@@ -228,6 +250,10 @@ public class QuickConnectView: SessionAuthorizingUI {
         }
     }
     
+    ///
+    /// Sets up the QuickConnectView subviews / constraints / and stackViews with the given UIWindow
+    /// - Parameter: window `UIWindow` the window to be used as the foundation
+    ///
     func setupLayout(with window: UIWindow) {
         window.addSubview(baseView)
         NSLayoutConstraint.activate([
