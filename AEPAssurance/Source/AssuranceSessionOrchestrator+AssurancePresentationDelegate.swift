@@ -42,7 +42,7 @@ extension AssuranceSessionOrchestrator: AssurancePresentationDelegate {
         
         authorizingPresentation?.sessionConnecting()
         Log.trace(label: AssuranceConstants.LOG_TAG, "Connect Button clicked. Starting a socket connection.")
-        session.sessionDetails?.authenticate(withPIN: pin, andOrgID: orgID)
+        session.sessionDetails.authenticate(withPIN: pin, andOrgID: orgID)
         session.startSession()
     }
     
