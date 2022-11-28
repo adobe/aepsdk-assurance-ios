@@ -128,7 +128,7 @@ public class QuickConnectView: SessionAuthorizingUI {
         let textView = UITextView()
         textView.accessibilityLabel = "AssuranceQuickConnectErrorLabel"
         textView.backgroundColor = .clear
-        textView.text = "Error Details"
+        textView.text = "Connection Error"
         textView.textColor = .white
         textView.isScrollEnabled = false
         textView.textAlignment = .left
