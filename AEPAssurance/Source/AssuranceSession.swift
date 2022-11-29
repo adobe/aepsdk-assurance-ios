@@ -83,7 +83,6 @@ class AssuranceSession {
             // if the URL is already authenticated with Pin and OrgId,
             // then immediately make the socket connection
             socket.connect(withUrl: url)
-            self.statusPresentation.statusUI.display()
         case .failure:
             // if the URL is not authenticated, then bring up the pinpad screen
             presentationDelegate.initializePinScreenFlow()
