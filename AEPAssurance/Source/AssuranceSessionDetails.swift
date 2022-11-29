@@ -13,7 +13,7 @@
 import AEPServices
 import Foundation
 
-class AssuranceSessionDetails: NSObject {
+class AssuranceSessionDetails {
 
     private let SESSION_ID_KEY = "sessionId"
     private let TOKEN_KEY = "token"
