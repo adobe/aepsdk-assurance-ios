@@ -15,36 +15,42 @@ import Foundation
 import XCTest
 import AEPServices
 
-class AssurancePresentationTests: XCTestCase {
+class AssuranceAuthorizingPresentationPinTests: XCTestCase {
     
     // testing class
-    var presentation: AssurancePresentation!
+    var presentation: AssuranceAuthorizingPresentation!
     
     // mocked dependencies
     let runtime = TestableExtensionRuntime()
     var mockStateManager: MockStateManager!
     var mockSessionOrchestrator: MockSessionOrchestrator!
-    var mockStatusUI : MockStatusUI!
     var mockPinPad : MockPinPad!
         
     override func setUp() {
         mockStateManager = MockStateManager(runtime)
         mockSessionOrchestrator = MockSessionOrchestrator(stateManager: mockStateManager)
-        mockStatusUI = MockStatusUI(withSessionOrchestrator: mockSessionOrchestrator)
         mockPinPad = MockPinPad(withPresentationDelegate: mockSessionOrchestrator)
-        presentation = AssurancePresentation(sessionOrchestrator: mockSessionOrchestrator)
-        presentation.statusUI = mockStatusUI
-        presentation.pinCodeScreen = mockPinPad
+        presentation = AssuranceAuthorizingPresentation(authorizingView: mockPinPad)
     }
     
-    func test_addClientLog() {
-        // test
-        presentation.addClientLog("testString", visibility: .normal)
+//    func test_addClientLog() {
+//        // test
+//        presentation.addClientLog("testString", visibility: .normal)
+//
+//        // verify
+//        XCTAssertTrue(mockStatusUI.addClientLogCalled)
+//        XCTAssertEqual("testString", mockStatusUI.addClientLogMessage)
+//        XCTAssertEqual("testString", mockStatusUI.addClientLogMessage)
+//    }
+    func test_onShow() {
+        let expectation = XCTestExpectation(description: "Show pin pad expectation")
+        presentation.show()
+        DispatchQueue.main.async {
+            expectation.fulfill()
+            XCTAssertTrue(self.mockPinPad.showCalled)
+        }
         
-        // verify
-        XCTAssertTrue(mockStatusUI.addClientLogCalled)
-        XCTAssertEqual("testString", mockStatusUI.addClientLogMessage)
-        XCTAssertEqual("testString", mockStatusUI.addClientLogMessage)
+        self.wait(for: [expectation], timeout: 1)
     }
     
     func test_onSessionConnected() {
@@ -58,21 +64,21 @@ class AssurancePresentationTests: XCTestCase {
         XCTAssertTrue(mockPinPad.onSessionConnectedCalled)
         
         // verify that the status screen is display with connected status
-        XCTAssertTrue(mockStatusUI.displayCalled)
-        XCTAssertTrue(mockStatusUI.updateForSocketConnectedCalled)
+//        XCTAssertTrue(mockStatusUI.displayCalled)
+//        XCTAssertTrue(mockStatusUI.updateForSocketConnectedCalled)
     }
     
-    func test_onSessionReconnecting() {
-        // setup
-        mockPinPad.displayed = false
-        
-        // test
-        presentation.sessionReconnecting()
-
-        // verify that the status screen is display with inactive status
-        XCTAssertTrue(mockStatusUI.displayCalled)
-        XCTAssertTrue(mockStatusUI.updateForSocketInActiveCalled)
-    }
+//    func test_onSessionReconnecting() {
+//        // setup
+//        mockPinPad.displayed = false
+//
+//        // test
+//        presentation.sessionReconnecting()
+//
+//        // verify that the status screen is display with inactive status
+//        XCTAssertTrue(mockStatusUI.displayCalled)
+//        XCTAssertTrue(mockStatusUI.updateForSocketInActiveCalled)
+//    }
     
     func test_onSessionDisconnected() {        
         // test
@@ -80,7 +86,7 @@ class AssurancePresentationTests: XCTestCase {
 
         // verify that the status screen is display with inactive status
         XCTAssertTrue(mockPinPad.onSessionDisconnectedCalled)
-        XCTAssertTrue(mockStatusUI.removeCalled)
+//        XCTAssertTrue(mockStatusUI.removeCalled)
     }
     
     func test_onSessionConnectionError_nonRetryable() {
@@ -95,7 +101,7 @@ class AssurancePresentationTests: XCTestCase {
         XCTAssertEqual(.eventLimit, mockPinPad.sessionConnectionFailedError)
         
         // remove the Status UI on nonRetry error
-        XCTAssertTrue(mockStatusUI.removeCalled)
+//        XCTAssertTrue(mockStatusUI.removeCalled)
     }
     
     func test_onSessionConnectionError_Retryable() {
@@ -110,7 +116,11 @@ class AssurancePresentationTests: XCTestCase {
         XCTAssertEqual(.genericError, mockPinPad.sessionConnectionFailedError)
         
         // donot remove the Status UI on Retry error
-        XCTAssertFalse(mockStatusUI.removeCalled)
+//        XCTAssertFalse(mockStatusUI.removeCalled)
     }
         
+}
+
+class AssuranceStatusPresentationTests: XCTestCase {
+    
 }

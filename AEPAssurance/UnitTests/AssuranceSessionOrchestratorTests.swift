@@ -19,15 +19,12 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
     var sessionOrchestrator: AssuranceSessionOrchestrator!
     var mockStateManager: MockStateManager!
     var mockSession: MockSession!
-    var mockPresentation: MockPresentation!
     let sampleSessionDetail = AssuranceSessionDetails(sessionId: "mockSessionId", clientId: "mockClientId")
         
     override func setUp(){
         mockStateManager = MockStateManager(TestableExtensionRuntime())
         sessionOrchestrator = AssuranceSessionOrchestrator(stateManager: mockStateManager)
-        mockPresentation = MockPresentation(sessionOrchestrator: sessionOrchestrator)
         mockSession = MockSession(sessionDetails: sampleSessionDetail, stateManager: mockStateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: nil)
-        mockSession.presentation = mockPresentation
     }
     
     func test_init() {
@@ -145,6 +142,8 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
     
     func test_pinScreenConnectClicked_whenEmptyPin() {
         // setup
+        let mockAuthorizingPresentation = MockAuthorizingPresentation(authorizingView: MockPinPad(withPresentationDelegate: sessionOrchestrator))
+        sessionOrchestrator.authorizingPresentation = mockAuthorizingPresentation
         mockStateManager.orgIDReturnValue = "mockOrgId"
         sessionOrchestrator.session = mockSession
                 
@@ -154,13 +153,15 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         // verify that the UI is indicated for the error and session is cleared
         XCTAssertFalse(mockSession.startSessionCalled)
         XCTAssertTrue(mockSession.disconnectCalled)
-        XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
-        XCTAssertEqual(.noPincode ,mockPresentation.sessionConnectionErrorValue)
+        XCTAssertTrue(mockAuthorizingPresentation.sessionConnectionErrorCalled)
+        XCTAssertEqual(.noPincode ,mockAuthorizingPresentation.sessionConnectionErrorValue)
         XCTAssertTrue(mockStateManager.clearAssuranceStateCalled)
     }
     
     func test_pinScreenConnectClicked_whenNoOrgId() {
         // setup
+        let mockAuthorizingPresentation = MockAuthorizingPresentation(authorizingView: MockPinPad(withPresentationDelegate: sessionOrchestrator))
+        sessionOrchestrator.authorizingPresentation = mockAuthorizingPresentation
         mockStateManager.orgIDReturnValue = nil
         sessionOrchestrator.session = mockSession
                 
@@ -170,8 +171,8 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         // verify that the UI is indicated for the error and session is cleared
         XCTAssertFalse(mockSession.startSessionCalled)
         XCTAssertTrue(mockSession.disconnectCalled)
-        XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
-        XCTAssertEqual(.noOrgId ,mockPresentation.sessionConnectionErrorValue)
+        XCTAssertTrue(mockAuthorizingPresentation.sessionConnectionErrorCalled)
+        XCTAssertEqual(.noOrgId ,mockAuthorizingPresentation.sessionConnectionErrorValue)
         XCTAssertTrue(mockStateManager.clearAssuranceStateCalled)
     }
     

@@ -1,5 +1,5 @@
 //
-// Copyright 2021 Adobe. All rights reserved.
+// Copyright 2022 Adobe. All rights reserved.
 // This file is licensed to you under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License. You may obtain a copy
 // of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,40 +15,40 @@
 import Foundation
 import XCTest
 
-class MockStatusUI: iOSStatusUI {
-    
-    
-    required init(presentationDelegate: AssurancePresentationDelegate) {
+class MockStatusPresentation: AssuranceStatusPresentation {
+    override init(presentationDelegate: AssurancePresentationDelegate) {
         super.init(presentationDelegate: presentationDelegate)
     }
     
-    var displayCalled = false
-    override func display() {
-        displayCalled = true
+    var sessionReconnectingCalled = false
+    override func sessionReconnecting() {
+        sessionReconnectingCalled = true
     }
-
-    var removeCalled = false
-    override func remove() {
-        removeCalled = true
-    }
-
-    var updateForSocketConnectedCalled = false
-    override func updateForSocketConnected() {
-        updateForSocketConnectedCalled = true
-    }
-
-    var updateForSocketInActiveCalled = false
-    override func updateForSocketInActive() {
-        updateForSocketInActiveCalled = true
-    }
-
+    
     var addClientLogCalled = false
-    var addClientLogMessage : String?
-    var addClientLogVisibility : AssuranceClientLogVisibility?
+    var addClientLogMessage: String?
+    var addClientLogVisibility: AssuranceClientLogVisibility?
     override func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
         addClientLogCalled = true
         addClientLogMessage = message
         addClientLogVisibility = visibility
     }
-
+    
+    var sessionConnectedCalled = false
+    override func sessionConnected() {
+        sessionConnectedCalled = true
+    }
+    
+    
+    var sessionDisconnectedCalled = false
+    override func sessionDisconnected() {
+        sessionDisconnectedCalled = true
+    }
+    
+    var sessionConnectionErrorCalled = false
+    var sessionConnectionErrorValue : AssuranceConnectionError?
+    override func sessionConnectionError(error: AssuranceConnectionError) {
+        sessionConnectionErrorCalled = true
+        sessionConnectionErrorValue = error
+    }
 }

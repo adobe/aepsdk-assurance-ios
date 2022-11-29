@@ -15,16 +15,21 @@
 import Foundation
 import XCTest
 
-class MockPresentation : AssurancePresentation {
+class MockAuthorizingPresentation : AssuranceAuthorizingPresentation {
     
     var expectation: XCTestExpectation?
-    required override  init(sessionOrchestrator: AssuranceSessionOrchestrator) {
-        super.init(sessionOrchestrator: sessionOrchestrator)
+    override init(authorizingView: SessionAuthorizingUI) {
+        super.init(authorizingView: authorizingView)
     }
     
-    var sessionInitializedCalled = false
-    override func sessionInitialized() {
-        sessionInitializedCalled = true
+    var showCalled = false
+    override func show() {
+        showCalled = true
+    }
+    
+    var sessionConnectingCalled = false
+    override func sessionConnecting() {
+        sessionConnectingCalled = true
     }
     
     var sessionConnectedCalled = false
@@ -32,10 +37,6 @@ class MockPresentation : AssurancePresentation {
         sessionConnectedCalled = true
     }
     
-    var sessionReconnectingCalled = false
-    override func sessionReconnecting() {
-        sessionReconnectingCalled = true
-    }
     
     var sessionDisconnectedCalled = false
     override func sessionDisconnected() {
@@ -48,14 +49,4 @@ class MockPresentation : AssurancePresentation {
         sessionConnectionErrorCalled = true
         sessionConnectionErrorValue = error
     }
-    
-    var addClientLogCalled = false
-    var addClientLogMessage: String?
-    var addClientLogVisibility: AssuranceClientLogVisibility?
-    override func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
-        addClientLogCalled = true
-        addClientLogMessage = message
-        addClientLogVisibility = visibility
-    }
 }
-

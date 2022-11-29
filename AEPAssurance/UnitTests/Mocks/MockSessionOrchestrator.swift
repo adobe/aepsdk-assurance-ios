@@ -48,6 +48,11 @@ class MockSessionOrchestrator : AssuranceSessionOrchestrator {
 
     // MARK: - AssurancePresentationDelegate methods
     
+    var initializePinScreenFlowCalled = false
+    override func initializePinScreenFlow() {
+        initializePinScreenFlowCalled = true
+    }
+    
     var pinScreenConnectClickedCalled = false
     var pinScreenConnectClickedPinParameter : String?
     override func pinScreenConnectClicked(_ pin: String) {
@@ -65,6 +70,23 @@ class MockSessionOrchestrator : AssuranceSessionOrchestrator {
         disconnectClickedCalled = true
     }
     
+    // MARK: - AssuranceConnectionDelegate methods
+    var handleConnectionErrorCalled = false
+    var handleConnectionErrorParam: AssuranceConnectionError?
+    override func handleConnectionError(error: AssuranceConnectionError) {
+        handleConnectionErrorCalled = true
+        handleConnectionErrorParam = error
+    }
+    
+    var handleSuccessfulConnectionCalled = false
+    override func handleSuccessfulConnection() {
+        handleSuccessfulConnectionCalled = true
+    }
+    
+    var handleSessionDisconnectCalled = false
+    override func handleSessionDisconnect() {
+        handleSessionDisconnectCalled = true
+    }
 }
 
 extension AssuranceSessionOrchestrator {

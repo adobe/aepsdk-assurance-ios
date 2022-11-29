@@ -91,7 +91,7 @@ class AssuranceSessionDetailsTests: XCTestCase {
         }
 
         // verify
-        XCTAssertEqual("No PinCode", capturedError?.message)
+        XCTAssertEqual("No Token", capturedError?.message)
     }
     
     func test_initWithURLString_noHost() throws {

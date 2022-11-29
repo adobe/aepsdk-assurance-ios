@@ -37,7 +37,7 @@ class iOSStatusUITests: XCTestCase {
         let sessionDetail = AssuranceSessionDetails(sessionId: "mocksessionId", clientId: "clientId", environment: .dev)
         mockSession = MockSession(sessionDetails: sessionDetail, stateManager: mockStateManager!, sessionOrchestrator: mockSessionOrchestrator, outboundEvents: nil)
         ServiceProvider.shared.uiService = mockUIService
-        statusUI = iOSStatusUI.init(withSessionOrchestrator: mockSessionOrchestrator)
+        statusUI = iOSStatusUI.init(presentationDelegate: mockSessionOrchestrator)
 
         mockUIService.fullscreenMessage = mockFullScreen
         mockUIService.floatingButton = mockButton
