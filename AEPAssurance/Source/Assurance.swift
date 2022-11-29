@@ -128,6 +128,7 @@ public class Assurance: NSObject, Extension {
         
         #if DEBUG
         if let isQuickConnect = startSessionData[AssuranceConstants.EventDataKey.QUICK_CONNECT] as? Bool, isQuickConnect {
+            invalidateTimer()
             sessionOrchestrator.startQuickConnectFlow()
             return
         }
