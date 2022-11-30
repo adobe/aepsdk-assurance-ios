@@ -16,8 +16,8 @@ import Foundation
 import XCTest
 
 class MockStatusPresentation: AssuranceStatusPresentation {
-    override init(presentationDelegate: AssurancePresentationDelegate) {
-        super.init(presentationDelegate: presentationDelegate)
+    override init(with statusUI: iOSStatusUI) {
+        super.init(with: statusUI)
     }
     
     var sessionReconnectingCalled = false

@@ -70,6 +70,23 @@ class MockSessionOrchestrator : AssuranceSessionOrchestrator {
         disconnectClickedCalled = true
     }
     
+    var quickConnectBeginCalled = false
+    override func quickConnectBegin() {
+        quickConnectBeginCalled = true
+    }
+    
+    var quickConnectCancelledCalled = false
+    override func quickConnectCancelled() {
+        quickConnectCancelledCalled = true
+    }
+    
+    var quickConnectErrorCalled = false
+    var quickConnectErrorParam: AssuranceConnectionError?
+    override func quickConnectError(error: AssuranceConnectionError) {
+        quickConnectErrorCalled = true
+        quickConnectErrorParam = error
+    }
+    
     // MARK: - AssuranceConnectionDelegate methods
     var handleConnectionErrorCalled = false
     var handleConnectionErrorParam: AssuranceConnectionError?

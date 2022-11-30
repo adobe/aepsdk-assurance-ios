@@ -14,8 +14,7 @@
 @testable import AEPServices
 import Foundation
 
-class MockPinPad: SessionAuthorizingUI {
-    
+class MockSessionAuthorizingUI: SessionAuthorizingUI {
     
     var displayed: Bool
     

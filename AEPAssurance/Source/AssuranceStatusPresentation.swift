@@ -17,13 +17,10 @@ import Foundation
 ///
 class AssuranceStatusPresentation {
 
-    let delegate: AssurancePresentationDelegate
-    lazy var statusUI: iOSStatusUI  = {
-        iOSStatusUI.init(presentationDelegate: delegate)
-    }()
+    let statusUI: iOSStatusUI
 
-    init(presentationDelegate: AssurancePresentationDelegate) {
-        self.delegate = presentationDelegate
+    init(with statusUI: iOSStatusUI) {
+        self.statusUI = statusUI
     }
 
     /// Adds the log message o Assurance session's Status UI.

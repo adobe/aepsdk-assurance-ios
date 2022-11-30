@@ -30,6 +30,13 @@ class MockStateManager : AssuranceStateManager {
         return []
     }
     
+    var shareAssuranceStateCalled = false
+    var shareAssuranceStateSessionID: String?
+    override func shareAssuranceState(withSessionID sessionId: String) {
+        shareAssuranceStateCalled = true
+        shareAssuranceStateSessionID = sessionId
+    }
+    
     var clearAssuranceStateCalled = false
     override func clearAssuranceState() {
         clearAssuranceStateCalled = true

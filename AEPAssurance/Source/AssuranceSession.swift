@@ -55,7 +55,7 @@ class AssuranceSession {
         self.sessionOrchestrator = sessionOrchestrator
         self.presentationDelegate = sessionOrchestrator
         self.connectionDelegate = sessionOrchestrator
-        statusPresentation = AssuranceStatusPresentation(presentationDelegate: presentationDelegate)
+        statusPresentation = AssuranceStatusPresentation(with: iOSStatusUI(presentationDelegate: presentationDelegate))
         handleInBoundEvents()
         handleOutBoundEvents()
         registerInternalPlugins()

@@ -14,27 +14,12 @@ import AEPServices
 import Foundation
 import UIKit
 
-public class QuickConnectView: SessionAuthorizingUI {
+class QuickConnectView: SessionAuthorizingUI {
 
     typealias uiConstants = AssuranceConstants.QuickConnect.QuickConnectView
     private let presentationDelegate: AssurancePresentationDelegate
     var displayed = false
     
-    required init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate) {
-        self.presentationDelegate = presentationDelegate
-    }
-
-    @objc func cancelClicked(_ sender: AnyObject?) {
-        presentationDelegate.quickConnectCancelled()
-        dismiss()
-     }
-    
-    @objc func connectClicked(_ sender: AnyObject?) {
-        waitingState()
-        presentationDelegate.quickConnectBegin()
-     }
-        
-        
     lazy private var baseView : UIView = {
         let view = UIView()
         view.accessibilityLabel = "AssuranceQuickConnectBaseView"
@@ -135,6 +120,19 @@ public class QuickConnectView: SessionAuthorizingUI {
         return button
     }()
     
+    required init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate) {
+        self.presentationDelegate = presentationDelegate
+    }
+
+    @objc func cancelClicked(_ sender: AnyObject?) {
+        presentationDelegate.quickConnectCancelled()
+        dismiss()
+     }
+    
+    @objc func connectClicked(_ sender: AnyObject?) {
+        waitingState()
+        presentationDelegate.quickConnectBegin()
+     }
     
     func initialState(){
         DispatchQueue.main.async {
