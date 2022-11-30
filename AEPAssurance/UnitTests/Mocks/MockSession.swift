@@ -42,6 +42,13 @@ class MockSession: AssuranceSession {
     override func disconnect() {
         disconnectCalled = true
     }
+    
+    var handleConnectionErrorCalled = false
+    var handleConnectionErrorParam: AssuranceConnectionError?
+    override func handleConnectionError(error: AssuranceConnectionError, closeCode: Int) {
+        handleConnectionErrorCalled = true
+        handleConnectionErrorParam = error
+    }
 
     func mockSocketState(state: SocketState) {
         if let mockSocket = socket as? MockSocket {

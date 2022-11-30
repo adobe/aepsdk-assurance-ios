@@ -267,8 +267,8 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: getNearbyPlacesRequestEvent)
 
         // verify that the client log is displayed
-        XCTAssertEqual(1, mockSession.presentation.statusUI.clientLogQueue.size())
-        XCTAssertEqual("Places - Requesting 7 nearby POIs from (12.340000, 23.455489)", mockSession.presentation.statusUI.clientLogQueue.dequeue()?.message)
+        XCTAssertEqual(1, mockSession.statusPresentation.statusUI.clientLogQueue.size())
+        XCTAssertEqual("Places - Requesting 7 nearby POIs from (12.340000, 23.455489)", mockSession.statusPresentation.statusUI.clientLogQueue.dequeue()?.message)
     }
 
     func test_handlePlacesRequest_PlacesReset() throws {
@@ -280,8 +280,8 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: placesResetEvent)
 
         // verify that the client log is displayed
-        XCTAssertEqual(1, mockSession.presentation.statusUI.clientLogQueue.size())
-        XCTAssertEqual("Places - Resetting location", mockSession.presentation.statusUI.clientLogQueue.dequeue()?.message)
+        XCTAssertEqual(1, mockSession.statusPresentation.statusUI.clientLogQueue.size())
+        XCTAssertEqual("Places - Resetting location", mockSession.statusPresentation.statusUI.clientLogQueue.dequeue()?.message)
     }
 
     func test_handlePlacesResponse_RegionEvent() throws {
@@ -293,8 +293,8 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: regionEvent)
 
         // verify that the client log is displayed
-        XCTAssertEqual(1, mockSession.presentation.statusUI.clientLogQueue.size())
-        XCTAssertEqual("Places - Processed entry for region Green house.", mockSession.presentation.statusUI.clientLogQueue.dequeue()?.message)
+        XCTAssertEqual(1, mockSession.statusPresentation.statusUI.clientLogQueue.size())
+        XCTAssertEqual("Places - Processed entry for region Green house.", mockSession.statusPresentation.statusUI.clientLogQueue.dequeue()?.message)
     }
 
     func test_handlePlacesResponse_nearbyPOIResponse() throws {
@@ -306,7 +306,7 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: nearbyPOIResponse)
 
         // verify that the client log is displayed
-        XCTAssertEqual(3, mockSession.presentation.statusUI.clientLogQueue.size())
+        XCTAssertEqual(3, mockSession.statusPresentation.statusUI.clientLogQueue.size())
     }
 
     func test_handlePlacesResponse_nearbyPOIResponseNoPOI() throws {
@@ -318,8 +318,8 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: nearbyPOIResponseNoPOI)
 
         // verify that the client log is displayed
-        XCTAssertEqual(1, mockSession.presentation.statusUI.clientLogQueue.size())
-        XCTAssertEqual("Places - Found 0 nearby POIs.", mockSession.presentation.statusUI.clientLogQueue.dequeue()?.message)
+        XCTAssertEqual(1, mockSession.statusPresentation.statusUI.clientLogQueue.size())
+        XCTAssertEqual("Places - Found 0 nearby POIs.", mockSession.statusPresentation.statusUI.clientLogQueue.dequeue()?.message)
     }
 
     func test_readyForEvent() {

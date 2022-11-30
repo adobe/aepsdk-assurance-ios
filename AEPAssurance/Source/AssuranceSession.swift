@@ -15,7 +15,7 @@ import Foundation
 class AssuranceSession {
     let RECONNECT_TIMEOUT = 5
     let stateManager: AssuranceStateManager
-    var sessionDetails: AssuranceSessionDetails?
+    var sessionDetails: AssuranceSessionDetails
     let presentationDelegate: AssurancePresentationDelegate
     let connectionDelegate: AssuranceConnectionDelegate
     let sessionOrchestrator: AssuranceSessionOrchestrator
@@ -55,7 +55,7 @@ class AssuranceSession {
         self.sessionOrchestrator = sessionOrchestrator
         self.presentationDelegate = sessionOrchestrator
         self.connectionDelegate = sessionOrchestrator
-        statusPresentation = AssuranceStatusPresentation(presentationDelegate: presentationDelegate)
+        statusPresentation = AssuranceStatusPresentation(with: iOSStatusUI(presentationDelegate: presentationDelegate))
         handleInBoundEvents()
         handleOutBoundEvents()
         registerInternalPlugins()
@@ -78,16 +78,13 @@ class AssuranceSession {
             return
         }
 
-        switch sessionDetails?.getAuthenticatedSocketURL() {
+        switch sessionDetails.getAuthenticatedSocketURL() {
         case .success(let url):
             // if the URL is already authenticated with Pin and OrgId,
             // then immediately make the socket connection
             socket.connect(withUrl: url)
-            self.statusPresentation.statusUI.display()
         case .failure:
             // if the URL is not authenticated, then bring up the pinpad screen
-            presentationDelegate.initializePinScreenFlow()
-        case .none:
             presentationDelegate.initializePinScreenFlow()
         }
     }

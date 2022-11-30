@@ -21,6 +21,7 @@ extension AssuranceSession: SocketDelegate {
     ///
     func webSocketDidConnect(_ socket: SocketConnectable) {
         Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance session successfully connected.")
+        self.statusPresentation.statusUI.display()
         self.sendClientInfoEvent()
     }
 

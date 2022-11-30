@@ -18,7 +18,7 @@ import UIKit
 ///
 /// The QuickConnectView SessionAuthorizingUI which is used to start a QuickConnect session
 ///
-public class QuickConnectView: SessionAuthorizingUI {
+class QuickConnectView: SessionAuthorizingUI {
 
     typealias uiConstants = AssuranceConstants.QuickConnect.QuickConnectView
     private let presentationDelegate: AssurancePresentationDelegate

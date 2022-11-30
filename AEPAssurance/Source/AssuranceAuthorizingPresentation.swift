@@ -14,29 +14,14 @@ import AEPServices
 import Foundation
 
 ///
-/// An Assurance Authorizing View
-///
-enum AssuranceAuthorizingView {
-    case pinCode
-    case quickConnect
-}
-
-///
 /// Represents the Assurance Session's Authorizing Presentation
 ///
 class AssuranceAuthorizingPresentation {
     
-    let delegate: AssurancePresentationDelegate
-    var sessionView: SessionAuthorizingUI
+    let sessionView: SessionAuthorizingUI
     
-    init(presentationDelegate: AssurancePresentationDelegate, viewType: AssuranceAuthorizingView) {
-        self.delegate = presentationDelegate
-        switch viewType {
-        case .quickConnect:
-            self.sessionView = QuickConnectView(withPresentationDelegate: presentationDelegate)
-        case .pinCode:
-            self.sessionView = iOSPinCodeScreen(withPresentationDelegate: presentationDelegate)
-        }
+    init(authorizingView: SessionAuthorizingUI) {
+        self.sessionView = authorizingView
     }
     
     /// Call this to show the UI elements that are required when a session is initialized.

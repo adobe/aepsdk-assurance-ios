@@ -36,7 +36,7 @@ class AssuranceSessionDetails {
 
     /// The 4 digit authentication code to connect to a session.
     ///
-    /// pinCode is obtained as user input from PinCode screen.
+    /// token is obtained either via the pin code flow, or the quick connect flow.
     var token: String?
 
     /// A Unique ID representing the Adobe Org under which the Assurance session is created.
