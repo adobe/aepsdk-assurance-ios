@@ -18,24 +18,30 @@ import XCTest
 
 class AssuranceTests: XCTestCase {
 
-    let CONSENT_SHARED_STATE_NAME = "com.adobe.edge.consent"
     let runtime = TestableExtensionRuntime()
     let mockUIService = MockUIService()
     let mockDataStore = MockDataStore()
     let mockMessagePresentable = MockFullscreenMessagePresentable()
-    var mockSession: MockAssuranceSession!
+    var mockSession: MockSession!
+    var stateManager: AssuranceStateManager!
     var assurance: Assurance!
+    var mockSessionOrchestrator: MockSessionOrchestrator!
 
     override func setUp() {
         ServiceProvider.shared.uiService = mockUIService
         ServiceProvider.shared.namedKeyValueService = mockDataStore
         mockUIService.fullscreenMessage = mockMessagePresentable
+        stateManager = AssuranceStateManager(runtime)
+        mockSessionOrchestrator = MockSessionOrchestrator(stateManager: stateManager)
+
         assurance = Assurance(runtime: runtime)
+        assurance.stateManager = stateManager
+        assurance.sessionOrchestrator = mockSessionOrchestrator
         assurance.onRegistered()
 
         // mock the interaction with AssuranceSession class
-        mockSession = MockAssuranceSession(assurance)
-        assurance.assuranceSession = mockSession
+        let mockSessionDetails = AssuranceSessionDetails(sessionId: "mockSessionId", clientId: "mockClientId")
+        mockSession = MockSession(sessionDetails: mockSessionDetails, stateManager: stateManager, sessionOrchestrator: mockSessionOrchestrator, outboundEvents: nil)
     }
 
     override func tearDown() {
@@ -57,16 +63,12 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: event)
 
         // verify
-        XCTAssertTrue(mockUIService.createFullscreenMessageCalled)
-        XCTAssertTrue(mockMessagePresentable.showCalled)
+        XCTAssertTrue(mockSessionOrchestrator.createSessionCalled)
 
-        // verify that sessionID and environment are set in datastore
-        XCTAssertEqual("28f4a622-d34f-4036-c81a-d21352144b57", mockDataStore.dict[AssuranceConstants.DataStoreKeys.SESSION_ID] as! String)
-        XCTAssertEqual("stage", mockDataStore.dict[AssuranceConstants.DataStoreKeys.ENVIRONMENT] as! String)
-
-        // verify the local variables
-        XCTAssertEqual("28f4a622-d34f-4036-c81a-d21352144b57", assurance.sessionId)
-        XCTAssertEqual(AssuranceEnvironment.stage, assurance.environment)
+        // verify that sessionID and environment are properly passed as session details
+        XCTAssertEqual("28f4a622-d34f-4036-c81a-d21352144b57", mockSessionOrchestrator.createSessionDetails?.sessionId)
+        XCTAssertEqual(.stage, mockSessionOrchestrator.createSessionDetails?.environment)
+    
     }
 
     func test_startSession_withNonUUIDSessionID() throws {
@@ -138,6 +140,8 @@ class AssuranceTests: XCTestCase {
 
     func test_handleWildCardEvent_withNilEventData() throws {
         // setup
+        mockSessionOrchestrator.session = mockSession
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = true
         let event = Event(name: "Any SDK Event",
                           type: EventType.analytics,
                           source: EventSource.requestContent,
@@ -147,8 +151,8 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: event)
 
         // verify that the event is sent to the session
-        XCTAssertTrue(mockSession.sendEventCalled)
-        XCTAssertEqual("Any SDK Event", mockSession.sentEvent?.payload?[AssuranceConstants.ACPExtensionEventKey.NAME]?.stringValue)
+        XCTAssertTrue(mockSessionOrchestrator.sendEventCalled)
+        XCTAssertEqual("Any SDK Event", mockSessionOrchestrator.sentEvent?.payload?[AssuranceConstants.ACPExtensionEventKey.NAME]?.stringValue)
     }
 
     func test_handleWildCardEvent_whenAssuranceShutDown() throws {
@@ -157,13 +161,14 @@ class AssuranceTests: XCTestCase {
                           type: EventType.analytics,
                           source: EventSource.requestContent,
                           data: nil)
-        assurance.shouldProcessEvents = false
+        
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = false
 
         // test
         runtime.simulateComingEvent(event: event)
 
         // verify that the event is not forwarded to session
-        XCTAssertFalse(mockSession.sendEventCalled)
+        XCTAssertFalse(mockSessionOrchestrator.sendEventCalled)
     }
 
     //--------------------------------------------------*/
@@ -172,6 +177,8 @@ class AssuranceTests: XCTestCase {
 
     func test_handleSharedStateEvent_Regular() throws {
         // setup
+        mockSessionOrchestrator.session = mockSession
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = true
         let sampleConfiguration = ["configkey": "value"]
         let configStateChangeEvent = Event(name: AssuranceConstants.SDKEventName.SHARED_STATE_CHANGE,
                                            type: EventType.hub,
@@ -183,13 +190,15 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: configStateChangeEvent)
 
         // verify that the event is sent to the session
-        XCTAssertTrue(mockSession.sendEventCalled)
-        let metadata = mockSession.sentEvent?.payload?[AssuranceConstants.PayloadKey.METADATA]?.dictionaryValue
+        XCTAssertTrue(mockSessionOrchestrator.sendEventCalled)
+        let metadata = mockSessionOrchestrator.sentEvent?.payload?[AssuranceConstants.PayloadKey.METADATA]?.dictionaryValue
         XCTAssertEqual(sampleConfiguration, metadata?["state.data"] as! Dictionary)
     }
 
     func test_handleSharedStateEvent_XDM() throws {
         // setup
+        mockSessionOrchestrator.session = mockSession
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = true
         let sampleConsent = ["consent": "yes"]
         let consentStateChangeEvent = Event(name: AssuranceConstants.SDKEventName.XDM_SHARED_STATE_CHANGE,
                                             type: EventType.hub,
@@ -201,8 +210,8 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: consentStateChangeEvent)
 
         // verify that the event is sent to the session
-        XCTAssertTrue(mockSession.sendEventCalled)
-        let metadata = mockSession.sentEvent?.payload?[AssuranceConstants.PayloadKey.METADATA]?.dictionaryValue
+        XCTAssertTrue(mockSessionOrchestrator.sendEventCalled)
+        let metadata = mockSessionOrchestrator.sentEvent?.payload?[AssuranceConstants.PayloadKey.METADATA]?.dictionaryValue
         XCTAssertEqual(sampleConsent, try XCTUnwrap(metadata?["xdm.state.data"]) as! Dictionary)
     }
 
@@ -218,7 +227,7 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: configStateChangeEvent)
 
         // verify that the pending shared state are not sent
-        XCTAssertFalse(mockSession.sendEventCalled)
+        XCTAssertFalse(mockSessionOrchestrator.sendEventCalled)
     }
 
     func test_handleSharedStateEvent_WhenSharedStateNotAvailable() throws {
@@ -232,7 +241,7 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: configStateChangeEvent)
 
         // verify that the pending shared state are not sent
-        XCTAssertFalse(mockSession.sendEventCalled)
+        XCTAssertFalse(mockSessionOrchestrator.sendEventCalled)
     }
 
     func test_handleSharedStateEvent_WhenStateOwnerNil() throws {
@@ -246,79 +255,71 @@ class AssuranceTests: XCTestCase {
         runtime.simulateComingEvent(event: configStateChangeEvent)
 
         // verify that the pending shared state are not sent
-        XCTAssertFalse(mockSession.sendEventCalled)
+        XCTAssertFalse(mockSessionOrchestrator.sendEventCalled)
     }
 
     func test_handlePlacesRequest_GetNearByPlaces() throws {
+        // setup
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = true
+        mockSessionOrchestrator.session = mockSession
+        
         // test
         runtime.simulateComingEvent(event: getNearbyPlacesRequestEvent)
 
         // verify that the client log is displayed
-        XCTAssertTrue(mockSession.addClientLogCalled)
-        XCTAssertEqual("Places - Requesting 7 nearby POIs from (12.340000, 23.455489)", mockSession.addClientLogMessage)
+        XCTAssertEqual(1, mockSession.statusPresentation.statusUI.clientLogQueue.size())
+        XCTAssertEqual("Places - Requesting 7 nearby POIs from (12.340000, 23.455489)", mockSession.statusPresentation.statusUI.clientLogQueue.dequeue()?.message)
     }
 
     func test_handlePlacesRequest_PlacesReset() throws {
+        // setup
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = true
+        mockSessionOrchestrator.session = mockSession
+        
         // test
         runtime.simulateComingEvent(event: placesResetEvent)
 
         // verify that the client log is displayed
-        XCTAssertTrue(mockSession.addClientLogCalled)
-        XCTAssertEqual("Places - Resetting location", mockSession.addClientLogMessage)
+        XCTAssertEqual(1, mockSession.statusPresentation.statusUI.clientLogQueue.size())
+        XCTAssertEqual("Places - Resetting location", mockSession.statusPresentation.statusUI.clientLogQueue.dequeue()?.message)
     }
 
     func test_handlePlacesResponse_RegionEvent() throws {
+        // setup
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = true
+        mockSessionOrchestrator.session = mockSession
+        
         // test
         runtime.simulateComingEvent(event: regionEvent)
 
         // verify that the client log is displayed
-        XCTAssertTrue(mockSession.addClientLogCalled)
-        XCTAssertEqual("Places - Processed entry for region Green house.", mockSession.addClientLogMessage)
+        XCTAssertEqual(1, mockSession.statusPresentation.statusUI.clientLogQueue.size())
+        XCTAssertEqual("Places - Processed entry for region Green house.", mockSession.statusPresentation.statusUI.clientLogQueue.dequeue()?.message)
     }
 
     func test_handlePlacesResponse_nearbyPOIResponse() throws {
+        // setup
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = true
+        mockSessionOrchestrator.session = mockSession
+        
         // test
         runtime.simulateComingEvent(event: nearbyPOIResponse)
 
         // verify that the client log is displayed
-        XCTAssertTrue(mockSession.addClientLogCalled)
-        XCTAssertEqual("Places - Found 2 nearby POIs :", mockSession.addClientLogMessage)
+        XCTAssertEqual(3, mockSession.statusPresentation.statusUI.clientLogQueue.size())
     }
 
     func test_handlePlacesResponse_nearbyPOIResponseNoPOI() throws {
+        // setup
+        mockSessionOrchestrator.canProcessSDKEventsReturnValue = true
+        mockSessionOrchestrator.session = mockSession
+        
         // test
         runtime.simulateComingEvent(event: nearbyPOIResponseNoPOI)
 
         // verify that the client log is displayed
-        XCTAssertTrue(mockSession.addClientLogCalled)
-        XCTAssertEqual("Places - Found 0 nearby POIs.", mockSession.addClientLogMessage)
-    }
-
-    func test_getAllExtensionStateData() throws {
-        // setup
-        runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.EVENT_HUB, event: nil, data: (sampleEventHubState, .set))
-        runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.CONFIGURATION, event: nil, data: (sampleConfigurationState, .set))
-        runtime.simulateXDMSharedState(for: CONSENT_SHARED_STATE_NAME, data: (sampleConsentState, .set))
-
-        // test
-        let resultEvents = assurance.getAllExtensionStateData()
-
-        // verify that the required shared state events are generated
-        XCTAssertEqual(3, resultEvents.count)
-        XCTAssertTrue(resultEvents.hasEventWithName("EventHub State"))
-        XCTAssertTrue(resultEvents.hasEventWithName("Configuration State"))
-        XCTAssertTrue(resultEvents.hasEventWithName("\(CONSENT_SHARED_STATE_NAME) XDM State"))
-    }
-
-    func test_getAllExtensionStateData_WhenNoExtensionRegistered() throws {
-        // setup
-        runtime.simulateSharedState(extensionName: AssuranceConstants.SharedStateName.EVENT_HUB, event: nil, data: ([:], .set))
-
-        // test
-        let resultEvents = assurance.getAllExtensionStateData()
-
-        // verify that the required shared state events are generated
-        XCTAssertEqual(0, resultEvents.count)
+        XCTAssertEqual(1, mockSession.statusPresentation.statusUI.clientLogQueue.size())
+        XCTAssertEqual("Places - Found 0 nearby POIs.", mockSession.statusPresentation.statusUI.clientLogQueue.dequeue()?.message)
     }
 
     func test_readyForEvent() {
@@ -389,50 +390,6 @@ class AssuranceTests: XCTestCase {
                      ])
     }
 
-    var sampleEventHubState: [String: Any] {
-        let data = """
-                   {
-                     "extensions": {
-                       "com.adobe.module.configuration": {
-                         "version": "1.8.0",
-                         "friendlyName": "Configuration"
-                       },
-                       "com.adobe.edge.consent": {
-                         "version": "1.0.0"
-                       }
-                     },
-                     "version": "1.8.0"
-                   }
-                   """.data(using: .utf8)!
-
-        return try! (JSONSerialization.jsonObject(with: data, options: []) as? [String: Any])!
-    }
-
-    var sampleConfigurationState: [String: Any] {
-        let data = """
-                   {
-                     "global.privacy" :  "optedin",
-                     "target.timout" :  5,
-                     "analytics.rsid": "rsids"
-                   }
-                   """.data(using: .utf8)!
-
-        return try! (JSONSerialization.jsonObject(with: data, options: []) as? [String: Any])!
-    }
-
-    var sampleConsentState: [String: Any] {
-        let data = """
-                    {
-                      "consents" : {
-                        "collect" : {
-                          "val" : "n"
-                        }
-                      }
-                    }
-                   """.data(using: .utf8)!
-
-        return try! (JSONSerialization.jsonObject(with: data, options: []) as? [String: Any])!
-    }
 }
 
 extension Array where Element == AssuranceEvent {

@@ -14,6 +14,7 @@
 import Foundation
 
 class TestableExtensionRuntime: ExtensionRuntime {
+
     var listeners: [String: EventListener] = [:]
     var dispatchedEvents: [Event] = []
     var sharedStates: [[String: Any]?] = []
@@ -56,9 +57,15 @@ class TestableExtensionRuntime: ExtensionRuntime {
         return otherSharedStates["\(extensionName)-\(String(describing: event?.id))"] ?? nil
     }
 
+    func getSharedState(extensionName: String, event: AEPCore.Event?, barrier: Bool, resolution: AEPCore.SharedStateResolution) -> AEPCore.SharedStateResult? {
+        // TODO: - Update this API if tests need it
+        return otherSharedStates["\(extensionName)-\(String(describing: event?.id))"] ?? nil
+    }
+
     public func createXDMSharedState(data: [String: Any], event: Event?) {
         createdXdmSharedStates += [data]
     }
+
 
     func createPendingXDMSharedState(event: Event?) -> SharedStateResolver {
         return { data in
@@ -70,12 +77,20 @@ class TestableExtensionRuntime: ExtensionRuntime {
         return otherXDMSharedStates["\(extensionName)"] ?? nil
     }
 
+    func getXDMSharedState(extensionName: String, event: AEPCore.Event?, barrier: Bool, resolution: AEPCore.SharedStateResolution) -> AEPCore.SharedStateResult? {
+        // TODO: - Update this API if tests need it
+        return otherXDMSharedStates["\(extensionName)"] ?? nil
+    }
+
     func simulateSharedState(extensionName: String, event: Event?, data: (value: [String: Any]?, status: SharedStateStatus)) {
         otherSharedStates["\(extensionName)-\(String(describing: event?.id))"] = SharedStateResult(status: data.status, value: data.value)
     }
 
     public func simulateXDMSharedState(for extensionName: String, data: (value: [String: Any]?, status: SharedStateStatus)) {
         otherXDMSharedStates["\(extensionName)"] = SharedStateResult(status: data.status, value: data.value)
+    }
+    
+    func getHistoricalEvents(_ requests: [EventHistoryRequest], enforceOrder: Bool, handler: @escaping ([EventHistoryResult]) -> Void) {
     }
 
     /// clear the events and shared states that have been created by the current extension

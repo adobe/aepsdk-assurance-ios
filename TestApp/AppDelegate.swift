@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Override point for customization after application launch.        
         requestNotificationPermission()
         MobileCore.track(state: "Before SDK Init", data: nil)
-        MobileCore.setLogLevel(.debug)
+        MobileCore.setLogLevel(.trace)
         let extensions = [AEPIdentity.Identity.self,
                           Lifecycle.self,
                           Signal.self,
@@ -54,6 +54,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         MobileCore.lifecycleStart(additionalContextData: nil)
 
         //MobileCore.updateConfigurationWith(configDict: ["experienceCloud.org": "056F3DD059CB22060A494021@AdobeOrg"])
+//            MobileCore.configureWith(appId: "launch-EN516bfbc0fe2b42449bf171a4f8cb9cef-development")
+//        })
         return true
     }
 

@@ -12,68 +12,52 @@
 
 import Foundation
 import UIKit
+import AEPServices
 
 class QuickConnectManager {
 
+    private let stateManager: AssuranceStateManager
+    private let uiDelegate: AssurancePresentationDelegate
     private let quickConnectService = QuickConnectService()
-    private lazy var quickConnectView = QuickConnectView(manager: self)
-    private let parentExtension: Assurance
+    private let LOG_TAG = "QuickConnectManager"
 
-    init(assurance: Assurance) {
-        parentExtension = assurance
+    init(stateManager: AssuranceStateManager, uiDelegate: AssurancePresentationDelegate) {
+        self.stateManager = stateManager
+        self.uiDelegate = uiDelegate
     }
 
-    func detectShakeGesture() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleShakeGesture),
-                                               name: NSNotification.Name(AssuranceConstants.QuickConnect.SHAKE_NOTIFICATION_KEY),
-                                               object: nil)
-    }
-    
     func createDevice() {
-        quickConnectService.registerDevice(clientID: parentExtension.clientID, orgID: parentExtension.getURLEncodedOrgID() ?? "changeme", callback: { result in
-             
-             switch result {
-             case .success(_):
-                 self.quickConnectView.waitingState()
-                 self.checkDeviceStatus()
-                 break
-             case .failure(_):
-                 self.quickConnectView.onFailedDeviceRegistration()
-             }
-             
+        quickConnectService.shouldRetryGetDeviceStatus = true
+        guard let orgID = stateManager.getURLEncodedOrgID() else {
+            // log here
+            Log.debug(label: LOG_TAG, "orgID is unexpectedly nil")
+            return
+        }
+        quickConnectService.registerDevice(clientID: stateManager.clientID, orgID: orgID, completion: { error in
+            guard let error = error else {
+                self.checkDeviceStatus()
+                return
+            }
+            self.uiDelegate.quickConnectError(error: error)
          })
      }
     
-    func checkDeviceStatus() {
+    private func checkDeviceStatus() {
         
-        guard let orgID = parentExtension.getURLEncodedOrgID() else {
+        guard let orgID = stateManager.getURLEncodedOrgID() else {
             // log here
+            Log.debug(label: LOG_TAG, "orgID is unexpectedly nil")
             return
         }
-        quickConnectService.getDeviceStatus(clientID: parentExtension.clientID, orgID: orgID, callback: { [self] result in
+        quickConnectService.getDeviceStatus(clientID: stateManager.clientID, orgID: orgID, completion: { result in
             switch result {
             case .success((let sessionId, let token)):
-                
-                deleteDevice()
-                self.quickConnectView.onSuccessfulApproval()
-                //wss://connect%@.griffon.adobe.com/client/v1?sessionId=%@&token=%@&orgId=%@&clientId=%@
-                let socketURL = String(format: AssuranceConstants.BASE_SOCKET_URL,
-                                       self.parentExtension.environment.urlFormat,
-                                       sessionId,
-                                       token,
-                                       orgID,
-                                       self.parentExtension.clientID)
-
-                guard let url = URL(string: socketURL) else {
-                    return
-                }
-                
-                self.parentExtension.assuranceSession?.connectToSocketWith(url: url)
+                self.deleteDevice()
+                let sessionDetails = AssuranceSessionDetails(sessionId: sessionId, clientId: self.stateManager.clientID, environment: AssuranceEnvironment.prod, token: String(token), orgID: orgID)
+                self.uiDelegate.createQuickConnectSession(with: sessionDetails)
                 break
-            case .failure(_):
-                self.quickConnectView.onFailedApproval()
-                    //self.registrationUI?.showStatus(status: "API failure to check the device status.")
+            case .failure(let error):
+                self.uiDelegate.quickConnectError(error: error)
                 break
             }
             
@@ -81,42 +65,22 @@ class QuickConnectManager {
     }
     
     func deleteDevice() {
-        guard let orgID = parentExtension.getURLEncodedOrgID() else {
-            // log here
+        guard let orgID = stateManager.getURLEncodedOrgID() else {
+            Log.debug(label: LOG_TAG, "orgID is unexpectedly nil")
             return
         }
         
-        quickConnectService.deleteDevice(clientID: parentExtension.clientID, orgID: orgID, callback: { [self] result in
-        switch result {
-            case .success(_):
-                // log here
-                break
-            case .failure(_):
-                // log here\
-                break
+        quickConnectService.deleteDevice(clientID: stateManager.clientID, orgID: orgID, completion: { error in
+            guard let error = error else {
+                return
             }
+
+            Log.debug(label: self.LOG_TAG, "Failed to delete device with error: \(error)")
         })
 
     }
-    
 
-    @objc private func handleShakeGesture() {
-        parentExtension.shouldProcessEvents = true
-        parentExtension.invalidateTimer()
-        DispatchQueue.main.async {
-             self.quickConnectView.show()
-        }
+    func cancelRetryGetDeviceStatus() {
+        quickConnectService.shouldRetryGetDeviceStatus = false
     }
 }
-
-
-#if DEBUG
-extension UIWindow {
-    open override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
-        if(motion == UIEvent.EventSubtype.motionShake) {
-            NotificationCenter.default.post(name: NSNotification.Name(AssuranceConstants.QuickConnect.SHAKE_NOTIFICATION_KEY),
-                                            object: nil)
-        }
-    }
-}
-#endif

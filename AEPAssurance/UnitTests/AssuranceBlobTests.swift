@@ -19,9 +19,10 @@ import XCTest
 class AssuranceBlobTests: XCTestCase {
 
     let runtime = TestableExtensionRuntime()
-    var assuranceExtension: MockAssurance?
+    var stateManager: MockStateManager!
     var mockNetworkService: MockNetworkService!
-    var mockSession: MockAssuranceSession!
+    var sessionOrchestrator: MockSessionOrchestrator!
+    var mockSession: MockSession!
     let sampleData = "sampleData".data(using: .utf8)
     let sampleResponse = """
                 {
@@ -40,10 +41,10 @@ class AssuranceBlobTests: XCTestCase {
                 """.data(using: .utf8)!
 
     override func setUpWithError() throws {
-        assuranceExtension = MockAssurance(runtime: runtime)
-        assuranceExtension?.environment = .dev
-        assuranceExtension?.sessionId = "mocksessionId"
-        mockSession = MockAssuranceSession(assuranceExtension!)
+        stateManager = MockStateManager(runtime)
+        sessionOrchestrator = MockSessionOrchestrator(stateManager: stateManager)        
+        let sessionDetails = AssuranceSessionDetails(sessionId: "mockSessionId", clientId: "mockClientId", environment: .dev)
+        mockSession = MockSession(sessionDetails: sessionDetails, stateManager: stateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: nil)
         mockNetworkService = MockNetworkService()
         ServiceProvider.shared.networkService = mockNetworkService
     }
@@ -54,7 +55,7 @@ class AssuranceBlobTests: XCTestCase {
 
         // verify
         XCTAssertTrue(mockNetworkService.connectAsyncCalled)
-        XCTAssertEqual("https://blob-dev.griffon.adobe.com/api/FileUpload?validationSessionId=mocksessionId", mockNetworkService.networkRequest?.url.absoluteString)
+        XCTAssertEqual("https://blob-dev.griffon.adobe.com/api/FileUpload?validationSessionId=mockSessionId", mockNetworkService.networkRequest?.url.absoluteString)
         XCTAssertEqual(sampleData, mockNetworkService.networkRequest?.connectPayload)
         XCTAssertEqual(HttpMethod.post, mockNetworkService.networkRequest?.httpMethod)
         XCTAssertEqual("application/octet-stream", mockNetworkService.networkRequest?.httpHeaders["Content-Type"])

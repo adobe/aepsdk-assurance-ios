@@ -14,36 +14,46 @@ import AEPServices
 import Foundation
 import UIKit
 
+#if DEBUG
+///
+/// QuickConnectService is used to handle the Device APIs to connect with Assurance
+///
 class QuickConnectService {
-
-    var shouldContinueChecking = true
-    private let KEY_ORGID = "orgId"
-    private let KEY_DEVICE_NAME = "deviceName"
-    private let KEY_CLIENT_ID = "clientId"
+    private let LOG_TAG = "QuickConnectService"
+    var shouldRetryGetDeviceStatus = true
     typealias HTTP_RESPONSE_CODES = HttpConnectionConstants.ResponseCodes
 
     private let HEADERS = [HttpConnectionConstants.Header.HTTP_HEADER_KEY_ACCEPT: HttpConnectionConstants.Header.HTTP_HEADER_CONTENT_TYPE_JSON_APPLICATION,
                             HttpConnectionConstants.Header.HTTP_HEADER_KEY_CONTENT_TYPE: HttpConnectionConstants.Header.HTTP_HEADER_CONTENT_TYPE_JSON_APPLICATION]
 
+    ///
+    /// Registers this device to a specific org, the device will then appear in the Assurance UI
+    /// - Parameters:
+    ///     - clientID: `String` the clientID.
+    ///     - orgID: `String` the orgID
+    ///     - completion: `(AssuranceNetworkError?) -> Void` the completion which is nil if successful or an `AssuranceNetworkError` if there is a failure
     func registerDevice(clientID: String,
                         orgID: String,
-                        callback: @escaping (Result<Bool, AssuranceNetworkError>) -> Void) {
-
+                        completion: @escaping (AssuranceConnectionError?) -> Void) {
+        
         /// Bail out with failure, if we are unable to form a valid create device API request URL
-        guard let requestURL = URL(string: AssuranceConstants.QUICK_CONNECT_BASE_URL + "/create") else {
-            let error = AssuranceNetworkError(message: "Create Device API - Unable to form the request URL. Please contact the Adobe Assurance SDK team for further assistance.")
-            callback(.failure(error))
+        let urlString = AssuranceConstants.QUICK_CONNECT_BASE_URL + "/create"
+        guard let requestURL = URL(string: urlString) else {
+            let error = AssuranceConnectionError.invalidURL(url: urlString)
+            Log.error(label: LOG_TAG, error.info.description)
+            completion(error)
             return
         }
 
-        let parameters = [KEY_ORGID: orgID,
-                          KEY_DEVICE_NAME: UIDevice.current.name,
-                          KEY_CLIENT_ID: clientID]
+        let parameters = [AssuranceConstants.QuickConnect.KEY_ORGID: orgID,
+                          AssuranceConstants.QuickConnect.KEY_DEVICE_NAME: UIDevice.current.name,
+                          AssuranceConstants.QuickConnect.KEY_CLIENT_ID: clientID]
 
         /// Bail out with failure, if we are unable to create the request body required for the API
         guard let body = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) else {
-            let error = AssuranceNetworkError(message: "Create Device API - Unable to form the request body. Please contact the Adobe Assurance SDK team for further assistance.")
-            callback(.failure(error))
+            let error = AssuranceConnectionError.invalidRequestBody
+            Log.error(label: LOG_TAG, error.info.description)
+            completion(error)
             return
         }
 
@@ -58,36 +68,50 @@ class QuickConnectService {
         ServiceProvider.shared.networkService.connectAsync(networkRequest: request) { connection in
 
             if !(connection.responseCode == HTTP_RESPONSE_CODES.HTTP_OK || connection.responseCode == 201) {
-                let error = AssuranceNetworkError(message: "Create Device API - Failed to register device, connection status code : \(connection.responseCode ?? -1) and error \(connection.responseMessage ?? "Unknown error")")
-                callback(.failure(error))
+                let error = AssuranceConnectionError.failedToRegisterDevice(statusCode: connection.responseCode ?? -1, responseMessage: connection.responseMessage ?? "Unkown error")
+                Log.error(label: self.LOG_TAG, error.info.description)
+                completion(error)
                 return
             }
+            guard let data = connection.data, let responseJson = try? JSONDecoder().decode([String: AnyCodable].self, from: data) else {
+                Log.error(label: self.LOG_TAG, AssuranceConnectionError.invalidResponseData.info.description)
+                completion(.invalidResponseData)
+                return
+            }
+            Log.debug(label: self.LOG_TAG, "Created device \(String(describing: responseJson))")
 
-            let responseJson = try? JSONDecoder().decode([String: AnyCodable].self, from: connection.data!)
-            Log.debug(label: "Peaks", "Created device \(String(describing: responseJson))")
-
-            callback(.success(true))
+            completion(nil)
             return
         }
     }
 
+    ///
+    /// Gets the device status from Assurance services
+    /// - Parameters:
+    ///     - clientID: `String` the clientID.
+    ///     - orgID: `String` the ogID
+    ///     - completion: `(Result<(session:ID: `String`, token: `String`), AssuranceNetworkError>) -> Void` the completion which is a `Result` with sessionID and token if successful or an `AssuranceNetworkError` if there is a failure
+    ///
     func getDeviceStatus(clientID: String,
                          orgID: String,
-                         callback: @escaping (Result<(String, String), AssuranceNetworkError>) -> Void) {
+                         completion: @escaping (Result<(sessionID: String, token: Int), AssuranceConnectionError>) -> Void) {
 
         /// Bail out with failure, if we are unable to form a valid create device API request URL
-        guard let requestURL = URL(string: AssuranceConstants.QUICK_CONNECT_BASE_URL + "/status") else {
-            let error = AssuranceNetworkError(message: "Device Status API - Unable to form the request URL. Please contact the Adobe Assurance SDK team for further assistance.")
-            callback(.failure(error))
+        let urlString = AssuranceConstants.QUICK_CONNECT_BASE_URL + "/status"
+        guard let requestURL = URL(string: urlString) else {
+            let error = AssuranceConnectionError.invalidURL(url: urlString)
+            Log.error(label: self.LOG_TAG, error.info.description)
+            completion(.failure(error))
             return
         }
 
-        let parameters = [KEY_ORGID: orgID, KEY_CLIENT_ID: clientID]
+        let parameters = [AssuranceConstants.QuickConnect.KEY_ORGID: orgID, AssuranceConstants.QuickConnect.KEY_CLIENT_ID: clientID]
 
         /// Bail out with failure, if we are unable to create the request body required for the API
         guard let body = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) else {
-            let error = AssuranceNetworkError(message: "Device Status API - Unable to form the response body. Please contact the Adobe Assurance SDK team for further assistance.")
-            callback(.failure(error))
+            let error = AssuranceConnectionError.invalidRequestBody
+            Log.error(label: self.LOG_TAG, error.info.description)
+            completion(.failure(error))
             return
         }
 
@@ -100,10 +124,10 @@ class QuickConnectService {
                                      readTimeout: AssuranceConstants.Network.READ_TIMEOUT)
 
         ServiceProvider.shared.networkService.connectAsync(networkRequest: request) { connection in
-
             if !(connection.responseCode == HTTP_RESPONSE_CODES.HTTP_OK || connection.responseCode == 201) {
-                let error = AssuranceNetworkError(message: "Create Device API - Failed to register device, connection status code : \(connection.responseCode ?? -1) and error \(connection.responseMessage ?? "Unknown error")")
-                callback(.failure(error))
+                let error = AssuranceConnectionError.failedToGetDeviceStatus(statusCode: connection.responseCode ?? -1, responseMessage: connection.responseMessage ?? "Unknown error")
+                Log.error(label: self.LOG_TAG, error.info.description)
+                completion(.failure(error))
                 return
             }
 
@@ -111,43 +135,54 @@ class QuickConnectService {
                 let sessionID = responseDict["sessionUuid"]?.stringValue
                 let token = responseDict["token"]?.intValue
 
-                let status = try? JSONDecoder().decode([String: AnyCodable].self, from: connection.data!)
-                Log.debug(label: "Peaks", "Device status \(String(describing: status))")
+                Log.debug(label: self.LOG_TAG, "Device status \(String(describing: responseDict))")
                 guard let sessionID = sessionID, let token = token else {
-                    sleep(2)
-                    self.getDeviceStatus(clientID: clientID, orgID: orgID, callback: callback)
+                    if self.shouldRetryGetDeviceStatus {
+                        sleep(2)
+                        self.getDeviceStatus(clientID: clientID, orgID: orgID, completion: completion)
+                    }
                     return
                 }
+                self.shouldRetryGetDeviceStatus = false
+                completion(.success((sessionID: sessionID, token: token)))
 
-                callback(.success((sessionID, String(token))))
                 return
             }
-
-            callback(.failure(AssuranceNetworkError(message: "Invalid response")))
-
+            let error = AssuranceConnectionError.invalidResponseData
+            Log.error(label: self.LOG_TAG, error.info.description)
+            completion(.failure(error))
             return
         }
     }
 
+    ///
+    /// Deletes this device from the org
+    /// - Parameters:
+    ///     - clientID: `String` the clientID.
+    ///     - orgID: `String` the orgID
+    ///     - completion: `(AssuranceNetworkError?) -> Void` the completion which is nil if successful or an `AssuranceNetworkError` if there is a failure
     func deleteDevice(clientID: String,
                       orgID: String,
-                      callback: @escaping (Result<Bool, AssuranceNetworkError>) -> Void) {
+                      completion: @escaping (AssuranceConnectionError?) -> Void) {
 
         /// Bail out with failure, if we are unable to form a valid create device API request URL
-        guard let requestURL = URL(string: AssuranceConstants.QUICK_CONNECT_BASE_URL + "/delete") else {
-            let error = AssuranceNetworkError(message: "Create Device API - Unable to form the request URL. Please contact the Adobe Assurance SDK team for further assistance.")
-            callback(.failure(error))
+        let urlString = AssuranceConstants.QUICK_CONNECT_BASE_URL + "/delete"
+        guard let requestURL = URL(string: urlString) else {
+            let error = AssuranceConnectionError.invalidURL(url: urlString)
+            Log.error(label: self.LOG_TAG, error.info.description)
+            completion(error)
             return
         }
 
-        let parameters = [KEY_ORGID: orgID,
-                          KEY_DEVICE_NAME: UIDevice.current.name,
-                          KEY_CLIENT_ID: clientID]
+        let parameters = [AssuranceConstants.QuickConnect.KEY_ORGID: orgID,
+                          AssuranceConstants.QuickConnect.KEY_DEVICE_NAME: UIDevice.current.name,
+                          AssuranceConstants.QuickConnect.KEY_CLIENT_ID: clientID]
 
         /// Bail out with failure, if we are unable to create the request body required for the API
         guard let body = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) else {
-            let error = AssuranceNetworkError(message: "Create Device API - Unable to form the request body. Please contact the Adobe Assurance SDK team for further assistance.")
-            callback(.failure(error))
+            let error = AssuranceConnectionError.invalidRequestBody
+            Log.error(label: self.LOG_TAG, error.info.description)
+            completion(error)
             return
         }
 
@@ -162,21 +197,20 @@ class QuickConnectService {
         ServiceProvider.shared.networkService.connectAsync(networkRequest: request) { connection in
 
             if !(connection.responseCode == HTTP_RESPONSE_CODES.HTTP_OK || connection.responseCode == 201) {
-                let error = AssuranceNetworkError(message: "Create Device API - Failed to register device, connection status code : \(connection.responseCode ?? -1) and error \(connection.responseMessage ?? "Unknown error")")
-                callback(.failure(error))
+                let error = AssuranceConnectionError.failedToDeleteDevice(statusCode: connection.responseCode ?? -1, responseMessage: connection.responseMessage ?? "Unknown error")
+                Log.error(label: self.LOG_TAG, error.info.description)
+                completion(error)
                 return
             }
-
-            let responseJson = try? JSONDecoder().decode([String: AnyCodable].self, from: connection.data!)
-            Log.debug(label: "Peaks", "Created device \(String(describing: responseJson))")
-
-            callback(.success(true))
+            guard let data = connection.data, let responseJson = try? JSONDecoder().decode([String: AnyCodable].self, from: data) else {
+                Log.error(label: self.LOG_TAG, AssuranceConnectionError.invalidResponseData.info.description)
+                completion(.invalidResponseData)
+                return
+            }
+            Log.debug(label: self.LOG_TAG, "Deleted device \(String(describing: responseJson))")
+            completion(nil)
             return
         }
     }
-
 }
-
-struct AssuranceNetworkError: Error {
-    let message: String
-}
+#endif
