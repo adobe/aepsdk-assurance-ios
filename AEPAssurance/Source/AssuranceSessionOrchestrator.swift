@@ -195,7 +195,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     }
     
     func quickConnectError(error: AssuranceConnectionError) {
-        authorizingPresentation.sessionConnectionError(error: error)
+        authorizingPresentation?.sessionConnectionError(error: error)
     }
 #endif
     

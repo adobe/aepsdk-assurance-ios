@@ -255,15 +255,13 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
     }
     
     func test_quickConnectError() {
-        let sampleSessionID = "sampleSessionID"
-        let sampleSessionDetails = AssuranceSessionDetails(sessionId: sampleSessionID, clientId: "sampleClientID")
+        let mockAuthorizingPresentation = MockAuthorizingPresentation(authorizingView: MockSessionAuthorizingUI(withPresentationDelegate: sessionOrchestrator))
+        sessionOrchestrator.authorizingPresentation = mockAuthorizingPresentation
         
-        let mockSession = MockSession(sessionDetails: sampleSessionDetails, stateManager: mockStateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: nil)
-        sessionOrchestrator.session = mockSession
         sessionOrchestrator.quickConnectError(error: .genericError)
         
-        XCTAssertTrue(mockSession.handleConnectionErrorCalled)
-        XCTAssertEqual(mockSession.handleConnectionErrorParam, .genericError)
+        XCTAssertTrue(mockAuthorizingPresentation.sessionConnectionErrorCalled)
+        XCTAssertEqual(mockAuthorizingPresentation.sessionConnectionErrorValue, .genericError)
     }
     
     // MARK: - AssuranceConnectionDelegate tests
