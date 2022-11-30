@@ -16,8 +16,6 @@ import AEPServices
 
 class QuickConnectManager {
 
-    // TODO: - Get rid of cyclical dependency here
-    private lazy var quickConnectView = QuickConnectView(manager: self)
     private let stateManager: AssuranceStateManager
     private let uiDelegate: AssurancePresentationDelegate
     private let quickConnectService = QuickConnectService()
@@ -28,14 +26,8 @@ class QuickConnectManager {
         self.uiDelegate = uiDelegate
     }
 
-    func detectShakeGesture() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleShakeGesture),
-                                               name: NSNotification.Name(AssuranceConstants.QuickConnect.SHAKE_NOTIFICATION_KEY),
-                                               object: nil)
-    }
-    
-    func createDevice(completion: @escaping (AssuranceQuickConnectNetworkError?)-> Void) {
+    func createDevice() {
+        quickConnectService.shouldRetryGetDeviceStatus = true
         guard let orgID = stateManager.getURLEncodedOrgID() else {
             // log here
             Log.debug(label: LOG_TAG, "orgID is unexpectedly nil")
@@ -43,29 +35,29 @@ class QuickConnectManager {
         }
         quickConnectService.registerDevice(clientID: stateManager.clientID, orgID: orgID, completion: { error in
             guard let error = error else {
-                self.checkDeviceStatus(completion: completion)
+                self.checkDeviceStatus()
                 return
             }
-            completion(error)
+            self.uiDelegate.quickConnectError(error: error)
          })
      }
     
-    func checkDeviceStatus(completion: @escaping (AssuranceQuickConnectNetworkError?) -> Void) {
+    private func checkDeviceStatus() {
         
         guard let orgID = stateManager.getURLEncodedOrgID() else {
             // log here
             Log.debug(label: LOG_TAG, "orgID is unexpectedly nil")
             return
         }
-        quickConnectService.getDeviceStatus(clientID: stateManager.clientID, orgID: orgID, completion: { [self] result in
+        quickConnectService.getDeviceStatus(clientID: stateManager.clientID, orgID: orgID, completion: { result in
             switch result {
             case .success((let sessionId, let token)):
-                deleteDevice()
-                completion(nil)
-                uiDelegate.quickConnectClicked(sessionID: sessionId, environment: AssuranceEnvironment.prod.rawValue, token: token)
+                self.deleteDevice()
+                let sessionDetails = AssuranceSessionDetails(sessionId: sessionId, clientId: self.stateManager.clientID, environment: AssuranceEnvironment.prod, token: String(token), orgID: orgID)
+                self.uiDelegate.createQuickConnectSession(with: sessionDetails)
                 break
             case .failure(let error):
-                completion(error)
+                self.uiDelegate.quickConnectError(error: error)
                 break
             }
             
@@ -91,24 +83,4 @@ class QuickConnectManager {
     func cancelRetryGetDeviceStatus() {
         quickConnectService.shouldRetryGetDeviceStatus = false
     }
-    
-
-    @objc private func handleShakeGesture() {
-        quickConnectService.shouldRetryGetDeviceStatus = true
-        DispatchQueue.main.async {
-             self.quickConnectView.show()
-        }
-    }
 }
-
-
-#if DEBUG
-extension UIWindow {
-    open override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
-        if(motion == UIEvent.EventSubtype.motionShake) {
-            NotificationCenter.default.post(name: NSNotification.Name(AssuranceConstants.QuickConnect.SHAKE_NOTIFICATION_KEY),
-                                            object: nil)
-        }
-    }
-}
-#endif

@@ -1,5 +1,5 @@
 //
-// Copyright 2021 Adobe. All rights reserved.
+// Copyright 2022 Adobe. All rights reserved.
 // This file is licensed to you under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License. You may obtain a copy
 // of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,21 +15,23 @@
 import Foundation
 import XCTest
 
-class MockAuthorizingPresentation : AssuranceAuthorizingPresentation {
-    
-    var expectation: XCTestExpectation?
-    override init(authorizingView: SessionAuthorizingUI) {
-        super.init(authorizingView: authorizingView)
+class MockStatusPresentation: AssuranceStatusPresentation {
+    override init(with statusUI: iOSStatusUI) {
+        super.init(with: statusUI)
     }
     
-    var showCalled = false
-    override func show() {
-        showCalled = true
+    var sessionReconnectingCalled = false
+    override func sessionReconnecting() {
+        sessionReconnectingCalled = true
     }
     
-    var sessionConnectingCalled = false
-    override func sessionConnecting() {
-        sessionConnectingCalled = true
+    var addClientLogCalled = false
+    var addClientLogMessage: String?
+    var addClientLogVisibility: AssuranceClientLogVisibility?
+    override func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
+        addClientLogCalled = true
+        addClientLogMessage = message
+        addClientLogVisibility = visibility
     }
     
     var sessionConnectedCalled = false

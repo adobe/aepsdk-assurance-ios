@@ -15,9 +15,10 @@ import Foundation
 class AssuranceSession {
     let RECONNECT_TIMEOUT = 5
     let stateManager: AssuranceStateManager
-    let sessionDetails: AssuranceSessionDetails
+    var sessionDetails: AssuranceSessionDetails
+    let presentationDelegate: AssurancePresentationDelegate
+    let connectionDelegate: AssuranceConnectionDelegate
     let sessionOrchestrator: AssuranceSessionOrchestrator
-    var pinCodeScreen: SessionAuthorizingUI?
     let outboundQueue: ThreadSafeQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
     let inboundQueue: ThreadSafeQueue = ThreadSafeQueue<AssuranceEvent>(withLimit: 200)
     let inboundSource: DispatchSourceUserDataAdd = DispatchSource.makeUserDataAddSource(queue: DispatchQueue.global(qos: .default))
@@ -25,9 +26,9 @@ class AssuranceSession {
     let pluginHub: PluginHub = PluginHub()
 
     #if DEBUG
-    var presentation: AssurancePresentation
+    var statusPresentation: AssuranceStatusPresentation
     #else
-    let presentation: AssurancePresentation
+    let statusPresentation: AssuranceStatusPresentation
     #endif
     lazy var socket: SocketConnectable  = {
         return WebViewSocket(withDelegate: self)
@@ -52,7 +53,9 @@ class AssuranceSession {
         self.sessionDetails = sessionDetails
         self.stateManager = stateManager
         self.sessionOrchestrator = sessionOrchestrator
-        presentation = AssurancePresentation(sessionOrchestrator: sessionOrchestrator)
+        self.presentationDelegate = sessionOrchestrator
+        self.connectionDelegate = sessionOrchestrator
+        statusPresentation = AssuranceStatusPresentation(with: iOSStatusUI(presentationDelegate: presentationDelegate))
         handleInBoundEvents()
         handleOutBoundEvents()
         registerInternalPlugins()
@@ -64,7 +67,7 @@ class AssuranceSession {
             }
         }
     }
-
+    
     /// Starts an assurance session connection with the provided sessionDetails.
     ///
     /// If the sessionDetails is not authenticated (doesn't have pin or orgId), it triggers the presentation to launch the pinCode screen
@@ -80,10 +83,9 @@ class AssuranceSession {
             // if the URL is already authenticated with Pin and OrgId,
             // then immediately make the socket connection
             socket.connect(withUrl: url)
-            self.presentation.statusUI.display()
         case .failure:
             // if the URL is not authenticated, then bring up the pinpad screen
-            presentation.sessionInitialized()
+            presentationDelegate.initializePinScreenFlow()
         }
     }
 
@@ -115,7 +117,7 @@ class AssuranceSession {
         pluginHub.notifyPluginsOnSessionTerminated()
         stateManager.connectedWebSocketURL = nil
     }
-
+    
     /// Handles the Assurance socket connection error by showing the appropriate UI to the user.
     /// - Parameters:
     ///   - error: The `AssuranceConnectionError` representing the error
@@ -124,7 +126,7 @@ class AssuranceSession {
         // if the pinCode screen is still being displayed. Then use the same webView to display error
         Log.debug(label: AssuranceConstants.LOG_TAG, "Socket disconnected with error :\(error.info.name) \n description : \(error.info.description) \n close code: \(closeCode)")
 
-        presentation.sessionConnectionError(error: error)
+        connectionDelegate.handleConnectionError(error: error)
         pluginHub.notifyPluginsOnDisconnect(withCloseCode: closeCode)
 
         // since we don't give retry option for these errors and UI will be dismissed anyway, hence notify plugins for onSessionTerminated

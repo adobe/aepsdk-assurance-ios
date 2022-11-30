@@ -37,6 +37,13 @@ public class Assurance: NSObject, Extension {
     let stateManager: AssuranceStateManager
     let sessionOrchestrator: AssuranceSessionOrchestrator
     #endif
+    
+    public required init?(runtime: ExtensionRuntime) {
+        self.runtime = runtime
+        self.shutdownTime = AssuranceConstants.SHUTDOWN_TIME
+        self.stateManager = AssuranceStateManager(runtime)
+        self.sessionOrchestrator = AssuranceSessionOrchestrator(stateManager: stateManager)
+    }
 
     public func onRegistered() {
         registerListener(type: EventType.wildcard, source: EventSource.wildcard, listener: handleWildcardEvent)
@@ -56,23 +63,12 @@ public class Assurance: NSObject, Extension {
             }
         }
         
-        #if DEBUG
-        self.quickConnect = QuickConnectManager(stateManager: stateManager, uiDelegate: sessionOrchestrator)
-        quickConnect?.detectShakeGesture()
-        #endif
-
         /// if the Assurance session is not previously connected, turn on 5 sec timer to wait for Assurance deeplink
         startShutDownTimer()
     }
 
     public func onUnregistered() {}
 
-    public required init?(runtime: ExtensionRuntime) {
-        self.runtime = runtime
-        self.shutdownTime = AssuranceConstants.SHUTDOWN_TIME
-        self.stateManager = AssuranceStateManager(runtime)
-        self.sessionOrchestrator = AssuranceSessionOrchestrator(stateManager: stateManager)
-    }
 
     public func readyForEvent(_ event: Event) -> Bool {
         return true
@@ -129,6 +125,14 @@ public class Assurance: NSObject, Extension {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance start session event received with empty data. Dropping event.")
             return
         }
+        
+        #if DEBUG
+        if let isQuickConnect = startSessionData[AssuranceConstants.EventDataKey.QUICK_CONNECT] as? Bool, isQuickConnect {
+            invalidateTimer()
+            sessionOrchestrator.startQuickConnectFlow()
+            return
+        }
+        #endif
 
         guard let deeplinkUrlString = startSessionData[AssuranceConstants.EventDataKey.START_SESSION_URL] as? String else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance start session event received with no deeplink url. Dropping event.")
@@ -166,9 +170,9 @@ public class Assurance: NSObject, Extension {
     ///     - event - a mobileCore's places request event
     private func handlePlacesRequest(event: Event) {
         if event.isRequestNearByPOIEvent {
-            sessionOrchestrator.session?.presentation.addClientLog("Places - Requesting \(event.poiCount) nearby POIs from (\(event.latitude), \(event.longitude))", visibility: .normal)
+            sessionOrchestrator.session?.statusPresentation.addClientLog("Places - Requesting \(event.poiCount) nearby POIs from (\(event.latitude), \(event.longitude))", visibility: .normal)
         } else if event.isRequestResetEvent {
-            sessionOrchestrator.session?.presentation.addClientLog("Places - Resetting location", visibility: .normal)
+            sessionOrchestrator.session?.statusPresentation.addClientLog("Places - Resetting location", visibility: .normal)
         }
     }
 
@@ -178,16 +182,16 @@ public class Assurance: NSObject, Extension {
     ///     - event - a mobileCore's places response event
     private func handlePlacesResponse(event: Event) {
         if event.isResponseRegionEvent {
-            sessionOrchestrator.session?.presentation.addClientLog("Places - Processed \(event.regionEventType) for region \(event.regionName).", visibility: .normal)
+            sessionOrchestrator.session?.statusPresentation.addClientLog("Places - Processed \(event.regionEventType) for region \(event.regionName).", visibility: .normal)
         } else if event.isResponseNearByEvent {
             let nearByPOIs = event.nearByPOIs
             for poi in nearByPOIs {
                 guard let poiDictionary = poi as? [String: Any] else {
                     return
                 }
-                sessionOrchestrator.session?.presentation.addClientLog("\t  \(poiDictionary["regionname"] as? String ?? "Unknown")", visibility: .high)
+                sessionOrchestrator.session?.statusPresentation.addClientLog("\t  \(poiDictionary["regionname"] as? String ?? "Unknown")", visibility: .high)
             }
-            sessionOrchestrator.session?.presentation.addClientLog("Places - Found \(nearByPOIs.count) nearby POIs\(!nearByPOIs.isEmpty ? " :" : ".")", visibility: .high)
+            sessionOrchestrator.session?.statusPresentation.addClientLog("Places - Found \(nearByPOIs.count) nearby POIs\(!nearByPOIs.isEmpty ? " :" : ".")", visibility: .high)
         }
     }
 

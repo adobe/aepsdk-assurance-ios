@@ -81,10 +81,16 @@ struct AssuranceCard: View {
                 Button(action: {
                     if let url = URL(string: self.assuranceURL) {
                         Assurance.startSession(url: url)
+                    } else {
+                        Assurance.startSession()
                     }
                 }, label: {
                     Text("Connect")
-                }).buttonStyle(YellowButtonStyle()).padding()
+                }).buttonStyle(YellowButtonStyle()).padding().onReceive(NotificationCenter.default.publisher(for: .deviceDidShakeNotification)) { _ in
+                    #if DEBUG
+                    Assurance.startSession()
+                    #endif
+                }
             }
         }
     }
@@ -247,3 +253,15 @@ struct BigEventsCard: View {
         }
     }
 }
+#if DEBUG
+extension NSNotification.Name {
+    public static let deviceDidShakeNotification = NSNotification.Name("MyDeviceDidShakeNotification")
+}
+
+extension UIWindow {
+    open override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        super.motionEnded(motion, with: event)
+        NotificationCenter.default.post(name: .deviceDidShakeNotification, object: event)
+    }
+}
+#endif

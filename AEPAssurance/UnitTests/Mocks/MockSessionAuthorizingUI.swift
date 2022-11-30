@@ -14,15 +14,23 @@
 @testable import AEPServices
 import Foundation
 
-class MockPinPad: SessionAuthorizingUI {
+class MockSessionAuthorizingUI: SessionAuthorizingUI {
     
     var displayed: Bool
+    
     required init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate) {
         displayed = false
     }
 
+    var showCalled = false
     func show() {
+        showCalled = true
         displayed = true
+    }
+    
+    var onSessionConnectingCalled = false
+    func sessionConnecting() {
+        onSessionConnectingCalled = true
     }
     
     var onSessionInitializedCalled = false

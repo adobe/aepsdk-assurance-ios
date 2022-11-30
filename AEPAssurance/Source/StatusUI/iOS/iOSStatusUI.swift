@@ -16,14 +16,14 @@ import WebKit
 
 class iOSStatusUI {
     var displayed: Bool = false
-    var sessionOrchestrator: AssuranceSessionOrchestrator
     var clientLogQueue: ThreadSafeQueue<AssuranceClientLogMessage>
     var floatingButton: FloatingButtonPresentable?
     var fullScreenMessage: FullscreenPresentable?
+    var presentationDelegate: AssurancePresentationDelegate
     var webView: WKWebView?
 
-    required init(withSessionOrchestrator sessionOrchestrator: AssuranceSessionOrchestrator) {
-        self.sessionOrchestrator = sessionOrchestrator
+    required init(presentationDelegate: AssurancePresentationDelegate) {
+        self.presentationDelegate = presentationDelegate
         self.clientLogQueue = ThreadSafeQueue(withLimit: 100)
     }
 

@@ -25,6 +25,13 @@
 		337C8C135446B45550172205 /* Pods_TestAppObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FEAA724C29B9FAC154C0556 /* Pods_TestAppObjC.framework */; };
 		3FF4F5C8E96A31D0A6E896C4 /* Pods_TestApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96C170474540581D23D5C489 /* Pods_TestApp.framework */; };
 		4A3445E6430F2FDC93CD6A1F /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F7044D49EBAEA4F53647EF2 /* Pods_UnitTests.framework */; };
+		750EE32A2936A4490013C411 /* MockStatusPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EE3292936A4490013C411 /* MockStatusPresentation.swift */; };
+		750EE32C2937C6D50013C411 /* AssuranceStatusPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EE32B2937C6D50013C411 /* AssuranceStatusPresentationTests.swift */; };
+		750EE32E2937C7E40013C411 /* QuickConnectViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EE32D2937C7E40013C411 /* QuickConnectViewTests.swift */; };
+		750EE3302937D6B10013C411 /* MockQuickConnectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EE32F2937D6B10013C411 /* MockQuickConnectManager.swift */; };
+		7527DCA22926F15300FE0D8C /* AssuranceConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7527DCA12926F15300FE0D8C /* AssuranceConnectionDelegate.swift */; };
+		753867C32925735D0021BC3F /* AssuranceAuthorizingPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753867C22925735D0021BC3F /* AssuranceAuthorizingPresentation.swift */; };
+		753867C529257CFE0021BC3F /* AssuranceStatusPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753867C429257CFE0021BC3F /* AssuranceStatusPresentation.swift */; };
 		7881FA5928D50C8D0051F902 /* QuickConnectServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7881FA5828D50C8D0051F902 /* QuickConnectServiceTests.swift */; };
 		B601172227BAE3EF006D3968 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B601172127BAE3EF006D3968 /* Connection.swift */; };
 		B601172527BAE4AA006D3968 /* AdobeLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B601172427BAE4AA006D3968 /* AdobeLogo.swift */; };
@@ -61,7 +68,7 @@
 		B6407206262C90FA00C43183 /* Assurance+PublicAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6407205262C90FA00C43183 /* Assurance+PublicAPI.swift */; };
 		B6407223262CEBC600C43183 /* URL+Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6407222262CEBC600C43183 /* URL+Parser.swift */; };
 		B640722B262CF06100C43183 /* AssuranceEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640722A262CF06100C43183 /* AssuranceEnvironment.swift */; };
-		B64212B326849021007343B6 /* MockPinPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64212B226849021007343B6 /* MockPinPad.swift */; };
+		B64212B326849021007343B6 /* MockSessionAuthorizingUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64212B226849021007343B6 /* MockSessionAuthorizingUI.swift */; };
 		B64212B52684A655007343B6 /* AssuranceConnectionErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64212B42684A655007343B6 /* AssuranceConnectionErrorTests.swift */; };
 		B64FDF6E264F33EF00D33192 /* AssurancePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64FDF6D264F33EF00D33192 /* AssurancePlugin.swift */; };
 		B64FDF70264F341600D33192 /* PluginFakeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64FDF6F264F341600D33192 /* PluginFakeEvent.swift */; };
@@ -127,15 +134,14 @@
 		B6DDFAB5268139BA002D2757 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6DDFAB4268139BA002D2757 /* Assets.xcassets */; };
 		B6DDFAB8268139BA002D2757 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6DDFAB6268139BA002D2757 /* LaunchScreen.storyboard */; };
 		B6DDFABB268139BA002D2757 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B6DDFABA268139BA002D2757 /* main.m */; };
+		B6EB1C132805F3FE0036337E /* AssurancePresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C112805F3FE0036337E /* AssurancePresentationDelegate.swift */; };
+		B6EB1C152805F4FE0036337E /* AssuranceSessionOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C142805F4FE0036337E /* AssuranceSessionOrchestrator.swift */; };
+		B6EB1C1728060D2D0036337E /* AssuranceAuthorizingPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C1628060D2D0036337E /* AssuranceAuthorizingPresentationTests.swift */; };
+		B6EB1C1928060DB10036337E /* MockPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C1828060DB10036337E /* MockPresentation.swift */; };
+		B6EB1C1B280611410036337E /* MockSessionOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C1A280611410036337E /* MockSessionOrchestrator.swift */; };
 		B6EC8D1D27B48FF40058FAC7 /* QuickConnectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EC8D1C27B48FF40058FAC7 /* QuickConnectManager.swift */; };
 		B6EC8D1F27B4918A0058FAC7 /* QuickConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EC8D1E27B4918A0058FAC7 /* QuickConnectView.swift */; };
 		B6EC8D2127B4925C0058FAC7 /* QuickConnectService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EC8D2027B4925C0058FAC7 /* QuickConnectService.swift */; };
-		B6EB1C122805F3FE0036337E /* AssurancePresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C102805F3FE0036337E /* AssurancePresentation.swift */; };
-		B6EB1C132805F3FE0036337E /* AssurancePresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C112805F3FE0036337E /* AssurancePresentationDelegate.swift */; };
-		B6EB1C152805F4FE0036337E /* AssuranceSessionOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C142805F4FE0036337E /* AssuranceSessionOrchestrator.swift */; };
-		B6EB1C1728060D2D0036337E /* AssurancePresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C1628060D2D0036337E /* AssurancePresentationTests.swift */; };
-		B6EB1C1928060DB10036337E /* MockPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C1828060DB10036337E /* MockPresentation.swift */; };
-		B6EB1C1B280611410036337E /* MockSessionOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C1A280611410036337E /* MockSessionOrchestrator.swift */; };
 		B6F6F1B327A91E060040DCD4 /* AssuranceEventChunker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F6F1B227A91E060040DCD4 /* AssuranceEventChunker.swift */; };
 		B6F6F1B627A943C60040DCD4 /* AssuranceEventChunkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F6F1B427A942A10040DCD4 /* AssuranceEventChunkerTests.swift */; };
 		B6FEB8AC263A18E600F0F240 /* SocketScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FEB8AB263A18E600F0F240 /* SocketScript.swift */; };
@@ -214,6 +220,13 @@
 		2312E718FBB87722A8A55BE1 /* Pods-TestAppObjC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppObjC.release.xcconfig"; path = "Target Support Files/Pods-TestAppObjC/Pods-TestAppObjC.release.xcconfig"; sourceTree = "<group>"; };
 		493D855458BBA67C6F19F468 /* Pods-AEPAssurance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AEPAssurance.release.xcconfig"; path = "Target Support Files/Pods-AEPAssurance/Pods-AEPAssurance.release.xcconfig"; sourceTree = "<group>"; };
 		5ABE4461A8032C0B29C8BCF6 /* Pods-TestAppObjC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppObjC.debug.xcconfig"; path = "Target Support Files/Pods-TestAppObjC/Pods-TestAppObjC.debug.xcconfig"; sourceTree = "<group>"; };
+		750EE3292936A4490013C411 /* MockStatusPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockStatusPresentation.swift; sourceTree = "<group>"; };
+		750EE32B2937C6D50013C411 /* AssuranceStatusPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStatusPresentationTests.swift; sourceTree = "<group>"; };
+		750EE32D2937C7E40013C411 /* QuickConnectViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectViewTests.swift; sourceTree = "<group>"; };
+		750EE32F2937D6B10013C411 /* MockQuickConnectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockQuickConnectManager.swift; sourceTree = "<group>"; };
+		7527DCA12926F15300FE0D8C /* AssuranceConnectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceConnectionDelegate.swift; sourceTree = "<group>"; };
+		753867C22925735D0021BC3F /* AssuranceAuthorizingPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceAuthorizingPresentation.swift; sourceTree = "<group>"; };
+		753867C429257CFE0021BC3F /* AssuranceStatusPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStatusPresentation.swift; sourceTree = "<group>"; };
 		7881FA5828D50C8D0051F902 /* QuickConnectServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectServiceTests.swift; sourceTree = "<group>"; };
 		96C170474540581D23D5C489 /* Pods_TestApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B601171F27BAE193006D3968 /* connection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connection.png; sourceTree = "<group>"; };
@@ -259,7 +272,7 @@
 		B6407205262C90FA00C43183 /* Assurance+PublicAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Assurance+PublicAPI.swift"; sourceTree = "<group>"; };
 		B6407222262CEBC600C43183 /* URL+Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Parser.swift"; sourceTree = "<group>"; };
 		B640722A262CF06100C43183 /* AssuranceEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEnvironment.swift; sourceTree = "<group>"; };
-		B64212B226849021007343B6 /* MockPinPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPinPad.swift; sourceTree = "<group>"; };
+		B64212B226849021007343B6 /* MockSessionAuthorizingUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSessionAuthorizingUI.swift; sourceTree = "<group>"; };
 		B64212B42684A655007343B6 /* AssuranceConnectionErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceConnectionErrorTests.swift; sourceTree = "<group>"; };
 		B64FDF6D264F33EF00D33192 /* AssurancePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssurancePlugin.swift; sourceTree = "<group>"; };
 		B64FDF6F264F341600D33192 /* PluginFakeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginFakeEvent.swift; sourceTree = "<group>"; };
@@ -330,15 +343,14 @@
 		B6DDFAB7268139BA002D2757 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B6DDFAB9268139BA002D2757 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6DDFABA268139BA002D2757 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B6EB1C112805F3FE0036337E /* AssurancePresentationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssurancePresentationDelegate.swift; sourceTree = "<group>"; };
+		B6EB1C142805F4FE0036337E /* AssuranceSessionOrchestrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceSessionOrchestrator.swift; sourceTree = "<group>"; };
+		B6EB1C1628060D2D0036337E /* AssuranceAuthorizingPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceAuthorizingPresentationTests.swift; sourceTree = "<group>"; };
+		B6EB1C1828060DB10036337E /* MockPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPresentation.swift; sourceTree = "<group>"; };
+		B6EB1C1A280611410036337E /* MockSessionOrchestrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSessionOrchestrator.swift; sourceTree = "<group>"; };
 		B6EC8D1C27B48FF40058FAC7 /* QuickConnectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectManager.swift; sourceTree = "<group>"; };
 		B6EC8D1E27B4918A0058FAC7 /* QuickConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectView.swift; sourceTree = "<group>"; };
 		B6EC8D2027B4925C0058FAC7 /* QuickConnectService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectService.swift; sourceTree = "<group>"; };
-		B6EB1C102805F3FE0036337E /* AssurancePresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssurancePresentation.swift; sourceTree = "<group>"; };
-		B6EB1C112805F3FE0036337E /* AssurancePresentationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssurancePresentationDelegate.swift; sourceTree = "<group>"; };
-		B6EB1C142805F4FE0036337E /* AssuranceSessionOrchestrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceSessionOrchestrator.swift; sourceTree = "<group>"; };
-		B6EB1C1628060D2D0036337E /* AssurancePresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssurancePresentationTests.swift; sourceTree = "<group>"; };
-		B6EB1C1828060DB10036337E /* MockPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPresentation.swift; sourceTree = "<group>"; };
-		B6EB1C1A280611410036337E /* MockSessionOrchestrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSessionOrchestrator.swift; sourceTree = "<group>"; };
 		B6F6F1B227A91E060040DCD4 /* AssuranceEventChunker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEventChunker.swift; sourceTree = "<group>"; };
 		B6F6F1B427A942A10040DCD4 /* AssuranceEventChunkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEventChunkerTests.swift; sourceTree = "<group>"; };
 		B6FEB8AB263A18E600F0F240 /* SocketScript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketScript.swift; sourceTree = "<group>"; };
@@ -496,8 +508,10 @@
 				B6D6A014265D8836005042BE /* AssuranceClientInfo.swift */,
 				B6D6A01A265F027C005042BE /* AssuranceBlob.swift */,
 				B6D6A025265F9F14005042BE /* AssuranceUIUtil.swift */,
-				B6EB1C102805F3FE0036337E /* AssurancePresentation.swift */,
+				753867C429257CFE0021BC3F /* AssuranceStatusPresentation.swift */,
+				753867C22925735D0021BC3F /* AssuranceAuthorizingPresentation.swift */,
 				B6EB1C112805F3FE0036337E /* AssurancePresentationDelegate.swift */,
+				7527DCA12926F15300FE0D8C /* AssuranceConnectionDelegate.swift */,
 				B6EB1C142805F4FE0036337E /* AssuranceSessionOrchestrator.swift */,
 				B61B7E652822D08F00E1A6B2 /* AssuranceSessionDetails.swift */,
 				B640719D262C313E00C43183 /* Info.plist */,
@@ -534,9 +548,11 @@
 				B63EB79C2668D524005BE2C5 /* AssuranceClientLogMessageTests.swift */,
 				B6F6F1B427A942A10040DCD4 /* AssuranceEventChunkerTests.swift */,
 				7881FA5828D50C8D0051F902 /* QuickConnectServiceTests.swift */,
-				B6EB1C1628060D2D0036337E /* AssurancePresentationTests.swift */,
+				B6EB1C1628060D2D0036337E /* AssuranceAuthorizingPresentationTests.swift */,
+				750EE32B2937C6D50013C411 /* AssuranceStatusPresentationTests.swift */,
 				B61A2F58282483EC006B56D5 /* AssuranceSessionDetailsTests.swift */,
 				B6C4C8372829AFCB00BF4CC6 /* AssuranceSessionOrchestratorTests.swift */,
+				750EE32D2937C7E40013C411 /* QuickConnectViewTests.swift */,
 				B64071A9262C313E00C43183 /* Info.plist */,
 			);
 			name = UnitTests;
@@ -685,10 +701,12 @@
 				B6D6A028265FA0EE005042BE /* MockAssuranceUIUtil.swift */,
 				B63ADABB26731A0400A1281A /* MockSocket.swift */,
 				B6DBD81F2678FB19009EB47E /* MockStatusUI.swift */,
-				B64212B226849021007343B6 /* MockPinPad.swift */,
+				B64212B226849021007343B6 /* MockSessionAuthorizingUI.swift */,
 				B6A0197127CEA8D30097ED5C /* MockStateManager.swift */,
 				B6EB1C1828060DB10036337E /* MockPresentation.swift */,
+				750EE3292936A4490013C411 /* MockStatusPresentation.swift */,
 				B6EB1C1A280611410036337E /* MockSessionOrchestrator.swift */,
+				750EE32F2937D6B10013C411 /* MockQuickConnectManager.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -1215,9 +1233,9 @@
 				B6D6A03F2660ED4D005042BE /* WebViewSocket.swift in Sources */,
 				B64071D3262C368C00C43183 /* Assurance.swift in Sources */,
 				B6D6A02F2660CFF5005042BE /* Event+Assurance.swift in Sources */,
+				753867C32925735D0021BC3F /* AssuranceAuthorizingPresentation.swift in Sources */,
 				B6B23ACE26414C8100EE8153 /* iOSPinCodeScreen+FullScreenDelegate.swift in Sources */,
 				B64071D7262C376A00C43183 /* AssuranceConstants.swift in Sources */,
-				B6EB1C122805F3FE0036337E /* AssurancePresentation.swift in Sources */,
 				B6D6A027265F9F32005042BE /* AssuranceUIUtil.swift in Sources */,
 				B601172527BAE4AA006D3968 /* AdobeLogo.swift in Sources */,
 				B6CECC652655A8D3000D517F /* ThreadSafeQueue.swift in Sources */,
@@ -1238,12 +1256,14 @@
 				B6F6F1B327A91E060040DCD4 /* AssuranceEventChunker.swift in Sources */,
 				B64FDF70264F341600D33192 /* PluginFakeEvent.swift in Sources */,
 				B6407223262CEBC600C43183 /* URL+Parser.swift in Sources */,
+				753867C529257CFE0021BC3F /* AssuranceStatusPresentation.swift in Sources */,
 				B6D6A03A2660ECBD005042BE /* SocketDelegate.swift in Sources */,
 				B6D6A0392660ECBD005042BE /* SocketState.swift in Sources */,
 				B6D6A022265F914D005042BE /* PluginScreenshot.swift in Sources */,
 				B640722B262CF06100C43183 /* AssuranceEnvironment.swift in Sources */,
 				B6EC8D1F27B4918A0058FAC7 /* QuickConnectView.swift in Sources */,
 				B6FEB8B2263A18F500F0F240 /* ActiveIcon.swift in Sources */,
+				7527DCA22926F15300FE0D8C /* AssuranceConnectionDelegate.swift in Sources */,
 				B6B0E2C9263C674F00EF5E21 /* SessionAuthorizingUI.swift in Sources */,
 				B6FEB8B1263A18F500F0F240 /* InactiveIcon.swift in Sources */,
 				B6EB1C132805F3FE0036337E /* AssurancePresentationDelegate.swift in Sources */,
@@ -1283,8 +1303,9 @@
 				B6AFD58E2634041E00C63608 /* AssuranceEventTests.swift in Sources */,
 				B6D6A01D265F05F8005042BE /* MockNetworkService.swift in Sources */,
 				B6C4C8392829AFD000BF4CC6 /* AssuranceSessionOrchestratorTests.swift in Sources */,
-				B64212B326849021007343B6 /* MockPinPad.swift in Sources */,
+				B64212B326849021007343B6 /* MockSessionAuthorizingUI.swift in Sources */,
 				B6DBD8202678FB19009EB47E /* MockStatusUI.swift in Sources */,
+				750EE32C2937C6D50013C411 /* AssuranceStatusPresentationTests.swift in Sources */,
 				B6D2A91026322D6D0062AC5E /* AssuranceEnvironmentTests.swift in Sources */,
 				B6A0197227CEA8D30097ED5C /* MockStateManager.swift in Sources */,
 				B63ADABC26731A0400A1281A /* MockSocket.swift in Sources */,
@@ -1294,8 +1315,11 @@
 				B6CECC5B26545829000D517F /* MockSession.swift in Sources */,
 				B6CECC4E26531F5D000D517F /* PluginConfigModifyTests.swift in Sources */,
 				B6F6F1B627A943C60040DCD4 /* AssuranceEventChunkerTests.swift in Sources */,
+				750EE32A2936A4490013C411 /* MockStatusPresentation.swift in Sources */,
+				750EE32E2937C7E40013C411 /* QuickConnectViewTests.swift in Sources */,
 				B6D6A020265F086A005042BE /* AssuranceBlobTests.swift in Sources */,
 				B63ADA8E266F718900A1281A /* ErrorViewTests.swift in Sources */,
+				750EE3302937D6B10013C411 /* MockQuickConnectManager.swift in Sources */,
 				B63EB79D2668D524005BE2C5 /* AssuranceClientLogMessageTests.swift in Sources */,
 				B6D6A02A265FAAA6005042BE /* MockUIService.swift in Sources */,
 				B64212B52684A655007343B6 /* AssuranceConnectionErrorTests.swift in Sources */,
@@ -1303,7 +1327,7 @@
 				B6CECC6026545857000D517F /* PluginHubTests.swift in Sources */,
 				B6D6A017265D8863005042BE /* AssuranceClientInfoTests.swift in Sources */,
 				B64FDF73264F384700D33192 /* PluginFakeEventTests.swift in Sources */,
-				B6EB1C1728060D2D0036337E /* AssurancePresentationTests.swift in Sources */,
+				B6EB1C1728060D2D0036337E /* AssuranceAuthorizingPresentationTests.swift in Sources */,
 				B6DBD81E26787F5A009EB47E /* AssuranceSessionTests.swift in Sources */,
 				B6B055A626824EF900AF5D1A /* PluginLogForwardingTests.swift in Sources */,
 				B6EB1C1928060DB10036337E /* MockPresentation.swift in Sources */,

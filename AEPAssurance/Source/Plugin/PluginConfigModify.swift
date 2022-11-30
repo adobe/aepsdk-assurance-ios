@@ -54,7 +54,7 @@ class PluginConfigModify: AssurancePlugin {
         for (configKey) in commandDetails.keys {
             logString.append("<br> &emsp; \(configKey)")
         }
-        session?.presentation.statusUI.addClientLog(logString, visibility: .high)
+        session?.statusPresentation.statusUI.addClientLog(logString, visibility: .high)
         saveModifiedConfigKeys(commandDetails)
     }
 

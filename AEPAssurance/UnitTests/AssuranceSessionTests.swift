@@ -25,19 +25,21 @@ class AssuranceSessionTests: XCTestCase {
     var stateManager: MockStateManager!
     var sessionDetails: AssuranceSessionDetails!
     var mockSocket: MockSocket!
-    var mockPresentation: MockPresentation!
-    var sessionOrchestrator: AssuranceSessionOrchestrator!
+    var mockStatusPresentation: MockStatusPresentation!
+    var sessionOrchestrator: MockSessionOrchestrator!
     let mockUIService = MockUIService()
     let mockMessagePresentable = MockFullscreenMessagePresentable()
     let mockPlugin = PluginTaco()
+    var mockStatusUI: MockStatusUI!
 
     override func setUpWithError() throws {
         // create the required mocks
         ServiceProvider.shared.uiService = mockUIService
         mockUIService.fullscreenMessage = mockMessagePresentable
         stateManager = MockStateManager(runtime)
-        sessionOrchestrator = AssuranceSessionOrchestrator(stateManager: stateManager)
-        mockPresentation = MockPresentation(sessionOrchestrator:sessionOrchestrator)
+        sessionOrchestrator = MockSessionOrchestrator(stateManager: stateManager)
+        mockStatusUI = MockStatusUI(presentationDelegate: sessionOrchestrator)
+        mockStatusPresentation = MockStatusPresentation(with: mockStatusUI)
         try initNonAuthenticatedSession()
     }
     
@@ -45,7 +47,7 @@ class AssuranceSessionTests: XCTestCase {
         mockSocket = nil
         session = nil
         stateManager = nil
-        mockPresentation = nil
+        mockStatusPresentation = nil
     }
 
 
@@ -56,7 +58,7 @@ class AssuranceSessionTests: XCTestCase {
         session.startSession()
 
         // verify the presentation layer is called to invoke the pinCode screen
-        XCTAssertTrue(mockPresentation.sessionInitializedCalled)
+        XCTAssertTrue(sessionOrchestrator.initializePinScreenFlowCalled)
         XCTAssertFalse(mockSocket.connectCalled)
     }
     
@@ -181,7 +183,7 @@ class AssuranceSessionTests: XCTestCase {
         // verify
         wait(for: [mockPlugin.expectation!], timeout: 1.0)
         XCTAssertTrue(session.canStartForwarding)
-        XCTAssertTrue(mockPresentation.sessionConnectedCalled)
+        XCTAssertTrue(mockStatusPresentation.sessionConnectedCalled)
         XCTAssertTrue(mockPlugin.isSessionConnectedCalled)
     }
 
@@ -248,7 +250,9 @@ class AssuranceSessionTests: XCTestCase {
         session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.NORMAL_CLOSURE, "Normal Closure", true)
 
         // verify
-        XCTAssertTrue(mockPresentation.sessionDisconnectedCalled)
+        XCTAssertTrue(mockStatusPresentation.addClientLogCalled)
+        XCTAssertTrue(mockStatusPresentation.sessionDisconnectedCalled)
+        XCTAssertTrue(sessionOrchestrator.handleSessionDisconnectCalled)
         XCTAssertTrue(mockPlugin.isSessionDisconnectCalled)
     }
 
@@ -260,8 +264,9 @@ class AssuranceSessionTests: XCTestCase {
         session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.ORG_MISMATCH, "", true)
 
         // verify
-        XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
-        XCTAssertEqual(mockPresentation.sessionConnectionErrorValue, AssuranceConnectionError.orgIDMismatch)
+        XCTAssertTrue(mockStatusPresentation.addClientLogCalled)
+        XCTAssertTrue(sessionOrchestrator.handleConnectionErrorCalled)
+        XCTAssertEqual(sessionOrchestrator.handleConnectionErrorParam, AssuranceConnectionError.orgIDMismatch)
         XCTAssertFalse(session.canStartForwarding)
         XCTAssertNil(stateManager.connectedWebSocketURL)
     }
@@ -271,8 +276,9 @@ class AssuranceSessionTests: XCTestCase {
         session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.CONNECTION_LIMIT, "", true)
 
         // verify
-        XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
-        XCTAssertEqual(mockPresentation.sessionConnectionErrorValue, AssuranceConnectionError.connectionLimit)
+        XCTAssertTrue(mockStatusPresentation.addClientLogCalled)
+        XCTAssertTrue(sessionOrchestrator.handleConnectionErrorCalled)
+        XCTAssertEqual(sessionOrchestrator.handleConnectionErrorParam, AssuranceConnectionError.connectionLimit)
     }
 
     func test_session_socketDisconnect_EventLimit() throws {
@@ -280,8 +286,9 @@ class AssuranceSessionTests: XCTestCase {
         session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.EVENTS_LIMIT, "", true)
 
         // verify
-        XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
-        XCTAssertEqual(mockPresentation.sessionConnectionErrorValue, AssuranceConnectionError.eventLimit)
+        XCTAssertTrue(mockStatusPresentation.addClientLogCalled)
+        XCTAssertTrue(sessionOrchestrator.handleConnectionErrorCalled)
+        XCTAssertEqual(sessionOrchestrator.handleConnectionErrorParam, AssuranceConnectionError.eventLimit)
     }
 
     func test_session_socketDisconnect_ClientError() throws {
@@ -289,8 +296,9 @@ class AssuranceSessionTests: XCTestCase {
         session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.CLIENT_ERROR, "", true)
 
         // verify
-        XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
-        XCTAssertEqual(mockPresentation.sessionConnectionErrorValue, AssuranceConnectionError.clientError)
+        XCTAssertTrue(mockStatusPresentation.addClientLogCalled)
+        XCTAssertTrue(sessionOrchestrator.handleConnectionErrorCalled)
+        XCTAssertEqual(sessionOrchestrator.handleConnectionErrorParam, AssuranceConnectionError.clientError)
     }
 
 
@@ -299,8 +307,9 @@ class AssuranceSessionTests: XCTestCase {
         session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.DELETED_SESSION, "", true)
 
         // verify
-        XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
-        XCTAssertEqual(mockPresentation.sessionConnectionErrorValue, AssuranceConnectionError.deletedSession)
+        XCTAssertTrue(mockStatusPresentation.addClientLogCalled)
+        XCTAssertTrue(sessionOrchestrator.handleConnectionErrorCalled)
+        XCTAssertEqual(sessionOrchestrator.handleConnectionErrorParam, AssuranceConnectionError.deletedSession)
     }
 
 
@@ -315,7 +324,8 @@ class AssuranceSessionTests: XCTestCase {
 
         // verify the the session attempts to reconnect
         wait(for: [mockSocket.expectation!], timeout: 2.0)
-        XCTAssertTrue(mockPresentation.sessionReconnectingCalled)
+        XCTAssertTrue(mockStatusPresentation.addClientLogCalled)
+        XCTAssertTrue(mockStatusPresentation.sessionReconnectingCalled)
         XCTAssertTrue(session.isAttemptingToReconnect)
         XCTAssertFalse(session.canStartForwarding)
         XCTAssertTrue(mockSocket.connectCalled)
@@ -331,9 +341,12 @@ class AssuranceSessionTests: XCTestCase {
         session.webSocketDidDisconnect(mockSocket, AssuranceConstants.SocketCloseCode.ABNORMAL_CLOSURE, "", true)
 
         // verify
-        XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
+        XCTAssertTrue(mockStatusPresentation.addClientLogCalled)
+        XCTAssertTrue(sessionOrchestrator.handleConnectionErrorCalled)
+        XCTAssertEqual(.genericError, sessionOrchestrator.handleConnectionErrorParam)
+        XCTAssertTrue(mockStatusPresentation.sessionConnectionErrorCalled)
         XCTAssertFalse(session.isAttemptingToReconnect)
-        XCTAssertEqual(.genericError, mockPresentation.sessionConnectionErrorValue)
+        XCTAssertEqual(.genericError, mockStatusPresentation.sessionConnectionErrorValue)
     }
 
     private func sampleAssuranceEvent() -> AssuranceEvent {
@@ -355,7 +368,7 @@ class AssuranceSessionTests: XCTestCase {
         // initiate the properties
         mockSocket = MockSocket(withDelegate: session)
         session.socket = mockSocket
-        session.presentation = mockPresentation
+        session.statusPresentation = mockStatusPresentation
     }
     
     
@@ -366,7 +379,7 @@ class AssuranceSessionTests: XCTestCase {
         // initiate the properties
         mockSocket = MockSocket(withDelegate: session)
         session.socket = mockSocket
-        session.presentation = mockPresentation
+        session.statusPresentation = mockStatusPresentation
     }
     
 }
