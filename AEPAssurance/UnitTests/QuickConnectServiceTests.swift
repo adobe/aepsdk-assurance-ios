@@ -171,35 +171,6 @@ final class QuickConnectServiceTests: XCTestCase {
 
     }
 
-    func testGetDeviceStatusStopsRetrying() {
-        let expectedUrl = URL(string: AssuranceConstants.QUICK_CONNECT_BASE_URL + "/status")!
-        let testClientId: AnyCodable = "testClientId"
-        let testOrgId: AnyCodable = "testOrgId"
-        let quickConnectService = QuickConnectService()
-        quickConnectService.shouldRetryGetDeviceStatus = false
-        let dataDict: [String: AnyCodable] = ["sessionUuid": nil, "token": nil]
-        let jsonData = try? JSONEncoder().encode(dataDict)
-        let validResponse = HTTPURLResponse(url: URL(string: "https://adobe.com")!, statusCode: 200, httpVersion: nil, headerFields: nil)
-        let expectedResponse = HttpConnection(data: jsonData, response: validResponse, error: nil)
-        mockNetworkService.expectedResponse = expectedResponse
-        let expectation = XCTestExpectation(description: "GetDeviceStatus API invokes completion handler with invalidResponseData error")
-
-        quickConnectService.getDeviceStatus(clientID: testClientId.stringValue!, orgID: testOrgId.stringValue!) { result in
-            switch result {
-            case .success(_):
-                XCTFail()
-            case .failure(let error):
-                XCTAssertEqual(error, .getDeviceStatusCancelled)
-                XCTAssertTrue(self.mockNetworkService.connectAsyncCalled)
-                XCTAssertEqual(self.mockNetworkService.networkRequest?.url, expectedUrl)
-                expectation.fulfill()
-            }
-        }
-
-        wait(for: [expectation], timeout: 1.0)
-
-    }
-
     func testDeleteDeviceSuccess() {
         let expectedUrl = URL(string: AssuranceConstants.QUICK_CONNECT_BASE_URL + "/delete")!
         let testClientId: AnyCodable = "testClientId"

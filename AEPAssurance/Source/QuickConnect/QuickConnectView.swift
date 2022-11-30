@@ -14,6 +14,10 @@ import AEPServices
 import Foundation
 import UIKit
 
+#if DEBUG
+///
+/// The QuickConnectView SessionAuthorizingUI which is used to start a QuickConnect session
+///
 class QuickConnectView: SessionAuthorizingUI {
 
     typealias uiConstants = AssuranceConstants.QuickConnect.QuickConnectView
@@ -85,7 +89,7 @@ class QuickConnectView: SessionAuthorizingUI {
         stackView.spacing = 15.0
         stackView.alignment = .center
         stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fillProportionally
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -94,7 +98,7 @@ class QuickConnectView: SessionAuthorizingUI {
         let button = UIButton()
         button.contentMode = .scaleAspectFit
         button.backgroundColor = .clear
-        button.layer.borderWidth = 1
+        button.layer.borderWidth = 2
         button.layer.borderColor = UIColor.white.cgColor
         button.layer.cornerRadius = uiConstants.BUTTON_CORNER_RADIUS
         button.titleLabel?.font = UIFont(name: "Helvetica", size: uiConstants.BUTTON_FONT_SIZE)
@@ -120,20 +124,68 @@ class QuickConnectView: SessionAuthorizingUI {
         return button
     }()
     
+    lazy private var errorTitle: UITextView = {
+        let textView = UITextView()
+        textView.accessibilityLabel = "AssuranceQuickConnectErrorLabel"
+        textView.backgroundColor = .clear
+        textView.text = "Connection Error"
+        textView.textColor = .white
+        textView.isScrollEnabled = false
+        textView.textAlignment = .left
+        textView.textContainerInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        textView.font = UIFont(name: "Helvetica-Bold", size: 18.0)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        return textView
+    }()
+    
+    lazy private var errorDescription: UITextView = {
+        let textView = UITextView()
+        textView.accessibilityLabel = "AssuranceQuickConnectErrorDescriptionTextView"
+        textView.backgroundColor = .clear
+        textView.textColor = .white
+        textView.textAlignment = .left
+        textView.isScrollEnabled = false
+        textView.textContainerInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        textView.font = UIFont(name: "Helvetica", size: 14.0)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        return textView
+    }()
+    
+    lazy private var errorAndButtonsStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.accessibilityLabel = "AssuranceErrorAndButtonsStackView"
+        stackView.backgroundColor = .clear
+        stackView.spacing = 15.0
+        stackView.alignment = .center
+        stackView.axis = .vertical
+        stackView.distribution = .fillProportionally
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     required init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate) {
         self.presentationDelegate = presentationDelegate
     }
 
+    ///
+    /// The cancel button interaction handler which tells the presentation delegate that the quickConnect flow has been cancelled by the user, and dismisses the QuickConnectView
+    ///
     @objc func cancelClicked(_ sender: AnyObject?) {
         presentationDelegate.quickConnectCancelled()
         dismiss()
      }
     
+    ///
+    /// The connect button interaction handler which tells the presentation delegate to begin the quick connect handshake
+    ///
     @objc func connectClicked(_ sender: AnyObject?) {
         waitingState()
         presentationDelegate.quickConnectBegin()
      }
     
+    ///
+    /// Sets the initial state for the QuickConnectView
+    ///
     func initialState(){
         DispatchQueue.main.async {
             self.connectButton.setTitle("Connect", for: .normal)
@@ -142,15 +194,22 @@ class QuickConnectView: SessionAuthorizingUI {
         }
     }
     
-    
+    ///
+    /// Sets the QuickConnectView to a waiting state where the connect button text changes to "Waiting..." and user interaction is disabled on it. It also hides any error dialogues that were previously present
+    ///
     func waitingState() {
         DispatchQueue.main.async {
+            self.errorTitle.isHidden = true
+            self.errorDescription.isHidden = true
             self.connectButton.setTitle("Waiting...", for: .normal)
             self.connectButton.backgroundColor = UIColor(red: 67.0/256.0, green: 67.0/256.0, blue: 67.0/256.0, alpha: 1)
             self.connectButton.isUserInteractionEnabled = false
         }
     }
     
+    ///
+    /// Sets the QuickConnectView to a successful connection state, where the connect button changes to "Connected" and user interaction on the button is disabled
+    ///
     func connectionSuccessfulState(){
         DispatchQueue.main.async {
             self.connectButton.setTitle("Connected", for: .normal)
@@ -159,12 +218,24 @@ class QuickConnectView: SessionAuthorizingUI {
         }
     }
     
-    func onFailedApproval() {
-      DispatchQueue.main.async {
-          
-      }
+    ///
+    /// Sets the QuickConnectView to an error state, where the error dialogue is displayed with a given error, and the connect button
+    /// changes to "Retry"
+    ///
+    func errorState(errorText: String) {
+        DispatchQueue.main.async {
+            self.errorTitle.isHidden = false
+            self.errorDescription.isHidden = false
+            self.errorDescription.text = errorText
+            self.connectButton.setTitle("Retry", for: .normal)
+            self.connectButton.backgroundColor = UIColor(red: 20.0/256.0, green: 115.0/256.0, blue: 230.0/256.0, alpha: 1)
+            self.connectButton.isUserInteractionEnabled = true
+        }
     }
     
+    ///
+    /// Dismisses the QuickConnectView with an animation
+    ///
     func dismiss() {
         DispatchQueue.main.async {
             guard let window = UIApplication.shared.assuranceGetKeyWindow() else {
@@ -181,17 +252,13 @@ class QuickConnectView: SessionAuthorizingUI {
                 self.displayed = false
             })
         }
-    
     }
     
-    // MARK: - SessionAuthorizingUI
-    func show() {
-        self.displayed = true
-        guard let window = UIApplication.shared.assuranceGetKeyWindow() else {
-            Log.warning(label: AssuranceConstants.LOG_TAG, "QuickConnect View unable to get the keyWindow, ")
-            return
-        }
-
+    ///
+    /// Sets up the QuickConnectView subviews / constraints / and stackViews with the given UIWindow
+    /// - Parameter: window `UIWindow` the window to be used as the foundation
+    ///
+    func setupLayout(with window: UIWindow) {
         window.addSubview(baseView)
         NSLayoutConstraint.activate([
             baseView.leftAnchor.constraint(equalTo: window.leftAnchor),
@@ -232,11 +299,30 @@ class QuickConnectView: SessionAuthorizingUI {
             connectionImageView.heightAnchor.constraint(equalToConstant: uiConstants.CONNECTION_IMAGE_HEIGHT)
         ])
         
-        baseView.addSubview(buttonStackView)
+        baseView.addSubview(errorAndButtonsStackView)
         NSLayoutConstraint.activate([
-            buttonStackView.leadingAnchor.constraint(equalTo: baseView.leadingAnchor, constant: 40.0),
-            buttonStackView.trailingAnchor.constraint(equalTo: baseView.trailingAnchor, constant: -40.0),
-            buttonStackView.topAnchor.constraint(equalTo: connectionImageView.bottomAnchor, constant: uiConstants.BUTTON_HOLDER_TOP_MARGIN),
+            errorAndButtonsStackView.leftAnchor.constraint(equalTo: baseView.leftAnchor),
+            errorAndButtonsStackView.rightAnchor.constraint(equalTo: baseView.rightAnchor),
+            errorAndButtonsStackView.topAnchor.constraint(equalTo: connectionImageView.bottomAnchor, constant: uiConstants.ERROR_TITLE_TOP_MARGIN)
+        ])
+        
+        errorAndButtonsStackView.addArrangedSubview(errorTitle)
+        NSLayoutConstraint.activate([
+            errorTitle.leftAnchor.constraint(equalTo: baseView.leftAnchor),
+            errorTitle.heightAnchor.constraint(equalToConstant: uiConstants.ERROR_TITLE_HEIGHT)
+        ])
+        
+        errorAndButtonsStackView.addArrangedSubview(errorDescription)
+        NSLayoutConstraint.activate([
+            errorDescription.leftAnchor.constraint(equalTo: errorTitle.leftAnchor)
+        ])
+        
+        // Hide error views by default
+        errorTitle.isHidden = true
+        errorDescription.isHidden = true
+        
+        errorAndButtonsStackView.addArrangedSubview(buttonStackView)
+        NSLayoutConstraint.activate([
             buttonStackView.heightAnchor.constraint(equalToConstant: uiConstants.BUTTON_HOLDER_HEIGHT)
         ])
         
@@ -259,6 +345,16 @@ class QuickConnectView: SessionAuthorizingUI {
             adobeLogo.bottomAnchor.constraint(equalTo: baseView.bottomAnchor, constant: uiConstants.ADOBE_LOGO_IMAGE_BOTTOM_MARGIN),
             adobeLogo.heightAnchor.constraint(equalToConstant: uiConstants.ADOBE_LOGO_IMAGE_HEIGHT)
         ])
+    }
+    
+    // MARK: - SessionAuthorizingUI
+    func show() {
+        guard let window = UIApplication.shared.assuranceGetKeyWindow() else {
+            Log.warning(label: AssuranceConstants.LOG_TAG, "QuickConnect View unable to get the keyWindow, ")
+            return
+        }
+        
+        setupLayout(with: window)
         
         self.baseView.frame.origin.y = window.frame.size.height
         UIView.animate(withDuration: 0.2,
@@ -267,12 +363,13 @@ class QuickConnectView: SessionAuthorizingUI {
                        animations: { [] in
             self.baseView.frame.origin.y = 0
             self.baseView.backgroundColor = UIColor(red: 47.0/256.0, green: 47.0/256.0, blue: 47.0/256.0, alpha: 1)
-        }, completion: nil)
-            
+        }, completion: {_ in 
+            self.displayed = true
+        })
     }
     
     func sessionConnecting() {
-        // TODO: - No op?
+        // No op for quick connect because the screen will have already been dismissed when we create the session
     }
     
     func sessionConnected() {
@@ -287,6 +384,14 @@ class QuickConnectView: SessionAuthorizingUI {
     }
     
     func sessionConnectionFailed(withError error: AssuranceConnectionError) {
-        // TODO: - Handle errors here for view
+        switch error {
+        // These three cases can use the default info description as it is only related to quick connect
+        case .failedToRegisterDevice(_, _), .failedToDeleteDevice(_, _), .failedToGetDeviceStatus(_, _):
+            errorState(errorText: error.info.description)
+        // Other errors will be handled generically
+        default:
+            errorState(errorText: "Failed to create an Assurance session. Please refer to debug logs for more information.")
+        }
     }
 }
+#endif

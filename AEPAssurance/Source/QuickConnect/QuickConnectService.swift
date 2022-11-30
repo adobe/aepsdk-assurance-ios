@@ -35,7 +35,7 @@ class QuickConnectService {
     func registerDevice(clientID: String,
                         orgID: String,
                         completion: @escaping (AssuranceConnectionError?) -> Void) {
-
+        
         /// Bail out with failure, if we are unable to form a valid create device API request URL
         let urlString = AssuranceConstants.QUICK_CONNECT_BASE_URL + "/create"
         guard let requestURL = URL(string: urlString) else {
@@ -141,7 +141,6 @@ class QuickConnectService {
                         sleep(2)
                         self.getDeviceStatus(clientID: clientID, orgID: orgID, completion: completion)
                     }
-                    completion(.failure(.getDeviceStatusCancelled))
                     return
                 }
                 self.shouldRetryGetDeviceStatus = false
@@ -213,7 +212,5 @@ class QuickConnectService {
             return
         }
     }
-
 }
-
 #endif
