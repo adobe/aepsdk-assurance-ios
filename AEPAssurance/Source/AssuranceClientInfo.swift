@@ -66,7 +66,7 @@ enum AssuranceClientInfo {
         deviceInfo[DEVICE_TYPE] = getDeviceType()
         deviceInfo[MODEL] = systemInfoService.getDeviceModelNumber()
         deviceInfo[SCREEN_SIZE] = "\(screenSize.width)x\(screenSize.height)"
-        DispatchQueue.global().async {
+        DispatchQueue.global().sync {
             deviceInfo[LOCATION_SERVICE_ENABLED] = Bool(CLLocationManager.locationServicesEnabled())
         }
         deviceInfo[LOCATION_AUTHORIZATION_STATUS] = getAuthStatusString(authStatus: CLLocationManager.authorizationStatus())
