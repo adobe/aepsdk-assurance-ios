@@ -31,7 +31,7 @@ public class Assurance: NSObject, Extension {
     var shutdownTime: TimeInterval /// Time before which Assurance extension shuts down on non receipt of start session event.
     var stateManager: AssuranceStateManager
     var sessionOrchestrator: AssuranceSessionOrchestrator
-    var quickConnect :QuickConnectManager?
+    var quickConnect: QuickConnectManager?
     #else
     let shutdownTime: TimeInterval
     let stateManager: AssuranceStateManager

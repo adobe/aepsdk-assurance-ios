@@ -342,9 +342,18 @@ class QuickConnectView: SessionAuthorizingUI {
         NSLayoutConstraint.activate([
             adobeLogo.leftAnchor.constraint(equalTo: baseView.leftAnchor),
             adobeLogo.rightAnchor.constraint(equalTo: baseView.rightAnchor),
-            adobeLogo.bottomAnchor.constraint(equalTo: baseView.bottomAnchor, constant: uiConstants.ADOBE_LOGO_IMAGE_BOTTOM_MARGIN),
             adobeLogo.heightAnchor.constraint(equalToConstant: uiConstants.ADOBE_LOGO_IMAGE_HEIGHT)
         ])
+        if #available(iOS 11, *) {
+            let guide = baseView.safeAreaLayoutGuide
+            NSLayoutConstraint.activate([
+                guide.bottomAnchor.constraint(equalToSystemSpacingBelow: adobeLogo.bottomAnchor, multiplier: 1)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                adobeLogo.bottomAnchor.constraint(equalTo: baseView.bottomAnchor, constant: uiConstants.ADOBE_LOGO_IMAGE_BOTTOM_MARGIN),
+            ])
+        }
     }
     
     // MARK: - SessionAuthorizingUI
