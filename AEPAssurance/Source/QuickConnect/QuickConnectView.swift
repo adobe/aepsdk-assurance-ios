@@ -32,6 +32,14 @@ class QuickConnectView: SessionAuthorizingUI {
         return view
     }()
     
+    lazy private var safeView : UIView = {
+        let view = UIView()
+        view.accessibilityLabel = "AssuranceQuickConnectSafeView"
+        view.backgroundColor = .clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     lazy private var headerView : UIView = {
         let view = UIView()
         view.accessibilityLabel = "AssuranceQuickConnectHeaderView"
@@ -267,10 +275,29 @@ class QuickConnectView: SessionAuthorizingUI {
             baseView.topAnchor.constraint(equalTo: window.topAnchor)
         ])
         
+        // We use the safeView as a way to constrain the rest of the subviews with a safelayout guide without having to use the availability macro on every subview
+        baseView.addSubview(safeView)
+        if #available(iOS 11, *) {
+            let guide = baseView.safeAreaLayoutGuide
+            NSLayoutConstraint.activate([
+                safeView.leftAnchor.constraint(equalTo: guide.leftAnchor),
+                safeView.rightAnchor.constraint(equalTo: guide.rightAnchor),
+                safeView.topAnchor.constraint(equalTo: guide.topAnchor),
+                safeView.bottomAnchor.constraint(equalTo: guide.bottomAnchor)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                safeView.bottomAnchor.constraint(equalTo: baseView.bottomAnchor),
+                safeView.topAnchor.constraint(equalTo: baseView.topAnchor),
+                safeView.leadingAnchor.constraint(equalTo: baseView.leadingAnchor),
+                safeView.trailingAnchor.constraint(equalTo: baseView.trailingAnchor),
+            ])
+        }
+        
         baseView.addSubview(headerView)
         NSLayoutConstraint.activate([
-            headerView.leftAnchor.constraint(equalTo: baseView.leftAnchor),
-            headerView.rightAnchor.constraint(equalTo: baseView.rightAnchor),
+            headerView.leftAnchor.constraint(equalTo: safeView.leftAnchor),
+            headerView.rightAnchor.constraint(equalTo: safeView.rightAnchor),
             headerView.heightAnchor.constraint(equalToConstant: uiConstants.HEADER_HEIGHT),
             headerView.topAnchor.constraint(equalTo: baseView.topAnchor)
         ])
@@ -280,35 +307,35 @@ class QuickConnectView: SessionAuthorizingUI {
             headerLabel.leftAnchor.constraint(equalTo: headerView.leftAnchor),
             headerLabel.rightAnchor.constraint(equalTo: headerView.rightAnchor),
             headerLabel.heightAnchor.constraint(equalToConstant: uiConstants.HEADER_LABEL_HEIGHT),
-            headerLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor)
+            headerLabel.topAnchor.constraint(equalTo: safeView.topAnchor)
         ])
         
         baseView.addSubview(descriptionTextView)
         NSLayoutConstraint.activate([
-            descriptionTextView.leftAnchor.constraint(equalTo: baseView.leftAnchor),
-            descriptionTextView.rightAnchor.constraint(equalTo: baseView.rightAnchor),
-            descriptionTextView.topAnchor.constraint(equalTo: baseView.topAnchor, constant: uiConstants.HEADER_HEIGHT + uiConstants.DESCRIPTION_TEXTVIEW_TOP_MARGIN),
+            descriptionTextView.leftAnchor.constraint(equalTo: safeView.leftAnchor),
+            descriptionTextView.rightAnchor.constraint(equalTo: safeView.rightAnchor),
+            descriptionTextView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: uiConstants.DESCRIPTION_TEXTVIEW_TOP_MARGIN),
             descriptionTextView.heightAnchor.constraint(equalToConstant: uiConstants.DESCRIPTION_TEXTVIEW_HEIGHT)
         ])
         
         baseView.addSubview(connectionImageView)
         NSLayoutConstraint.activate([
-            connectionImageView.leftAnchor.constraint(equalTo: baseView.leftAnchor),
-            connectionImageView.rightAnchor.constraint(equalTo: baseView.rightAnchor),
+            connectionImageView.leftAnchor.constraint(equalTo: safeView.leftAnchor),
+            connectionImageView.rightAnchor.constraint(equalTo: safeView.rightAnchor),
             connectionImageView.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: uiConstants.CONNECTION_IMAGE_TOP_MARGIN),
             connectionImageView.heightAnchor.constraint(equalToConstant: uiConstants.CONNECTION_IMAGE_HEIGHT)
         ])
         
         baseView.addSubview(errorAndButtonsStackView)
         NSLayoutConstraint.activate([
-            errorAndButtonsStackView.leftAnchor.constraint(equalTo: baseView.leftAnchor),
-            errorAndButtonsStackView.rightAnchor.constraint(equalTo: baseView.rightAnchor),
+            errorAndButtonsStackView.leftAnchor.constraint(equalTo: safeView.leftAnchor),
+            errorAndButtonsStackView.rightAnchor.constraint(equalTo: safeView.rightAnchor),
             errorAndButtonsStackView.topAnchor.constraint(equalTo: connectionImageView.bottomAnchor, constant: uiConstants.ERROR_TITLE_TOP_MARGIN)
         ])
         
         errorAndButtonsStackView.addArrangedSubview(errorTitle)
         NSLayoutConstraint.activate([
-            errorTitle.leftAnchor.constraint(equalTo: baseView.leftAnchor),
+            errorTitle.leftAnchor.constraint(equalTo: safeView.leftAnchor),
             errorTitle.heightAnchor.constraint(equalToConstant: uiConstants.ERROR_TITLE_HEIGHT)
         ])
         
@@ -340,20 +367,11 @@ class QuickConnectView: SessionAuthorizingUI {
         
         baseView.addSubview(adobeLogo)
         NSLayoutConstraint.activate([
-            adobeLogo.leftAnchor.constraint(equalTo: baseView.leftAnchor),
-            adobeLogo.rightAnchor.constraint(equalTo: baseView.rightAnchor),
+            adobeLogo.leftAnchor.constraint(equalTo: safeView.leftAnchor),
+            adobeLogo.rightAnchor.constraint(equalTo: safeView.rightAnchor),
+            adobeLogo.bottomAnchor.constraint(equalTo: safeView.bottomAnchor, constant: uiConstants.ADOBE_LOGO_IMAGE_BOTTOM_MARGIN),
             adobeLogo.heightAnchor.constraint(equalToConstant: uiConstants.ADOBE_LOGO_IMAGE_HEIGHT)
         ])
-        if #available(iOS 11, *) {
-            let guide = baseView.safeAreaLayoutGuide
-            NSLayoutConstraint.activate([
-                guide.bottomAnchor.constraint(equalToSystemSpacingBelow: adobeLogo.bottomAnchor, multiplier: 1)
-            ])
-        } else {
-            NSLayoutConstraint.activate([
-                adobeLogo.bottomAnchor.constraint(equalTo: baseView.bottomAnchor, constant: uiConstants.ADOBE_LOGO_IMAGE_BOTTOM_MARGIN),
-            ])
-        }
     }
     
     // MARK: - SessionAuthorizingUI

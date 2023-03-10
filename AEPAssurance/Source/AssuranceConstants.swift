@@ -199,6 +199,7 @@ enum AssuranceConstants {
         enum QuickConnectView {
             static let HEADER_HEIGHT = 110.0
             static let HEADER_LABEL_HEIGHT = 60.0
+            static let HEADER_LABEL_BOTTOM_MARGIN = -10.0
 
             static let DESCRIPTION_TEXTVIEW_TOP_MARGIN = 30.0
             static let DESCRIPTION_TEXTVIEW_HEIGHT = 50.0
@@ -215,7 +216,7 @@ enum AssuranceConstants {
             static let BUTTON_HOLDER_TOP_MARGIN = 30.0
             static let BUTTON_HOLDER_HEIGHT = 60.0
 
-            static let ADOBE_LOGO_IMAGE_BOTTOM_MARGIN = -60.0
+            static let ADOBE_LOGO_IMAGE_BOTTOM_MARGIN = -10.0
             static let ADOBE_LOGO_IMAGE_HEIGHT = 20.0
 
             static let CANCEL_BUTTON_TOP_MARGIN = 10
