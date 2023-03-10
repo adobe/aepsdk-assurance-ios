@@ -45,7 +45,6 @@ enum AssuranceBlob {
     ///     - contentType:String containing the MIME type of the blob.
     ///     - blobResult : A callback to be executed once upload has completed (either successfully or with an error)
     static func sendBlob(_ blob: Data, forSession session: AssuranceSession, contentType: String, callback : @escaping (String?) -> Void) {
-
         var components = URLComponents()
         components.scheme = HTTPS_SCHEME
         components.host = String.init(format: HOST_FORMAT, session.sessionDetails.environment.urlFormat)

@@ -70,13 +70,22 @@ class PluginConfigModifyTest: XCTestCase {
 
     func test_onSessionTerminated() {
         // setup
+        let expectationBeforeSessionTerminated = XCTestExpectation(description: "PluginConfigModify should dispatch a configuration update event to reset the modified config.")
+        EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: EventType.configuration, source: EventSource.requestContent) { event in
+            let flattenedEventData = event.data?.flattening()
+            XCTAssertNotNil(flattenedEventData?["config.update.configString"])
+            XCTAssertNotNil(flattenedEventData?["config.update.configInt"])
+            XCTAssertNotNil(flattenedEventData?["config.update.configBool"])
+            expectationBeforeSessionTerminated.fulfill()
+        }
         let payload  = ["detail": AnyCodable.init(sampleConfigDetails)]
         plugin.receiveEvent(AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: payload))
         let configKeys = mockDataStore.dict[AssuranceConstants.DataStoreKeys.CONFIG_MODIFIED_KEYS] as? [String]
         XCTAssertEqual(3, configKeys?.count)
 
+        wait(for: [expectationBeforeSessionTerminated], timeout: 0.2)
         //
-        let expectation = XCTestExpectation(description: "PluginConfigModify should dispatch a configuration update event to reset the modified config.")
+        let expectationAfterSessionTerminated = XCTestExpectation(description: "PluginConfigModify should dispatch a configuration update event to reset the modified config.")
 
         // verification for event dispatch
         EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: EventType.configuration, source: EventSource.requestContent) { event in
@@ -84,7 +93,7 @@ class PluginConfigModifyTest: XCTestCase {
             XCTAssertEqual(NSNull(), flattenedEventData?["config.update.configString"] as! NSNull)
             XCTAssertEqual(NSNull(), flattenedEventData?["config.update.configInt"] as! NSNull)
             XCTAssertEqual(NSNull(), flattenedEventData?["config.update.configBool"] as! NSNull)
-            expectation.fulfill()
+            expectationAfterSessionTerminated.fulfill()
         }
 
         // test
@@ -94,7 +103,7 @@ class PluginConfigModifyTest: XCTestCase {
         XCTAssertEqual(0, mockDataStore.dict.count)
 
         // assert on expectation
-        wait(for: [expectation], timeout: 0.2)
+        wait(for: [expectationAfterSessionTerminated], timeout: 0.2)
 
     }
 

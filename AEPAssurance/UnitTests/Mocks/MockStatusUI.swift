@@ -18,8 +18,8 @@ import XCTest
 class MockStatusUI: iOSStatusUI {
     
     
-    required init(withSessionOrchestrator sessionOrchestrator: AssuranceSessionOrchestrator) {
-        super.init(withSessionOrchestrator: sessionOrchestrator)
+    required init(presentationDelegate: AssurancePresentationDelegate) {
+        super.init(presentationDelegate: presentationDelegate)
     }
     
     var displayCalled = false

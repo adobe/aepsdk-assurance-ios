@@ -21,6 +21,7 @@ import SwiftUI
 let HEADING_FONT_SIZE: CGFloat = 25.0
 
 struct ContentView: View {
+
     var body: some View {
         ScrollView(.vertical) {
             AssuranceCard()
@@ -30,7 +31,8 @@ struct ContentView: View {
             PlacesCard()
             BigEventsCard()
         }
-        .onAppear { MobileCore.track(state: "Home Screen", data: nil) }
+        .onAppear { MobileCore.track(state: "Home Screen", data: nil)
+        }
     }
 }
 
@@ -54,7 +56,8 @@ struct YellowButtonStyle: ButtonStyle {
 }
 
 struct AssuranceCard: View {
-    @State private var assuranceURL: String = "griffon://?adb_validation_sessionid=c0857675-4bab-4990-ba40-8781b10b415a"
+    @State private var assuranceURL: String = ""
+//    @State private var assuranceURL: String = "griffon://?adb_validation_sessionid=c0857675-4bab-4990-ba40-8781b10b415a"
     var body: some View {
         VStack {
             HStack {
@@ -78,10 +81,16 @@ struct AssuranceCard: View {
                 Button(action: {
                     if let url = URL(string: self.assuranceURL) {
                         Assurance.startSession(url: url)
+                    } else {
+                        Assurance.startSession()
                     }
                 }, label: {
                     Text("Connect")
-                }).buttonStyle(YellowButtonStyle()).padding()
+                }).buttonStyle(YellowButtonStyle()).padding().onReceive(NotificationCenter.default.publisher(for: .deviceDidShakeNotification)) { _ in
+                    #if DEBUG
+                    Assurance.startSession()
+                    #endif
+                }
             }
         }
     }
@@ -244,3 +253,15 @@ struct BigEventsCard: View {
         }
     }
 }
+#if DEBUG
+extension NSNotification.Name {
+    public static let deviceDidShakeNotification = NSNotification.Name("MyDeviceDidShakeNotification")
+}
+
+extension UIWindow {
+    open override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        super.motionEnded(motion, with: event)
+        NotificationCenter.default.post(name: .deviceDidShakeNotification, object: event)
+    }
+}
+#endif

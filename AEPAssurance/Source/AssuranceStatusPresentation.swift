@@ -10,23 +10,17 @@
 // governing permissions and limitations under the License.
 //
 
-import AEPServices
 import Foundation
 
-class AssurancePresentation {
+///
+/// Represents the Assurance Session's Status Presentation
+///
+class AssuranceStatusPresentation {
 
-    let sessionOrchestrator: AssuranceSessionOrchestrator
+    let statusUI: iOSStatusUI
 
-    lazy var pinCodeScreen: SessionAuthorizingUI = {
-        iOSPinCodeScreen.init(withPresentationDelegate: sessionOrchestrator)
-    }()
-
-    lazy var statusUI: iOSStatusUI  = {
-        iOSStatusUI.init(withSessionOrchestrator: sessionOrchestrator)
-    }()
-
-    init(sessionOrchestrator: AssuranceSessionOrchestrator) {
-        self.sessionOrchestrator = sessionOrchestrator
+    init(with statusUI: iOSStatusUI) {
+        self.statusUI = statusUI
     }
 
     /// Adds the log message o Assurance session's Status UI.
@@ -37,45 +31,27 @@ class AssurancePresentation {
         statusUI.addClientLog(message, visibility: visibility)
     }
 
-    /// Call this to show the UI elements that are required when a session is initialized.
-    func sessionInitialized() {
-        // invoke the pinpad screen and create a socketURL with the pincode and other essential parameters
-        pinCodeScreen.show()
-    }
-
-    /// Call this to show the UI elements that are required when a session connection has been successfully established.
-    func sessionConnected() {
-        if pinCodeScreen.displayed {
-            self.pinCodeScreen.sessionConnected()
-        }
-
-        self.statusUI.display()
-        self.statusUI.updateForSocketConnected()
-    }
-
     /// Call this to show the UI elements that are required when a session is attempting to reconnect.
     func sessionReconnecting() {
-        if !statusUI.isDisplayed {
+        if !statusUI.displayed {
             statusUI.display()
         }
         statusUI.updateForSocketInActive()
     }
+    
+    /// Call this to show the UI elements that are required when a session connection has been successfully established.
+    func sessionConnected() {
+        self.statusUI.display()
+        self.statusUI.updateForSocketConnected()
+    }
 
     /// Call this method to clear the UI elements when a session is disconnected.
     func sessionDisconnected() {
-        pinCodeScreen.sessionDisconnected()
         statusUI.remove()
     }
 
     /// Call this to show the UI elements that are required when a session has connection error.
     func sessionConnectionError(error: AssuranceConnectionError) {
-        if pinCodeScreen.displayed == true {
-            pinCodeScreen.sessionConnectionFailed(withError: error)
-        } else {
-            let errorView = ErrorView.init(AssuranceConnectionError.clientError)
-            errorView.display()
-        }
-
         if !error.info.shouldRetry {
             statusUI.remove()
         }

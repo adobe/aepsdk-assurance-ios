@@ -19,15 +19,15 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
     var sessionOrchestrator: AssuranceSessionOrchestrator!
     var mockStateManager: MockStateManager!
     var mockSession: MockSession!
-    var mockPresentation: MockPresentation!
     let sampleSessionDetail = AssuranceSessionDetails(sessionId: "mockSessionId", clientId: "mockClientId")
+    var mockQuickConnectManager: MockQuickConnectManager!
         
     override func setUp(){
         mockStateManager = MockStateManager(TestableExtensionRuntime())
         sessionOrchestrator = AssuranceSessionOrchestrator(stateManager: mockStateManager)
-        mockPresentation = MockPresentation(sessionOrchestrator: sessionOrchestrator)
         mockSession = MockSession(sessionDetails: sampleSessionDetail, stateManager: mockStateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: nil)
-        mockSession.presentation = mockPresentation
+        mockQuickConnectManager = MockQuickConnectManager(stateManager: mockStateManager, uiDelegate: sessionOrchestrator)
+        sessionOrchestrator.quickConnectManager = mockQuickConnectManager
     }
     
     func test_init() {
@@ -121,6 +121,8 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         XCTAssertNil(sessionOrchestrator.outboundEventBuffer)
     }
     
+    // MARK: - AssurancePresentationDelegate PinCode tests
+    
     func test_pinScreenConnectClicked() {
         // setup
         mockStateManager.orgIDReturnValue = "mockOrgId"
@@ -145,6 +147,8 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
     
     func test_pinScreenConnectClicked_whenEmptyPin() {
         // setup
+        let mockAuthorizingPresentation = MockAuthorizingPresentation(authorizingView: MockSessionAuthorizingUI(withPresentationDelegate: sessionOrchestrator))
+        sessionOrchestrator.authorizingPresentation = mockAuthorizingPresentation
         mockStateManager.orgIDReturnValue = "mockOrgId"
         sessionOrchestrator.session = mockSession
                 
@@ -154,13 +158,15 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         // verify that the UI is indicated for the error and session is cleared
         XCTAssertFalse(mockSession.startSessionCalled)
         XCTAssertTrue(mockSession.disconnectCalled)
-        XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
-        XCTAssertEqual(.noPincode ,mockPresentation.sessionConnectionErrorValue)
+        XCTAssertTrue(mockAuthorizingPresentation.sessionConnectionErrorCalled)
+        XCTAssertEqual(.noPincode ,mockAuthorizingPresentation.sessionConnectionErrorValue)
         XCTAssertTrue(mockStateManager.clearAssuranceStateCalled)
     }
     
     func test_pinScreenConnectClicked_whenNoOrgId() {
         // setup
+        let mockAuthorizingPresentation = MockAuthorizingPresentation(authorizingView: MockSessionAuthorizingUI(withPresentationDelegate: sessionOrchestrator))
+        sessionOrchestrator.authorizingPresentation = mockAuthorizingPresentation
         mockStateManager.orgIDReturnValue = nil
         sessionOrchestrator.session = mockSession
                 
@@ -170,8 +176,8 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         // verify that the UI is indicated for the error and session is cleared
         XCTAssertFalse(mockSession.startSessionCalled)
         XCTAssertTrue(mockSession.disconnectCalled)
-        XCTAssertTrue(mockPresentation.sessionConnectionErrorCalled)
-        XCTAssertEqual(.noOrgId ,mockPresentation.sessionConnectionErrorValue)
+        XCTAssertTrue(mockAuthorizingPresentation.sessionConnectionErrorCalled)
+        XCTAssertEqual(.noOrgId ,mockAuthorizingPresentation.sessionConnectionErrorValue)
         XCTAssertTrue(mockStateManager.clearAssuranceStateCalled)
     }
     
@@ -203,6 +209,93 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         XCTAssertNil(sessionOrchestrator.session)
     }
     
+    // MARK: - AssurancePresentationDelegate QuickConnect tests
+    
+    func test_quickConnectBegin() {
+        sessionOrchestrator.quickConnectBegin()
+        
+        XCTAssertTrue(mockQuickConnectManager.createDeviceCalled)
+    }
+    
+    func test_connectCancelled() {
+        sessionOrchestrator.quickConnectCancelled()
+        
+        XCTAssertTrue(mockQuickConnectManager.cancelRetryGetDeviceStatusCalled)
+    }
+    
+    func test_createQuickConnectSession_withoutSession() {
+        let mockAuthorizingPresentation = MockAuthorizingPresentation(authorizingView: MockSessionAuthorizingUI(withPresentationDelegate: sessionOrchestrator))
+        sessionOrchestrator.authorizingPresentation = mockAuthorizingPresentation
+        let sampleSessionID = "sampleSessionID"
+        let sampleSessionDetails = AssuranceSessionDetails(sessionId: sampleSessionID, clientId: "sampleClientID")
+        sessionOrchestrator.createQuickConnectSession(with: sampleSessionDetails)
+        
+        XCTAssertTrue(mockAuthorizingPresentation.sessionConnectingCalled)
+        
+        XCTAssertTrue(mockStateManager.shareAssuranceStateCalled)
+        XCTAssertEqual(sampleSessionID, mockStateManager.shareAssuranceStateSessionID)
+        XCTAssertNotNil(sessionOrchestrator.session)
+        XCTAssertNil(sessionOrchestrator.outboundEventBuffer)
+    }
+    
+    func test_createQuickConnectSession_withExistingSession() {
+        let mockAuthorizingPresentation = MockAuthorizingPresentation(authorizingView: MockSessionAuthorizingUI(withPresentationDelegate: sessionOrchestrator))
+        sessionOrchestrator.authorizingPresentation = mockAuthorizingPresentation
+        let sampleSessionID = "sampleSessionID"
+        let sampleSessionDetails = AssuranceSessionDetails(sessionId: sampleSessionID, clientId: "sampleClientID")
+        let session = AssuranceSession(sessionDetails: sampleSessionDetails, stateManager: mockStateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: nil)
+        sessionOrchestrator.session = session
+        sessionOrchestrator.createQuickConnectSession(with: sampleSessionDetails)
+        
+        XCTAssertFalse(mockAuthorizingPresentation.sessionConnectingCalled)
+        
+        XCTAssertFalse(mockStateManager.shareAssuranceStateCalled)
+        XCTAssertNotNil(sessionOrchestrator.session)
+        XCTAssertNotNil(sessionOrchestrator.outboundEventBuffer)
+    }
+    
+    func test_quickConnectError() {
+        let mockAuthorizingPresentation = MockAuthorizingPresentation(authorizingView: MockSessionAuthorizingUI(withPresentationDelegate: sessionOrchestrator))
+        sessionOrchestrator.authorizingPresentation = mockAuthorizingPresentation
+        
+        sessionOrchestrator.quickConnectError(error: .genericError)
+        
+        XCTAssertTrue(mockAuthorizingPresentation.sessionConnectionErrorCalled)
+        XCTAssertEqual(mockAuthorizingPresentation.sessionConnectionErrorValue, .genericError)
+    }
+    
+    // MARK: - AssuranceConnectionDelegate tests
+    func test_handleConnectionError() {
+        let mockAuthorizingPresentation = MockAuthorizingPresentation(authorizingView: MockSessionAuthorizingUI(withPresentationDelegate: sessionOrchestrator))
+        sessionOrchestrator.authorizingPresentation = mockAuthorizingPresentation
+        
+        sessionOrchestrator.handleConnectionError(error: .genericError)
+        
+        XCTAssertTrue(mockAuthorizingPresentation.sessionConnectionErrorCalled)
+        XCTAssertEqual(mockAuthorizingPresentation.sessionConnectionErrorValue, .genericError)
+        
+    }
+    
+    func test_handleSuccessfulConnection() {
+        let mockAuthorizingPresentation = MockAuthorizingPresentation(authorizingView: MockSessionAuthorizingUI(withPresentationDelegate: sessionOrchestrator))
+        sessionOrchestrator.authorizingPresentation = mockAuthorizingPresentation
+        
+        sessionOrchestrator.handleSuccessfulConnection()
+        
+        XCTAssertTrue(mockAuthorizingPresentation.sessionConnectedCalled)
+        
+    }
+    
+    func test_handleSessionDisconnect() {
+        let mockAuthorizingPresentation = MockAuthorizingPresentation(authorizingView: MockSessionAuthorizingUI(withPresentationDelegate: sessionOrchestrator))
+        sessionOrchestrator.authorizingPresentation = mockAuthorizingPresentation
+        
+        sessionOrchestrator.handleSessionDisconnect()
+        
+        XCTAssertTrue(mockAuthorizingPresentation.sessionDisconnectedCalled)
+    }
+    
+    // MARK: - Private methods
     private func queueTwoOutboundEvents() {
         sessionOrchestrator.outboundEventBuffer?.append(AssuranceEvent(type: "event1", payload: [:]))
         sessionOrchestrator.outboundEventBuffer?.append(AssuranceEvent(type: "event2", payload: [:]))

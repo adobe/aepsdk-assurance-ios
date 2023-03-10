@@ -22,13 +22,16 @@ import AEPPlaces
 import AEPSignal
 import AEPTarget
 import AEPUserProfile
+import AEPMessaging
 import UIKit
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    let notificationCenter = UNUserNotificationCenter.current()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // Override point for customization after application launch.        
+        requestNotificationPermission()
         MobileCore.track(state: "Before SDK Init", data: nil)
         MobileCore.setLogLevel(.trace)
         let extensions = [AEPIdentity.Identity.self,
@@ -42,12 +45,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                           Consent.self,
                           UserProfile.self,
                           Assurance.self,
-                          Places.self
+                          Places.self,
+                          Messaging.self
         ]
         MobileCore.registerExtensions(extensions, {
-            MobileCore.configureWith(appId: "launch-EN516bfbc0fe2b42449bf171a4f8cb9cef-development")
+            MobileCore.configureWith(appId: "94f571f308d5/f986c2be4925/launch-e96cdeaddea9-development")
         })
         MobileCore.lifecycleStart(additionalContextData: nil)
+
+        //MobileCore.updateConfigurationWith(configDict: ["experienceCloud.org": "056F3DD059CB22060A494021@AdobeOrg"])
+//            MobileCore.configureWith(appId: "launch-EN516bfbc0fe2b42449bf171a4f8cb9cef-development")
+//        })
         return true
     }
 
@@ -64,6 +72,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         MobileCore.lifecyclePause()
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        MobileCore.setPushIdentifier(deviceToken)
+    }
+    
+    private func requestNotificationPermission() {
+        notificationCenter.delegate = self
+
+        let options: UNAuthorizationOptions = [.alert, .sound, .badge]
+
+        notificationCenter.requestAuthorization(options: options) {
+            didAllow, _ in
+            if !didAllow {
+                print("User has declined notifications")
+            }
+        }
     }
 
 }

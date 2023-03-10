@@ -18,7 +18,7 @@ class iOSPinCodeScreen: SessionAuthorizingUI {
     var displayed: Bool = false
     var fullscreenMessage: FullscreenPresentable?
     var fullscreenWebView: WKWebView?
-    var presentationDelegate: AssurancePresentationDelegate
+    let presentationDelegate: AssurancePresentationDelegate
 
     /// Initializer
     required init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate) {
@@ -33,7 +33,7 @@ class iOSPinCodeScreen: SessionAuthorizingUI {
     }
 
     /// Invoked when the a socket connection is initialized.
-    func sessionInitialized() {
+    func sessionConnecting() {
         fullscreenWebView?.evaluateJavaScript("showLoading();", completionHandler: nil)
     }
 

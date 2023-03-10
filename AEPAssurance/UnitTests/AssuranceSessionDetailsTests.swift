@@ -25,7 +25,7 @@ class AssuranceSessionDetailsTests: XCTestCase {
         XCTAssertEqual("4af99a7f-f900-4558-8394-09f665e1b8ae", sessionDetails.sessionId)
         XCTAssertEqual("05222CA5-2763-436C-8F69-DB4CA89F6E8B", sessionDetails.clientID)
         XCTAssertEqual("972C898555E9F7BC7F000101@AdobeOrg", sessionDetails.orgId)
-        XCTAssertEqual("8706", sessionDetails.pinCode)
+        XCTAssertEqual("8706", sessionDetails.token)
         XCTAssertEqual(.prod, sessionDetails.environment)
     }
     
@@ -91,7 +91,7 @@ class AssuranceSessionDetailsTests: XCTestCase {
         }
 
         // verify
-        XCTAssertEqual("No PinCode", capturedError?.message)
+        XCTAssertEqual("No Token", capturedError?.message)
     }
     
     func test_initWithURLString_noHost() throws {
@@ -139,7 +139,7 @@ class AssuranceSessionDetailsTests: XCTestCase {
         XCTAssertEqual("sampleSessionId", sessionDetails.sessionId)
         XCTAssertEqual("sampleClientId", sessionDetails.clientID)
         XCTAssertEqual(.dev, sessionDetails.environment)
-        XCTAssertNil(sessionDetails.pinCode)
+        XCTAssertNil(sessionDetails.token)
         XCTAssertNil(sessionDetails.orgId)
     }
     
@@ -181,7 +181,7 @@ class AssuranceSessionDetailsTests: XCTestCase {
         let sessionDetails = AssuranceSessionDetails(sessionId: "sampleSessionId", clientId: "sampleClientId", environment: .dev)
         
         // test
-        sessionDetails.pinCode = "2222"
+        sessionDetails.token = "2222"
         let result = sessionDetails.getAuthenticatedSocketURL()
         
         XCTAssertEqual(.failure(.noOrgId), result)

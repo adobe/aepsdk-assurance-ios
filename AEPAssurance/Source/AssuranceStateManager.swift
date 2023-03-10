@@ -20,6 +20,11 @@ import UIKit
 ///
 class AssuranceStateManager {
 
+    let runtime: ExtensionRuntime
+    init(_ runtime: ExtensionRuntime) {
+        self.runtime = runtime
+    }
+
     let datastore = NamedCollectionDataStore(name: AssuranceConstants.EXTENSION_NAME)
 
     /// clientID is an identifier to uniquely identify the connected device to an Assurance Session.
@@ -52,11 +57,6 @@ class AssuranceStateManager {
                 datastore.remove(key: AssuranceConstants.DataStoreKeys.SOCKETURL)
             }
         }
-    }
-
-    let runtime: ExtensionRuntime
-    init(_ runtime: ExtensionRuntime) {
-        self.runtime = runtime
     }
 
     /// Call this function to create a new shared state for Assurance with the provided sessionId

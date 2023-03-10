@@ -15,15 +15,15 @@ import Foundation
 import WebKit
 
 class iOSStatusUI {
-    var isDisplayed: Bool = false
-    var sessionOrchestrator: AssuranceSessionOrchestrator
+    var displayed: Bool = false
     var clientLogQueue: ThreadSafeQueue<AssuranceClientLogMessage>
     var floatingButton: FloatingButtonPresentable?
     var fullScreenMessage: FullscreenPresentable?
+    var presentationDelegate: AssurancePresentationDelegate
     var webView: WKWebView?
 
-    required init(withSessionOrchestrator sessionOrchestrator: AssuranceSessionOrchestrator) {
-        self.sessionOrchestrator = sessionOrchestrator
+    required init(presentationDelegate: AssurancePresentationDelegate) {
+        self.presentationDelegate = presentationDelegate
         self.clientLogQueue = ThreadSafeQueue(withLimit: 100)
     }
 
@@ -42,7 +42,7 @@ class iOSStatusUI {
         floatingButton = ServiceProvider.shared.uiService.createFloatingButton(listener: self)
         floatingButton?.setInitial(position: FloatingButtonPosition.topRight)
         floatingButton?.show()
-        isDisplayed = true
+        displayed = true
     }
 
     ///
@@ -53,7 +53,7 @@ class iOSStatusUI {
         self.floatingButton = nil
         self.fullScreenMessage = nil
         self.webView = nil
-        isDisplayed = false
+        displayed = false
     }
 
     ///
