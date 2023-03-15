@@ -14,6 +14,10 @@ import Foundation
 import UIKit
 import AEPServices
 
+#if DEBUG
+///
+/// QuickConnectManager manages the QuickConnectService, and passes relevant updates from it to the AssurancePresentationDelegate
+///
 class QuickConnectManager {
 
     private let stateManager: AssuranceStateManager
@@ -84,3 +88,4 @@ class QuickConnectManager {
         quickConnectService.shouldRetryGetDeviceStatus = false
     }
 }
+#endif

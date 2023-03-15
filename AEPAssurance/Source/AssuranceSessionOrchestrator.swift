@@ -42,7 +42,9 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     
     init(stateManager: AssuranceStateManager) {
         self.stateManager = stateManager
+        #if DEBUG
         self.quickConnectManager = QuickConnectManager(stateManager: stateManager, uiDelegate: self)
+        #endif
         self.outboundEventBuffer = ThreadSafeArray(identifier: "Session Orchestrator's OutboundBuffer array")
     }
 
@@ -67,6 +69,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
         outboundEventBuffer = nil
     }
     
+    #if DEBUG
     ///
     /// Starts the quick connect flow
     ///
@@ -84,6 +87,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
         }
         self.authorizingPresentation?.show()
     }
+    #endif
 
     ///
     /// Dissolve the active session (if one exists) and its associated states.
