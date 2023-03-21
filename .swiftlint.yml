@@ -16,6 +16,7 @@ disabled_rules: # rule identifiers to exclude from running
 - type_body_length
 - weak_delegate
 - class_delegate_protocol
+- trailing_whitespace
 opt_in_rules: # some rules are opt-in only
 - closure_end_indentation
 - convenience_type
@@ -35,11 +36,11 @@ opt_in_rules: # some rules are opt-in only
 - vertical_parameter_alignment_on_call
 excluded: # paths to ignore during linting
 - Carthage
-- AEPAssurance/UnitTests/
-- SampleApps/*/Pods
-- SampleApps/*/xdmlib
+- AEPAssurance/UnitTests
+- TestAppObjC
 - SampleApps/*/libs
 - Pods
+- .build
 
 empty_count:
     severity: warning

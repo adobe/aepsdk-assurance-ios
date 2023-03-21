@@ -30,6 +30,7 @@ target 'TestApp' do
   pod 'AEPTarget'
   pod 'AEPAnalytics'
   pod 'AEPPlaces'
+  pod 'AEPMessaging'
 end
 
 target 'TestAppObjC' do

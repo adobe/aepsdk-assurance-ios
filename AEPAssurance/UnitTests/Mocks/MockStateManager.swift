@@ -1,5 +1,5 @@
 //
-// Copyright 2021 Adobe. All rights reserved.
+// Copyright 2022 Adobe. All rights reserved.
 // This file is licensed to you under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License. You may obtain a copy
 // of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -10,15 +10,17 @@
 // governing permissions and limitations under the License.
 //
 
+
+import Foundation
 @testable import AEPAssurance
 @testable import AEPCore
-import Foundation
 import XCTest
 
-class MockAssurance: Assurance {
+class MockStateManager : AssuranceStateManager {
+    
     var expectation: XCTestExpectation?
-    required init?(runtime: ExtensionRuntime) {
-        super.init(runtime: runtime)
+    required override init(_ runtime: ExtensionRuntime) {
+        super.init(runtime)
     }
 
     var getAllExtensionStateDataCalled = false
@@ -27,5 +29,26 @@ class MockAssurance: Assurance {
         getAllExtensionStateDataCalled = true
         return []
     }
-
+    
+    var shareAssuranceStateCalled = false
+    var shareAssuranceStateSessionID: String?
+    override func shareAssuranceState(withSessionID sessionId: String) {
+        shareAssuranceStateCalled = true
+        shareAssuranceStateSessionID = sessionId
+    }
+    
+    var clearAssuranceStateCalled = false
+    override func clearAssuranceState() {
+        clearAssuranceStateCalled = true
+    }
+    
+    var orgIDReturnValue: String?
+    override func getURLEncodedOrgID() -> String? {
+        return orgIDReturnValue
+    }
+    
+    func setConnectedURLString(_ url : String?) {
+        self.connectedWebSocketURL = url
+    }
+    
 }

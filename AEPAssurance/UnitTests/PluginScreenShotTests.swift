@@ -22,8 +22,8 @@ class PluginScreenShotTests: XCTestCase {
     let runtime = TestableExtensionRuntime()
     var mockUIUtil = MockAssuranceUIUtil()
     var mockNetworkService = MockNetworkService()
-    var assuranceExtension: MockAssurance?
-    var mockSession: MockAssuranceSession!
+    var mockStateManager: MockStateManager?
+    var mockSession: MockSession!
     var screenShotEvent = AssuranceEvent.init(type: AssuranceConstants.EventType.CONTROL, payload: nil)
 
     let sampleResponse = """
@@ -41,10 +41,10 @@ class PluginScreenShotTests: XCTestCase {
     let sampleImageData = "PhoneImage".data(using: .utf8)!
 
     override func setUpWithError() throws {
-        assuranceExtension = MockAssurance(runtime: runtime)
-        assuranceExtension?.environment = .dev
-        assuranceExtension?.sessionId = "mocksessionId"
-        mockSession = MockAssuranceSession(assuranceExtension!)
+        mockStateManager = MockStateManager(runtime)
+        let mockSessionOrchestrator = MockSessionOrchestrator(stateManager: mockStateManager!)
+        let sessionDetail = AssuranceSessionDetails(sessionId: "mocksessionId", clientId: "clientId", environment: .dev)
+        mockSession = MockSession(sessionDetails: sessionDetail, stateManager: mockStateManager!, sessionOrchestrator: mockSessionOrchestrator, outboundEvents: nil)
         ServiceProvider.shared.networkService = mockNetworkService
         plugin.uiUtil = mockUIUtil
     }
