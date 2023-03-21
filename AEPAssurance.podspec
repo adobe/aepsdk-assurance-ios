@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "AEPAssurance"
-  s.version          = "3.0.1"
+  s.version          = "3.1.0"
   s.summary          = "AEPAssurance SDK for Adobe Experience Platform Mobile SDK. Written and maintained by Adobe."
 
   s.description      = <<-DESC
