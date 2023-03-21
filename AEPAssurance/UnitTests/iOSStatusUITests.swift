@@ -20,8 +20,9 @@ import XCTest
 class iOSStatusUITests: XCTestCase {
 
     var statusUI: iOSStatusUI!
-    var mockSession: MockAssuranceSession!
-    var mockAssuranceExtension: MockAssurance!
+    var mockSession: MockSession!
+    var mockStateManager: MockStateManager!
+    var mockSessionOrchestrator: MockSessionOrchestrator!
 
     // mock UIServices
     let mockUIService = MockUIService()
@@ -31,11 +32,12 @@ class iOSStatusUITests: XCTestCase {
 
     override func setUp() {
         let runtime = TestableExtensionRuntime()
-        mockAssuranceExtension = MockAssurance(runtime: runtime)
-        mockSession = MockAssuranceSession(mockAssuranceExtension!)
-
+        mockStateManager = MockStateManager(runtime)
+        mockSessionOrchestrator = MockSessionOrchestrator(stateManager: mockStateManager)
+        let sessionDetail = AssuranceSessionDetails(sessionId: "mocksessionId", clientId: "clientId", environment: .dev)
+        mockSession = MockSession(sessionDetails: sessionDetail, stateManager: mockStateManager!, sessionOrchestrator: mockSessionOrchestrator, outboundEvents: nil)
         ServiceProvider.shared.uiService = mockUIService
-        statusUI = iOSStatusUI.init(withSession: mockSession)
+        statusUI = iOSStatusUI.init(presentationDelegate: mockSessionOrchestrator)
 
         mockUIService.fullscreenMessage = mockFullScreen
         mockUIService.floatingButton = mockButton
@@ -127,7 +129,7 @@ class iOSStatusUITests: XCTestCase {
         // verify when floating button is tapped, floating button is dismissed
         // and fullscreen status screen is shown
         XCTAssertTrue(mockFullScreen.dismissCalled)
-        XCTAssertTrue(mockSession.terminateSessionCalled)
+        XCTAssertTrue(mockSessionOrchestrator.disconnectClickedCalled)
         XCTAssertFalse(shouldHandleURL) // assert false because the URL is handled by the delegate method
     }
 
@@ -226,6 +228,7 @@ class iOSStatusUITests: XCTestCase {
     func test_floatingButtonShow_whenSocketConnected() throws {
         // setup
         statusUI.display()
+        mockSessionOrchestrator.session = mockSession
         mockSession.mockSocketState(state: .open)
 
         // test

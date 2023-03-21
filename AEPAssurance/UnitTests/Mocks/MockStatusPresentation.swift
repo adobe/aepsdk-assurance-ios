@@ -1,5 +1,5 @@
 //
-// Copyright 2021 Adobe. All rights reserved.
+// Copyright 2022 Adobe. All rights reserved.
 // This file is licensed to you under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License. You may obtain a copy
 // of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,26 +11,20 @@
 //
 
 @testable import AEPAssurance
+@testable import AEPCore
 import Foundation
 import XCTest
 
-class MockAssuranceSession: AssuranceSession {
-
-    var expectation: XCTestExpectation?
-    override init(_ assuranceExtension: Assurance) {
-        super.init(assuranceExtension)
-        self.socket = MockSocket(withDelegate: self)
+class MockStatusPresentation: AssuranceStatusPresentation {
+    override init(with statusUI: iOSStatusUI) {
+        super.init(with: statusUI)
     }
-
-    var sendEventCalled = false
-    var sentEvent: AssuranceEvent?
-
-    override func sendEvent(_ assuranceEvent: AssuranceEvent) {
-        expectation?.fulfill()
-        sendEventCalled = true
-        sentEvent = assuranceEvent
+    
+    var sessionReconnectingCalled = false
+    override func sessionReconnecting() {
+        sessionReconnectingCalled = true
     }
-
+    
     var addClientLogCalled = false
     var addClientLogMessage: String?
     var addClientLogVisibility: AssuranceClientLogVisibility?
@@ -39,21 +33,22 @@ class MockAssuranceSession: AssuranceSession {
         addClientLogMessage = message
         addClientLogVisibility = visibility
     }
-
-    var terminateSessionCalled = false
-    override func terminateSession() {
-        terminateSessionCalled = true
+    
+    var sessionConnectedCalled = false
+    override func sessionConnected() {
+        sessionConnectedCalled = true
     }
     
-    var shutDownSessionCalled = false
-    override func shutDownSession() {
-        shutDownSessionCalled = true
+    
+    var sessionDisconnectedCalled = false
+    override func sessionDisconnected() {
+        sessionDisconnectedCalled = true
     }
-
-
-    func mockSocketState(state: SocketState) {
-        if let mockSocket = socket as? MockSocket {
-            mockSocket.mockSocketState(state: state)
-        }
+    
+    var sessionConnectionErrorCalled = false
+    var sessionConnectionErrorValue : AssuranceConnectionError?
+    override func sessionConnectionError(error: AssuranceConnectionError) {
+        sessionConnectionErrorCalled = true
+        sessionConnectionErrorValue = error
     }
 }

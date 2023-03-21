@@ -25,12 +25,24 @@
 		337C8C135446B45550172205 /* Pods_TestAppObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FEAA724C29B9FAC154C0556 /* Pods_TestAppObjC.framework */; };
 		3FF4F5C8E96A31D0A6E896C4 /* Pods_TestApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96C170474540581D23D5C489 /* Pods_TestApp.framework */; };
 		4A3445E6430F2FDC93CD6A1F /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F7044D49EBAEA4F53647EF2 /* Pods_UnitTests.framework */; };
+		750EE32A2936A4490013C411 /* MockStatusPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EE3292936A4490013C411 /* MockStatusPresentation.swift */; };
+		750EE32C2937C6D50013C411 /* AssuranceStatusPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EE32B2937C6D50013C411 /* AssuranceStatusPresentationTests.swift */; };
+		750EE32E2937C7E40013C411 /* QuickConnectViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EE32D2937C7E40013C411 /* QuickConnectViewTests.swift */; };
+		750EE3302937D6B10013C411 /* MockQuickConnectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EE32F2937D6B10013C411 /* MockQuickConnectManager.swift */; };
+		7527DCA22926F15300FE0D8C /* AssuranceConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7527DCA12926F15300FE0D8C /* AssuranceConnectionDelegate.swift */; };
+		753867C32925735D0021BC3F /* AssuranceAuthorizingPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753867C22925735D0021BC3F /* AssuranceAuthorizingPresentation.swift */; };
+		753867C529257CFE0021BC3F /* AssuranceStatusPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753867C429257CFE0021BC3F /* AssuranceStatusPresentation.swift */; };
+		7881FA5928D50C8D0051F902 /* QuickConnectServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7881FA5828D50C8D0051F902 /* QuickConnectServiceTests.swift */; };
+		B601172227BAE3EF006D3968 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B601172127BAE3EF006D3968 /* Connection.swift */; };
+		B601172527BAE4AA006D3968 /* AdobeLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B601172427BAE4AA006D3968 /* AdobeLogo.swift */; };
 		B603F9FF27A9EC7D0033416B /* 20KBString.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603F9FE27A9EC7D0033416B /* 20KBString.txt */; };
 		B603FA0427A9F51B0033416B /* 40KBString.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603FA0327A9F51B0033416B /* 40KBString.txt */; };
 		B603FA0927AB1D270033416B /* htmlSample.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603FA0827AB1D270033416B /* htmlSample.txt */; };
 		B603FA0D27AB285A0033416B /* emptylines.txt in Resources */ = {isa = PBXBuildFile; fileRef = B603FA0C27AB285A0033416B /* emptylines.txt */; };
 		B603FA1127AD91A30033416B /* sampleRules.json in Resources */ = {isa = PBXBuildFile; fileRef = B603FA1027AD91A30033416B /* sampleRules.json */; };
 		B60BAC0C26434ED90054CD21 /* AssuranceConnectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60BAC0B26434ED90054CD21 /* AssuranceConnectionError.swift */; };
+		B61A2F59282483EC006B56D5 /* AssuranceSessionDetailsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61A2F58282483EC006B56D5 /* AssuranceSessionDetailsTests.swift */; };
+		B61B7E662822D08F00E1A6B2 /* AssuranceSessionDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61B7E652822D08F00E1A6B2 /* AssuranceSessionDetails.swift */; };
 		B63ADA8C266F700C00A1281A /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADA8B266F700C00A1281A /* ErrorView.swift */; };
 		B63ADA8E266F718900A1281A /* ErrorViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADA8D266F718900A1281A /* ErrorViewTests.swift */; };
 		B63ADAB12672629700A1281A /* iOSStatusUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63ADAB02672629700A1281A /* iOSStatusUI.swift */; };
@@ -56,7 +68,7 @@
 		B6407206262C90FA00C43183 /* Assurance+PublicAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6407205262C90FA00C43183 /* Assurance+PublicAPI.swift */; };
 		B6407223262CEBC600C43183 /* URL+Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6407222262CEBC600C43183 /* URL+Parser.swift */; };
 		B640722B262CF06100C43183 /* AssuranceEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640722A262CF06100C43183 /* AssuranceEnvironment.swift */; };
-		B64212B326849021007343B6 /* MockPinPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64212B226849021007343B6 /* MockPinPad.swift */; };
+		B64212B326849021007343B6 /* MockSessionAuthorizingUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64212B226849021007343B6 /* MockSessionAuthorizingUI.swift */; };
 		B64212B52684A655007343B6 /* AssuranceConnectionErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64212B42684A655007343B6 /* AssuranceConnectionErrorTests.swift */; };
 		B64FDF6E264F33EF00D33192 /* AssurancePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64FDF6D264F33EF00D33192 /* AssurancePlugin.swift */; };
 		B64FDF70264F341600D33192 /* PluginFakeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64FDF6F264F341600D33192 /* PluginFakeEvent.swift */; };
@@ -69,10 +81,11 @@
 		B670E74B26395F27000FCB96 /* AEPAssurance.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B6407199262C313E00C43183 /* AEPAssurance.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B676B7142681BB7C000EC291 /* AEPAssurance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6407199262C313E00C43183 /* AEPAssurance.framework */; };
 		B676B7152681BB7C000EC291 /* AEPAssurance.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B6407199262C313E00C43183 /* AEPAssurance.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B67F6F2927D0A29C0003B955 /* AssuranceStateManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67F6F2727D0A24C0003B955 /* AssuranceStateManagerTests.swift */; };
+		B6A0197027CDA3990097ED5C /* AssuranceStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A0196F27CDA3980097ED5C /* AssuranceStateManager.swift */; };
+		B6A0197227CEA8D30097ED5C /* MockStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A0197127CEA8D30097ED5C /* MockStateManager.swift */; };
 		B6A80BFE266ACBB60089C564 /* AssuranceShutDownTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A80BFD266ACBB50089C564 /* AssuranceShutDownTimerTests.swift */; };
-		B6AB2DE6263372AF00FE8AEA /* Assurance+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D2A92626334A3D0062AC5E /* Assurance+State.swift */; };
 		B6AB2DEE26337BB700FE8AEA /* MockDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB2DED26337BB700FE8AEA /* MockDataStore.swift */; };
-		B6AB2DF326337BE700FE8AEA /* AssuranceStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB2DF226337BE700FE8AEA /* AssuranceStateTests.swift */; };
 		B6AFD589263403EB00C63608 /* AssuranceEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AFD588263403EB00C63608 /* AssuranceEvent.swift */; };
 		B6AFD58E2634041E00C63608 /* AssuranceEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AFD58D2634041E00C63608 /* AssuranceEventTests.swift */; };
 		B6B055A32681CFE700AF5D1A /* PluginLogForwarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B055A22681CFE700AF5D1A /* PluginLogForwarder.swift */; };
@@ -83,11 +96,11 @@
 		B6B23ACE26414C8100EE8153 /* iOSPinCodeScreen+FullScreenDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B23ACD26414C8100EE8153 /* iOSPinCodeScreen+FullScreenDelegate.swift */; };
 		B6B23AD82641EF6500EE8153 /* AssuranceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B23AD72641EF6500EE8153 /* AssuranceTests.swift */; };
 		B6B23B3B264269A800EE8153 /* iOSPinCodeScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B23B3A264269A800EE8153 /* iOSPinCodeScreenTests.swift */; };
+		B6C4C8392829AFD000BF4CC6 /* AssuranceSessionOrchestratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C4C8372829AFCB00BF4CC6 /* AssuranceSessionOrchestratorTests.swift */; };
 		B6CECC4C26531ECF000D517F /* PluginConfigModify.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC4B26531ECF000D517F /* PluginConfigModify.swift */; };
 		B6CECC4E26531F5D000D517F /* PluginConfigModifyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC4D26531F5D000D517F /* PluginConfigModifyTests.swift */; };
 		B6CECC5626544700000D517F /* PluginHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC5526544700000D517F /* PluginHub.swift */; };
-		B6CECC5B26545829000D517F /* MockAssuranceSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC5926545829000D517F /* MockAssuranceSession.swift */; };
-		B6CECC5E26545834000D517F /* MockAssurance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC5C26545834000D517F /* MockAssurance.swift */; };
+		B6CECC5B26545829000D517F /* MockSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC5926545829000D517F /* MockSession.swift */; };
 		B6CECC6026545857000D517F /* PluginHubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC5726544747000D517F /* PluginHubTests.swift */; };
 		B6CECC652655A8D3000D517F /* ThreadSafeQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC642655A8D3000D517F /* ThreadSafeQueue.swift */; };
 		B6CECC682655A94F000D517F /* ThreadSafeQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CECC662655A925000D517F /* ThreadSafeQueueTests.swift */; };
@@ -121,6 +134,14 @@
 		B6DDFAB5268139BA002D2757 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6DDFAB4268139BA002D2757 /* Assets.xcassets */; };
 		B6DDFAB8268139BA002D2757 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6DDFAB6268139BA002D2757 /* LaunchScreen.storyboard */; };
 		B6DDFABB268139BA002D2757 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B6DDFABA268139BA002D2757 /* main.m */; };
+		B6EB1C132805F3FE0036337E /* AssurancePresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C112805F3FE0036337E /* AssurancePresentationDelegate.swift */; };
+		B6EB1C152805F4FE0036337E /* AssuranceSessionOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C142805F4FE0036337E /* AssuranceSessionOrchestrator.swift */; };
+		B6EB1C1728060D2D0036337E /* AssuranceAuthorizingPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C1628060D2D0036337E /* AssuranceAuthorizingPresentationTests.swift */; };
+		B6EB1C1928060DB10036337E /* MockPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C1828060DB10036337E /* MockPresentation.swift */; };
+		B6EB1C1B280611410036337E /* MockSessionOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EB1C1A280611410036337E /* MockSessionOrchestrator.swift */; };
+		B6EC8D1D27B48FF40058FAC7 /* QuickConnectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EC8D1C27B48FF40058FAC7 /* QuickConnectManager.swift */; };
+		B6EC8D1F27B4918A0058FAC7 /* QuickConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EC8D1E27B4918A0058FAC7 /* QuickConnectView.swift */; };
+		B6EC8D2127B4925C0058FAC7 /* QuickConnectService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EC8D2027B4925C0058FAC7 /* QuickConnectService.swift */; };
 		B6F6F1B327A91E060040DCD4 /* AssuranceEventChunker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F6F1B227A91E060040DCD4 /* AssuranceEventChunker.swift */; };
 		B6F6F1B627A943C60040DCD4 /* AssuranceEventChunkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F6F1B427A942A10040DCD4 /* AssuranceEventChunkerTests.swift */; };
 		B6FEB8AC263A18E600F0F240 /* SocketScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FEB8AB263A18E600F0F240 /* SocketScript.swift */; };
@@ -199,13 +220,27 @@
 		2312E718FBB87722A8A55BE1 /* Pods-TestAppObjC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppObjC.release.xcconfig"; path = "Target Support Files/Pods-TestAppObjC/Pods-TestAppObjC.release.xcconfig"; sourceTree = "<group>"; };
 		493D855458BBA67C6F19F468 /* Pods-AEPAssurance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AEPAssurance.release.xcconfig"; path = "Target Support Files/Pods-AEPAssurance/Pods-AEPAssurance.release.xcconfig"; sourceTree = "<group>"; };
 		5ABE4461A8032C0B29C8BCF6 /* Pods-TestAppObjC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppObjC.debug.xcconfig"; path = "Target Support Files/Pods-TestAppObjC/Pods-TestAppObjC.debug.xcconfig"; sourceTree = "<group>"; };
+		750EE3292936A4490013C411 /* MockStatusPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockStatusPresentation.swift; sourceTree = "<group>"; };
+		750EE32B2937C6D50013C411 /* AssuranceStatusPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStatusPresentationTests.swift; sourceTree = "<group>"; };
+		750EE32D2937C7E40013C411 /* QuickConnectViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectViewTests.swift; sourceTree = "<group>"; };
+		750EE32F2937D6B10013C411 /* MockQuickConnectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockQuickConnectManager.swift; sourceTree = "<group>"; };
+		7527DCA12926F15300FE0D8C /* AssuranceConnectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceConnectionDelegate.swift; sourceTree = "<group>"; };
+		753867C22925735D0021BC3F /* AssuranceAuthorizingPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceAuthorizingPresentation.swift; sourceTree = "<group>"; };
+		753867C429257CFE0021BC3F /* AssuranceStatusPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStatusPresentation.swift; sourceTree = "<group>"; };
+		7881FA5828D50C8D0051F902 /* QuickConnectServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectServiceTests.swift; sourceTree = "<group>"; };
 		96C170474540581D23D5C489 /* Pods_TestApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B601171F27BAE193006D3968 /* connection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connection.png; sourceTree = "<group>"; };
+		B601172127BAE3EF006D3968 /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
+		B601172327BAE478006D3968 /* adobelogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adobelogo.png; sourceTree = "<group>"; };
+		B601172427BAE4AA006D3968 /* AdobeLogo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdobeLogo.swift; sourceTree = "<group>"; };
 		B603F9FE27A9EC7D0033416B /* 20KBString.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 20KBString.txt; sourceTree = "<group>"; };
 		B603FA0327A9F51B0033416B /* 40KBString.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 40KBString.txt; sourceTree = "<group>"; };
 		B603FA0827AB1D270033416B /* htmlSample.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = htmlSample.txt; sourceTree = "<group>"; };
 		B603FA0C27AB285A0033416B /* emptylines.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = emptylines.txt; sourceTree = "<group>"; };
 		B603FA1027AD91A30033416B /* sampleRules.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sampleRules.json; sourceTree = "<group>"; };
 		B60BAC0B26434ED90054CD21 /* AssuranceConnectionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceConnectionError.swift; sourceTree = "<group>"; };
+		B61A2F58282483EC006B56D5 /* AssuranceSessionDetailsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceSessionDetailsTests.swift; sourceTree = "<group>"; };
+		B61B7E652822D08F00E1A6B2 /* AssuranceSessionDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceSessionDetails.swift; sourceTree = "<group>"; };
 		B63ADA8B266F700C00A1281A /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		B63ADA8D266F718900A1281A /* ErrorViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewTests.swift; sourceTree = "<group>"; };
 		B63ADAB02672629700A1281A /* iOSStatusUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSStatusUI.swift; sourceTree = "<group>"; };
@@ -215,6 +250,7 @@
 		B63ADAB826726B9B00A1281A /* iOSStatusUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSStatusUITests.swift; sourceTree = "<group>"; };
 		B63ADABB26731A0400A1281A /* MockSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSocket.swift; sourceTree = "<group>"; };
 		B63ADABD26732C8100A1281A /* AssuranceSession+EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssuranceSession+EventHandler.swift"; sourceTree = "<group>"; };
+		B63C8C2C285784BD00FC4CFC /* TestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestApp.entitlements; sourceTree = "<group>"; };
 		B63EB79A2668C67A005BE2C5 /* AssuranceClientLogVisibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceClientLogVisibility.swift; sourceTree = "<group>"; };
 		B63EB79C2668D524005BE2C5 /* AssuranceClientLogMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceClientLogMessageTests.swift; sourceTree = "<group>"; };
 		B6407199262C313E00C43183 /* AEPAssurance.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AEPAssurance.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -236,7 +272,7 @@
 		B6407205262C90FA00C43183 /* Assurance+PublicAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Assurance+PublicAPI.swift"; sourceTree = "<group>"; };
 		B6407222262CEBC600C43183 /* URL+Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Parser.swift"; sourceTree = "<group>"; };
 		B640722A262CF06100C43183 /* AssuranceEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEnvironment.swift; sourceTree = "<group>"; };
-		B64212B226849021007343B6 /* MockPinPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPinPad.swift; sourceTree = "<group>"; };
+		B64212B226849021007343B6 /* MockSessionAuthorizingUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSessionAuthorizingUI.swift; sourceTree = "<group>"; };
 		B64212B42684A655007343B6 /* AssuranceConnectionErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceConnectionErrorTests.swift; sourceTree = "<group>"; };
 		B64FDF6D264F33EF00D33192 /* AssurancePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssurancePlugin.swift; sourceTree = "<group>"; };
 		B64FDF6F264F341600D33192 /* PluginFakeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginFakeEvent.swift; sourceTree = "<group>"; };
@@ -249,9 +285,11 @@
 		B670E67926393284000FCB96 /* inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = inactive.png; sourceTree = "<group>"; };
 		B670E72226395954000FCB96 /* StatusInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusInfo.swift; sourceTree = "<group>"; };
 		B670E72326395954000FCB96 /* PinDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinDialog.swift; sourceTree = "<group>"; };
+		B67F6F2727D0A24C0003B955 /* AssuranceStateManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStateManagerTests.swift; sourceTree = "<group>"; };
+		B6A0196F27CDA3980097ED5C /* AssuranceStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStateManager.swift; sourceTree = "<group>"; };
+		B6A0197127CEA8D30097ED5C /* MockStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockStateManager.swift; sourceTree = "<group>"; };
 		B6A80BFD266ACBB50089C564 /* AssuranceShutDownTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceShutDownTimerTests.swift; sourceTree = "<group>"; };
 		B6AB2DED26337BB700FE8AEA /* MockDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataStore.swift; sourceTree = "<group>"; };
-		B6AB2DF226337BE700FE8AEA /* AssuranceStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStateTests.swift; sourceTree = "<group>"; };
 		B6AFD588263403EB00C63608 /* AssuranceEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEvent.swift; sourceTree = "<group>"; };
 		B6AFD58D2634041E00C63608 /* AssuranceEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEventTests.swift; sourceTree = "<group>"; };
 		B6B055A22681CFE700AF5D1A /* PluginLogForwarder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginLogForwarder.swift; sourceTree = "<group>"; };
@@ -263,17 +301,16 @@
 		B6B23ACD26414C8100EE8153 /* iOSPinCodeScreen+FullScreenDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "iOSPinCodeScreen+FullScreenDelegate.swift"; sourceTree = "<group>"; };
 		B6B23AD72641EF6500EE8153 /* AssuranceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceTests.swift; sourceTree = "<group>"; };
 		B6B23B3A264269A800EE8153 /* iOSPinCodeScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSPinCodeScreenTests.swift; sourceTree = "<group>"; };
+		B6C4C8372829AFCB00BF4CC6 /* AssuranceSessionOrchestratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceSessionOrchestratorTests.swift; sourceTree = "<group>"; };
 		B6CECC4B26531ECF000D517F /* PluginConfigModify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginConfigModify.swift; sourceTree = "<group>"; };
 		B6CECC4D26531F5D000D517F /* PluginConfigModifyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginConfigModifyTests.swift; sourceTree = "<group>"; };
 		B6CECC5526544700000D517F /* PluginHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginHub.swift; sourceTree = "<group>"; };
 		B6CECC5726544747000D517F /* PluginHubTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginHubTests.swift; sourceTree = "<group>"; };
-		B6CECC5926545829000D517F /* MockAssuranceSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAssuranceSession.swift; sourceTree = "<group>"; };
-		B6CECC5C26545834000D517F /* MockAssurance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAssurance.swift; sourceTree = "<group>"; };
+		B6CECC5926545829000D517F /* MockSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSession.swift; sourceTree = "<group>"; };
 		B6CECC642655A8D3000D517F /* ThreadSafeQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadSafeQueue.swift; sourceTree = "<group>"; };
 		B6CECC662655A925000D517F /* ThreadSafeQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadSafeQueueTests.swift; sourceTree = "<group>"; };
 		B6D2A90B26322D1C0062AC5E /* AssuranceEnvironmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEnvironmentTests.swift; sourceTree = "<group>"; };
 		B6D2A91E2632B7640062AC5E /* MockExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockExtension.swift; sourceTree = "<group>"; };
-		B6D2A92626334A3D0062AC5E /* Assurance+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Assurance+State.swift"; sourceTree = "<group>"; };
 		B6D6A014265D8836005042BE /* AssuranceClientInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceClientInfo.swift; sourceTree = "<group>"; };
 		B6D6A016265D8863005042BE /* AssuranceClientInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceClientInfoTests.swift; sourceTree = "<group>"; };
 		B6D6A01A265F027C005042BE /* AssuranceBlob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceBlob.swift; sourceTree = "<group>"; };
@@ -306,6 +343,14 @@
 		B6DDFAB7268139BA002D2757 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B6DDFAB9268139BA002D2757 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6DDFABA268139BA002D2757 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B6EB1C112805F3FE0036337E /* AssurancePresentationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssurancePresentationDelegate.swift; sourceTree = "<group>"; };
+		B6EB1C142805F4FE0036337E /* AssuranceSessionOrchestrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceSessionOrchestrator.swift; sourceTree = "<group>"; };
+		B6EB1C1628060D2D0036337E /* AssuranceAuthorizingPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceAuthorizingPresentationTests.swift; sourceTree = "<group>"; };
+		B6EB1C1828060DB10036337E /* MockPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPresentation.swift; sourceTree = "<group>"; };
+		B6EB1C1A280611410036337E /* MockSessionOrchestrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSessionOrchestrator.swift; sourceTree = "<group>"; };
+		B6EC8D1C27B48FF40058FAC7 /* QuickConnectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectManager.swift; sourceTree = "<group>"; };
+		B6EC8D1E27B4918A0058FAC7 /* QuickConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectView.swift; sourceTree = "<group>"; };
+		B6EC8D2027B4925C0058FAC7 /* QuickConnectService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectService.swift; sourceTree = "<group>"; };
 		B6F6F1B227A91E060040DCD4 /* AssuranceEventChunker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEventChunker.swift; sourceTree = "<group>"; };
 		B6F6F1B427A942A10040DCD4 /* AssuranceEventChunkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceEventChunkerTests.swift; sourceTree = "<group>"; };
 		B6FEB8AB263A18E600F0F240 /* SocketScript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketScript.swift; sourceTree = "<group>"; };
@@ -439,6 +484,7 @@
 		B640719B262C313E00C43183 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				B6EC8D1B27B48FD00058FAC7 /* QuickConnect */,
 				B63ADA8A266F6FF200A1281A /* ErrorUI */,
 				B63EB7992668C5EB005BE2C5 /* StatusUI */,
 				B6D6A0302660EC93005042BE /* Socket */,
@@ -450,7 +496,7 @@
 				B6407204262C90CD00C43183 /* Public */,
 				B640719C262C313E00C43183 /* AEPAssurance.h */,
 				B64071D2262C368C00C43183 /* Assurance.swift */,
-				B6D2A92626334A3D0062AC5E /* Assurance+State.swift */,
+				B6A0196F27CDA3980097ED5C /* AssuranceStateManager.swift */,
 				B6B0E2D6263C7FAB00EF5E21 /* AssuranceSession.swift */,
 				B63ADABD26732C8100A1281A /* AssuranceSession+EventHandler.swift */,
 				B63ADAB62672653200A1281A /* AssuranceSession+SocketDelegate.swift */,
@@ -462,6 +508,12 @@
 				B6D6A014265D8836005042BE /* AssuranceClientInfo.swift */,
 				B6D6A01A265F027C005042BE /* AssuranceBlob.swift */,
 				B6D6A025265F9F14005042BE /* AssuranceUIUtil.swift */,
+				753867C429257CFE0021BC3F /* AssuranceStatusPresentation.swift */,
+				753867C22925735D0021BC3F /* AssuranceAuthorizingPresentation.swift */,
+				B6EB1C112805F3FE0036337E /* AssurancePresentationDelegate.swift */,
+				7527DCA12926F15300FE0D8C /* AssuranceConnectionDelegate.swift */,
+				B6EB1C142805F4FE0036337E /* AssuranceSessionOrchestrator.swift */,
+				B61B7E652822D08F00E1A6B2 /* AssuranceSessionDetails.swift */,
 				B640719D262C313E00C43183 /* Info.plist */,
 			);
 			name = Source;
@@ -474,7 +526,7 @@
 				B603F9FB27A9EB620033416B /* Resources */,
 				B6D2A91D2632B7290062AC5E /* Mocks */,
 				B64071A7262C313E00C43183 /* AssurancePublicAPITests.swift */,
-				B6AB2DF226337BE700FE8AEA /* AssuranceStateTests.swift */,
+				B67F6F2727D0A24C0003B955 /* AssuranceStateManagerTests.swift */,
 				B6B23AD72641EF6500EE8153 /* AssuranceTests.swift */,
 				B6DBD81C26787F23009EB47E /* AssuranceSessionTests.swift */,
 				B6A80BFD266ACBB50089C564 /* AssuranceShutDownTimerTests.swift */,
@@ -495,6 +547,12 @@
 				B64212B42684A655007343B6 /* AssuranceConnectionErrorTests.swift */,
 				B63EB79C2668D524005BE2C5 /* AssuranceClientLogMessageTests.swift */,
 				B6F6F1B427A942A10040DCD4 /* AssuranceEventChunkerTests.swift */,
+				7881FA5828D50C8D0051F902 /* QuickConnectServiceTests.swift */,
+				B6EB1C1628060D2D0036337E /* AssuranceAuthorizingPresentationTests.swift */,
+				750EE32B2937C6D50013C411 /* AssuranceStatusPresentationTests.swift */,
+				B61A2F58282483EC006B56D5 /* AssuranceSessionDetailsTests.swift */,
+				B6C4C8372829AFCB00BF4CC6 /* AssuranceSessionOrchestratorTests.swift */,
+				750EE32D2937C7E40013C411 /* QuickConnectViewTests.swift */,
 				B64071A9262C313E00C43183 /* Info.plist */,
 			);
 			name = UnitTests;
@@ -504,6 +562,7 @@
 		B64071E5262C8F8B00C43183 /* TestApp */ = {
 			isa = PBXGroup;
 			children = (
+				B63C8C2C285784BD00FC4CFC /* TestApp.entitlements */,
 				B64071E6262C8F8B00C43183 /* AppDelegate.swift */,
 				B64071E8262C8F8B00C43183 /* SceneDelegate.swift */,
 				B64071EA262C8F8B00C43183 /* ContentView.swift */,
@@ -577,6 +636,8 @@
 		B670E67726392FEE000FCB96 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				B601172327BAE478006D3968 /* adobelogo.png */,
+				B601171F27BAE193006D3968 /* connection.png */,
 				B670E67826393277000FCB96 /* active.png */,
 				B670E67926393284000FCB96 /* inactive.png */,
 			);
@@ -635,13 +696,17 @@
 				B6AB2DED26337BB700FE8AEA /* MockDataStore.swift */,
 				B670E63C2638BF2A000FCB96 /* TestableExtensionRuntime.swift */,
 				B6B0E2D2263C7E5300EF5E21 /* MockUIService.swift */,
-				B6CECC5926545829000D517F /* MockAssuranceSession.swift */,
-				B6CECC5C26545834000D517F /* MockAssurance.swift */,
+				B6CECC5926545829000D517F /* MockSession.swift */,
 				B6D6A01C265F05F8005042BE /* MockNetworkService.swift */,
 				B6D6A028265FA0EE005042BE /* MockAssuranceUIUtil.swift */,
 				B63ADABB26731A0400A1281A /* MockSocket.swift */,
 				B6DBD81F2678FB19009EB47E /* MockStatusUI.swift */,
-				B64212B226849021007343B6 /* MockPinPad.swift */,
+				B64212B226849021007343B6 /* MockSessionAuthorizingUI.swift */,
+				B6A0197127CEA8D30097ED5C /* MockStateManager.swift */,
+				B6EB1C1828060DB10036337E /* MockPresentation.swift */,
+				750EE3292936A4490013C411 /* MockStatusPresentation.swift */,
+				B6EB1C1A280611410036337E /* MockSessionOrchestrator.swift */,
+				750EE32F2937D6B10013C411 /* MockQuickConnectManager.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -692,9 +757,21 @@
 			path = TestAppObjC;
 			sourceTree = "<group>";
 		};
+		B6EC8D1B27B48FD00058FAC7 /* QuickConnect */ = {
+			isa = PBXGroup;
+			children = (
+				B6EC8D1C27B48FF40058FAC7 /* QuickConnectManager.swift */,
+				B6EC8D1E27B4918A0058FAC7 /* QuickConnectView.swift */,
+				B6EC8D2027B4925C0058FAC7 /* QuickConnectService.swift */,
+			);
+			path = QuickConnect;
+			sourceTree = "<group>";
+		};
 		B6FEB88A263A0F0700F0F240 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				B601172427BAE4AA006D3968 /* AdobeLogo.swift */,
+				B601172127BAE3EF006D3968 /* Connection.swift */,
 				B6FEB8B0263A18F500F0F240 /* ActiveIcon.swift */,
 				B6FEB8AF263A18F500F0F240 /* InactiveIcon.swift */,
 			);
@@ -981,7 +1058,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\ncd ${PROJECT_DIR}\nif which ./Pods/SwiftLint/swiftlint >/dev/null; then\n  ./Pods/SwiftLint/swiftlint\nelse\n  echo \"error: SwiftLint not installed, please run the pod install command from the project root directory.\"\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#cd ${PROJECT_DIR}\n#if which ./Pods/SwiftLint/swiftlint >/dev/null; then\n#  ./Pods/SwiftLint/swiftlint\n#else\n#  echo \"error: SwiftLint not installed, please run the pod install command from the project root directory.\"\n#fi\n";
 		};
 		879463ABBE56BFF38666F31D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1076,6 +1153,8 @@
 			inputPaths = (
 				"$(SRCROOT)/Resources/Icons/active.png",
 				"$(SRCROOT)/Resources/Icons/inactive.png",
+				"$(SRCROOT)/Resources/Icons/connection.png",
+				"$(SRCROOT)/Resources/Icons/adobelogo.png",
 			);
 			name = "Generate binary representation of Icons";
 			outputFileListPaths = (
@@ -1083,10 +1162,12 @@
 			outputPaths = (
 				"$(SRCROOT)/AEPAssurance/Source/BuiltResources/Icons/ActiveIcon.swift",
 				"$(SRCROOT)/AEPAssurance/Source/BuiltResources/Icons/InactiveIcon.swift",
+				"$(SRCROOT)/AEPAssurance/Source/BuiltResources/Icons/Connection.swift",
+				"$(SRCROOT)/AEPAssurance/Source/BuiltResources/Icons/AdobeLogo.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# Generate Array<UInt8> representation for active.png\n# Output file - ActiveIcon.swift\n#echo \"enum ActiveIcon {\" > ${SCRIPT_OUTPUT_FILE_0}\n#echo \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\n#cat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\n#echo  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\n#echo \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n\n# Generate Array<UInt8> representation inactive.png\n# Output file - InActiveIcon.swift\n#echo \"enum InactiveIcon {\" > ${SCRIPT_OUTPUT_FILE_1}\n#echo \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_1}\n#cat ${SCRIPT_INPUT_FILE_1} |  xxd -i >> ${SCRIPT_OUTPUT_FILE_1}\n#echo  \"]\" >> ${SCRIPT_OUTPUT_FILE_1}\n#echo \"}\" >> ${SCRIPT_OUTPUT_FILE_1}\n";
+			shellScript = "#!/bin/sh\n\n# Generate Array<UInt8> representation for active.png\n# Output file - ActiveIcon.swift\n#echo \"enum ActiveIcon {\" > ${SCRIPT_OUTPUT_FILE_0}\n#echo \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\n#cat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\n#echo  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\n#echo \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n\n# Generate Array<UInt8> representation inactive.png\n# Output file - InActiveIcon.swift\n#echo \"enum connectionImage {\" > ${SCRIPT_OUTPUT_FILE_2}\n#echo \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_2}\n#cat ${SCRIPT_INPUT_FILE_2} |  xxd -i >> ${SCRIPT_OUTPUT_FILE_2}\n#echo  \"]\" >> ${SCRIPT_OUTPUT_FILE_2}\n#echo \"}\" >> ${SCRIPT_OUTPUT_FILE_2}\n";
 		};
 		B6FEB8A4263A171200F0F240 /* Generate binary representation of Javascript files */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1152,44 +1233,55 @@
 				B6D6A03F2660ED4D005042BE /* WebViewSocket.swift in Sources */,
 				B64071D3262C368C00C43183 /* Assurance.swift in Sources */,
 				B6D6A02F2660CFF5005042BE /* Event+Assurance.swift in Sources */,
+				753867C32925735D0021BC3F /* AssuranceAuthorizingPresentation.swift in Sources */,
 				B6B23ACE26414C8100EE8153 /* iOSPinCodeScreen+FullScreenDelegate.swift in Sources */,
 				B64071D7262C376A00C43183 /* AssuranceConstants.swift in Sources */,
 				B6D6A027265F9F32005042BE /* AssuranceUIUtil.swift in Sources */,
+				B601172527BAE4AA006D3968 /* AdobeLogo.swift in Sources */,
 				B6CECC652655A8D3000D517F /* ThreadSafeQueue.swift in Sources */,
 				B6D6A015265D8836005042BE /* AssuranceClientInfo.swift in Sources */,
 				B6B055A32681CFE700AF5D1A /* PluginLogForwarder.swift in Sources */,
 				B6AFD589263403EB00C63608 /* AssuranceEvent.swift in Sources */,
 				B6FEB8AC263A18E600F0F240 /* SocketScript.swift in Sources */,
 				B63ADAB72672653200A1281A /* AssuranceSession+SocketDelegate.swift in Sources */,
+				B6EC8D2127B4925C0058FAC7 /* QuickConnectService.swift in Sources */,
 				B63ADA8C266F700C00A1281A /* ErrorView.swift in Sources */,
 				B6CECC5626544700000D517F /* PluginHub.swift in Sources */,
 				B63EB79B2668C67A005BE2C5 /* AssuranceClientLogVisibility.swift in Sources */,
 				B670E72526395954000FCB96 /* PinDialog.swift in Sources */,
+				B6EC8D1D27B48FF40058FAC7 /* QuickConnectManager.swift in Sources */,
 				B6CECC4C26531ECF000D517F /* PluginConfigModify.swift in Sources */,
+				B6A0197027CDA3990097ED5C /* AssuranceStateManager.swift in Sources */,
 				B670E72426395954000FCB96 /* StatusInfo.swift in Sources */,
 				B6F6F1B327A91E060040DCD4 /* AssuranceEventChunker.swift in Sources */,
 				B64FDF70264F341600D33192 /* PluginFakeEvent.swift in Sources */,
 				B6407223262CEBC600C43183 /* URL+Parser.swift in Sources */,
+				753867C529257CFE0021BC3F /* AssuranceStatusPresentation.swift in Sources */,
 				B6D6A03A2660ECBD005042BE /* SocketDelegate.swift in Sources */,
 				B6D6A0392660ECBD005042BE /* SocketState.swift in Sources */,
 				B6D6A022265F914D005042BE /* PluginScreenshot.swift in Sources */,
 				B640722B262CF06100C43183 /* AssuranceEnvironment.swift in Sources */,
+				B6EC8D1F27B4918A0058FAC7 /* QuickConnectView.swift in Sources */,
 				B6FEB8B2263A18F500F0F240 /* ActiveIcon.swift in Sources */,
+				7527DCA22926F15300FE0D8C /* AssuranceConnectionDelegate.swift in Sources */,
 				B6B0E2C9263C674F00EF5E21 /* SessionAuthorizingUI.swift in Sources */,
 				B6FEB8B1263A18F500F0F240 /* InactiveIcon.swift in Sources */,
+				B6EB1C132805F3FE0036337E /* AssurancePresentationDelegate.swift in Sources */,
+				B61B7E662822D08F00E1A6B2 /* AssuranceSessionDetails.swift in Sources */,
 				B60BAC0C26434ED90054CD21 /* AssuranceConnectionError.swift in Sources */,
 				B6B0E2CD263C709100EF5E21 /* iOSPinCodeScreen.swift in Sources */,
 				B6407206262C90FA00C43183 /* Assurance+PublicAPI.swift in Sources */,
+				B6EB1C152805F4FE0036337E /* AssuranceSessionOrchestrator.swift in Sources */,
 				B63ADAB5267262F600A1281A /* iOSStatusUI+FullScreenDelegate.swift in Sources */,
 				B6B0E2D7263C7FAB00EF5E21 /* AssuranceSession.swift in Sources */,
 				B63ADABE26732C8100A1281A /* AssuranceSession+EventHandler.swift in Sources */,
+				B601172227BAE3EF006D3968 /* Connection.swift in Sources */,
 				B64FDF6E264F33EF00D33192 /* AssurancePlugin.swift in Sources */,
 				B6D6A0382660ECBD005042BE /* SocketConnectable.swift in Sources */,
 				B63ADAB12672629700A1281A /* iOSStatusUI.swift in Sources */,
 				B6D6A0412660ED56005042BE /* NativeSocket.swift in Sources */,
 				B6D6A01B265F027C005042BE /* AssuranceBlob.swift in Sources */,
 				B63ADAB3267262DF00A1281A /* iOSStatusUI+FloatingButtonDelegate.swift in Sources */,
-				B6AB2DE6263372AF00FE8AEA /* Assurance+State.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1199,6 +1291,7 @@
 			files = (
 				B6D6A029265FA0EE005042BE /* MockAssuranceUIUtil.swift in Sources */,
 				B63ADABA26726CD700A1281A /* iOSStatusUITests.swift in Sources */,
+				7881FA5928D50C8D0051F902 /* QuickConnectServiceTests.swift in Sources */,
 				B6B23B3B264269A800EE8153 /* iOSPinCodeScreenTests.swift in Sources */,
 				B6D2A91F2632B7640062AC5E /* MockExtension.swift in Sources */,
 				B6A80BFE266ACBB60089C564 /* AssuranceShutDownTimerTests.swift in Sources */,
@@ -1206,29 +1299,38 @@
 				B64071A8262C313E00C43183 /* AssurancePublicAPITests.swift in Sources */,
 				B66D3C5B263752EE0076108B /* URL+ParserTests.swift in Sources */,
 				B6CECC682655A94F000D517F /* ThreadSafeQueueTests.swift in Sources */,
+				B67F6F2927D0A29C0003B955 /* AssuranceStateManagerTests.swift in Sources */,
 				B6AFD58E2634041E00C63608 /* AssuranceEventTests.swift in Sources */,
 				B6D6A01D265F05F8005042BE /* MockNetworkService.swift in Sources */,
-				B64212B326849021007343B6 /* MockPinPad.swift in Sources */,
+				B6C4C8392829AFD000BF4CC6 /* AssuranceSessionOrchestratorTests.swift in Sources */,
+				B64212B326849021007343B6 /* MockSessionAuthorizingUI.swift in Sources */,
 				B6DBD8202678FB19009EB47E /* MockStatusUI.swift in Sources */,
-				B6AB2DF326337BE700FE8AEA /* AssuranceStateTests.swift in Sources */,
+				750EE32C2937C6D50013C411 /* AssuranceStatusPresentationTests.swift in Sources */,
 				B6D2A91026322D6D0062AC5E /* AssuranceEnvironmentTests.swift in Sources */,
+				B6A0197227CEA8D30097ED5C /* MockStateManager.swift in Sources */,
 				B63ADABC26731A0400A1281A /* MockSocket.swift in Sources */,
+				B61A2F59282483EC006B56D5 /* AssuranceSessionDetailsTests.swift in Sources */,
 				B670E63D2638BF2A000FCB96 /* TestableExtensionRuntime.swift in Sources */,
-				B6CECC5B26545829000D517F /* MockAssuranceSession.swift in Sources */,
+				B6EB1C1B280611410036337E /* MockSessionOrchestrator.swift in Sources */,
+				B6CECC5B26545829000D517F /* MockSession.swift in Sources */,
 				B6CECC4E26531F5D000D517F /* PluginConfigModifyTests.swift in Sources */,
 				B6F6F1B627A943C60040DCD4 /* AssuranceEventChunkerTests.swift in Sources */,
+				750EE32A2936A4490013C411 /* MockStatusPresentation.swift in Sources */,
+				750EE32E2937C7E40013C411 /* QuickConnectViewTests.swift in Sources */,
 				B6D6A020265F086A005042BE /* AssuranceBlobTests.swift in Sources */,
 				B63ADA8E266F718900A1281A /* ErrorViewTests.swift in Sources */,
+				750EE3302937D6B10013C411 /* MockQuickConnectManager.swift in Sources */,
 				B63EB79D2668D524005BE2C5 /* AssuranceClientLogMessageTests.swift in Sources */,
 				B6D6A02A265FAAA6005042BE /* MockUIService.swift in Sources */,
-				B6CECC5E26545834000D517F /* MockAssurance.swift in Sources */,
 				B64212B52684A655007343B6 /* AssuranceConnectionErrorTests.swift in Sources */,
 				B6AB2DEE26337BB700FE8AEA /* MockDataStore.swift in Sources */,
 				B6CECC6026545857000D517F /* PluginHubTests.swift in Sources */,
 				B6D6A017265D8863005042BE /* AssuranceClientInfoTests.swift in Sources */,
 				B64FDF73264F384700D33192 /* PluginFakeEventTests.swift in Sources */,
+				B6EB1C1728060D2D0036337E /* AssuranceAuthorizingPresentationTests.swift in Sources */,
 				B6DBD81E26787F5A009EB47E /* AssuranceSessionTests.swift in Sources */,
 				B6B055A626824EF900AF5D1A /* PluginLogForwardingTests.swift in Sources */,
+				B6EB1C1928060DB10036337E /* MockPresentation.swift in Sources */,
 				B6B23AD82641EF6500EE8153 /* AssuranceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1541,6 +1643,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TestApp/TestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TestApp/Preview Content\"";
 				DEVELOPMENT_TEAM = FKGEE875K4;
@@ -1550,7 +1653,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.assurance.TestApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.assurance.testApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1563,6 +1666,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TestApp/TestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TestApp/Preview Content\"";
 				DEVELOPMENT_TEAM = FKGEE875K4;
@@ -1572,7 +1676,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.assurance.TestApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.assurance.testApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
