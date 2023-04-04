@@ -244,11 +244,13 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         sessionOrchestrator.authorizingPresentation = mockAuthorizingPresentation
         let sampleSessionID = "sampleSessionID"
         let sampleSessionDetails = AssuranceSessionDetails(sessionId: sampleSessionID, clientId: "sampleClientID")
-        let session = AssuranceSession(sessionDetails: sampleSessionDetails, stateManager: mockStateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: nil)
+        queueTwoOutboundEvents()
+        let session = AssuranceSession(sessionDetails: sampleSessionDetails, stateManager: mockStateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: sessionOrchestrator.outboundEventBuffer)
         sessionOrchestrator.session = session
         sessionOrchestrator.createQuickConnectSession(with: sampleSessionDetails)
         
         XCTAssertTrue(mockStateManager.clearAssuranceStateCalled)
+        XCTAssertNotNil(session.outboundQueue)
         XCTAssertNotNil(sessionOrchestrator.session)
     }
     
