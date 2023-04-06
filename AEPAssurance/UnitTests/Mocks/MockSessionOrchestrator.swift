@@ -34,7 +34,7 @@ class MockSessionOrchestrator : AssuranceSessionOrchestrator {
     }
 
     var terminateSessionCalled = false
-    override func terminateSession() {
+    override func terminateSession(purgeBuffer: Bool) {
         terminateSessionCalled = true
     }
 

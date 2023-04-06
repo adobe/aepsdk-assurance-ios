@@ -74,7 +74,7 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         queueTwoOutboundEvents()
          
         // test
-        sessionOrchestrator.terminateSession()
+        sessionOrchestrator.terminateSession(purgeBuffer: true)
         
         // verify
         XCTAssertTrue(sessionOrchestrator.hasEverTerminated)
@@ -238,20 +238,20 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         XCTAssertNil(sessionOrchestrator.outboundEventBuffer)
     }
     
+    // This is testing the retry scenario when a session has been created, but the socket connection failed
     func test_createQuickConnectSession_withExistingSession() {
         let mockAuthorizingPresentation = MockAuthorizingPresentation(authorizingView: MockSessionAuthorizingUI(withPresentationDelegate: sessionOrchestrator))
         sessionOrchestrator.authorizingPresentation = mockAuthorizingPresentation
         let sampleSessionID = "sampleSessionID"
         let sampleSessionDetails = AssuranceSessionDetails(sessionId: sampleSessionID, clientId: "sampleClientID")
-        let session = AssuranceSession(sessionDetails: sampleSessionDetails, stateManager: mockStateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: nil)
+        queueTwoOutboundEvents()
+        let session = AssuranceSession(sessionDetails: sampleSessionDetails, stateManager: mockStateManager, sessionOrchestrator: sessionOrchestrator, outboundEvents: sessionOrchestrator.outboundEventBuffer)
         sessionOrchestrator.session = session
         sessionOrchestrator.createQuickConnectSession(with: sampleSessionDetails)
         
-        XCTAssertFalse(mockAuthorizingPresentation.sessionConnectingCalled)
-        
-        XCTAssertFalse(mockStateManager.shareAssuranceStateCalled)
+        XCTAssertTrue(mockStateManager.clearAssuranceStateCalled)
+        XCTAssertNotNil(session.outboundQueue)
         XCTAssertNotNil(sessionOrchestrator.session)
-        XCTAssertNotNil(sessionOrchestrator.outboundEventBuffer)
     }
     
     func test_quickConnectError() {
