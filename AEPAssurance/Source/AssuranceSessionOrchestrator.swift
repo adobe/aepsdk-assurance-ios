@@ -92,9 +92,13 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     ///
     /// Dissolve the active session (if one exists) and its associated states.
     ///
-    func terminateSession() {
+    func terminateSession(purgeBuffer: Bool) {
         hasEverTerminated = true
-        outboundEventBuffer = nil
+        
+        if purgeBuffer && outboundEventBuffer != nil {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Clearing outbound event buffer")
+            outboundEventBuffer = nil
+        }
 
         stateManager.clearAssuranceState()
 
@@ -138,21 +142,21 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     func pinScreenConnectClicked(_ pin: String) {
         guard let session = session else {
             Log.error(label: AssuranceConstants.LOG_TAG, "PIN confirmation without active session.")
-            terminateSession()
+            terminateSession(purgeBuffer: true)
             return
         }
 
         /// display the error if the pin is empty
         if pin.isEmpty {
             authorizingPresentation?.sessionConnectionError(error: .noPincode)
-            terminateSession()
+            terminateSession(purgeBuffer: true)
             return
         }
 
         /// display error if the OrgID is missing.
         guard let orgID = stateManager.getURLEncodedOrgID() else {
             authorizingPresentation?.sessionConnectionError(error: .noOrgId)
-            terminateSession()
+            terminateSession(purgeBuffer: true)
             return
         }
         
@@ -164,12 +168,12 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     
     func pinScreenCancelClicked() {
         Log.trace(label: AssuranceConstants.LOG_TAG, "Cancel clicked. Terminating session and dismissing the PinCode Screen.")
-        terminateSession()
+        terminateSession(purgeBuffer: true)
     }
 
     func disconnectClicked() {
         Log.trace(label: AssuranceConstants.LOG_TAG, "Disconnect clicked. Terminating session.")
-        terminateSession()
+        terminateSession(purgeBuffer: true)
     }
 
     var isConnected: Bool {
@@ -186,12 +190,20 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     
     func quickConnectCancelled() {
         quickConnectManager?.cancelRetryGetDeviceStatus()
+        terminateSession(purgeBuffer: true)
     }
     
     func createQuickConnectSession(with sessionDetails: AssuranceSessionDetails) {
         if session != nil {
             Log.warning(label: AssuranceConstants.LOG_TAG, "Quick connect attempted when active session exists")
-            return
+            if authorizingPresentation?.sessionView is iOSPinCodeScreen {
+                Log.warning(label: AssuranceConstants.LOG_TAG, "Cannot create a new Quick Connect session, an active PIN based session exists.")
+                return
+            } else {
+                // This is the QuickConnect retry scenario. Disconnect the existing session without clearing the event buffer
+                Log.debug(label: AssuranceConstants.LOG_TAG, "Disconnecting active QuickConnect session and retrying")
+                terminateSession(purgeBuffer: false)
+            }
         }
         
         authorizingPresentation?.sessionConnecting()
