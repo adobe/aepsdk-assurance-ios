@@ -103,6 +103,10 @@ class MockFullScreenMessage: FullscreenMessage {
 }
 
 class MockMessageMonitor: MessageMonitoring {
+    func show(message: AEPServices.Showable, delegateControl: Bool) -> Bool {
+        return true
+    }
+    
     func isMessageDisplayed() -> Bool {
         return false
     }

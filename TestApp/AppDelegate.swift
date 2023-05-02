@@ -48,10 +48,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                           Places.self,
                           Messaging.self
         ]
+        let appState = application.applicationState
         MobileCore.registerExtensions(extensions, {
             MobileCore.configureWith(appId: "94f571f308d5/f986c2be4925/launch-e96cdeaddea9-development")
+            if appState != .background {
+                MobileCore.lifecycleStart(additionalContextData: nil)
+            }
         })
-        MobileCore.lifecycleStart(additionalContextData: nil)
 
         //MobileCore.updateConfigurationWith(configDict: ["experienceCloud.org": "056F3DD059CB22060A494021@AdobeOrg"])
 //            MobileCore.configureWith(appId: "launch-EN516bfbc0fe2b42449bf171a4f8cb9cef-development")
