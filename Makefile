@@ -58,7 +58,7 @@ lint:
 	(./Pods/SwiftLint/swiftlint lint Sources TestApp/)
 
 # Builds the test apps
-build-test-apps:
+build-test-apps: pod-install
 	xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme $(APP_NAME) -derivedDataPath ./build -sdk iphonesimulator build
 	xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme $(APP_NAME_OBJC) -derivedDataPath ./build -sdk iphonesimulator build
 
