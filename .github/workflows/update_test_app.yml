@@ -22,5 +22,5 @@ jobs:
             title: Update Test App
             body: updates the test app with new release ${{ github.event.release.tag_name }}
             branch: update-test-app
-            base: updateE2E
+            base: main
 
