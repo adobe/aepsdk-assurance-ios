@@ -57,14 +57,15 @@ lint-autocorrect:
 lint:
 	(./Pods/SwiftLint/swiftlint lint Sources TestApp/)
 
+# Builds the test apps
 build-test-apps:
 	xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme $(APP_NAME) -derivedDataPath ./build -sdk iphonesimulator build
 	xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme $(APP_NAME_OBJC) -derivedDataPath ./build -sdk iphonesimulator build
 
-
-prepare-e2e-test-app: build-test-apps
+# Zips the test app and moves the zip to the readyToUsBinaries directory for e2e tests to download from.
+update-test-app: build-test-apps
 	(cd build/Build/Products/Debug-iphonesimulator/ && zip -r AEPAssuranceTestApp.zip TestApp.app/)
-	(cp build/Build/Products/Debug-iphonesimulator/AEPAssuranceTestApp.zip readyToUseBinaries/)
+	(cp build/Build/Products/Debug-iphonesimulator/AEPAssuranceTestApp.zip testAppBinaries/)
 
 swift-build:
 	swift build -Xswiftc "-sdk" -Xswiftc "`xcrun --sdk iphonesimulator --show-sdk-path`" -Xswiftc "-target" -Xswiftc "x86_64-apple-ios10.0-simulator"
