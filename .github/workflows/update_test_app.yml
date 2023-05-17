@@ -18,7 +18,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
-            commit-message: update test app
+            commit-message: Update test app with new release ${{ github.event.release.tag_name }}
             title: Update Test App
             body: updates the test app with new release ${{ github.event.release.tag_name }}
             branch: update-test-app
