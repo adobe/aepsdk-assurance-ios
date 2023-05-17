@@ -5,26 +5,26 @@ on:
     types: [published]
 jobs:
   updateTestApp:
-  runs-on: macos-latest
-  steps:
-   - uses: actions/checkout@v3
-     with:
-       fetch-depth: 0
-   - name: Build Test App
-     run: |
-        set -eo pipefail
-        echo Building Test App
-        make build-test-apps
-    - name: Update Test App
-      run: |
-        set -eo pipefail
-        echo Updating Test App Zip
-        make update-test-app
-    - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
         with:
-          commit-message: update test app
-          title: Update Test App
-          body: updates the test app with new release ${{ github.event.release.tag_name }}
-          branch: update-test-app
+          fetch-depth: 0
+      - name: Build Test App
+        run: |
+            set -eo pipefail
+            echo Building Test App
+            make build-test-apps
+        - name: Update Test App
+          run: |
+            set -eo pipefail
+            echo Updating Test App Zip
+            make update-test-app
+        - name: Create Pull Request
+            uses: peter-evans/create-pull-request@v5
+            with:
+              commit-message: update test app
+              title: Update Test App
+              body: updates the test app with new release ${{ github.event.release.tag_name }}
+              branch: update-test-app
 
