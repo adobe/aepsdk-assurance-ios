@@ -15,11 +15,6 @@ jobs:
             set -eo pipefail
             echo Building Test App
             make build-test-apps
-      - name: Update Test App
-        run: |
-            set -eo pipefail
-            echo Updating Test App Zip
-            make update-test-app
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
@@ -27,4 +22,5 @@ jobs:
             title: Update Test App
             body: updates the test app with new release ${{ github.event.release.tag_name }}
             branch: update-test-app
+            base: updateE2E
 

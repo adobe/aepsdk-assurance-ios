@@ -61,9 +61,6 @@ lint:
 build-test-apps: pod-install
 	xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme $(APP_NAME) -derivedDataPath ./build -sdk iphonesimulator build
 	xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme $(APP_NAME_OBJC) -derivedDataPath ./build -sdk iphonesimulator build
-
-# Zips the test app and moves the zip to the readyToUsBinaries directory for e2e tests to download from.
-update-test-app: build-test-apps
 	(cd build/Build/Products/Debug-iphonesimulator/ && zip -r AEPAssuranceTestApp.zip TestApp.app/)
 	(cp build/Build/Products/Debug-iphonesimulator/AEPAssuranceTestApp.zip TestAppBinaries/)
 
