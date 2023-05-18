@@ -8,18 +8,18 @@ project 'AEPAssurance.xcodeproj'
 pod 'SwiftLint', '0.44.0'
 
 target 'AEPAssurance' do
-  pod 'AEPCore', :path => '~/code/MobileSDK/Forks/aepsdk-core-ios'
-  pod 'AEPServices', :path => '~/code/MobileSDK/Forks/aepsdk-core-ios'
+  pod 'AEPCore'
+  pod 'AEPServices'
 end
 
 target 'UnitTests' do
-  pod 'AEPCore', :path => '~/code/MobileSDK/Forks/aepsdk-core-ios'
-  pod 'AEPServices', :path => '~/code/MobileSDK/Forks/aepsdk-core-ios'
+  pod 'AEPCore'
+  pod 'AEPServices'
 end
 
 target 'TestApp' do
-  pod 'AEPCore', :path => '~/code/MobileSDK/Forks/aepsdk-core-ios'
-  pod 'AEPServices', :path => '~/code/MobileSDK/Forks/aepsdk-core-ios'
+  pod 'AEPCore'
+  pod 'AEPServices'
   pod 'AEPLifecycle'
   pod 'AEPIdentity'
   pod 'AEPSignal'
@@ -34,8 +34,8 @@ target 'TestApp' do
 end
 
 target 'TestAppObjC' do
-  pod 'AEPCore', :path => '~/code/MobileSDK/Forks/aepsdk-core-ios'
-  pod 'AEPServices', :path => '~/code/MobileSDK/Forks/aepsdk-core-ios'
+  pod 'AEPCore'
+  pod 'AEPServices'
   pod 'AEPLifecycle'
   pod 'AEPIdentity'
   pod 'AEPSignal'
