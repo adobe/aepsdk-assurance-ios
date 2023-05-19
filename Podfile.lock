@@ -2,9 +2,9 @@ PODS:
   - AEPAnalytics (3.2.0):
     - AEPCore (>= 3.7.0)
     - AEPServices (>= 3.7.0)
-  - AEPCore (3.7.1):
-    - AEPRulesEngine (>= 1.1.0)
-    - AEPServices (>= 3.7.1)
+  - AEPCore (3.8.2):
+    - AEPRulesEngine (>= 1.2.2)
+    - AEPServices (>= 3.8.2)
   - AEPEdge (1.4.1):
     - AEPCore (>= 3.5.0)
     - AEPEdgeIdentity
@@ -25,8 +25,8 @@ PODS:
   - AEPPlaces (3.0.1):
     - AEPCore
     - AEPServices
-  - AEPRulesEngine (1.2.0)
-  - AEPServices (3.7.1)
+  - AEPRulesEngine (1.2.2)
+  - AEPServices (3.8.2)
   - AEPSignal (3.7.1):
     - AEPCore (>= 3.7.1)
   - AEPTarget (3.2.0):
@@ -37,7 +37,7 @@ PODS:
 
 DEPENDENCIES:
   - AEPAnalytics
-  - AEPCore
+  - AEPCore (from `~/code/MobileSDK/Forks/aepsdk-core-ios`)
   - AEPEdge
   - AEPEdgeConsent
   - AEPEdgeIdentity
@@ -45,7 +45,7 @@ DEPENDENCIES:
   - AEPLifecycle
   - AEPMessaging
   - AEPPlaces
-  - AEPServices
+  - AEPServices (from `~/code/MobileSDK/Forks/aepsdk-core-ios`)
   - AEPSignal
   - AEPTarget
   - AEPUserProfile
@@ -54,7 +54,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AEPAnalytics
-    - AEPCore
     - AEPEdge
     - AEPEdgeConsent
     - AEPEdgeIdentity
@@ -63,15 +62,20 @@ SPEC REPOS:
     - AEPMessaging
     - AEPPlaces
     - AEPRulesEngine
-    - AEPServices
     - AEPSignal
     - AEPTarget
     - AEPUserProfile
     - SwiftLint
 
+EXTERNAL SOURCES:
+  AEPCore:
+    :path: "~/code/MobileSDK/Forks/aepsdk-core-ios"
+  AEPServices:
+    :path: "~/code/MobileSDK/Forks/aepsdk-core-ios"
+
 SPEC CHECKSUMS:
   AEPAnalytics: b83efee29b4323537cbce4b8f146d26cee6cdc80
-  AEPCore: 412fe933382892ab6c6af958d2f69ebcbca11216
+  AEPCore: 52249635f856d5ee4b1042059cd5d55656f368d1
   AEPEdge: 6faf60328f9e5ae7a107fd61f9a968f46ebf2928
   AEPEdgeConsent: a23b35ab331d2aa2013fcef49c9d6b80085d5597
   AEPEdgeIdentity: 47f0c6ecbec5857b2a8cb9b7bf717c2424c6bae0
@@ -79,13 +83,13 @@ SPEC CHECKSUMS:
   AEPLifecycle: 94c36a54f7e5466c5274bc822c53eaa410b74888
   AEPMessaging: 661cc08435254f3c9cc0899785c20a7952952e95
   AEPPlaces: 04294020832c78249732c80aec86928114698cbf
-  AEPRulesEngine: 71228dfdac24c9ded09be13e3257a7eb22468ccc
-  AEPServices: 7284c30359c789cd16bf366b4ea81094a66d21ab
+  AEPRulesEngine: 354b4374edefaf5bdfa3336ab9a41a07cbae4afe
+  AEPServices: 46df834256a392e67f5a24c894eff770bb05d678
   AEPSignal: c9b3c239120190fae8e8479d584d54b60af37d99
   AEPTarget: 7aa8a2c8e4a2fd36862911581b420380709e5578
   AEPUserProfile: 2ddb5ba8e2c22dd8f942992306b050f4be2c2403
   SwiftLint: e96c0a8c770c7ebbc4d36c55baf9096bb65c4584
 
-PODFILE CHECKSUM: 333a00844252cadd85cdd4330a47b3287a3556db
+PODFILE CHECKSUM: e84cdbffa50a025b69d7df46d219b6e12f25d443
 
 COCOAPODS: 1.12.0

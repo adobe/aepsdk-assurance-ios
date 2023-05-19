@@ -85,7 +85,7 @@ struct AssuranceCard: View {
                         Assurance.startSession()
                     }
                 }, label: {
-                    Text("Connect")
+                    Text("Start Session")
                 }).buttonStyle(YellowButtonStyle()).padding().onReceive(NotificationCenter.default.publisher(for: .deviceDidShakeNotification)) { _ in
                     #if DEBUG
                     Assurance.startSession()
