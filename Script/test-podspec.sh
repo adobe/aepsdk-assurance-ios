@@ -30,7 +30,7 @@ target '$PROJECT_NAME' do
   use_frameworks!
   pod 'AEPCore', '~> 3.0'
   pod 'AEPServices', '~> 3.0'
-  pod 'AEPRulesEngine', '~> 1.0.0'
+  pod 'AEPRulesEngine', '~> 1.0'
   pod 'AEPAssurance', :path => '../AEPAssurance.podspec'
 end
 " >>Podfile
