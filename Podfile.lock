@@ -2,34 +2,34 @@ PODS:
   - AEPAnalytics (3.2.0):
     - AEPCore (>= 3.7.0)
     - AEPServices (>= 3.7.0)
-  - AEPCore (3.8.2):
-    - AEPRulesEngine (>= 1.2.2)
-    - AEPServices (>= 3.8.2)
-  - AEPEdge (1.4.1):
-    - AEPCore (>= 3.5.0)
-    - AEPEdgeIdentity
-  - AEPEdgeConsent (1.0.1):
-    - AEPCore (>= 3.5.0)
-    - AEPEdge (>= 1.4.0)
-  - AEPEdgeIdentity (1.1.0):
-    - AEPCore (>= 3.6.0)
-  - AEPIdentity (3.7.1):
-    - AEPCore (>= 3.7.1)
-  - AEPLifecycle (3.7.1):
-    - AEPCore (>= 3.7.1)
-  - AEPMessaging (1.0.0):
-    - AEPCore
-    - AEPEdge (>= 1.1.0)
-    - AEPEdgeIdentity (>= 1.0.0)
-    - AEPServices
-  - AEPPlaces (3.0.1):
-    - AEPCore
-    - AEPServices
-  - AEPRulesEngine (1.2.2)
-  - AEPServices (3.8.2)
-  - AEPSignal (3.7.1):
-    - AEPCore (>= 3.7.1)
-  - AEPTarget (3.2.0):
+  - AEPCore (3.9.0):
+    - AEPRulesEngine (>= 1.2.3)
+    - AEPServices (>= 3.9.0)
+  - AEPEdge (1.6.0):
+    - AEPCore (>= 3.7.0)
+    - AEPEdgeIdentity (>= 1.2.0)
+  - AEPEdgeConsent (1.1.0):
+    - AEPCore (>= 3.7.0)
+    - AEPEdge (>= 1.6.0)
+  - AEPEdgeIdentity (1.2.0):
+    - AEPCore (>= 3.7.0)
+  - AEPIdentity (3.9.0):
+    - AEPCore (>= 3.9.0)
+  - AEPLifecycle (3.9.0):
+    - AEPCore (>= 3.9.0)
+  - AEPMessaging (1.1.4):
+    - AEPCore (>= 3.8.1)
+    - AEPEdge (>= 1.5.0)
+    - AEPEdgeIdentity (>= 1.1.0)
+    - AEPServices (>= 3.8.1)
+  - AEPPlaces (3.0.3):
+    - AEPCore (>= 3.0.0)
+    - AEPServices (>= 3.0.0)
+  - AEPRulesEngine (1.2.3)
+  - AEPServices (3.9.0)
+  - AEPSignal (3.9.0):
+    - AEPCore (>= 3.9.0)
+  - AEPTarget (3.3.1):
     - AEPCore (>= 3.1.0)
   - AEPUserProfile (3.0.1):
     - AEPCore
@@ -37,7 +37,7 @@ PODS:
 
 DEPENDENCIES:
   - AEPAnalytics
-  - AEPCore (from `~/code/MobileSDK/Forks/aepsdk-core-ios`)
+  - AEPCore
   - AEPEdge
   - AEPEdgeConsent
   - AEPEdgeIdentity
@@ -45,7 +45,7 @@ DEPENDENCIES:
   - AEPLifecycle
   - AEPMessaging
   - AEPPlaces
-  - AEPServices (from `~/code/MobileSDK/Forks/aepsdk-core-ios`)
+  - AEPServices
   - AEPSignal
   - AEPTarget
   - AEPUserProfile
@@ -54,6 +54,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AEPAnalytics
+    - AEPCore
     - AEPEdge
     - AEPEdgeConsent
     - AEPEdgeIdentity
@@ -62,34 +63,29 @@ SPEC REPOS:
     - AEPMessaging
     - AEPPlaces
     - AEPRulesEngine
+    - AEPServices
     - AEPSignal
     - AEPTarget
     - AEPUserProfile
     - SwiftLint
 
-EXTERNAL SOURCES:
-  AEPCore:
-    :path: "~/code/MobileSDK/Forks/aepsdk-core-ios"
-  AEPServices:
-    :path: "~/code/MobileSDK/Forks/aepsdk-core-ios"
-
 SPEC CHECKSUMS:
   AEPAnalytics: b83efee29b4323537cbce4b8f146d26cee6cdc80
-  AEPCore: 52249635f856d5ee4b1042059cd5d55656f368d1
-  AEPEdge: 6faf60328f9e5ae7a107fd61f9a968f46ebf2928
-  AEPEdgeConsent: a23b35ab331d2aa2013fcef49c9d6b80085d5597
-  AEPEdgeIdentity: 47f0c6ecbec5857b2a8cb9b7bf717c2424c6bae0
-  AEPIdentity: 7cd5a51d8012aeaeee769e99597db016ad68b0d1
-  AEPLifecycle: 94c36a54f7e5466c5274bc822c53eaa410b74888
-  AEPMessaging: 661cc08435254f3c9cc0899785c20a7952952e95
-  AEPPlaces: 04294020832c78249732c80aec86928114698cbf
-  AEPRulesEngine: 354b4374edefaf5bdfa3336ab9a41a07cbae4afe
-  AEPServices: 46df834256a392e67f5a24c894eff770bb05d678
-  AEPSignal: c9b3c239120190fae8e8479d584d54b60af37d99
-  AEPTarget: 7aa8a2c8e4a2fd36862911581b420380709e5578
+  AEPCore: 7c1d0a9465e2d27a8d2bd68afb3185d72c1ed27b
+  AEPEdge: e4364a56d358c517f7d4cef87570ac4e7652d3a2
+  AEPEdgeConsent: d10d4232615b880d484050edf47b2e3fbfb787bb
+  AEPEdgeIdentity: 6bb2c1e62d48cdc988b4d492e8e6d563f0ced73d
+  AEPIdentity: efcd67b2a130cf47ddd927288db2896768a727d8
+  AEPLifecycle: f84b5e7ebb443309475df19f77ac6ebcdabd6a66
+  AEPMessaging: bc711037b3989843f925649874225f8f3a4d8462
+  AEPPlaces: 561e22d5ee6570fcb0b721a47aa7cda2c4f00ec0
+  AEPRulesEngine: f8d6eb0fa5a83d791f57867ed02f25fdf99894ec
+  AEPServices: 8637166edaa8db23806eda2ad5bd2fa8faa0f259
+  AEPSignal: 5e3f2d6f2e57535adbf50f1263841228b68256c8
+  AEPTarget: 90c732ef32cee5733897e395afdab7242df9762d
   AEPUserProfile: 2ddb5ba8e2c22dd8f942992306b050f4be2c2403
   SwiftLint: e96c0a8c770c7ebbc4d36c55baf9096bb65c4584
 
-PODFILE CHECKSUM: e84cdbffa50a025b69d7df46d219b6e12f25d443
+PODFILE CHECKSUM: 333a00844252cadd85cdd4330a47b3287a3556db
 
 COCOAPODS: 1.12.0
