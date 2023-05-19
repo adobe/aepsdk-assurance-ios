@@ -24,7 +24,7 @@ class AssuranceEventTests: XCTestCase {
     /*--------------------------------------------------
      Initializer
      --------------------------------------------------*/
-    func test_init() throws {
+    func test_init() {
         // test
         let event = AssuranceEvent(type: "generic", payload: SAMPLE_PAYLOAD)
 
@@ -35,7 +35,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertEqual(AssuranceConstants.Vendor.MOBILE, event.vendor, "vendor should default to Mobile")
     }
 
-    func test_init_withTimestamp() throws {
+    func test_init_withTimestamp() {
         // test
         let event = AssuranceEvent(type: "generic", payload: SAMPLE_PAYLOAD, timestamp: SAMPLE_TIMESTAMP)
 
@@ -47,7 +47,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertEqual(SAMPLE_TIMESTAMP, event.timestamp, "Inaccurate event timestamp")
     }
 
-    func test_init_withVendor() throws {
+    func test_init_withVendor() {
         // test
         let event = AssuranceEvent(type: "generic", payload: SAMPLE_PAYLOAD, vendor: AssuranceConstants.Vendor.SDK)
 
@@ -59,7 +59,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertEqual(Date().getUnixTimeInSeconds(), event.timestamp?.getUnixTimeInSeconds())
     }
 
-    func test_init_withVendorAndTimestamp() throws {
+    func test_init_withVendorAndTimestamp() {
         // test
         let event = AssuranceEvent(type: "generic", payload: SAMPLE_PAYLOAD, timestamp: SAMPLE_TIMESTAMP, vendor: AssuranceConstants.Vendor.SDK)
 
@@ -72,7 +72,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertNil(event.metadata, "Metadata should be nil")
     }
     
-    func test_init_withMetaData() throws {
+    func test_init_withMetaData() {
         let event = AssuranceEvent(type: "generic", payload: SAMPLE_PAYLOAD, timestamp: SAMPLE_TIMESTAMP, metadata: SAMPLE_METADATA)
         
         // verify
@@ -84,7 +84,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertEqual(SAMPLE_METADATA, event.metadata, "Inaccurate metadata")
     }
 
-    func test_init_withNilAndEmptyPayload() throws {
+    func test_init_withNilAndEmptyPayload() {
         // test
         let event1 = AssuranceEvent(type: "generic", payload: nil)
         let event2 = AssuranceEvent(type: "generic", payload: [:])
@@ -96,7 +96,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertEqual(event2.payload, [:], "event payload should be empty")
     }
 
-    func test_init_eventNumberIncrements() throws {
+    func test_init_eventNumberIncrements() {
         // test
         let event1 = AssuranceEvent(type: "generic", payload: nil)
         let event2 = AssuranceEvent(type: "generic", payload: nil)
@@ -113,7 +113,7 @@ class AssuranceEventTests: XCTestCase {
      InitFromJSONData
      --------------------------------------------------*/
 
-    func test_initFromJSONData() throws {
+    func test_initFromJSONData() {
         // setup
         let data = """
                     {
@@ -147,7 +147,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertEqual("20", metadataValue?.stringValue)
     }
 
-    func test_initFromJSONData_withoutPayload() throws {
+    func test_initFromJSONData_withoutPayload() {
         // setup
         let data = """
                     {
@@ -166,7 +166,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertNil(event.payload, "Assurance event's payload should be nil")
     }
 
-    func test_initWithJSONData_InvalidData() throws {
+    func test_initWithJSONData_InvalidData() {
         // setup
         let data1 = "".data(using: .utf8)!
         let data2 = "I am meaningless".data(using: .utf8)!
@@ -215,7 +215,7 @@ class AssuranceEventTests: XCTestCase {
      GetCommandEventType
      --------------------------------------------------*/
 
-    func test_getCommandEventType() throws {
+    func test_getCommandEventType() {
         // setup
         let data = """
                     {
@@ -234,7 +234,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertEqual("screenshot", event?.commandType, "Inaccurate command type")
     }
 
-    func test_getCommandEventType_whenNotACommand() throws {
+    func test_getCommandEventType_whenNotACommand() {
         // setup
         let data = """
                     {
@@ -253,7 +253,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertNil(event?.commandType, "Command type should be nil")
     }
 
-    func test_getCommandEventType_whenTypeUnavailable() throws {
+    func test_getCommandEventType_whenTypeUnavailable() {
         // setup
         let data = """
                     {
@@ -272,7 +272,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertNil(event?.commandType, "command type should be nil")
     }
 
-    func test_getCommandEventType_whenTypeNotAString() throws {
+    func test_getCommandEventType_whenTypeNotAString() {
         // setup
         let data = """
                     {
@@ -297,7 +297,7 @@ class AssuranceEventTests: XCTestCase {
      getCommandEventDetail
      --------------------------------------------------*/
 
-    func test_getCommandEventDetail() throws {
+    func test_getCommandEventDetail() {
         // setup
         let data = """
                     {
@@ -319,7 +319,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertEqual("value", event?.commandDetails!["key"] as? String, "Inaccurate command type")
     }
 
-    func test_getCommandEventDetail_whenNotACommand() throws {
+    func test_getCommandEventDetail_whenNotACommand() {
         // setup
         let data = """
                     {
@@ -341,7 +341,7 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertNil(event?.commandDetails, "command details should be nil")
     }
 
-    func test_getCommandEventDetail_whenDetailNotADictionary() throws {
+    func test_getCommandEventDetail_whenDetailNotADictionary() {
         // setup
         let data = """
                     {
@@ -363,7 +363,7 @@ class AssuranceEventTests: XCTestCase {
     /*--------------------------------------------------
      fromMobileCoreEvent
      --------------------------------------------------*/
-    func test_fromMobileCoreEvent() throws {
+    func test_fromMobileCoreEvent() {
         // setup
         let sampleEventData: Dictionary = ["oneKey": "oneValue"]
         let coreEvent = Event(name: "coreEvent", type: "coreType", source: "coreSource", data: sampleEventData)
@@ -385,5 +385,28 @@ class AssuranceEventTests: XCTestCase {
 
         // verify if the responseId is captured
         XCTAssertEqual(responseCoreEvent.responseID?.uuidString, assuranceEventForResponse.payload?[AssuranceConstants.ACPExtensionEventKey.RESPONSE_IDENTIFIER]?.stringValue)
+    }
+    
+    func test_fromMobileCoreParentEvent() {
+        let sampleEventData: Dictionary = ["oneKey": "oneValue"]
+        let coreEvent = Event(name: "coreEvent", type: "coreType", source: "coreSource", data: sampleEventData)
+        let childCoreEvent = coreEvent.createChainedEvent(name: "chainedEvent", type: "chainedEventType", source: "chainedEventSource", data: nil)
+
+        // test
+        let assuranceEvent = AssuranceEvent.from(event: coreEvent)
+        let assuranceEventForChild = AssuranceEvent.from(event: childCoreEvent)
+
+        // verify
+        XCTAssertEqual(AssuranceConstants.EventType.GENERIC, assuranceEvent.type)
+        XCTAssertEqual(AssuranceConstants.Vendor.MOBILE, assuranceEvent.vendor)
+        XCTAssertEqual("coreEvent", assuranceEvent.payload?[AssuranceConstants.ACPExtensionEventKey.NAME]?.stringValue)
+        XCTAssertEqual("coresource", assuranceEvent.payload?[AssuranceConstants.ACPExtensionEventKey.SOURCE]?.stringValue)
+        XCTAssertEqual("coretype", assuranceEvent.payload?[AssuranceConstants.ACPExtensionEventKey.TYPE]?.stringValue)
+        XCTAssertEqual(sampleEventData, assuranceEvent.payload?[AssuranceConstants.ACPExtensionEventKey.DATA]?.dictionaryValue as! [String: String])
+        XCTAssertEqual(coreEvent.id.uuidString, assuranceEvent.payload?[AssuranceConstants.ACPExtensionEventKey.UNIQUE_IDENTIFIER]?.stringValue)
+        XCTAssertEqual(coreEvent.timestamp, assuranceEvent.payload?[AssuranceConstants.ACPExtensionEventKey.TIMESTAMP]?.value as! Date)
+
+        // verify if the responseId is captured
+        XCTAssertEqual(childCoreEvent.parentID?.uuidString, assuranceEventForChild.payload?[AssuranceConstants.ACPExtensionEventKey.PARENT_IDENTIFIER]?.stringValue)
     }
 }

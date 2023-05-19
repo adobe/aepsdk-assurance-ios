@@ -57,9 +57,12 @@ lint-autocorrect:
 lint:
 	(./Pods/SwiftLint/swiftlint lint Sources TestApp/)
 
-build-test-apps:
-	xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme $(APP_NAME) -destination 'platform=iOS Simulator,name=iPhone 8'
-	xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme $(APP_NAME_OBJC) -destination 'platform=iOS Simulator,name=iPhone 8'
+# Builds the test apps
+build-test-apps: pod-install
+	xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme $(APP_NAME) -derivedDataPath ./build -sdk iphonesimulator build
+	xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme $(APP_NAME_OBJC) -derivedDataPath ./build -sdk iphonesimulator build
+	(cd build/Build/Products/Debug-iphonesimulator/ && zip -r AEPAssuranceTestApp.zip TestApp.app/)
+	(cp build/Build/Products/Debug-iphonesimulator/AEPAssuranceTestApp.zip TestAppBinaries/)
 
 swift-build:
 	swift build -Xswiftc "-sdk" -Xswiftc "`xcrun --sdk iphonesimulator --show-sdk-path`" -Xswiftc "-target" -Xswiftc "x86_64-apple-ios10.0-simulator"
