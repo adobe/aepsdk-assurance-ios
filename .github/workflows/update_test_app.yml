@@ -2,8 +2,10 @@ name: Update Test App
 
 on:
   workflow_dispatch:
-  release:
-    types: [published]
+  workflow_run:
+    workflows: ["Release"]
+    types:
+      - completed
 jobs:
   updateTestApp:
     runs-on: macos-latest
