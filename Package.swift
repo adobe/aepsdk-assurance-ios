@@ -22,7 +22,7 @@ let package = Package(
         .library(name: "AEPAssurance", targets: ["AEPAssurance"])
     ],
     dependencies: [
-        .package(url: "https://github.com/adobe/aepsdk-core-ios.git", .upToNextMajor(from: "3.1.0"))
+        .package(url: "https://github.com/adobe/aepsdk-core-ios.git", .upToNextMajor(from: "3.9.0"))
     ],
     targets: [
         .target(name: "AEPAssurance",
