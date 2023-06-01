@@ -84,10 +84,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Publish Pods - AEPAssurance
-      if: ${{ github.event.inputs.release_AEPAssurance == 'yes' }}
-      run: |
-        set -eo pipefail
-        pod trunk push AEPAssurance.podspec --allow-warnings --swift-version=5.1
-      env:
-        COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+#     - name: Publish Pods - AEPAssurance
+#       if: ${{ github.event.inputs.release_AEPAssurance == 'yes' }}
+#       run: |
+#         set -eo pipefail
+#         pod trunk push AEPAssurance.podspec --allow-warnings --swift-version=5.1
+#       env:
+#         COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
