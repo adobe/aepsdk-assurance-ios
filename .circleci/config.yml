@@ -3,6 +3,10 @@
 
 version: 2.1
 
+orbs:
+  codecov: codecov/codecov@3.2.4
+  macos: circleci/macos@2
+
 # Workflows orchestrate a set of jobs to be run;
 workflows:
   version: 2
@@ -14,7 +18,7 @@ jobs:
 
   build-and-test:
     macos:
-      xcode: 13.3.1 # Specify the Xcode version to use
+      xcode: 14.1.0 # Specify the Xcode version to use
 
     steps:
       - checkout
@@ -62,27 +66,16 @@ jobs:
       # pre-start the simulator to prevent timeouts
       - run:
           name: Pre-start Simulator
-          command: xcrun instruments -w "iPhone 8 (13.1) [" || true
+          command: xcrun instruments -w "iPhone 14 (16.1) [" || true
 
       - run:
           name: Run Tests
           command: make test
-
-      # code coverage
-      - run:
-          name: Upload Code Coverage Report
-          command: |
-            curl -s https://codecov.io/bash > codecov;
-            VERSION=$(grep 'VERSION=\".*\"' codecov | cut -d'"' -f2);
-            SHAVERSION=$(shasum -v);
-            echo "Using CodeCov version '$VERSION'"
-            echo "Using shasum '$SHAVERSION'"
-            for i in 1 256 512
-            do
-              shasum -a $i -c --ignore-missing <(curl -s "https://raw.githubusercontent.com/codecov/codecov-bash/${VERSION}/SHA${i}SUM") ||
-              shasum -a $i -c <(curl -s "https://raw.githubusercontent.com/codecov/codecov-bash/${VERSION}/SHA${i}SUM" | head -n 1)
-            done
-            bash ./codecov -v -X s3 -c -D "./build/out" -J "AEPAssurance"
+          
+      - codecov/upload:
+          flags: aepassurance-ios-tests
+          upload_name: Coverage Report for AEPAssurance iOS Tests
+          xtra_args: -c -v --xc --xp build/AEPAssurance-ios.xcresult
 
       # build swift package
       - run:
