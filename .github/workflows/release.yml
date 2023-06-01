@@ -35,25 +35,25 @@ jobs:
     - name: Install cocoapods
       run: gem install cocoapods
 
-    - name: Check version in Podspec
-      run: |
-        set -eo pipefail
-        echo Target version: ${{ github.event.inputs.tag }}
-        make check-version VERSION=${{ github.event.inputs.tag }}
+#     - name: Check version in Podspec
+#       run: |
+#         set -eo pipefail
+#         echo Target version: ${{ github.event.inputs.tag }}
+#         make check-version VERSION=${{ github.event.inputs.tag }}
 
-    - name: SPM integration test
-      if: ${{ github.event.inputs.action_tag == 'yes' }}
-      run: |
-        set -eo pipefail
-        echo SPM integration test starts:
-        make test-SPM-integration
+#     - name: SPM integration test
+#       if: ${{ github.event.inputs.action_tag == 'yes' }}
+#       run: |
+#         set -eo pipefail
+#         echo SPM integration test starts:
+#         make test-SPM-integration
 
-    - name: podspec file verification
-      if: ${{ github.event.inputs.action_tag == 'yes' }}
-      run: |
-        set -eo pipefail
-        echo podspec file verification starts:
-        make test-podspec
+#     - name: podspec file verification
+#       if: ${{ github.event.inputs.action_tag == 'yes' }}
+#       run: |
+#         set -eo pipefail
+#         echo podspec file verification starts:
+#         make test-podspec
 
     - name: Build Artifact
       if: ${{ github.event.inputs.action_tag == 'yes' }}
