@@ -1,5 +1,7 @@
 # Adobe Experience Platform - Assurance extension for iOS
 
+[![Latest Release](https://img.shields.io/github/v/release/adobe/aepsdk-assurance-ios?label=Cocoapods&logo=apple&logoColor=white&color=orange)](https://cocoapods.org/pods/AEPAssurance) [![SPM](https://img.shields.io/github/v/release/adobe/aepsdk-assurance-ios?label=SPM&logo=apple&logoColor=white&color=orange)](https://github.com/adobe/aepsdk-assurance-ios/releases) [![CircleCI](https://img.shields.io/circleci/project/github/adobe/aepsdk-assurance-ios/main.svg?logo=circleci&label=Build)](https://circleci.com/gh/adobe/workflows/aepsdk-assurance-ios) [![Code Coverage](https://img.shields.io/codecov/c/github/adobe/aepsdk-assurance-ios/main.svg?logo=codecov&label=Coverage)](https://codecov.io/gh/adobe/aepsdk-assurance-ios/branch/main)
+
 ## About this project
 
 Assurance/Project Griffon is a new, innovative beta product from [Adobe Experience Cloud](https://business.adobe.com/) to help you inspect, proof, simulate, and validate how you collect data or serve experiences in your mobile app. For more information on what Project Griffon can do for you, see [here](https://aep-sdks.gitbook.io/docs/beta/project-griffon#what-can-project-griffon-do-for-you).
