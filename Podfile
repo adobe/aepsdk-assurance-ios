@@ -1,11 +1,11 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '10.0'
+platform :ios, '11.0'
 
 use_frameworks!
 workspace 'AEPAssurance'
 project 'AEPAssurance.xcodeproj'
 
-pod 'SwiftLint', '0.44.0'
+pod 'SwiftLint', '0.52.0'
 
 target 'AEPAssurance' do
   pod 'AEPCore'
