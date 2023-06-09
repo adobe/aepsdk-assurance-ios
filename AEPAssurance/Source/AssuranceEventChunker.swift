@@ -102,4 +102,46 @@ struct AssuranceEventChunker {
         }
         return chunkedEvents
     }
+    
+    ///
+    /// Stitches chunked events together into one `AssuranceEvent` where the stitched events chunkData is now the new event's payload
+    ///
+    /// - Parameter chunkedEvents: An array of chunked AssuranceEvents
+    /// - Returns: An `AssuranceEvent` which has the stitched data as the payload
+    func stitch(_ chunkedEvents: [AssuranceEvent]) -> AssuranceEvent? {
+        var stitchedString = ""
+        // Stitch chunked payload data together
+        for event in chunkedEvents {
+            // Extract the payload string and unescape it. Currently escaped by the services
+            guard let payloadString = event.payload?[AssuranceConstants.AssuranceEvent.PayloadKey.CHUNK_DATA]?.stringValue?.replacingOccurrences(of: "\\", with: "") else {
+                Log.error(label: AssuranceConstants.LOG_TAG, "Error while attempting to stitch chunked event: Chunk payload was not in proper string format.")
+                return nil
+            }
+            
+            stitchedString += payloadString
+        }
+        // TODO: - Service is removing the need for this
+        stitchedString = String(stitchedString.dropFirst())
+        stitchedString = String(stitchedString.dropLast())
+        guard let stitchedStringData = stitchedString.data(using: .utf8) else {
+            Log.error(label: AssuranceConstants.LOG_TAG, "Error while attempting to create data from stitched string")
+            return nil
+        }
+        
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .millisecondsSince1970
+        var decodedPayload: [String: AnyCodable]? = nil
+        do {
+            decodedPayload = try decoder.decode([String:AnyCodable].self, from: stitchedStringData)
+        } catch {
+            Log.error(label: AssuranceConstants.LOG_TAG, "Error while attempting to decode stitched JSON data: \(error)")
+            return nil
+        }
+        let referenceEvent = chunkedEvents[0]
+        return AssuranceEvent(type: referenceEvent.type,
+                              payload: decodedPayload,
+                              timestamp: referenceEvent.timestamp ?? Date(),
+                              vendor: referenceEvent.vendor)
+        
+   }
 }
