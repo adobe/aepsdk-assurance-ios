@@ -50,7 +50,20 @@ struct AssuranceEvent: Codable {
     static func from(jsonData: Data) -> AssuranceEvent? {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .millisecondsSince1970
-        guard var event = try? decoder.decode(AssuranceEvent.self, from: jsonData) else {
+        var event = try? decoder.decode(AssuranceEvent.self, from: jsonData)
+        if event == nil {
+            // If it fails, it must be an event with an encoded payload
+            var decodedMessage: [String: AnyCodable]? = nil
+            decodedMessage = try? decoder.decode([String: AnyCodable].self, from: jsonData)
+            if let payloadData = decodedMessage?["payload"]?.stringValue?.data(using: .utf8)  {
+                let decodedPayload = try? decoder.decode(AnyCodable.self, from: payloadData)
+                decodedMessage?["payload"] = decodedPayload
+                if let encodedFullMessage = try? JSONEncoder().encode(decodedMessage), let receivedEvent = try? decoder.decode(AssuranceEvent.self, from: encodedFullMessage) {
+                    event = receivedEvent
+                }
+            }
+        }
+        guard var event = event else {
             Log.debug(label: AssuranceConstants.LOG_TAG, "Unable to decode jsonData into an AssuranceEvent.")
             return nil
         }

@@ -146,6 +146,23 @@ class AssuranceEventChunkerTests: XCTestCase {
         XCTAssertLessThan(sizeOf(chunkedEvents[3]), ALLOWED_CHUNK_EVENT_SIZE)
     }
     
+    func test_stitch_htmlData() {
+        // First, chunk a large event
+        let htmlText = readStringFromFile("htmlSampleEscaped")
+        let eventPayload = ["htmlMessage" : AnyCodable.init(htmlText)]
+        let event = AssuranceEvent(type: "type", payload: eventPayload)
+
+        let chunkedEvents = chunker.chunk(event)
+
+        // Next, stitch the chunked event
+        let stitchedEvent = chunker.stitch(chunkedEvents)
+
+        // Assert
+        XCTAssertNotNil(stitchedEvent)
+        XCTAssertEqual(event.payload?["htmlMessage"]?.stringValue, stitchedEvent?.payload?["htmlMessage"]?.stringValue)
+
+    }
+    
     
     func test_chunk_rulesjson() throws {
         // prepare
@@ -162,6 +179,17 @@ class AssuranceEventChunkerTests: XCTestCase {
         XCTAssertLessThan(sizeOf(chunkedEvents[0]), ALLOWED_CHUNK_EVENT_SIZE)
         XCTAssertLessThan(sizeOf(chunkedEvents[1]), ALLOWED_CHUNK_EVENT_SIZE)
         XCTAssertLessThan(sizeOf(chunkedEvents[2]), ALLOWED_CHUNK_EVENT_SIZE)
+    }
+    
+    func test_stitch_rulesjson() {
+        // prepare
+        let eventPayload = readJsonFromFile("rules")
+        let event = AssuranceEvent(type: "type", payload: eventPayload)
+        // test
+        let chunkedEvents = chunker.chunk(event)
+        
+        let stitchedEvent = chunker.stitch(chunkedEvents)
+        XCTAssertNotNil(stitchedEvent?.payload?["rules"])
     }
     
     

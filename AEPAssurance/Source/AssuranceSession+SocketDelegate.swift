@@ -135,7 +135,7 @@ extension AssuranceSession: SocketDelegate {
         // Handle Chunked event before queuing
         if event.isChunkedEvent {
             guard let stitchedEvent = stitchEvent(event: event) else {
-                // Exit early if stitching fails, bulk of error logging happens in AssuranceEventChunker class
+                // Exit early if stitching fails
                 return
             }
             eventToQueue = stitchedEvent
@@ -174,12 +174,11 @@ extension AssuranceSession: SocketDelegate {
                 if chunkedEvents[chunkedID]?.count == event.chunkedTotal {
                     // Sort and Stitch
                     if let sortedChunks = self.chunkedEvents[chunkedID]?.sorted(by: { $0.chunkedSequenceNumber! < $1.chunkedSequenceNumber! }) {
-                        return AssuranceEventChunker().stitch(sortedChunks)
+                        return socket.eventChunker.stitch(sortedChunks)
                     }
                 }
             }
         }
-        Log.error(label: AssuranceConstants.LOG_TAG, "Attempting to stitch an event which is marked as chunked event but has no chunkedID")
         return nil
     }
 

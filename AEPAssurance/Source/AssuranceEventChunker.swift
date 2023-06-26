@@ -13,8 +13,16 @@
 import AEPServices
 import Foundation
 
+///
+/// An EventChunker used for chunking and stitching of AssuranceEvents
+///
+protocol EventChunker {
+    func chunk(_ event: AssuranceEvent) -> [AssuranceEvent]
+    func stitch(_ chunkedEvents: [AssuranceEvent]) -> AssuranceEvent?
+}
+
 /// Class that brings the capability to chunk the AssuranceEvent if in need to satisfy the socket size limit.
-struct AssuranceEventChunker {
+struct AssuranceEventChunker: EventChunker {
 
     /// The maximum size of data that an `AssuranceEvent` payload can hold after chunking
     ///
@@ -113,16 +121,13 @@ struct AssuranceEventChunker {
         // Stitch chunked payload data together
         for event in chunkedEvents {
             // Extract the payload string and unescape it. Currently escaped by the services
-            guard let payloadString = event.payload?[AssuranceConstants.AssuranceEvent.PayloadKey.CHUNK_DATA]?.stringValue?.replacingOccurrences(of: "\\", with: "") else {
+            guard let payloadString = event.payload?[AssuranceConstants.AssuranceEvent.PayloadKey.CHUNK_DATA]?.stringValue else {
                 Log.error(label: AssuranceConstants.LOG_TAG, "Error while attempting to stitch chunked event: Chunk payload was not in proper string format.")
                 return nil
             }
             
             stitchedString += payloadString
         }
-        // TODO: - Service is removing the need for this
-        stitchedString = String(stitchedString.dropFirst())
-        stitchedString = String(stitchedString.dropLast())
         guard let stitchedStringData = stitchedString.data(using: .utf8) else {
             Log.error(label: AssuranceConstants.LOG_TAG, "Error while attempting to create data from stitched string")
             return nil

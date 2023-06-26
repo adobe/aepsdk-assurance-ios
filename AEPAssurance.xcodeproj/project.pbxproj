@@ -32,7 +32,7 @@
 		7527DCA22926F15300FE0D8C /* AssuranceConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7527DCA12926F15300FE0D8C /* AssuranceConnectionDelegate.swift */; };
 		753867C32925735D0021BC3F /* AssuranceAuthorizingPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753867C22925735D0021BC3F /* AssuranceAuthorizingPresentation.swift */; };
 		753867C529257CFE0021BC3F /* AssuranceStatusPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753867C429257CFE0021BC3F /* AssuranceStatusPresentation.swift */; };
-		756906F22A31282A004AB35B /* AssuranceEvent+ChunkedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756906F12A31282A004AB35B /* AssuranceEvent+ChunkedEvent.swift */; };
+		755A475D2A377F2A00FE00AA /* htmlSampleEscaped.txt in Resources */ = {isa = PBXBuildFile; fileRef = 755A475C2A377F2A00FE00AA /* htmlSampleEscaped.txt */; };
 		7881FA5928D50C8D0051F902 /* QuickConnectServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7881FA5828D50C8D0051F902 /* QuickConnectServiceTests.swift */; };
 		B601172227BAE3EF006D3968 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B601172127BAE3EF006D3968 /* Connection.swift */; };
 		B601172527BAE4AA006D3968 /* AdobeLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B601172427BAE4AA006D3968 /* AdobeLogo.swift */; };
@@ -228,7 +228,7 @@
 		7527DCA12926F15300FE0D8C /* AssuranceConnectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceConnectionDelegate.swift; sourceTree = "<group>"; };
 		753867C22925735D0021BC3F /* AssuranceAuthorizingPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceAuthorizingPresentation.swift; sourceTree = "<group>"; };
 		753867C429257CFE0021BC3F /* AssuranceStatusPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStatusPresentation.swift; sourceTree = "<group>"; };
-		756906F12A31282A004AB35B /* AssuranceEvent+ChunkedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssuranceEvent+ChunkedEvent.swift"; sourceTree = "<group>"; };
+		755A475C2A377F2A00FE00AA /* htmlSampleEscaped.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = htmlSampleEscaped.txt; sourceTree = "<group>"; };
 		7881FA5828D50C8D0051F902 /* QuickConnectServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectServiceTests.swift; sourceTree = "<group>"; };
 		96C170474540581D23D5C489 /* Pods_TestApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B601171F27BAE193006D3968 /* connection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connection.png; sourceTree = "<group>"; };
@@ -427,6 +427,7 @@
 				B603FA0827AB1D270033416B /* htmlSample.txt */,
 				B603FA0327A9F51B0033416B /* 40KBString.txt */,
 				B603F9FE27A9EC7D0033416B /* 20KBString.txt */,
+				755A475C2A377F2A00FE00AA /* htmlSampleEscaped.txt */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -503,7 +504,6 @@
 				B63ADABD26732C8100A1281A /* AssuranceSession+EventHandler.swift */,
 				B63ADAB62672653200A1281A /* AssuranceSession+SocketDelegate.swift */,
 				B6AFD588263403EB00C63608 /* AssuranceEvent.swift */,
-				756906F12A31282A004AB35B /* AssuranceEvent+ChunkedEvent.swift */,
 				B6F6F1B227A91E060040DCD4 /* AssuranceEventChunker.swift */,
 				B640722A262CF06100C43183 /* AssuranceEnvironment.swift */,
 				B64071D6262C376A00C43183 /* AssuranceConstants.swift */,
@@ -974,6 +974,7 @@
 				B603FA0427A9F51B0033416B /* 40KBString.txt in Resources */,
 				B6DB487F27B1D73500166FC4 /* 5KBString.txt in Resources */,
 				B603FA0927AB1D270033416B /* htmlSample.txt in Resources */,
+				755A475D2A377F2A00FE00AA /* htmlSampleEscaped.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1238,7 +1239,6 @@
 				B64071D3262C368C00C43183 /* Assurance.swift in Sources */,
 				B6D6A02F2660CFF5005042BE /* Event+Assurance.swift in Sources */,
 				753867C32925735D0021BC3F /* AssuranceAuthorizingPresentation.swift in Sources */,
-				756906F22A31282A004AB35B /* AssuranceEvent+ChunkedEvent.swift in Sources */,
 				B6B23ACE26414C8100EE8153 /* iOSPinCodeScreen+FullScreenDelegate.swift in Sources */,
 				B64071D7262C376A00C43183 /* AssuranceConstants.swift in Sources */,
 				B6D6A027265F9F32005042BE /* AssuranceUIUtil.swift in Sources */,
