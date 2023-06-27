@@ -143,10 +143,11 @@ struct AssuranceEventChunker: EventChunker {
             return nil
         }
         let referenceEvent = chunkedEvents[0]
+        // TODO: - remove the hardcoded vendor once the fix is in. Currently, vendor is set as type
         return AssuranceEvent(type: referenceEvent.type,
                               payload: decodedPayload,
                               timestamp: referenceEvent.timestamp ?? Date(),
-                              vendor: referenceEvent.vendor)
+                              vendor: "com.adobe.griffon.mobile")
         
    }
 }

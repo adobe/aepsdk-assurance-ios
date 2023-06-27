@@ -30,6 +30,11 @@
 		750EE32E2937C7E40013C411 /* QuickConnectViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EE32D2937C7E40013C411 /* QuickConnectViewTests.swift */; };
 		750EE3302937D6B10013C411 /* MockQuickConnectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EE32F2937D6B10013C411 /* MockQuickConnectManager.swift */; };
 		7527DCA22926F15300FE0D8C /* AssuranceConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7527DCA12926F15300FE0D8C /* AssuranceConnectionDelegate.swift */; };
+		75312E012A4B7185009DCDB6 /* testChunk1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 75312E002A4B7185009DCDB6 /* testChunk1.txt */; };
+		75312E032A4B71BE009DCDB6 /* testChunk2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 75312E022A4B71BE009DCDB6 /* testChunk2.txt */; };
+		75312E052A4B7241009DCDB6 /* testChunk3.txt in Resources */ = {isa = PBXBuildFile; fileRef = 75312E042A4B7241009DCDB6 /* testChunk3.txt */; };
+		75312E072A4B72C9009DCDB6 /* testChunk4.txt in Resources */ = {isa = PBXBuildFile; fileRef = 75312E062A4B72C9009DCDB6 /* testChunk4.txt */; };
+		75312E0B2A4B7A6A009DCDB6 /* messageWithEncodedPayload.txt in Resources */ = {isa = PBXBuildFile; fileRef = 75312E0A2A4B7A6A009DCDB6 /* messageWithEncodedPayload.txt */; };
 		753867C32925735D0021BC3F /* AssuranceAuthorizingPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753867C22925735D0021BC3F /* AssuranceAuthorizingPresentation.swift */; };
 		753867C529257CFE0021BC3F /* AssuranceStatusPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753867C429257CFE0021BC3F /* AssuranceStatusPresentation.swift */; };
 		755A475D2A377F2A00FE00AA /* htmlSampleEscaped.txt in Resources */ = {isa = PBXBuildFile; fileRef = 755A475C2A377F2A00FE00AA /* htmlSampleEscaped.txt */; };
@@ -226,6 +231,11 @@
 		750EE32D2937C7E40013C411 /* QuickConnectViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectViewTests.swift; sourceTree = "<group>"; };
 		750EE32F2937D6B10013C411 /* MockQuickConnectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockQuickConnectManager.swift; sourceTree = "<group>"; };
 		7527DCA12926F15300FE0D8C /* AssuranceConnectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceConnectionDelegate.swift; sourceTree = "<group>"; };
+		75312E002A4B7185009DCDB6 /* testChunk1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = testChunk1.txt; sourceTree = "<group>"; };
+		75312E022A4B71BE009DCDB6 /* testChunk2.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = testChunk2.txt; sourceTree = "<group>"; };
+		75312E042A4B7241009DCDB6 /* testChunk3.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = testChunk3.txt; sourceTree = "<group>"; };
+		75312E062A4B72C9009DCDB6 /* testChunk4.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = testChunk4.txt; sourceTree = "<group>"; };
+		75312E0A2A4B7A6A009DCDB6 /* messageWithEncodedPayload.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = messageWithEncodedPayload.txt; sourceTree = "<group>"; };
 		753867C22925735D0021BC3F /* AssuranceAuthorizingPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceAuthorizingPresentation.swift; sourceTree = "<group>"; };
 		753867C429257CFE0021BC3F /* AssuranceStatusPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStatusPresentation.swift; sourceTree = "<group>"; };
 		755A475C2A377F2A00FE00AA /* htmlSampleEscaped.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = htmlSampleEscaped.txt; sourceTree = "<group>"; };
@@ -428,6 +438,11 @@
 				B603FA0327A9F51B0033416B /* 40KBString.txt */,
 				B603F9FE27A9EC7D0033416B /* 20KBString.txt */,
 				755A475C2A377F2A00FE00AA /* htmlSampleEscaped.txt */,
+				75312E002A4B7185009DCDB6 /* testChunk1.txt */,
+				75312E022A4B71BE009DCDB6 /* testChunk2.txt */,
+				75312E042A4B7241009DCDB6 /* testChunk3.txt */,
+				75312E062A4B72C9009DCDB6 /* testChunk4.txt */,
+				75312E0A2A4B7A6A009DCDB6 /* messageWithEncodedPayload.txt */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -968,12 +983,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75312E072A4B72C9009DCDB6 /* testChunk4.txt in Resources */,
 				B603FA0D27AB285A0033416B /* emptylines.txt in Resources */,
+				75312E032A4B71BE009DCDB6 /* testChunk2.txt in Resources */,
 				B6DB488027B1D73900166FC4 /* rules.json in Resources */,
+				75312E0B2A4B7A6A009DCDB6 /* messageWithEncodedPayload.txt in Resources */,
 				B603F9FF27A9EC7D0033416B /* 20KBString.txt in Resources */,
 				B603FA0427A9F51B0033416B /* 40KBString.txt in Resources */,
+				75312E012A4B7185009DCDB6 /* testChunk1.txt in Resources */,
 				B6DB487F27B1D73500166FC4 /* 5KBString.txt in Resources */,
 				B603FA0927AB1D270033416B /* htmlSample.txt in Resources */,
+				75312E052A4B7241009DCDB6 /* testChunk3.txt in Resources */,
 				755A475D2A377F2A00FE00AA /* htmlSampleEscaped.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

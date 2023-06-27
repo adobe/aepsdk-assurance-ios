@@ -210,6 +210,17 @@ class AssuranceEventTests: XCTestCase {
         XCTAssertNotNil(event6) // events can be created without timestamp
         XCTAssertNotNil(event6?.timestamp)
     }
+    
+    func test_initWithEncodedPayloadData() {
+        // This is a real-world example of an IAM from previewOnDevice
+        let messageWithEncodedPayload = readStringFromFile("messageWithEncodedPayload")
+        guard let dataForMessage = messageWithEncodedPayload.data(using: .utf8) else {
+            XCTFail("Test Message could not be converted to data")
+            return
+        }
+        let event = AssuranceEvent.from(jsonData: dataForMessage)
+        XCTAssertNotNil(event)
+    }
 
     /*--------------------------------------------------
      GetCommandEventType
@@ -408,5 +419,11 @@ class AssuranceEventTests: XCTestCase {
 
         // verify if the responseId is captured
         XCTAssertEqual(childCoreEvent.parentID?.uuidString, assuranceEventForChild.payload?[AssuranceConstants.ACPExtensionEventKey.PARENT_IDENTIFIER]?.stringValue)
+    }
+    
+    private func readStringFromFile(_ fileName: String) -> String {
+        let bundle = Bundle(for: type(of: self))
+        let path = bundle.path(forResource: fileName, ofType: "txt")!
+        return (try? String(contentsOfFile: path, encoding: .utf8)) ?? ""
     }
 }
