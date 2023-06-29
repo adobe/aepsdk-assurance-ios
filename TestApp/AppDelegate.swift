@@ -34,11 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         requestNotificationPermission()
         MobileCore.track(state: "Before SDK Init", data: nil)
         MobileCore.setLogLevel(.trace)
-        // tag: chris-test-messaging
-        //let launchID = "1b50a869c4a2/fd46d1343a6c/launch-c3e6bb24121c-development"
-        let launchID = "3149c49c3910/504b1f3bb44e/launch-8823a1bd2800-development"
-        // unknown tag, was being used before
-        //let launchID = "94f571f308d5/f986c2be4925/launch-e96cdeaddea9-development"
+        
+        let launchID = ""
         let extensions = [AEPIdentity.Identity.self,
                           Lifecycle.self,
                           Signal.self,
