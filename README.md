@@ -50,7 +50,7 @@ To add the AEPAssurance Package to your application, from the Xcode menu select:
 
 Enter the URL for the AEPAssurance package repository: `https://github.com/adobe/aepsdk-assurance-ios.git`.
 
-When prompted, make sure you change the branch to `main`. (Once the repo is public, we will reference specific tags/versions instead of a branch)
+When prompted, input a specific version or a range of versions for Version rule.
 
 Alternatively, if your project has a `Package.swift` file, you can add AEPAssurance directly to your dependencies:
 
