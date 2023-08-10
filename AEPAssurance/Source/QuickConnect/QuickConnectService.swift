@@ -22,7 +22,15 @@ class QuickConnectService {
     private let LOG_TAG = "QuickConnectService"
     var shouldRetryGetDeviceStatus = true
     typealias HTTP_RESPONSE_CODES = HttpConnectionConstants.ResponseCodes
-
+    
+    let dataStore = NamedCollectionDataStore(name: AssuranceConstants.EXTENSION_NAME)
+    
+    enum QuickConnectAPI: String {
+        case create = "create"
+        case status = "status"
+        case delete = "delete"
+    }
+    
     private let HEADERS = [HttpConnectionConstants.Header.HTTP_HEADER_KEY_ACCEPT: HttpConnectionConstants.Header.HTTP_HEADER_CONTENT_TYPE_JSON_APPLICATION,
                             HttpConnectionConstants.Header.HTTP_HEADER_KEY_CONTENT_TYPE: HttpConnectionConstants.Header.HTTP_HEADER_CONTENT_TYPE_JSON_APPLICATION]
 
@@ -37,7 +45,9 @@ class QuickConnectService {
                         completion: @escaping (AssuranceConnectionError?) -> Void) {
         
         /// Bail out with failure, if we are unable to form a valid create device API request URL
-        let urlString = AssuranceConstants.QUICK_CONNECT_BASE_URL + "/create"
+        let urlString = String(format: AssuranceConstants.QUICK_CONNECT_BASE_URL,
+                               AssuranceEnvironment(envString: dataStore.getString(key: AssuranceConstants.DataStoreKeys.ENVIRONMENT) ?? AssuranceEnvironment.prod.rawValue).urlFormat,
+                               QuickConnectAPI.create.rawValue)
         guard let requestURL = URL(string: urlString) else {
             let error = AssuranceConnectionError.invalidURL(url: urlString)
             Log.error(label: LOG_TAG, error.info.description)
@@ -97,7 +107,9 @@ class QuickConnectService {
                          completion: @escaping (Result<(sessionID: String, token: Int), AssuranceConnectionError>) -> Void) {
 
         /// Bail out with failure, if we are unable to form a valid create device API request URL
-        let urlString = AssuranceConstants.QUICK_CONNECT_BASE_URL + "/status"
+        let urlString = String(format: AssuranceConstants.QUICK_CONNECT_BASE_URL,
+                               AssuranceEnvironment(envString: dataStore.getString(key: AssuranceConstants.DataStoreKeys.ENVIRONMENT) ?? AssuranceEnvironment.prod.rawValue).urlFormat,
+                               QuickConnectAPI.status.rawValue)
         guard let requestURL = URL(string: urlString) else {
             let error = AssuranceConnectionError.invalidURL(url: urlString)
             Log.error(label: self.LOG_TAG, error.info.description)
@@ -166,7 +178,9 @@ class QuickConnectService {
                       completion: @escaping (AssuranceConnectionError?) -> Void) {
 
         /// Bail out with failure, if we are unable to form a valid create device API request URL
-        let urlString = AssuranceConstants.QUICK_CONNECT_BASE_URL + "/delete"
+        let urlString = String(format: AssuranceConstants.QUICK_CONNECT_BASE_URL,
+                               AssuranceEnvironment(envString: dataStore.getString(key: AssuranceConstants.DataStoreKeys.ENVIRONMENT) ?? AssuranceEnvironment.prod.rawValue).urlFormat,
+                               QuickConnectAPI.delete.rawValue)
         guard let requestURL = URL(string: urlString) else {
             let error = AssuranceConnectionError.invalidURL(url: urlString)
             Log.error(label: self.LOG_TAG, error.info.description)

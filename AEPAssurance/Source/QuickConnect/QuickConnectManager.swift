@@ -23,6 +23,7 @@ class QuickConnectManager {
     private let stateManager: AssuranceStateManager
     private let uiDelegate: AssurancePresentationDelegate
     private let quickConnectService = QuickConnectService()
+    private let dataStore = NamedCollectionDataStore(name: AssuranceConstants.EXTENSION_NAME)
     private let LOG_TAG = "QuickConnectManager"
 
     init(stateManager: AssuranceStateManager, uiDelegate: AssurancePresentationDelegate) {
@@ -57,7 +58,7 @@ class QuickConnectManager {
             switch result {
             case .success((let sessionId, let token)):
                 self.deleteDevice()
-                let sessionDetails = AssuranceSessionDetails(sessionId: sessionId, clientId: self.stateManager.clientID, environment: AssuranceEnvironment.prod, token: String(token), orgID: orgID)
+                let sessionDetails = AssuranceSessionDetails(sessionId: sessionId, clientId: self.stateManager.clientID, environment: AssuranceEnvironment(envString: self.dataStore.getString(key: AssuranceConstants.DataStoreKeys.ENVIRONMENT) ?? ""), token: String(token), orgID: orgID)
                 self.uiDelegate.createQuickConnectSession(with: sessionDetails)
                 break
             case .failure(let error):

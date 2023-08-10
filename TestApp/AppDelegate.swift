@@ -23,6 +23,7 @@ import AEPSignal
 import AEPTarget
 import AEPUserProfile
 import AEPMessaging
+import AEPServices
 import UIKit
 
 @main
@@ -34,6 +35,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         requestNotificationPermission()
         MobileCore.track(state: "Before SDK Init", data: nil)
         MobileCore.setLogLevel(.trace)
+        // Set QuickConnect Environment
+        ServiceProvider.shared.namedKeyValueService.set(collectionName: "com.adobe.assurance", key: "assurance.environment", value: "qa")
+//        ServiceProvider.shared.namedKeyValueService.set(collectionName: "com.adobe.assurance", key: "assurance.environment", value: "stage")
+//        ServiceProvider.shared.namedKeyValueService.set(collectionName: "com.adobe.assurance", key: "assurance.environment", value: "")
         let extensions = [AEPIdentity.Identity.self,
                           Lifecycle.self,
                           Signal.self,
@@ -50,15 +55,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         ]
         let appState = application.applicationState
         MobileCore.registerExtensions(extensions, {
-            MobileCore.configureWith(appId: "94f571f308d5/f986c2be4925/launch-e96cdeaddea9-development")
+            MobileCore.configureWith(appId: "")
             if appState != .background {
                 MobileCore.lifecycleStart(additionalContextData: nil)
             }
         })
 
-        //MobileCore.updateConfigurationWith(configDict: ["experienceCloud.org": "056F3DD059CB22060A494021@AdobeOrg"])
-//            MobileCore.configureWith(appId: "launch-EN516bfbc0fe2b42449bf171a4f8cb9cef-development")
-//        })
         return true
     }
 
