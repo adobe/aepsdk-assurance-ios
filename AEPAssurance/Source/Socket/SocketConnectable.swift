@@ -18,7 +18,7 @@ protocol SocketConnectable {
     var socketURL: URL? { get }
     
     /// The event chunker used for chunking and stitching Events
-    var eventChunker: EventChunker { get set }
+    var eventChunker: EventChunker { get }
 
     /// the delegate that gets notified on socket events.
     var delegate: SocketDelegate { get }

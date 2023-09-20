@@ -117,19 +117,22 @@ struct AssuranceEventChunker: EventChunker {
     /// - Parameter chunkedEvents: An array of chunked AssuranceEvents
     /// - Returns: An `AssuranceEvent` which has the stitched data as the payload
     func stitch(_ chunkedEvents: [AssuranceEvent]) -> AssuranceEvent? {
+        //exit early if chunkedEvents is empty
+        guard !chunkedEvents.isEmpty else { return nil }
+        
         var stitchedString = ""
         // Stitch chunked payload data together
         for event in chunkedEvents {
             // Extract the payload string and unescape it. Currently escaped by the services
             guard let payloadString = event.payload?[AssuranceConstants.AssuranceEvent.PayloadKey.CHUNK_DATA]?.stringValue else {
-                Log.error(label: AssuranceConstants.LOG_TAG, "Error while attempting to stitch chunked event: Chunk payload was not in proper string format.")
+                Log.warning(label: AssuranceConstants.LOG_TAG, "Error while attempting to stitch chunked event: Chunk payload was not in proper string format.")
                 return nil
             }
             
             stitchedString += payloadString
         }
         guard let stitchedStringData = stitchedString.data(using: .utf8) else {
-            Log.error(label: AssuranceConstants.LOG_TAG, "Error while attempting to create data from stitched string")
+            Log.warning(label: AssuranceConstants.LOG_TAG, "Error while attempting to create data from stitched string")
             return nil
         }
         
@@ -139,7 +142,7 @@ struct AssuranceEventChunker: EventChunker {
         do {
             decodedPayload = try decoder.decode([String:AnyCodable].self, from: stitchedStringData)
         } catch {
-            Log.error(label: AssuranceConstants.LOG_TAG, "Error while attempting to decode stitched JSON data: \(error)")
+            Log.warning(label: AssuranceConstants.LOG_TAG, "Error while attempting to decode stitched JSON data: \(error)")
             return nil
         }
         let referenceEvent = chunkedEvents[0]

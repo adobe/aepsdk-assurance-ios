@@ -174,6 +174,7 @@ extension AssuranceSession: SocketDelegate {
                 if chunkedEvents[chunkedID]?.count == event.chunkedTotal {
                     // Sort and Stitch
                     if let sortedChunks = self.chunkedEvents[chunkedID]?.sorted(by: { $0.chunkedSequenceNumber! < $1.chunkedSequenceNumber! }) {
+                        defer { self.chunkedEvents.removeValue(forKey: chunkedID) }
                         return socket.eventChunker.stitch(sortedChunks)
                     }
                 }
