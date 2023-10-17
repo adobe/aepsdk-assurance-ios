@@ -92,8 +92,8 @@ enum AssuranceConstants {
     }
 
     enum SharedStateKeys {
-        static let CLIENT_ID = "sessionid"
-        static let SESSION_ID = "clientid"
+        static let CLIENT_ID = "clientid"
+        static let SESSION_ID = "sessionid"
         static let INTEGRATION_ID = "integrationid"
     }
 
