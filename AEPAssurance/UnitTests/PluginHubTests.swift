@@ -252,9 +252,11 @@ class PluginTaco: AssurancePlugin {
     }
 
     var eventReceived = false
+    var receivedEvent: AssuranceEvent? = nil
     func receiveEvent(_ event: AssuranceEvent) {
         expectation?.fulfill()
         eventReceived = true
+        receivedEvent = event
     }
 
     var isSessionConnectedCalled = false
