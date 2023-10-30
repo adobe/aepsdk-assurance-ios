@@ -23,6 +23,8 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     /// A buffer for holding the events until the initial Assurance session associated with
     /// the app launch happens. This is emptied once a session has been connected.
     var outboundEventBuffer: ThreadSafeArray<AssuranceEvent>?
+    
+    let orchestratorQueue = DispatchQueue(label: "com.adobe.assurance.orchestrationQueue")
 
     /// Flag indicating if an Assurance Session was ever terminated
     /// The purpose of this flag is to determine if the Assurance Extension has discarded any MobileCore Events
@@ -93,29 +95,33 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     /// Dissolve the active session (if one exists) and its associated states.
     ///
     func terminateSession(purgeBuffer: Bool) {
-        hasEverTerminated = true
-        
-        if purgeBuffer && outboundEventBuffer != nil {
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Clearing outbound event buffer")
-            outboundEventBuffer = nil
+        orchestratorQueue.async {
+            self.hasEverTerminated = true
+            
+            if purgeBuffer && self.outboundEventBuffer != nil {
+                Log.debug(label: AssuranceConstants.LOG_TAG, "Clearing outbound event buffer")
+                self.outboundEventBuffer = nil
+            }
+            
+            self.stateManager.clearAssuranceState()
+            
+            self.session?.disconnect()
+            self.session = nil
         }
-
-        stateManager.clearAssuranceState()
-
-        session?.disconnect()
-        session = nil
     }
 
     func queueEvent(_ assuranceEvent: AssuranceEvent) {
-        /// Queue this event to the active session if one exists.
-        if let session = session {
-            session.sendEvent(assuranceEvent)
-            return
+        orchestratorQueue.async {
+            /// Queue this event to the active session if one exists.
+            if let session = self.session {
+                session.sendEvent(assuranceEvent)
+                return
+            }
+            
+            /// Drop the event if outboundEventBuffer is nil
+            /// If not, we still want to queue the events to the buffer until the session is connected.
+            self.outboundEventBuffer?.append(assuranceEvent)
         }
-
-        /// Drop the event if outboundEventBuffer is nil
-        /// If not, we still want to queue the events to the buffer until the session is connected.
-        outboundEventBuffer?.append(assuranceEvent)
     }
 
     /// Check if the Assurance extension is capable of handling events.
