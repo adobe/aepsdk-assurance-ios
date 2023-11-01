@@ -32,9 +32,11 @@ class MockStateManager : AssuranceStateManager {
     
     var shareAssuranceStateCalled = false
     var shareAssuranceStateSessionID: String?
+    var shareAssuranceStateExpectation = XCTestExpectation(description: "Share assurance state expectation")
     override func shareAssuranceState(withSessionID sessionId: String) {
         shareAssuranceStateCalled = true
         shareAssuranceStateSessionID = sessionId
+        shareAssuranceStateExpectation.fulfill()
     }
     
     var clearAssuranceStateCalled = false

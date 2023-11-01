@@ -58,17 +58,19 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     /// - Parameters:
     ///    - sessionDetails: An `AssuranceSessionDetails` instance containing all the essential data for starting a session
     func createSession(withDetails sessionDetails: AssuranceSessionDetails) {
-        if session != nil {
-            Log.warning(label: AssuranceConstants.LOG_TAG, "An active Assurance session already exists. Cannot create a new one. Ignoring to process the scanned deeplink.")
-            return
+        orchestratorQueue.async {
+            if self.session != nil {
+                Log.warning(label: AssuranceConstants.LOG_TAG, "An active Assurance session already exists. Cannot create a new one. Ignoring to process the scanned deeplink.")
+                return
+            }
+            
+            self.stateManager.shareAssuranceState(withSessionID: sessionDetails.sessionId)
+            self.session = AssuranceSession(sessionDetails: sessionDetails, stateManager: self.stateManager, sessionOrchestrator: self, outboundEvents: self.outboundEventBuffer)
+            self.session?.startSession()
+            
+            self.outboundEventBuffer?.clear()
+            self.outboundEventBuffer = nil
         }
-
-        stateManager.shareAssuranceState(withSessionID: sessionDetails.sessionId)
-        session = AssuranceSession(sessionDetails: sessionDetails, stateManager: stateManager, sessionOrchestrator: self, outboundEvents: outboundEventBuffer)
-        session?.startSession()
-
-        outboundEventBuffer?.clear()
-        outboundEventBuffer = nil
     }
     
     #if DEBUG
