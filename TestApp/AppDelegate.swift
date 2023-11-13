@@ -35,7 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         MobileCore.track(state: "Before SDK Init", data: nil)
         MobileCore.setLogLevel(.trace)
         
-        let launchID = ""
         let extensions = [AEPIdentity.Identity.self,
                           Lifecycle.self,
                           Signal.self,
@@ -52,7 +51,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         ]
         let appState = application.applicationState
         MobileCore.registerExtensions(extensions, {
-            MobileCore.configureWith(appId: launchID)
+            // NOTE: - The app id is hardcoded in order to support e2e automated testing
+            MobileCore.configureWith(appId: "94f571f308d5/f986c2be4925/launch-e96cdeaddea9-development")
             if appState != .background {
                 MobileCore.lifecycleStart(additionalContextData: nil)
             }
