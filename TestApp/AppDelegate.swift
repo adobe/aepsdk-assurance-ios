@@ -51,6 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         ]
         let appState = application.applicationState
         MobileCore.registerExtensions(extensions, {
+            // NOTE: - The app id is hardcoded in order to support e2e automated testing
             MobileCore.configureWith(appId: "94f571f308d5/f986c2be4925/launch-e96cdeaddea9-development")
             if appState != .background {
                 MobileCore.lifecycleStart(additionalContextData: nil)
