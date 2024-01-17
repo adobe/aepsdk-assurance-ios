@@ -24,23 +24,22 @@ class MockSession: AssuranceSession {
     }
 
 
-    var sendEventCalled = false
+    var sendEventCalled = XCTestExpectation(description: "Send event method called expectation")
     var sentEvent: AssuranceEvent?
     override func sendEvent(_ assuranceEvent: AssuranceEvent) {
-        expectation?.fulfill()
-        sendEventCalled = true
         sentEvent = assuranceEvent
+        sendEventCalled.fulfill()
     }
     
-    var startSessionCalled = false
+    var startSessionCalled = XCTestExpectation(description: "Start session called expectation")
     override func startSession() {
-        startSessionCalled = true
+        startSessionCalled.fulfill()
     }
 
 
-    var disconnectCalled = false
+    var disconnectCalled = XCTestExpectation(description: "Disconnect called expectation")
     override func disconnect() {
-        disconnectCalled = true
+        disconnectCalled.fulfill()
     }
     
     var handleConnectionErrorCalled = false
