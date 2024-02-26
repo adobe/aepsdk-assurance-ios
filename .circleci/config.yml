@@ -4,7 +4,7 @@
 version: 2.1
 
 orbs:
-  codecov: codecov/codecov@3.2.4
+  codecov: codecov/codecov@3.3.0
   macos: circleci/macos@2
 
 # Workflows orchestrate a set of jobs to be run;
@@ -18,7 +18,7 @@ jobs:
 
   build-and-test:
     macos:
-      xcode: 14.1.0 # Specify the Xcode version to use
+      xcode: 15.0.0 # Specify the Xcode version to use
 
     steps:
       - checkout
@@ -64,9 +64,10 @@ jobs:
           command: make lint
 
       # pre-start the simulator to prevent timeouts
-      - run:
-          name: Pre-start Simulator
-          command: xcrun instruments -w "iPhone 14 (16.1) [" || true
+      - macos/preboot-simulator:
+          platform: "iOS"
+          version: "17.0"
+          device: "iPhone 15"
 
       - run:
           name: Run Tests

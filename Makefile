@@ -50,7 +50,7 @@ test:
 	@echo "######################################################################"
 	@echo "### Testing iOS"
 	@echo "######################################################################"
-	xcodebuild test -workspace $(PROJECT_NAME).xcworkspace -scheme $(PROJECT_NAME) -destination 'platform=iOS Simulator,name=iPhone 14' -derivedDataPath build/out -resultBundlePath build/$(EXTENSION_NAME)-ios.xcresult -enableCodeCoverage YES
+	xcodebuild test -workspace $(PROJECT_NAME).xcworkspace -scheme $(PROJECT_NAME) -destination 'platform=iOS Simulator,name=iPhone 15' -derivedDataPath build/out -resultBundlePath build/$(EXTENSION_NAME)-ios.xcresult -enableCodeCoverage YES
 
 install-githook:
 	./tools/git-hooks/setup.sh
