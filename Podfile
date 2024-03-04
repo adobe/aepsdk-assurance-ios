@@ -20,8 +20,8 @@ target 'UnitTests' do
 end
 
 target 'TestApp' do
-  pod 'AEPCore'
-  pod 'AEPServices'
+  pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v5.0.0'
+  pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v5.0.0'
   pod 'AEPLifecycle'
   pod 'AEPIdentity'
   pod 'AEPSignal'
@@ -36,8 +36,8 @@ target 'TestApp' do
 end
 
 target 'TestAppObjC' do
-  pod 'AEPCore'
-  pod 'AEPServices'
+  pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v5.0.0'
+  pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v5.0.0'
   pod 'AEPLifecycle'
   pod 'AEPIdentity'
   pod 'AEPSignal'
