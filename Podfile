@@ -8,13 +8,15 @@ project 'AEPAssurance.xcodeproj'
 pod 'SwiftLint', '0.52.0'
 
 target 'AEPAssurance' do
-  pod 'AEPCore'
-  pod 'AEPServices'
+  pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v5.0.0'
+  pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v5.0.0'
+  pod 'AEPRulesEngine', :git => 'https://github.com/adobe/aepsdk-rulesengine-ios.git', :branch => 'dev-v5.0.0'
 end
 
 target 'UnitTests' do
-  pod 'AEPCore'
-  pod 'AEPServices'
+  pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v5.0.0'
+  pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v5.0.0'
+  pod 'AEPRulesEngine', :git => 'https://github.com/adobe/aepsdk-rulesengine-ios.git', :branch => 'dev-v5.0.0'
 end
 
 target 'TestApp' do
