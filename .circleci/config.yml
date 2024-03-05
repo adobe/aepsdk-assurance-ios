@@ -4,7 +4,7 @@
 version: 2.1
 
 orbs:
-  codecov: codecov/codecov@3.3.0
+  #codecov: codecov/codecov@3.3.0
   macos: circleci/macos@2
 
 # Workflows orchestrate a set of jobs to be run;
@@ -73,10 +73,10 @@ jobs:
           name: Run Tests
           command: make test
           
-      - codecov/upload:
-          flags: aepassurance-ios-tests
-          upload_name: Coverage Report for AEPAssurance iOS Tests
-          xtra_args: -c -v --xc --xp build/AEPAssurance-ios.xcresult
+      # - codecov/upload:
+      #     flags: aepassurance-ios-tests
+      #     upload_name: Coverage Report for AEPAssurance iOS Tests
+      #     xtra_args: -c -v --xc --xp build/AEPAssurance-ios.xcresult
 
       # build swift package
       - run:
