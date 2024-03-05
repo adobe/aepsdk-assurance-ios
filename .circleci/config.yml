@@ -18,7 +18,7 @@ jobs:
 
   build-and-test:
     macos:
-      xcode: 15.0.0 # Specify the Xcode version to use
+      xcode: 15.1.0 # Specify the Xcode version to use
 
     steps:
       - checkout
@@ -66,7 +66,7 @@ jobs:
       # pre-start the simulator to prevent timeouts
       - macos/preboot-simulator:
           platform: "iOS"
-          version: "17.0"
+          version: "17.2"
           device: "iPhone 15"
 
       - run:
