@@ -78,11 +78,6 @@ jobs:
       #     upload_name: Coverage Report for AEPAssurance iOS Tests
       #     xtra_args: -c -v --xc --xp build/AEPAssurance-ios.xcresult
 
-      # build swift package
-      - run:
-          name: Build Swift Package
-          command: make swift-build
-
       # verify XCFramework archive builds
       - run:
           name: Build XCFramework

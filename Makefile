@@ -68,9 +68,6 @@ build-test-apps: pod-install
 	(cd build/Build/Products/Debug-iphonesimulator/ && zip -r AEPAssuranceTestApp.zip TestApp.app/)
 	(cp build/Build/Products/Debug-iphonesimulator/AEPAssuranceTestApp.zip TestAppBinaries/)
 
-swift-build:
-	swift build -Xswiftc "-sdk" -Xswiftc "`xcrun --sdk iphonesimulator --show-sdk-path`" -Xswiftc "-target" -Xswiftc "x86_64-apple-ios10.0-simulator"
-
 check-version:
 	(sh ./Script/version.sh $(VERSION))
 
