@@ -148,19 +148,19 @@ class PluginLogForwardingTests: XCTestCase {
         XCTAssertNotNil(logMessage)
         XCTAssertTrue(logMessage!.contains("secret log message"))
 
-        sleep(1)
         // reset the expectation and invert it to verify that sendEvent is not called
         mockSession.sendEventCalled = XCTestExpectation()
         mockSession.sendEventCalled.isInverted = true
         // now send event to stop forwarding
         plugin.receiveEvent(logForwardingEvent(start: false))
-
+        
+        sleep(1)
         // add log statement
         os_log("another secret log message")
-
+        
         // verify
-        XCTAssertFalse(plugin.currentlyRunning)
         wait(for: [mockSession.sendEventCalled], timeout: 1.0)
+        XCTAssertFalse(plugin.currentlyRunning)
     }
 
     func test_commandLogForwarding_stopForwarding_whenNeverStarted() {
