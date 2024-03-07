@@ -50,7 +50,7 @@ test:
 	@echo "######################################################################"
 	@echo "### Testing iOS"
 	@echo "######################################################################"
-	xcodebuild test -workspace $(PROJECT_NAME).xcworkspace -scheme $(PROJECT_NAME) -destination 'platform=iOS Simulator,name=iPhone 14' -derivedDataPath build/out -resultBundlePath build/$(EXTENSION_NAME)-ios.xcresult -enableCodeCoverage YES
+	xcodebuild test -workspace $(PROJECT_NAME).xcworkspace -scheme $(PROJECT_NAME) -destination 'platform=iOS Simulator,name=iPhone 15' -derivedDataPath build/out -resultBundlePath build/$(EXTENSION_NAME)-ios.xcresult -enableCodeCoverage YES
 
 install-githook:
 	./tools/git-hooks/setup.sh
@@ -67,9 +67,6 @@ build-test-apps: pod-install
 	xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme $(APP_NAME_OBJC) -derivedDataPath ./build -sdk iphonesimulator build
 	(cd build/Build/Products/Debug-iphonesimulator/ && zip -r AEPAssuranceTestApp.zip TestApp.app/)
 	(cp build/Build/Products/Debug-iphonesimulator/AEPAssuranceTestApp.zip TestAppBinaries/)
-
-swift-build:
-	swift build -Xswiftc "-sdk" -Xswiftc "`xcrun --sdk iphonesimulator --show-sdk-path`" -Xswiftc "-target" -Xswiftc "x86_64-apple-ios10.0-simulator"
 
 check-version:
 	(sh ./Script/version.sh $(VERSION))
