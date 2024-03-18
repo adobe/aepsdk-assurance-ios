@@ -118,6 +118,8 @@ enum AssuranceClientInfo {
             return "Apple Car Play"
         case .mac:
             return "Mac"
+        case .vision:
+            return "Vision"
         @unknown default:
             return "Unspecified"
         }
