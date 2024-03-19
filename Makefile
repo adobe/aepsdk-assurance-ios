@@ -37,7 +37,7 @@ open:
 clean:
 	(rm -rf build)
 
-archive: pod-update _archive
+archive: pod-install _archive
 
 ci-archive: ci-pod-install _archive
 
