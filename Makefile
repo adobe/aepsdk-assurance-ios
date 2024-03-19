@@ -37,9 +37,6 @@ open:
 clean:
 	(rm -rf build)
 
-ci-pod-install:
-	bundle exec pod install --repo-update
-
 archive: pod-update _archive
 
 ci-archive: ci-pod-install _archive
