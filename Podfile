@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '11.0'
+platform :ios, '12.0'
 
 use_frameworks!
 workspace 'AEPAssurance'
@@ -10,11 +10,13 @@ pod 'SwiftLint', '0.52.0'
 target 'AEPAssurance' do
   pod 'AEPCore'
   pod 'AEPServices'
+  pod 'AEPRulesEngine'
 end
 
 target 'UnitTests' do
   pod 'AEPCore'
   pod 'AEPServices'
+  pod 'AEPRulesEngine'
 end
 
 target 'TestApp' do
@@ -24,13 +26,13 @@ target 'TestApp' do
   pod 'AEPIdentity'
   pod 'AEPSignal'
   pod 'AEPEdge'
-  pod 'AEPEdgeConsent'
+  pod 'AEPEdgeConsent', :git => 'https://github.com/adobe/aepsdk-edgeconsent-ios.git', :branch => 'staging'
   pod 'AEPEdgeIdentity'
-  pod 'AEPUserProfile'
-  pod 'AEPTarget'
+  pod 'AEPUserProfile', :git => 'https://github.com/adobe/aepsdk-userprofile-ios.git', :branch => 'staging'
+  pod 'AEPTarget', :git => 'https://github.com/adobe/aepsdk-target-ios.git', :branch => 'staging'
   pod 'AEPAnalytics'
-  pod 'AEPPlaces'
-  pod 'AEPMessaging'
+  pod 'AEPPlaces', :git => 'https://github.com/adobe/aepsdk-places-ios.git', :branch => 'staging'
+  pod 'AEPMessaging', :git => 'https://github.com/adobe/aepsdk-messaging-ios.git', :branch => 'staging'
 end
 
 target 'TestAppObjC' do
@@ -40,10 +42,10 @@ target 'TestAppObjC' do
   pod 'AEPIdentity'
   pod 'AEPSignal'
   pod 'AEPEdge'
-  pod 'AEPEdgeConsent'
+  pod 'AEPEdgeConsent', :git => 'https://github.com/adobe/aepsdk-edgeconsent-ios.git', :branch => 'staging'
   pod 'AEPEdgeIdentity'
-  pod 'AEPUserProfile'
-  pod 'AEPTarget'
+  pod 'AEPUserProfile', :git => 'https://github.com/adobe/aepsdk-userprofile-ios.git', :branch => 'staging'
+  pod 'AEPTarget', :git => 'https://github.com/adobe/aepsdk-target-ios.git', :branch => 'staging'
   pod 'AEPAnalytics'
-  pod 'AEPPlaces'
+  pod 'AEPPlaces', :git => 'https://github.com/adobe/aepsdk-places-ios.git', :branch => 'staging'
 end

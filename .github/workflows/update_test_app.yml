@@ -8,11 +8,14 @@ on:
       - completed
 jobs:
   updateTestApp:
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.1.0'
       - name: Build Test App
         run: |
             set -eo pipefail

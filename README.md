@@ -10,7 +10,7 @@
 Assurance/Project Griffon is a new, innovative beta product from [Adobe Experience Cloud](https://business.adobe.com/) to help you inspect, proof, simulate, and validate how you collect data or serve experiences in your mobile app. For more information on what Project Griffon can do for you, see [here](https://aep-sdks.gitbook.io/docs/beta/project-griffon#what-can-project-griffon-do-for-you).
 
 ## Requirements
-- Xcode 14.1 or newer
+- Xcode 15.0 or newer
 - Swift 5.1 or newer
 
 ## Installation
@@ -32,7 +32,7 @@ This generates the xcframework under the `build` folder. Drag and drop all the `
 use_frameworks!
 
 target 'YOUR_TARGET_NAME' do
-    pod 'AEPAssurance', '~> 4.0.0'
+    pod 'AEPAssurance', '~> 5.0.0'
 end
 ```
 
@@ -56,7 +56,7 @@ Alternatively, if your project has a `Package.swift` file, you can add AEPAssura
 
 ```
 dependencies: [
-    .package(url: "https://github.com/adobe/aepsdk-assurance-ios.git", .upToNextMajor(from: "4.0.0"))
+    .package(url: "https://github.com/adobe/aepsdk-assurance-ios.git", .upToNextMajor(from: "5.0.0"))
 ],
 targets: [
     .target(name: "YourTarget",
