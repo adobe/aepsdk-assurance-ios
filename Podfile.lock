@@ -1,55 +1,55 @@
 PODS:
-  - AEPAnalytics (4.0.1):
-    - AEPCore (< 5.0.0, >= 4.0.0)
-    - AEPServices (< 5.0.0, >= 4.0.0)
-  - AEPCore (4.2.3):
-    - AEPRulesEngine (< 5.0.0, >= 4.0.0)
-    - AEPServices (< 5.0.0, >= 4.2.3)
-  - AEPEdge (4.3.1):
-    - AEPCore (< 5.0.0, >= 4.1.0)
-    - AEPEdgeIdentity (< 5.0.0, >= 4.0.0)
-  - AEPEdgeConsent (4.0.1):
-    - AEPCore (< 5.0.0, >= 4.0.0)
-    - AEPEdge (< 5.0.0, >= 4.0.0)
-  - AEPEdgeIdentity (4.0.1):
-    - AEPCore (< 5.0.0, >= 4.0.0)
-  - AEPIdentity (4.2.3):
-    - AEPCore (< 5.0.0, >= 4.2.3)
-  - AEPLifecycle (4.2.3):
-    - AEPCore (< 5.0.0, >= 4.2.3)
-  - AEPMessaging (4.1.1):
-    - AEPCore (< 5.0.0, >= 4.0.0)
-    - AEPEdge (< 5.0.0, >= 4.0.0)
-    - AEPEdgeIdentity (< 5.0.0, >= 4.0.0)
-    - AEPServices (< 5.0.0, >= 4.0.0)
-  - AEPPlaces (4.1.1):
-    - AEPCore (< 5.0.0, >= 4.0.0)
-    - AEPServices (< 5.0.0, >= 4.0.0)
-  - AEPRulesEngine (4.0.0)
-  - AEPServices (4.2.3)
-  - AEPSignal (4.2.3):
-    - AEPCore (< 5.0.0, >= 4.2.3)
-  - AEPTarget (4.0.4):
-    - AEPCore (< 5.0.0, >= 4.0.0)
-  - AEPUserProfile (4.0.1):
-    - AEPCore (< 5.0.0, >= 4.0.0)
+  - AEPAnalytics (5.0.0):
+    - AEPCore (< 6.0.0, >= 5.0.0)
+    - AEPServices (< 6.0.0, >= 5.0.0)
+  - AEPCore (5.0.0):
+    - AEPRulesEngine (< 6.0.0, >= 5.0.0)
+    - AEPServices (< 6.0.0, >= 5.0.0)
+  - AEPEdge (5.0.0):
+    - AEPCore (< 6.0.0, >= 5.0.0)
+    - AEPEdgeIdentity (< 6.0.0, >= 5.0.0)
+  - AEPEdgeConsent (5.0.0):
+    - AEPCore (< 6.0.0, >= 5.0.0)
+    - AEPEdge (< 6.0.0, >= 5.0.0)
+  - AEPEdgeIdentity (5.0.0):
+    - AEPCore (< 6.0.0, >= 5.0.0)
+  - AEPIdentity (5.0.0):
+    - AEPCore (< 6.0.0, >= 5.0.0)
+  - AEPLifecycle (5.0.0):
+    - AEPCore (< 6.0.0, >= 5.0.0)
+  - AEPMessaging (5.0.0):
+    - AEPCore (< 6.0.0, >= 5.0.0)
+    - AEPEdge (< 6.0.0, >= 5.0.0)
+    - AEPEdgeIdentity (< 6.0.0, >= 5.0.0)
+    - AEPServices (< 6.0.0, >= 5.0.0)
+  - AEPPlaces (5.0.0):
+    - AEPCore (< 6.0.0, >= 5.0.0)
+    - AEPServices (< 6.0.0, >= 5.0.0)
+  - AEPRulesEngine (5.0.0)
+  - AEPServices (5.0.0)
+  - AEPSignal (5.0.0):
+    - AEPCore (< 6.0.0, >= 5.0.0)
+  - AEPTarget (5.0.0):
+    - AEPCore (< 6.0.0, >= 5.0.0)
+  - AEPUserProfile (5.0.0):
+    - AEPCore (< 6.0.0, >= 5.0.0)
   - SwiftLint (0.52.0)
 
 DEPENDENCIES:
   - AEPAnalytics
   - AEPCore
   - AEPEdge
-  - AEPEdgeConsent
+  - AEPEdgeConsent (from `https://github.com/adobe/aepsdk-edgeconsent-ios.git`, branch `staging`)
   - AEPEdgeIdentity
   - AEPIdentity
   - AEPLifecycle
-  - AEPMessaging
-  - AEPPlaces
+  - AEPMessaging (from `https://github.com/adobe/aepsdk-messaging-ios.git`, branch `staging`)
+  - AEPPlaces (from `https://github.com/adobe/aepsdk-places-ios.git`, branch `staging`)
   - AEPRulesEngine
   - AEPServices
   - AEPSignal
-  - AEPTarget
-  - AEPUserProfile
+  - AEPTarget (from `https://github.com/adobe/aepsdk-target-ios.git`, branch `staging`)
+  - AEPUserProfile (from `https://github.com/adobe/aepsdk-userprofile-ios.git`, branch `staging`)
   - SwiftLint (= 0.52.0)
 
 SPEC REPOS:
@@ -57,36 +57,65 @@ SPEC REPOS:
     - AEPAnalytics
     - AEPCore
     - AEPEdge
-    - AEPEdgeConsent
     - AEPEdgeIdentity
     - AEPIdentity
     - AEPLifecycle
-    - AEPMessaging
-    - AEPPlaces
     - AEPRulesEngine
     - AEPServices
     - AEPSignal
-    - AEPTarget
-    - AEPUserProfile
     - SwiftLint
 
+EXTERNAL SOURCES:
+  AEPEdgeConsent:
+    :branch: staging
+    :git: https://github.com/adobe/aepsdk-edgeconsent-ios.git
+  AEPMessaging:
+    :branch: staging
+    :git: https://github.com/adobe/aepsdk-messaging-ios.git
+  AEPPlaces:
+    :branch: staging
+    :git: https://github.com/adobe/aepsdk-places-ios.git
+  AEPTarget:
+    :branch: staging
+    :git: https://github.com/adobe/aepsdk-target-ios.git
+  AEPUserProfile:
+    :branch: staging
+    :git: https://github.com/adobe/aepsdk-userprofile-ios.git
+
+CHECKOUT OPTIONS:
+  AEPEdgeConsent:
+    :commit: ef4f28ad50a1645c0a5faee5c257e1070bbb2cda
+    :git: https://github.com/adobe/aepsdk-edgeconsent-ios.git
+  AEPMessaging:
+    :commit: de53fb09348fefac1d2e4e96e2696621229d1d3c
+    :git: https://github.com/adobe/aepsdk-messaging-ios.git
+  AEPPlaces:
+    :commit: 21bf5ca94e9e9afd863e30e65e8009b39e57d8f2
+    :git: https://github.com/adobe/aepsdk-places-ios.git
+  AEPTarget:
+    :commit: e2abd8dc8f6c4368c3323cb50248ff6f8ffad29b
+    :git: https://github.com/adobe/aepsdk-target-ios.git
+  AEPUserProfile:
+    :commit: 8bcf3cbba5a2c5a74e3e49ba1a0640a0eaeba056
+    :git: https://github.com/adobe/aepsdk-userprofile-ios.git
+
 SPEC CHECKSUMS:
-  AEPAnalytics: f1c62439533f49130e7a9db86ba4290a422a999e
-  AEPCore: 7ab5e149947a71d7486818bde393cddc513df271
-  AEPEdge: c34de4d42c430c93431065556207817190749ade
-  AEPEdgeConsent: 7926ff292b69ccf08d1a2ee91ae6a7ccffda7974
-  AEPEdgeIdentity: 8a8f0d2649ca5854e714970d6c80b46654a583be
-  AEPIdentity: 8b64c2cc896f1a8546b7f20d9fdbd4ba6079f21c
-  AEPLifecycle: b676303a42386aca38bea8e927f391e12cac43e3
-  AEPMessaging: cec9b98ceb1badd25fef31aaf847b556cc952aa4
-  AEPPlaces: f4c843cc71f4f7b0874da0ef683560f6178d4a00
-  AEPRulesEngine: 458450a34922823286ead045a0c2bd8c27e224c6
-  AEPServices: d870535b75682be9c440d3cdf2cbd0481e450aff
-  AEPSignal: a5afda383d82bd1ca72a896a53c203d7cf55012e
-  AEPTarget: 3d6068e4399e5d9c07566308283aed6d2d073d8f
-  AEPUserProfile: 05e838305f6a0c32f5892e6c1bd799d9c669adfd
+  AEPAnalytics: c35fedaf0d515fb949001f944aea3fe72b435363
+  AEPCore: f1c3e9238bb12e7e1103f4407c341ebc65aeab5b
+  AEPEdge: 6bc7c3f6573fdf0a12fb3ddfd32420112a89c80b
+  AEPEdgeConsent: d7db1d19eb4c1e2146360ed3c8df315f671b26d5
+  AEPEdgeIdentity: 3161ff33434586962946912d6b8e9e8fca1c4d23
+  AEPIdentity: a65c1eba43a06f01b0dab191b27a53a81adada57
+  AEPLifecycle: d4e0e1e86d6225d87203875d67f56c48f7ab7f67
+  AEPMessaging: 63ea36bff1476ee61578df6f9f439df02a7283c9
+  AEPPlaces: 9eec5f88306033ce8190ec30727cbdd4008cc018
+  AEPRulesEngine: fe5800653a4bee07b1e41e61b4d5551f0dba557b
+  AEPServices: e42e5118128e81c0f797fdfb1dc9c4a714d644b8
+  AEPSignal: b146a3d4e5af51ff588f4f1ffbd40f1541325143
+  AEPTarget: 78197ae0f5455eeb837f8ed9fdc4f3f697cb3dd8
+  AEPUserProfile: cf36305d683d993d528337a46b7a269029b63e5d
   SwiftLint: 13280e21cdda6786ad908dc6e416afe5acd1fcb7
 
-PODFILE CHECKSUM: a30578953ab4222b13d754afc78a998ac90d7530
+PODFILE CHECKSUM: e3e3e3dec8c979c4ae3382e9653489d72124849a
 
 COCOAPODS: 1.14.3
