@@ -23,7 +23,9 @@ final class QuickConnectServiceTests: XCTestCase {
     }
 
     func testRegisterDeviceSuccess() {
-        let expectedUrl = URL(string: AssuranceConstants.QUICK_CONNECT_BASE_URL + "/create")!
+        let expectedUrlString = String(format: AssuranceConstants.QUICK_CONNECT_BASE_URL,                                                   AssuranceEnvironment.prod.rawValue,
+                                "create")
+        let expectedUrl = URL(string: expectedUrlString)!
         let testClientId: AnyCodable = "testClientId"
         let testOrgId: AnyCodable = "testOrgId"
         let quickConnectService = QuickConnectService()
@@ -45,7 +47,9 @@ final class QuickConnectServiceTests: XCTestCase {
     }
 
     func testRegisterDeviceFailureInvalidResponseCode() {
-        let expectedUrl = URL(string: AssuranceConstants.QUICK_CONNECT_BASE_URL + "/create")!
+        let expectedUrlString = String(format: AssuranceConstants.QUICK_CONNECT_BASE_URL,                                                   AssuranceEnvironment.prod.rawValue,
+                                "create")
+        let expectedUrl = URL(string: expectedUrlString)!
         let testClientId: AnyCodable = "testClientId"
         let testOrgId: AnyCodable = "testOrgId"
         let quickConnectService = QuickConnectService()
@@ -67,7 +71,9 @@ final class QuickConnectServiceTests: XCTestCase {
     }
 
     func testRegisterDeviceFailureInvalidResponseData() {
-        let expectedUrl = URL(string: AssuranceConstants.QUICK_CONNECT_BASE_URL + "/create")!
+        let expectedUrlString = String(format: AssuranceConstants.QUICK_CONNECT_BASE_URL,                                                   AssuranceEnvironment.prod.rawValue,
+                                "create")
+        let expectedUrl = URL(string: expectedUrlString)!
         let testClientId: AnyCodable = "testClientId"
         let testOrgId: AnyCodable = "testOrgId"
         let quickConnectService = QuickConnectService()
@@ -87,7 +93,10 @@ final class QuickConnectServiceTests: XCTestCase {
     }
 
     func testGetDeviceStatusSuccess() {
-        let expectedUrl = URL(string: AssuranceConstants.QUICK_CONNECT_BASE_URL + "/status")!
+        let expectedUrlString = String(format: AssuranceConstants.QUICK_CONNECT_BASE_URL,                                                   AssuranceEnvironment.prod.rawValue,
+                                "status")
+        let expectedUrl = URL(string: expectedUrlString)!
+
         let testClientId: AnyCodable = "testClientId"
         let testOrgId: AnyCodable = "testOrgId"
         let testSessionId: AnyCodable = "testSessionId"
@@ -117,7 +126,9 @@ final class QuickConnectServiceTests: XCTestCase {
     }
 
     func testGetDeviceStatusFailureInvalidResponseCode() {
-        let expectedUrl = URL(string: AssuranceConstants.QUICK_CONNECT_BASE_URL + "/status")!
+        let expectedUrlString = String(format: AssuranceConstants.QUICK_CONNECT_BASE_URL,                                                   AssuranceEnvironment.prod.rawValue,
+                                "status")
+        let expectedUrl = URL(string: expectedUrlString)!
         let testClientId: AnyCodable = "testClientId"
         let testOrgId: AnyCodable = "testOrgId"
         let testSessionId: AnyCodable = "testSessionId"
@@ -146,7 +157,9 @@ final class QuickConnectServiceTests: XCTestCase {
     }
 
     func testGetDeviceStatusFailureInvalidResponseData() {
-        let expectedUrl = URL(string: AssuranceConstants.QUICK_CONNECT_BASE_URL + "/status")!
+        let expectedUrlString = String(format: AssuranceConstants.QUICK_CONNECT_BASE_URL,                                                   AssuranceEnvironment.prod.rawValue,
+                                "status")
+        let expectedUrl = URL(string: expectedUrlString)!
         let testClientId: AnyCodable = "testClientId"
         let testOrgId: AnyCodable = "testOrgId"
         let quickConnectService = QuickConnectService()
@@ -172,7 +185,9 @@ final class QuickConnectServiceTests: XCTestCase {
     }
 
     func testDeleteDeviceSuccess() {
-        let expectedUrl = URL(string: AssuranceConstants.QUICK_CONNECT_BASE_URL + "/delete")!
+        let expectedUrlString = String(format: AssuranceConstants.QUICK_CONNECT_BASE_URL,                                                   AssuranceEnvironment.prod.rawValue,
+                                "delete")
+        let expectedUrl = URL(string: expectedUrlString)!
         let testClientId: AnyCodable = "testClientId"
         let testOrgId: AnyCodable = "testOrgId"
         let quickConnectService = QuickConnectService()
@@ -195,7 +210,9 @@ final class QuickConnectServiceTests: XCTestCase {
     }
 
     func testDeleteDeviceFailureInvalidResponseCode() {
-        let expectedUrl = URL(string: AssuranceConstants.QUICK_CONNECT_BASE_URL + "/delete")!
+        let expectedUrlString = String(format: AssuranceConstants.QUICK_CONNECT_BASE_URL,                                                   AssuranceEnvironment.prod.rawValue,
+                                "delete")
+        let expectedUrl = URL(string: expectedUrlString)!
         let testClientId: AnyCodable = "testClientId"
         let testOrgId: AnyCodable = "testOrgId"
         let quickConnectService = QuickConnectService()
@@ -217,7 +234,9 @@ final class QuickConnectServiceTests: XCTestCase {
     }
 
     func testDeleteDeviceFailureInvalidResponseData() {
-        let expectedUrl = URL(string: AssuranceConstants.QUICK_CONNECT_BASE_URL + "/delete")!
+        let expectedUrlString = String(format: AssuranceConstants.QUICK_CONNECT_BASE_URL,                                                   AssuranceEnvironment.prod.rawValue,
+                                "delete")
+        let expectedUrl = URL(string: expectedUrlString)!
         let testClientId: AnyCodable = "testClientId"
         let testOrgId: AnyCodable = "testOrgId"
         let quickConnectService = QuickConnectService()
