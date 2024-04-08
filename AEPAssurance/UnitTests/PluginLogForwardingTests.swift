@@ -129,7 +129,6 @@ class PluginLogForwardingTests: XCTestCase {
 
     func test_commandLogForwarding_completeWorkflow() {
         // setup
-        mockSession.expectation = XCTestExpectation(description: "Sends log event to connected session.")
         plugin.onRegistered(mockSession)
 
         // test
@@ -141,8 +140,7 @@ class PluginLogForwardingTests: XCTestCase {
         os_log("secret log message")
 
         // verify
-        wait(for: [mockSession.expectation!], timeout: 2.0)
-        XCTAssertTrue(mockSession.sendEventCalled)
+        wait(for: [mockSession.sendEventCalled], timeout: 1.0)
         let logEvent = mockSession.sentEvent
         XCTAssertEqual(AssuranceConstants.EventType.LOG, logEvent?.type)
         XCTAssertEqual(AssuranceConstants.Vendor.MOBILE, logEvent?.vendor)
@@ -150,18 +148,19 @@ class PluginLogForwardingTests: XCTestCase {
         XCTAssertNotNil(logMessage)
         XCTAssertTrue(logMessage!.contains("secret log message"))
 
-        sleep(1)
-        mockSession.sendEventCalled = false
-
+        // reset the expectation and invert it to verify that sendEvent is not called
+        mockSession.sendEventCalled = XCTestExpectation()
+        mockSession.sendEventCalled.isInverted = true
         // now send event to stop forwarding
         plugin.receiveEvent(logForwardingEvent(start: false))
-
+        
+        sleep(1)
         // add log statement
         os_log("another secret log message")
-
+        
         // verify
+        wait(for: [mockSession.sendEventCalled], timeout: 1.0)
         XCTAssertFalse(plugin.currentlyRunning)
-        XCTAssertFalse(mockSession.sendEventCalled)
     }
 
     func test_commandLogForwarding_stopForwarding_whenNeverStarted() {
@@ -186,8 +185,7 @@ class PluginLogForwardingTests: XCTestCase {
 
         // verify
         os_log("secret log message")
-        wait(for: [mockSession.expectation!], timeout: 2.0)
-        XCTAssertTrue(mockSession.sendEventCalled)
+        wait(for: [mockSession.sendEventCalled], timeout: 2.0)
     }
 
     func test_unusedProtocolMethod() {

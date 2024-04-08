@@ -35,6 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         requestNotificationPermission()
         MobileCore.track(state: "Before SDK Init", data: nil)
         MobileCore.setLogLevel(.trace)
+
         // Set QuickConnect Environment
         ServiceProvider.shared.namedKeyValueService.set(collectionName: "com.adobe.assurance", key: "assurance.environment", value: "qa")
 //        ServiceProvider.shared.namedKeyValueService.set(collectionName: "com.adobe.assurance", key: "assurance.environment", value: "stage")

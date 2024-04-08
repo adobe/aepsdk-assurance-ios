@@ -199,6 +199,74 @@ class AssuranceSessionTests: XCTestCase {
         wait(for: [stateManager.expectation!], timeout: 2.0)
         XCTAssertTrue(stateManager.getAllExtensionStateDataCalled)
     }
+    
+    func test_session_receives_chunkedEvents() {
+        let mockEventChunker = MockEventChunker()
+        mockSocket.eventChunker = mockEventChunker
+        mockEventChunker.eventToReturn = tacoEvent
+        session.pluginHub.registerPlugin(mockPlugin, toSession: session)
+        mockPlugin.expectation = XCTestExpectation(description: "sends inbound event to respective plugin")
+        let chunkEvent1 = AssuranceEvent(type: "control",
+                                         payload: ["type":"Test"],
+                                         metadata: [AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_ID: "testChunkID",
+                                                    AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_SEQUENCE: 1,
+                                                    AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_TOTAL: 3])
+        
+        let chunkEvent2 = AssuranceEvent(type: "control",
+                                         payload: ["type":"Test"],
+                                         metadata: [AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_ID: "testChunkID",
+                                                    AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_SEQUENCE: 2,
+                                                    AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_TOTAL: 3])
+        
+        let chunkEvent3 = AssuranceEvent(type: "control",
+                                         payload: ["type":"Test"],
+                                         metadata: [AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_ID: "testChunkID",
+                                                    AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_SEQUENCE: 3,
+                                                    AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_TOTAL: 3])
+        
+        session.webSocket(mockSocket, didReceiveEvent: chunkEvent1)
+        session.webSocket(mockSocket, didReceiveEvent: chunkEvent2)
+        session.webSocket(mockSocket, didReceiveEvent: chunkEvent3)
+        
+        wait(for: [mockPlugin.expectation!], timeout: 2.0)
+        XCTAssertTrue(mockPlugin.eventReceived)
+        XCTAssertTrue(mockEventChunker.stitchCalled)
+        XCTAssertEqual(0, session.inboundQueue.size())
+    }
+    
+    func test_session_receives_chunkedEvent_stitchFails() {
+        let mockEventChunker = MockEventChunker()
+        mockSocket.eventChunker = mockEventChunker
+        session.pluginHub.registerPlugin(mockPlugin, toSession: session)
+        mockPlugin.expectation = XCTestExpectation(description: "sends inbound event to respective plugin")
+        mockPlugin.expectation?.isInverted = true
+        let chunkEvent1 = AssuranceEvent(type: "control",
+                                         payload: ["type":"Test"],
+                                         metadata: [AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_ID: "testChunkID",
+                                                    AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_SEQUENCE: 1,
+                                                    AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_TOTAL: 3])
+        
+        let chunkEvent2 = AssuranceEvent(type: "control",
+                                         payload: ["type":"Test"],
+                                         metadata: [AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_ID: "testChunkID",
+                                                    AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_SEQUENCE: 2,
+                                                    AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_TOTAL: 3])
+        
+        let chunkEvent3 = AssuranceEvent(type: "control",
+                                         payload: ["type":"Test"],
+                                         metadata: [AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_ID: "testChunkID",
+                                                    AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_SEQUENCE: 3,
+                                                    AssuranceConstants.AssuranceEvent.MetadataKey.CHUNK_TOTAL: 3])
+        
+        session.webSocket(mockSocket, didReceiveEvent: chunkEvent1)
+        session.webSocket(mockSocket, didReceiveEvent: chunkEvent2)
+        session.webSocket(mockSocket, didReceiveEvent: chunkEvent3)
+        
+        wait(for: [mockPlugin.expectation!], timeout: 2.0)
+        XCTAssertFalse(mockPlugin.eventReceived)
+        XCTAssertTrue(mockEventChunker.stitchCalled)
+        XCTAssertEqual(0, session.inboundQueue.size())
+    }
 
 
     func test_session_disconnect() throws {

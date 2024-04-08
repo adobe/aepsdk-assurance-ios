@@ -20,6 +20,7 @@ class MockSocket: SocketConnectable {
     var socketURL: URL?
     var delegate: SocketDelegate
     var socketState: SocketState
+    var eventChunker: EventChunker = MockEventChunker()
 
     required init(withDelegate delegate: SocketDelegate) {
         self.delegate = delegate
@@ -50,4 +51,23 @@ class MockSocket: SocketConnectable {
     func mockSocketState(state: SocketState) {
         self.socketState = state
     }
+}
+
+class MockEventChunker: EventChunker {
+    
+    var chunkCalled = false
+    var chunkedEventsToReturn: [AssuranceEvent] = []
+    func chunk(_ event: AEPAssurance.AssuranceEvent) -> [AEPAssurance.AssuranceEvent] {
+        chunkCalled = true
+        return chunkedEventsToReturn
+    }
+    
+    var stitchCalled = false
+    var eventToReturn: AssuranceEvent? = nil
+    func stitch(_ chunkedEvents: [AEPAssurance.AssuranceEvent]) -> AEPAssurance.AssuranceEvent? {
+        stitchCalled = true
+        return eventToReturn
+    }
+    
+    
 }
