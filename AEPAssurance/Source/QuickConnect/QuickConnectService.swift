@@ -51,7 +51,7 @@ class QuickConnectService {
 
         /// Bail out with failure, if we are unable to create the request body required for the API
         guard let body = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) else {
-            let error = AssuranceConnectionError.invalidRequestBody
+            let error = AssuranceConnectionError.invalidRequestRegisteringDevice
             Log.error(label: LOG_TAG, error.info.description)
             completion(error)
             return
@@ -74,8 +74,8 @@ class QuickConnectService {
                 return
             }
             guard let data = connection.data, let responseJson = try? JSONDecoder().decode([String: AnyCodable].self, from: data) else {
-                Log.error(label: self.LOG_TAG, AssuranceConnectionError.invalidResponseData.info.description)
-                completion(.invalidResponseData)
+                Log.error(label: self.LOG_TAG, AssuranceConnectionError.invalidResponseRegisteringDevice.info.description)
+                completion(.invalidResponseRegisteringDevice)
                 return
             }
             Log.debug(label: self.LOG_TAG, "Created device \(String(describing: responseJson))")
@@ -109,7 +109,7 @@ class QuickConnectService {
 
         /// Bail out with failure, if we are unable to create the request body required for the API
         guard let body = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) else {
-            let error = AssuranceConnectionError.invalidRequestBody
+            let error = AssuranceConnectionError.invalidRequestStatusCheck
             Log.error(label: self.LOG_TAG, error.info.description)
             completion(.failure(error))
             return
@@ -148,7 +148,7 @@ class QuickConnectService {
 
                 return
             }
-            let error = AssuranceConnectionError.invalidResponseData
+            let error = AssuranceConnectionError.invalidResponseStatusCheck
             Log.error(label: self.LOG_TAG, error.info.description)
             completion(.failure(error))
             return

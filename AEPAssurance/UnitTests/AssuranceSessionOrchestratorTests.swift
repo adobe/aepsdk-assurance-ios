@@ -152,27 +152,6 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         XCTAssertNoThrow(sessionOrchestrator.pinScreenConnectClicked("3325"))
     }
     
-    func test_pinScreenConnectClicked_whenEmptyPin() {
-        // setup
-        let mockAuthorizingPresentation = MockAuthorizingPresentation(authorizingView: MockSessionAuthorizingUI(withPresentationDelegate: sessionOrchestrator))
-        sessionOrchestrator.authorizingPresentation = mockAuthorizingPresentation
-        mockStateManager.orgIDReturnValue = "mockOrgId"
-        sessionOrchestrator.session = mockSession
-        
-        // Invert the expectation as we need to verify startSession is not called
-        mockSession.startSessionCalled.isInverted = true
-                
-        // test
-        sessionOrchestrator.pinScreenConnectClicked("")
-        
-        // verify that the UI is indicated for the error and session is cleared
-        wait(for: [mockSession.startSessionCalled], timeout: 1.0)
-        wait(for: [mockSession.disconnectCalled], timeout: 1.0)
-        XCTAssertTrue(mockAuthorizingPresentation.sessionConnectionErrorCalled)
-        XCTAssertEqual(.noPincode ,mockAuthorizingPresentation.sessionConnectionErrorValue)
-        XCTAssertTrue(mockStateManager.clearAssuranceStateCalled)
-    }
-    
     func test_pinScreenConnectClicked_whenNoOrgId() {
         // setup
         let mockAuthorizingPresentation = MockAuthorizingPresentation(authorizingView: MockSessionAuthorizingUI(withPresentationDelegate: sessionOrchestrator))

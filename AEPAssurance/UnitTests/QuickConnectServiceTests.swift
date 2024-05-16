@@ -77,7 +77,7 @@ final class QuickConnectServiceTests: XCTestCase {
         let expectation = XCTestExpectation(description: "RegisterDevice API invokes completion handler with invalid response data error")
 
         quickConnectService.registerDevice(clientID: testClientId.stringValue!, orgID: testOrgId.stringValue!) { error in
-            XCTAssertEqual(error, .invalidResponseData)
+            XCTAssertEqual(error, .invalidResponseRegisteringDevice)
             XCTAssertTrue(self.mockNetworkService.connectAsyncCalled)
             XCTAssertEqual(self.mockNetworkService.networkRequest?.url, expectedUrl)
             expectation.fulfill()
@@ -160,7 +160,7 @@ final class QuickConnectServiceTests: XCTestCase {
             case .success(_):
                 XCTFail()
             case .failure(let error):
-                XCTAssertEqual(error, .invalidResponseData)
+                XCTAssertEqual(error, .invalidResponseStatusCheck)
                 XCTAssertTrue(self.mockNetworkService.connectAsyncCalled)
                 XCTAssertEqual(self.mockNetworkService.networkRequest?.url, expectedUrl)
                 expectation.fulfill()
