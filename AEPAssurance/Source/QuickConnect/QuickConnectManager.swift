@@ -56,7 +56,6 @@ class QuickConnectManager {
         quickConnectService.getDeviceStatus(clientID: stateManager.clientID, orgID: orgID, completion: { result in
             switch result {
             case .success((let sessionId, let token)):
-                self.deleteDevice()
                 let sessionDetails = AssuranceSessionDetails(sessionId: sessionId, clientId: self.stateManager.clientID, environment: AssuranceEnvironment.prod, token: String(token), orgID: orgID)
                 self.uiDelegate.createQuickConnectSession(with: sessionDetails)
                 break
@@ -68,22 +67,6 @@ class QuickConnectManager {
         })
     }
     
-    func deleteDevice() {
-        guard let orgID = stateManager.getURLEncodedOrgID() else {
-            Log.debug(label: LOG_TAG, "orgID is unexpectedly nil")
-            return
-        }
-        
-        quickConnectService.deleteDevice(clientID: stateManager.clientID, orgID: orgID, completion: { error in
-            guard let error = error else {
-                return
-            }
-
-            Log.debug(label: self.LOG_TAG, "Failed to delete device with error: \(error)")
-        })
-
-    }
-
     func cancelRetryGetDeviceStatus() {
         quickConnectService.shouldRetryGetDeviceStatus = false
     }
