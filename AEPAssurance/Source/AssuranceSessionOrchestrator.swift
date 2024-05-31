@@ -154,13 +154,6 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
             return
         }
 
-        /// display the error if the pin is empty
-        if pin.isEmpty {
-            authorizingPresentation?.sessionConnectionError(error: .noPincode)
-            terminateSession(purgeBuffer: true)
-            return
-        }
-
         /// display error if the OrgID is missing.
         guard let orgID = stateManager.getURLEncodedOrgID() else {
             authorizingPresentation?.sessionConnectionError(error: .noOrgId)

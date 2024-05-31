@@ -413,7 +413,7 @@ class QuickConnectView: SessionAuthorizingUI {
     func sessionConnectionFailed(withError error: AssuranceConnectionError) {
         switch error {
         // These three cases can use the default info description as it is only related to quick connect
-        case .failedToRegisterDevice(_, _), .failedToDeleteDevice(_, _), .failedToGetDeviceStatus(_, _):
+        case .failedToRegisterDevice(_, _), .failedToGetDeviceStatus(_, _):
             errorState(errorText: error.info.description)
         // Other errors will be handled generically
         default:
