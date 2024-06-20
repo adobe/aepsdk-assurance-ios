@@ -51,7 +51,7 @@ class QuickConnectService {
 
         /// Bail out with failure, if we are unable to create the request body required for the API
         guard let body = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) else {
-            let error = AssuranceConnectionError.invalidRequestRegisteringDevice
+            let error = AssuranceConnectionError.invalidRequest
             Log.error(label: LOG_TAG, error.info.description)
             completion(error)
             return
@@ -68,14 +68,14 @@ class QuickConnectService {
         ServiceProvider.shared.networkService.connectAsync(networkRequest: request) { connection in
 
             if !(connection.responseCode == HTTP_RESPONSE_CODES.HTTP_OK || connection.responseCode == 201) {
-                let error = AssuranceConnectionError.failedToRegisterDevice(statusCode: connection.responseCode ?? -1, responseMessage: connection.responseMessage ?? "Unkown error")
+                let error = AssuranceConnectionError.requestFailed
                 Log.error(label: self.LOG_TAG, error.info.description)
                 completion(error)
                 return
             }
             guard let data = connection.data, let responseJson = try? JSONDecoder().decode([String: AnyCodable].self, from: data) else {
-                Log.error(label: self.LOG_TAG, AssuranceConnectionError.invalidResponseRegisteringDevice.info.description)
-                completion(.invalidResponseRegisteringDevice)
+                Log.error(label: self.LOG_TAG, AssuranceConnectionError.invalidResponse.info.description)
+                completion(.invalidResponse)
                 return
             }
             Log.debug(label: self.LOG_TAG, "Created device \(String(describing: responseJson))")
@@ -109,7 +109,7 @@ class QuickConnectService {
 
         /// Bail out with failure, if we are unable to create the request body required for the API
         guard let body = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) else {
-            let error = AssuranceConnectionError.invalidRequestStatusCheck
+            let error = AssuranceConnectionError.invalidRequest
             Log.error(label: self.LOG_TAG, error.info.description)
             completion(.failure(error))
             return
@@ -125,7 +125,7 @@ class QuickConnectService {
 
         ServiceProvider.shared.networkService.connectAsync(networkRequest: request) { connection in
             if !(connection.responseCode == HTTP_RESPONSE_CODES.HTTP_OK || connection.responseCode == 201) {
-                let error = AssuranceConnectionError.failedToGetDeviceStatus(statusCode: connection.responseCode ?? -1, responseMessage: connection.responseMessage ?? "Unknown error")
+                let error = AssuranceConnectionError.requestFailed
                 Log.error(label: self.LOG_TAG, error.info.description)
                 completion(.failure(error))
                 return
@@ -148,7 +148,7 @@ class QuickConnectService {
 
                 return
             }
-            let error = AssuranceConnectionError.invalidResponseStatusCheck
+            let error = AssuranceConnectionError.invalidResponse
             Log.error(label: self.LOG_TAG, error.info.description)
             completion(.failure(error))
             return

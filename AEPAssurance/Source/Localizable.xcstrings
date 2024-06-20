@@ -1,0 +1,325 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "assurance_title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Assurance"
+          }
+        }
+      }
+    },
+    "error_desc_connection_limit" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You have reached the maximum number of connected device allowed to a session."
+          }
+        }
+      }
+    },
+    "error_desc_event_limit" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You have reached the maximum number of events that can be sent per minute."
+          }
+        }
+      }
+    },
+    "error_desc_incorrect_pin_or_network" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The connection may be failing due to a network issue or an incorrect PIN. Please verify internet connectivity or the PIN and try again."
+          }
+        }
+      }
+    },
+    "error_desc_invalid_org_id" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The Experience Cloud organization identifier is unavailable. Ensure SDK configuration is setup correctly. See documentation for more detail."
+          }
+        }
+      }
+    },
+    "error_desc_invalid_pin" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unable to authorize Assurance connection. Please verify the PIN and try again."
+          }
+        }
+      }
+    },
+    "error_desc_invalid_registration_request" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The connection may be failing due to an invalid network request."
+          }
+        }
+      }
+    },
+    "error_desc_invalid_registration_response" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Connection failed due to an invalid response."
+          }
+        }
+      }
+    },
+    "error_desc_invalid_url" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Attempted a network request with an invalid url."
+          }
+        }
+      }
+    },
+    "error_desc_registration_error" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Error occurred during device registration or status check."
+          }
+        }
+      }
+    },
+    "error_desc_session_deleted" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You attempted to connect to a deleted session."
+          }
+        }
+      }
+    },
+    "error_desc_unauthorized_access" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The Experience Cloud organization identifier does not match with that of the Assurance session. Ensure the right Experience Cloud organization is being used. See documentation for more detail."
+          }
+        }
+      }
+    },
+    "error_title_connection_limit" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Connection Limit Reached"
+          }
+        }
+      }
+    },
+    "error_title_event_limit" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Event Limit Reached"
+          }
+        }
+      }
+    },
+    "error_title_incorrect_pin_or_network" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Connection Error"
+          }
+        }
+      }
+    },
+    "error_title_invalid_org_id" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Invalid Mobile SDK Configuration"
+          }
+        }
+      }
+    },
+    "error_title_invalid_pin" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Authorization Error"
+          }
+        }
+      }
+    },
+    "error_title_invalid_registration_request" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Connection Error"
+          }
+        }
+      }
+    },
+    "error_title_invalid_registration_response" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Invalid response data"
+          }
+        }
+      }
+    },
+    "error_title_invalid_url" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Invalid url"
+          }
+        }
+      }
+    },
+    "error_title_registration_error" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Connection Error"
+          }
+        }
+      }
+    },
+    "error_title_session_deleted" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Session Deleted"
+          }
+        }
+      }
+    },
+    "error_title_unauthorized_access" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unauthorized Access"
+          }
+        }
+      }
+    },
+    "error_title_unexpected_error" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Client Disconnected"
+          }
+        }
+      }
+    },
+    "quick_connect_screen_button_cancel" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "quick_connect_screen_button_connect" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Connect"
+          }
+        }
+      }
+    },
+    "quick_connect_screen_button_retry" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Retry"
+          }
+        }
+      }
+    },
+    "quick_connect_screen_button_waiting" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Waiting.."
+          }
+        }
+      }
+    },
+    "quick_connect_screen_header" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Confirm connection by visiting your session's connection detail screen"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
