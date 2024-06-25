@@ -64,17 +64,9 @@ class iOSPinCodeScreen: SessionAuthorizingUI {
         let connectButtonText = NSLocalizedString("pin_screen_button_connect", value: "Connect", comment: "")
         let cancelButtonText = NSLocalizedString("pin_screen_button_cancel", value: "Cancel", comment: "")
         let retryButtonText = NSLocalizedString("pin_screen_button_retry", value: "Retry", comment: "")
-        let updateEnterPinSubheaderJS = String(format: "updateEnterPinSubheader('%@');", enterPinSubheader)
-        let updateConnectingSubheaderJS = String(format: "updateConnectingSubheader('%@');", connectingSubheader)
-        let updateConnectButtonJS = String(format: "updateConnectButton('%@');", connectButtonText)
-        let updateCancelButtonJS = String(format: "updateCancelButton('%@');", cancelButtonText)
-        let updateRetryButtonJS = String(format: "updateRetryButton('%@');", retryButtonText)
+        let localizeTextJS = String(format: "localizeText('%@', '%@', '%@', '%@', '%@');", enterPinSubheader, connectingSubheader, connectButtonText, cancelButtonText, retryButtonText)
         
-        fullscreenWebView?.evaluateJavaScript(updateEnterPinSubheaderJS, completionHandler: nil)
-        fullscreenWebView?.evaluateJavaScript(updateConnectingSubheaderJS, completionHandler: nil)
-        fullscreenWebView?.evaluateJavaScript(updateConnectButtonJS, completionHandler: nil)
-        fullscreenWebView?.evaluateJavaScript(updateCancelButtonJS, completionHandler: nil)
-        fullscreenWebView?.evaluateJavaScript(updateRetryButtonJS, completionHandler: nil)
+        fullscreenWebView?.evaluateJavaScript(localizeTextJS, completionHandler: nil)
     }
 
 }

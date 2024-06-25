@@ -200,21 +200,13 @@
                 element.innerHTML = output + element.innerHTML;
             }
             
-            function updateLogsTitleText(localizedText) {
-                document.getElementById('logSubtitle').innerHTML = localizedText;
+            function localizeText(logsTitle, disconnectButton, cancelButton, clearLogsButton) {
+                document.getElementById('logSubtitle').innerHTML = logsTitle;
+                document.getElementById('btnDisconnect').value = disconnectButton;
+                document.getElementById('btnCancel').value = cancelButton;
+                document.getElementById('btnClearLog').value = clearLogsButton;
             }
             
-            function updateDisconnectButtonText(localizedText) {
-                document.getElementById('btnDisconnect').value = localizedText;
-            }
-            
-            function updateCancelButtonText(localizedText) {
-                document.getElementById('btnCancel').value = localizedText;
-            }
-            
-            function updateClearLogsButtonText(localizedText) {
-                document.getElementById('btnClearLog').value = localizedText;
-            }
         </script>
     </body>
 </html>

@@ -333,24 +333,13 @@
                 document.getElementById(elementId).style.display = "inline-block";
             }
             
-            function updateEnterPinSubheader(localizedText) {
-                document.getElementById('enterpinsubheader').innerText = localizedText;
-            }
-            
-            function updateConnectingSubheader(localizedText) {
-                document.getElementById('connectingsubheader').innerText = localizedText;
-            }
-            
-            function updateConnectButton(localizedText) {
-                document.getElementById('btnConnect').value = localizedText
-            }
-            
-            function updateCancelButton(localizedText) {
-                document.getElementById('btnCancel').value = localizedText
-            }
-            
-            function updateRetryButton(localizedText) {
-                document.getElementById('btnRetry').value = localizedText
+            function localizeText(enterPinSubheader, connectingSubheader, connectButton, cancelButton, retryButton) {
+                document.getElementById('enterpinsubheader').innerText = enterPinSubheader;
+                document.getElementById('connectingsubheader').innerText = connectingSubheader;
+                document.getElementById('btnConnect').value = connectButton;
+                document.getElementById('btnCancel').value = cancelButton;
+                document.getElementById('btnRetry').value = retryButton;
+
             }
                         
         </script>
