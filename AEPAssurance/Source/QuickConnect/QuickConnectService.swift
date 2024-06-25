@@ -39,7 +39,7 @@ class QuickConnectService {
         /// Bail out with failure, if we are unable to form a valid create device API request URL
         let urlString = AssuranceConstants.QUICK_CONNECT_BASE_URL + "/create"
         guard let requestURL = URL(string: urlString) else {
-            let error = AssuranceConnectionError.invalidURL(url: urlString)
+            let error = AssuranceConnectionError.invalidURL
             Log.error(label: LOG_TAG, error.info.description)
             completion(error)
             return
@@ -99,7 +99,7 @@ class QuickConnectService {
         /// Bail out with failure, if we are unable to form a valid create device API request URL
         let urlString = AssuranceConstants.QUICK_CONNECT_BASE_URL + "/status"
         guard let requestURL = URL(string: urlString) else {
-            let error = AssuranceConnectionError.invalidURL(url: urlString)
+            let error = AssuranceConnectionError.invalidURL
             Log.error(label: self.LOG_TAG, error.info.description)
             completion(.failure(error))
             return

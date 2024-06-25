@@ -22,7 +22,7 @@ enum AssuranceConnectionError: Error, Equatable {
     case eventLimit
     case deletedSession
     case clientError
-    case invalidURL(url: String)
+    case invalidURL
     case invalidRequest
     case invalidResponse
     case requestFailed
@@ -54,7 +54,7 @@ enum AssuranceConnectionError: Error, Equatable {
         case .clientError:
             return (NSLocalizedString("error_title_unexpected_error", value: "Client Disconnected", comment: ""),
                     NSLocalizedString("", value: "This client has been disconnected due to an unexpected error.", comment: ""), false)
-        case .invalidURL(let url):
+        case .invalidURL:
             return (NSLocalizedString("error_title_invalid_url", value: "Invalid url", comment: ""),
                     NSLocalizedString("error_desc_invalid_url", value: "Attempted a network request with an invalid url.", comment: ""), false)
         case .invalidResponse:
