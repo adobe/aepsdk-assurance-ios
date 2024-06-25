@@ -53,7 +53,7 @@ class QuickConnectView: SessionAuthorizingUI {
         label.accessibilityLabel = "AssuranceQuickConnectHeaderLabel"
         label.backgroundColor = .clear
         label.textColor = .white
-        label.text = NSLocalizedString("assurance_title", value: "Assurance" , comment: "")
+        label.text = "Assurance"
         label.textAlignment = .center
         label.font = UIFont(name: "Helvetica-Bold", size: 30.0)
         label.translatesAutoresizingMaskIntoConstraints = false

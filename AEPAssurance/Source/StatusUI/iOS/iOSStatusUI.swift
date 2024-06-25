@@ -111,5 +111,20 @@ class iOSStatusUI {
             }
         }
     }
+    
+    private func localizeStrings() {
+        let statusHeader = NSLocalizedString("status_screen_header", value: "Logs", comment: "")
+        let disconnectButtonText = NSLocalizedString("status_screen_button_disconnect", value: "Disconnect", comment: "")
+        let cancelButtonText = NSLocalizedString("status_screen_button_cancel", value: "Cancel", comment: "")
+        let clearLogsButtonText = NSLocalizedString("status_screen_button_clear", value: "Clear Log", comment: "")
+        let updateStatusHeaderJS = String(format: "updateLogsTitleText('%@');", statusHeader)
+        let updateDisconnectButtonJS = String(format: "updateDisconnectButtonText('%@');", disconnectButtonText)
+        let updateCancelButtonJS = String(format: "updateCancelButtonText('%@');", cancelButtonText)
+        let updateClearLogsButtonJS = String(format: "updateClearLogsButtonText('%@');", clearLogsButtonText)
+        webView?.evaluateJavaScript(updateStatusHeaderJS, completionHandler: nil)
+        webView?.evaluateJavaScript(updateDisconnectButtonJS, completionHandler: nil)
+        webView?.evaluateJavaScript(updateCancelButtonJS, completionHandler: nil)
+        webView?.evaluateJavaScript(updateClearLogsButtonJS, completionHandler: nil)
+    }
 
 }

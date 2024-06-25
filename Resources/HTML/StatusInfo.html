@@ -148,7 +148,7 @@
                 <div class="header">
                     Assurance
                 </div>
-                <div class="subtitle">
+                <div class="subtitle" id="logSubtitle">
                     Logs
                 </div>
                 <div class="scrollable-content" id="divEvents">
@@ -198,6 +198,22 @@
                 }
                 
                 element.innerHTML = output + element.innerHTML;
+            }
+            
+            function updateLogsTitleText(localizedText) {
+                document.getElementById('logSubtitle').innerHTML = localizedText;
+            }
+            
+            function updateDisconnectButtonText(localizedText) {
+                document.getElementById('btnDisconnect').value = localizedText;
+            }
+            
+            function updateCancelButtonText(localizedText) {
+                document.getElementById('btnCancel').value = localizedText;
+            }
+            
+            function updateClearLogsButtonText(localizedText) {
+                document.getElementById('btnClearLog').value = localizedText;
             }
         </script>
     </body>

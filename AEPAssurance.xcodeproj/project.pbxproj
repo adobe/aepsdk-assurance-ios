@@ -1150,7 +1150,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# generate Array<UInt8> representation for PinDialog.html\n# Output file - PinDialog.swift\n#echo \"enum PinDialogHTML {\" > ${SCRIPT_OUTPUT_FILE_0}\n#echo \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\n#cat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\n#echo  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\n#echo \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n\n# generate Array<UInt8> representation StatusInfo.html\n# Output file - StatusInfo.swift\n#echo \"enum StatusInfoHTML {\" > ${SCRIPT_OUTPUT_FILE_1}\n#echo \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_1}\n#cat ${SCRIPT_INPUT_FILE_1} |  xxd -i >> ${SCRIPT_OUTPUT_FILE_1}\n#echo  \"]\" >> ${SCRIPT_OUTPUT_FILE_1}\n#echo \"}\" >> ${SCRIPT_OUTPUT_FILE_1}\n";
+			shellScript = "#!/bin/sh\n\n# generate Array<UInt8> representation for PinDialog.html\n# Output file - PinDialog.swift\necho \"enum PinDialogHTML {\" > ${SCRIPT_OUTPUT_FILE_0}\necho \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_0}\ncat ${SCRIPT_INPUT_FILE_0} | xxd -i >> ${SCRIPT_OUTPUT_FILE_0}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_0}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_0}\n\n# generate Array<UInt8> representation StatusInfo.html\n# Output file - StatusInfo.swift\necho \"enum StatusInfoHTML {\" > ${SCRIPT_OUTPUT_FILE_1}\necho \"    static let content: [UInt8] = [\" >> ${SCRIPT_OUTPUT_FILE_1}\ncat ${SCRIPT_INPUT_FILE_1} |  xxd -i >> ${SCRIPT_OUTPUT_FILE_1}\necho  \"]\" >> ${SCRIPT_OUTPUT_FILE_1}\necho \"}\" >> ${SCRIPT_OUTPUT_FILE_1}\n";
 		};
 		B6FEB899263A13A400F0F240 /* Generate binary representation of Icons */ = {
 			isa = PBXShellScriptBuildPhase;
