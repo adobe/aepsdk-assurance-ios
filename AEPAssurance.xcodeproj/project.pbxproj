@@ -29,6 +29,7 @@
 		750EE32C2937C6D50013C411 /* AssuranceStatusPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EE32B2937C6D50013C411 /* AssuranceStatusPresentationTests.swift */; };
 		750EE32E2937C7E40013C411 /* QuickConnectViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EE32D2937C7E40013C411 /* QuickConnectViewTests.swift */; };
 		750EE3302937D6B10013C411 /* MockQuickConnectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EE32F2937D6B10013C411 /* MockQuickConnectManager.swift */; };
+		7522C4882C24DAC3004AF637 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 7522C4872C24DAC2004AF637 /* Localizable.xcstrings */; };
 		7527DCA22926F15300FE0D8C /* AssuranceConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7527DCA12926F15300FE0D8C /* AssuranceConnectionDelegate.swift */; };
 		753867C32925735D0021BC3F /* AssuranceAuthorizingPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753867C22925735D0021BC3F /* AssuranceAuthorizingPresentation.swift */; };
 		753867C529257CFE0021BC3F /* AssuranceStatusPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753867C429257CFE0021BC3F /* AssuranceStatusPresentation.swift */; };
@@ -225,6 +226,7 @@
 		750EE32B2937C6D50013C411 /* AssuranceStatusPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStatusPresentationTests.swift; sourceTree = "<group>"; };
 		750EE32D2937C7E40013C411 /* QuickConnectViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectViewTests.swift; sourceTree = "<group>"; };
 		750EE32F2937D6B10013C411 /* MockQuickConnectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockQuickConnectManager.swift; sourceTree = "<group>"; };
+		7522C4872C24DAC2004AF637 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		7527DCA12926F15300FE0D8C /* AssuranceConnectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceConnectionDelegate.swift; sourceTree = "<group>"; };
 		753867C22925735D0021BC3F /* AssuranceAuthorizingPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceAuthorizingPresentation.swift; sourceTree = "<group>"; };
 		753867C429257CFE0021BC3F /* AssuranceStatusPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStatusPresentation.swift; sourceTree = "<group>"; };
@@ -518,6 +520,7 @@
 				B6EB1C142805F4FE0036337E /* AssuranceSessionOrchestrator.swift */,
 				B61B7E652822D08F00E1A6B2 /* AssuranceSessionDetails.swift */,
 				B640719D262C313E00C43183 /* Info.plist */,
+				7522C4872C24DAC2004AF637 /* Localizable.xcstrings */,
 			);
 			name = Source;
 			path = AEPAssurance/Source;
@@ -941,6 +944,15 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
+				es,
+				fr,
+				it,
+				ja,
+				ko,
+				"pt-BR",
+				"zh-Hant-TW",
+				"zh-Hant-CN",
 			);
 			mainGroup = B640718F262C313E00C43183;
 			productRefGroup = B640719A262C313E00C43183 /* Products */;
@@ -961,6 +973,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7522C4882C24DAC3004AF637 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

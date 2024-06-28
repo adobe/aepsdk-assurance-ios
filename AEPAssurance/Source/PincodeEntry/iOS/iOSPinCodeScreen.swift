@@ -29,6 +29,7 @@ class iOSPinCodeScreen: SessionAuthorizingUI {
     func show() {
         // Use the UIService to create a fullscreen message with the `PinDialogHTML` and show to the user.
         fullscreenMessage = ServiceProvider.shared.uiService.createFullscreenMessage(payload: String(bytes: PinDialogHTML.content, encoding: .utf8) ?? "", listener: self, isLocalImageUsed: false)
+        localizeStrings()
         fullscreenMessage?.show()
     }
 
@@ -55,6 +56,17 @@ class iOSPinCodeScreen: SessionAuthorizingUI {
         Log.debug(label: AssuranceConstants.LOG_TAG, String(format: "Assurance connection establishment failed. Error : %@, Description : %@", error.info.name, error.info.description))
         let jsFunctionCall = String(format: "showError('%@','%@', %d);", error.info.name, error.info.description, error.info.shouldRetry)
         fullscreenWebView?.evaluateJavaScript(jsFunctionCall, completionHandler: nil)
+    }
+    
+    private func localizeStrings() {
+        let enterPinSubheader = NSLocalizedString("pin_screen_header", value: "Enter the 4 digit PIN to continue", comment: "")
+        let connectingSubheader = NSLocalizedString("pin_screen_connecting", value: "Connecting...", comment: "")
+        let connectButtonText = NSLocalizedString("pin_screen_button_connect", value: "Connect", comment: "")
+        let cancelButtonText = NSLocalizedString("pin_screen_button_cancel", value: "Cancel", comment: "")
+        let retryButtonText = NSLocalizedString("pin_screen_button_retry", value: "Retry", comment: "")
+        let localizeTextJS = String(format: "localizeText('%@', '%@', '%@', '%@', '%@');", enterPinSubheader, connectingSubheader, connectButtonText, cancelButtonText, retryButtonText)
+        
+        fullscreenWebView?.evaluateJavaScript(localizeTextJS, completionHandler: nil)
     }
 
 }

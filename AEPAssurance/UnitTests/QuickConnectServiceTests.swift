@@ -57,7 +57,7 @@ final class QuickConnectServiceTests: XCTestCase {
         let expectation = XCTestExpectation(description: "RegisterDevice API invokes completion handler with failedToRegisterDevice error")
 
         quickConnectService.registerDevice(clientID: testClientId.stringValue!, orgID: testOrgId.stringValue!) { error in
-            XCTAssertEqual(error, .failedToRegisterDevice(statusCode: 404, responseMessage: "not found"))
+            XCTAssertEqual(error, .requestFailed)
             XCTAssertTrue(self.mockNetworkService.connectAsyncCalled)
             XCTAssertEqual(self.mockNetworkService.networkRequest?.url, expectedUrl)
             expectation.fulfill()
@@ -77,7 +77,7 @@ final class QuickConnectServiceTests: XCTestCase {
         let expectation = XCTestExpectation(description: "RegisterDevice API invokes completion handler with invalid response data error")
 
         quickConnectService.registerDevice(clientID: testClientId.stringValue!, orgID: testOrgId.stringValue!) { error in
-            XCTAssertEqual(error, .invalidResponseRegisteringDevice)
+            XCTAssertEqual(error, .invalidResponse)
             XCTAssertTrue(self.mockNetworkService.connectAsyncCalled)
             XCTAssertEqual(self.mockNetworkService.networkRequest?.url, expectedUrl)
             expectation.fulfill()
@@ -135,7 +135,7 @@ final class QuickConnectServiceTests: XCTestCase {
             case .success(_):
                 XCTFail()
             case .failure(let error):
-                XCTAssertEqual(error, .failedToGetDeviceStatus(statusCode: 404, responseMessage: "not found"))
+                XCTAssertEqual(error, .requestFailed)
                 XCTAssertTrue(self.mockNetworkService.connectAsyncCalled)
                 XCTAssertEqual(self.mockNetworkService.networkRequest?.url, expectedUrl)
                 expectation.fulfill()
@@ -160,7 +160,7 @@ final class QuickConnectServiceTests: XCTestCase {
             case .success(_):
                 XCTFail()
             case .failure(let error):
-                XCTAssertEqual(error, .invalidResponseStatusCheck)
+                XCTAssertEqual(error, .invalidResponse)
                 XCTAssertTrue(self.mockNetworkService.connectAsyncCalled)
                 XCTAssertEqual(self.mockNetworkService.networkRequest?.url, expectedUrl)
                 expectation.fulfill()
