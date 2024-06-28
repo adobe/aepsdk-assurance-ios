@@ -4,12 +4,6 @@
     "error_desc_connection_limit" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Es wurde die maximale Anzahl von verbundenen Geräten erreicht, die für eine Sitzung zulässig sind."
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22,22 +16,10 @@
             "value" : "You have reached the maximum number of connected device allowed to a session."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ha alcanzado el número máximo de dispositivos conectados permitidos para una sesión."
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ha alcanzado el número máximo de dispositivos conectados permitidos para una sesión."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vous avez atteint le nombre maximal d’appareils connectés autorisé pour une session."
           }
         },
         "fr-FR" : {
@@ -46,34 +28,16 @@
             "value" : "Vous avez atteint le nombre maximal d’appareils connectés autorisé pour une session."
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hai raggiunto il numero massimo di dispositivi collegati consentiti per una sessione."
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hai raggiunto il numero massimo di dispositivi collegati consentiti per una sessione."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "セッションに許可されている接続デバイスの最大数に達しました。"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "セッションに許可されている接続デバイスの最大数に達しました。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "세션당 허용 최대 연결 장치 수에 도달했습니다."
           }
         },
         "ko-KR" : {
@@ -105,12 +69,6 @@
     "error_desc_event_limit" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Es wurde die maximale Anzahl von Ereignissen erreicht, die pro Minute gesendet werden können."
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -123,22 +81,10 @@
             "value" : "You have reached the maximum number of events that can be sent per minute."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ha alcanzado el número máximo de eventos que se pueden enviar por minuto."
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ha alcanzado el número máximo de eventos que se pueden enviar por minuto."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vous avez atteint le nombre maximal d’événements pouvant être envoyés par minute."
           }
         },
         "fr-FR" : {
@@ -147,34 +93,16 @@
             "value" : "Vous avez atteint le nombre maximal d’événements pouvant être envoyés par minute."
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hai raggiunto il numero massimo di eventi che possono essere inviati al minuto."
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hai raggiunto il numero massimo di eventi che possono essere inviati al minuto."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "1 分あたりに送信できるイベントの最大数に達しました。"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "1 分あたりに送信できるイベントの最大数に達しました。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "분당 전송 가능한 최대 이벤트 수에 도달했습니다."
           }
         },
         "ko-KR" : {
@@ -206,12 +134,6 @@
     "error_desc_incorrect_pin_or_network" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Die Verbindung schlägt möglicherweise aufgrund eines Netzwerkproblems oder einer falschen PIN fehl. Bitte die Internet-Verbindung oder die PIN überprüfen und es erneut versuchen."
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -224,22 +146,10 @@
             "value" : "The connection may be failing due to a network issue or an incorrect PIN. Please verify internet connectivity or the PIN and try again."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Es posible que la conexión esté fallando debido a un problema de red o a un PIN incorrecto. Compruebe la conectividad a Internet o el PIN e inténtelo de nuevo."
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Es posible que la conexión esté fallando debido a un problema de red o a un PIN incorrecto. Compruebe la conectividad a Internet o el PIN e inténtelo de nuevo."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La connexion peut échouer en raison d’un problème réseau ou d’un code confidentiel incorrect. Vérifiez la connexion Internet ou le code confidentiel, puis réessayez."
           }
         },
         "fr-FR" : {
@@ -248,34 +158,16 @@
             "value" : "La connexion peut échouer en raison d’un problème réseau ou d’un code confidentiel incorrect. Vérifiez la connexion Internet ou le code confidentiel, puis réessayez."
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La connessione potrebbe non riuscire a causa di un problema di rete o di un PIN errato. Verifica la connettività Internet o il PIN e riprova."
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "La connessione potrebbe non riuscire a causa di un problema di rete o di un PIN errato. Verifica la connettività Internet o il PIN e riprova."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ネットワークの問題または PIN が正しくないため、接続に失敗している可能性があります。インターネット接続または PIN を確認し、もう一度試してください。"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "ネットワークの問題または PIN が正しくないため、接続に失敗している可能性があります。インターネット接続または PIN を確認し、もう一度試してください。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "네트워크 문제 또는 잘못된 PIN으로 인해 연결이 실패하는 것일 수 있습니다. 인터넷 연결 또는 PIN을 확인하고 다시 시도하여 주십시오."
           }
         },
         "ko-KR" : {
@@ -307,12 +199,6 @@
     "error_desc_invalid_org_id" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Die Kennung der Experience Cloud-Organisation ist nicht verfügbar. Die richtige Einrichtung der SDK-Konfiguration muss sichergestellt werden. Weitere Details sind in der Dokumentation zu finden."
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -325,22 +211,10 @@
             "value" : "The Experience Cloud organization identifier is unavailable. Ensure SDK configuration is setup correctly. See documentation for more detail."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "El identificador de organización de Experience Cloud no está disponible. Asegúrese de que la configuración del SDK se haya configurado correctamente. Consulte la documentación para obtener más información."
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "El identificador de organización de Experience Cloud no está disponible. Asegúrese de que la configuración del SDK se haya configurado correctamente. Consulte la documentación para obtener más información."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "L’identifiant d’organisation Experience Cloud n’est pas disponible. Assurez-vous que la configuration du SDK est correctement effectuée. Voir la documentation pour plus de détails."
           }
         },
         "fr-FR" : {
@@ -349,34 +223,16 @@
             "value" : "L’identifiant d’organisation Experience Cloud n’est pas disponible. Assurez-vous que la configuration du SDK est correctement effectuée. Voir la documentation pour plus de détails."
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "L’identificatore dell’organizzazione di Experience Cloud non è disponibile. Verifica che la configurazione dell’SDK sia impostata correttamente. Per ulteriori informazioni, consulta la documentazione."
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "L’identificatore dell’organizzazione di Experience Cloud non è disponibile. Verifica che la configurazione dell’SDK sia impostata correttamente. Per ulteriori informazioni, consulta la documentazione."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Experience Cloud 組織 ID を利用できません。SDK 設定が正しく設定されていることを確認してください。詳しくは、ドキュメントを参照してください。"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Experience Cloud 組織 ID を利用できません。SDK 設定が正しく設定されていることを確認してください。詳しくは、ドキュメントを参照してください。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Experience Cloud 조직 식별자를 사용할 수 없습니다. SDK 구성이 올바르게 설정되었는지 확인하십시오. 자세한 내용은 설명서를 참조하십시오."
           }
         },
         "ko-KR" : {
@@ -408,12 +264,6 @@
     "error_desc_invalid_pin" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Assurance-Verbindung kann nicht autorisiert werden. Bitte PIN überprüfen und erneut versuchen."
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -426,22 +276,10 @@
             "value" : "Unable to authorize Assurance connection. Please verify the PIN and try again."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No se puede autorizar la conexión de Assurance. Compruebe el PIN e inténtelo de nuevo."
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se puede autorizar la conexión de Assurance. Compruebe el PIN e inténtelo de nuevo."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Impossible d’autoriser la connexion Assurance. Vérifiez le code confidentiel et réessayez."
           }
         },
         "fr-FR" : {
@@ -450,34 +288,16 @@
             "value" : "Impossible d’autoriser la connexion Assurance. Vérifiez le code confidentiel et réessayez."
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Impossibile autorizzare la connessione Assurance. Verifica il PIN e riprova."
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Impossibile autorizzare la connessione Assurance. Verifica il PIN e riprova."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Assurance 接続を認証できません。PIN を確認し、もう一度試してください。"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Assurance 接続を認証できません。PIN を確認し、もう一度試してください。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "보증 연결을 승인할 수 없습니다. PIN 확인 후 다시 시도하시기 바랍니다."
           }
         },
         "ko-KR" : {
@@ -509,12 +329,6 @@
     "error_desc_invalid_registration_request" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Möglicherweise schlägt die Verbindung aufgrund einer ungültigen Netzwerkanfrage fehl."
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -527,22 +341,10 @@
             "value" : "The connection may be failing due to an invalid network request."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La conexión puede estar fallando debido a una solicitud de red no válida."
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "La conexión puede estar fallando debido a una solicitud de red no válida."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La connexion peut échouer en raison d’une demande réseau non valide."
           }
         },
         "fr-FR" : {
@@ -551,34 +353,16 @@
             "value" : "La connexion peut échouer en raison d’une demande réseau non valide."
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La connessione potrebbe non riuscire a causa di una richiesta di rete non valida."
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "La connessione potrebbe non riuscire a causa di una richiesta di rete non valida."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "無効なネットワークリクエストにより接続が失敗している可能性があります。"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "無効なネットワークリクエストにより接続が失敗している可能性があります。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "잘못된 네트워크 요청으로 인해 연결에 실패하는 것일 수 있습니다."
           }
         },
         "ko-KR" : {
@@ -610,12 +394,6 @@
     "error_desc_invalid_registration_response" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verbindung aufgrund einer ungültigen Antwort fehlgeschlagen."
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -628,22 +406,10 @@
             "value" : "Connection failed due to an invalid response."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error de conexión debido a una respuesta no válida."
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Error de conexión debido a una respuesta no válida."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La connexion a échoué en raison d’une réponse non valide."
           }
         },
         "fr-FR" : {
@@ -652,34 +418,16 @@
             "value" : "La connexion a échoué en raison d’une réponse non valide."
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Connessione non riuscita a causa di una risposta non valida."
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Connessione non riuscita a causa di una risposta non valida."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "無効な応答により、接続に失敗しました。"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "無効な応答により、接続に失敗しました。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "잘못된 응답이 발생하여 연결에 실패했습니다."
           }
         },
         "ko-KR" : {
@@ -711,12 +459,6 @@
     "error_desc_invalid_url" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Es wurde versucht, eine Netzwerkanfrage mit einer ungültigen URL durchzuführen."
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -729,22 +471,10 @@
             "value" : "Attempted a network request with an invalid url."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Se intentó una solicitud de red con una dirección URL no válida."
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se intentó una solicitud de red con una dirección URL no válida."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Une demande réseau avec une URL non valide a été tentée."
           }
         },
         "fr-FR" : {
@@ -753,34 +483,16 @@
             "value" : "Une demande réseau avec une URL non valide a été tentée."
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tentativo di richiesta di rete con URL non valido."
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tentativo di richiesta di rete con URL non valido."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "無効な URL を使用してネットワークリクエストを試行しました。"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "無効な URL を使用してネットワークリクエストを試行しました。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "잘못된 URL로 네트워크 요청을 시도했습니다."
           }
         },
         "ko-KR" : {
@@ -812,12 +524,6 @@
     "error_desc_registration_error" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fehler bei der Geräteregistrierung oder der Statusüberprüfung."
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -830,22 +536,10 @@
             "value" : "Error occurred during device registration or status check."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Se produjo un error durante el registro del dispositivo o la comprobación de estado."
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se produjo un error durante el registro del dispositivo o la comprobación de estado."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erreur lors de l’enregistrement de l’appareil ou de la vérification du statut."
           }
         },
         "fr-FR" : {
@@ -854,34 +548,16 @@
             "value" : "Erreur lors de l’enregistrement de l’appareil ou de la vérification du statut."
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Si è verificato un errore durante la registrazione del dispositivo o il controllo dello stato."
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Si è verificato un errore durante la registrazione del dispositivo o il controllo dello stato."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "デバイスの登録またはステータスチェック中にエラーが発生しました。"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "デバイスの登録またはステータスチェック中にエラーが発生しました。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "장치 등록 또는 상태 확인 중 오류가 발생했습니다."
           }
         },
         "ko-KR" : {
@@ -913,12 +589,6 @@
     "error_desc_session_deleted" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Es wurde versucht, eine Verbindung mit einer gelöschten Sitzung herzustellen."
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -931,22 +601,10 @@
             "value" : "You attempted to connect to a deleted session."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Intentó conectarse a una sesión eliminada."
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Intentó conectarse a una sesión eliminada."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vous avez tenté de vous connecter à une session supprimée."
           }
         },
         "fr-FR" : {
@@ -955,34 +613,16 @@
             "value" : "Vous avez tenté de vous connecter à une session supprimée."
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tentativo di connessione a una sessione eliminata."
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tentativo di connessione a una sessione eliminata."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "削除されたセッションに接続しようとしました。"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "削除されたセッションに接続しようとしました。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "삭제된 세션에 연결을 시도했습니다."
           }
         },
         "ko-KR" : {
@@ -1014,12 +654,6 @@
     "error_desc_unauthorized_access" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Die Kennung der Experience Cloud-Organisation stimmt nicht mit der ID der Assurance-Sitzung überein. Es muss sichergestellt werden, dass die richtige Experience Cloud-Organisation verwendet wird. Weitere Details sind in der Dokumentation zu finden."
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1032,22 +666,10 @@
             "value" : "The Experience Cloud organization identifier does not match with that of the Assurance session. Ensure the right Experience Cloud organization is being used. See documentation for more detail."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "El identificador de organización de Experience Cloud no coincide con el de la sesión de Assurance. Asegúrese de que se utiliza la organización de Experience Cloud correcta. Consulte la documentación para obtener más información."
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "El identificador de organización de Experience Cloud no coincide con el de la sesión de Assurance. Asegúrese de que se utiliza la organización de Experience Cloud correcta. Consulte la documentación para obtener más información."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "L’identifiant d’organisation Experience Cloud ne correspond pas à celui de la session Assurance. Assurez-vous que l’organisation Experience Cloud appropriée est utilisée. Voir la documentation pour plus de détails."
           }
         },
         "fr-FR" : {
@@ -1056,34 +678,16 @@
             "value" : "L’identifiant d’organisation Experience Cloud ne correspond pas à celui de la session Assurance. Assurez-vous que l’organisation Experience Cloud appropriée est utilisée. Voir la documentation pour plus de détails."
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "L’identificatore dell’organizzazione di Experience Cloud non corrisponde a quello della sessione di Assurance. Assicurati di utilizzare l’organizzazione di Experience Cloud corretta. Per ulteriori informazioni, consulta la documentazione."
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "L’identificatore dell’organizzazione di Experience Cloud non corrisponde a quello della sessione di Assurance. Assicurati di utilizzare l’organizzazione di Experience Cloud corretta. Per ulteriori informazioni, consulta la documentazione."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Experience Cloud 組織 ID が Assurance セッションの組織 ID と一致しません。適切な Experience Cloud 組織が使用されていることを確認してください。詳しくは、ドキュメントを参照してください。"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Experience Cloud 組織 ID が Assurance セッションの組織 ID と一致しません。適切な Experience Cloud 組織が使用されていることを確認してください。詳しくは、ドキュメントを参照してください。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Experience Cloud 조직 식별자가 보증 세션의 식별자와 일치하지 않습니다. 올바른 Experience Cloud 조직을 사용했는지 확인하시기 바랍니다. 자세한 내용은 설명서를 참조하십시오."
           }
         },
         "ko-KR" : {
@@ -1115,12 +719,6 @@
     "error_title_connection_limit" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verbindungslimit erreicht"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1133,22 +731,10 @@
             "value" : "Connection Limit Reached"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Límite de conexión alcanzado"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Límite de conexión alcanzado"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Limite de connexions atteinte"
           }
         },
         "fr-FR" : {
@@ -1157,34 +743,16 @@
             "value" : "Limite de connexions atteinte"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Limite di connessione raggiunto"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Limite di connessione raggiunto"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "接続の上限に達しました"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "接続の上限に達しました"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "연결 한도 도달"
           }
         },
         "ko-KR" : {
@@ -1216,12 +784,6 @@
     "error_title_event_limit" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ereignislimit erreicht"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1234,22 +796,10 @@
             "value" : "Event Limit Reached"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Se alcanzó el límite de eventos"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se alcanzó el límite de eventos"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Limite d’événements atteinte"
           }
         },
         "fr-FR" : {
@@ -1258,34 +808,16 @@
             "value" : "Limite d’événements atteinte"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Limite di evento raggiunto"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Limite di evento raggiunto"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "イベント制限に達しました"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "イベント制限に達しました"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이벤트 한도 도달"
           }
         },
         "ko-KR" : {
@@ -1317,12 +849,6 @@
     "error_title_incorrect_pin_or_network" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verbindungsfehler"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1335,22 +861,10 @@
             "value" : "Connection Error"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error de conexión"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Error de conexión"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erreur de connexion"
           }
         },
         "fr-FR" : {
@@ -1359,34 +873,16 @@
             "value" : "Erreur de connexion"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Errore di connessione"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Errore di connessione"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "接続エラー"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "接続エラー"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "연결 오류"
           }
         },
         "ko-KR" : {
@@ -1418,12 +914,6 @@
     "error_title_invalid_org_id" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ungültige Mobile SDK-Konfiguration"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1436,22 +926,10 @@
             "value" : "Invalid Mobile SDK Configuration"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configuración del SDK móvil no válida"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Configuración del SDK móvil no válida"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configuration SDK mobile non valide"
           }
         },
         "fr-FR" : {
@@ -1460,34 +938,16 @@
             "value" : "Configuration SDK mobile non valide"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configurazione dell’SDK mobile non valida"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Configurazione dell’SDK mobile non valida"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mobile SDK 設定が無効です"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mobile SDK 設定が無効です"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "잘못된 모바일 SDK 구성"
           }
         },
         "ko-KR" : {
@@ -1519,12 +979,6 @@
     "error_title_invalid_pin" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Autorisierungsfehler"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1537,22 +991,10 @@
             "value" : "Authorization Error"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error de autorización"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Error de autorización"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erreur d’autorisation"
           }
         },
         "fr-FR" : {
@@ -1561,34 +1003,16 @@
             "value" : "Erreur d’autorisation"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Errore di autorizzazione"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Errore di autorizzazione"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "認証エラー"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "認証エラー"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "인증 오류"
           }
         },
         "ko-KR" : {
@@ -1620,12 +1044,6 @@
     "error_title_invalid_registration_request" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verbindungsfehler"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1638,22 +1056,10 @@
             "value" : "Connection Error"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error de conexión"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Error de conexión"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erreur de connexion"
           }
         },
         "fr-FR" : {
@@ -1662,34 +1068,16 @@
             "value" : "Erreur de connexion"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Errore di connessione"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Errore di connessione"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "接続エラー"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "接続エラー"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "연결 오류"
           }
         },
         "ko-KR" : {
@@ -1721,12 +1109,6 @@
     "error_title_invalid_registration_response" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ungültige Antwortdaten"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1739,22 +1121,10 @@
             "value" : "Invalid response data"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Datos de respuesta no válidos"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Datos de respuesta no válidos"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Données de réponse non valides"
           }
         },
         "fr-FR" : {
@@ -1763,34 +1133,16 @@
             "value" : "Données de réponse non valides"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dati risposta non validi"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dati risposta non validi"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "応答データが無効です"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "応答データが無効です"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "잘못된 응답 데이터"
           }
         },
         "ko-KR" : {
@@ -1822,12 +1174,6 @@
     "error_title_invalid_url" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ungültige URL"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1840,22 +1186,10 @@
             "value" : "Invalid url"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "URL no válida"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "URL no válida"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "URL non valide"
           }
         },
         "fr-FR" : {
@@ -1864,34 +1198,16 @@
             "value" : "URL non valide"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "URL non valido"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "URL non valido"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "無効な URL"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "無効な URL"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "잘못된 URL"
           }
         },
         "ko-KR" : {
@@ -1923,12 +1239,6 @@
     "error_title_registration_error" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verbindungsfehler"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1941,22 +1251,10 @@
             "value" : "Connection Error"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error de conexión"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Error de conexión"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erreur de connexion"
           }
         },
         "fr-FR" : {
@@ -1965,34 +1263,16 @@
             "value" : "Erreur de connexion"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Errore di connessione"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Errore di connessione"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "接続エラー"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "接続エラー"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "연결 오류"
           }
         },
         "ko-KR" : {
@@ -2024,12 +1304,6 @@
     "error_title_session_deleted" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sitzung gelöscht"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2042,22 +1316,10 @@
             "value" : "Session Deleted"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sesión eliminada"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sesión eliminada"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Session supprimée"
           }
         },
         "fr-FR" : {
@@ -2066,34 +1328,16 @@
             "value" : "Session supprimée"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sessione eliminata"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sessione eliminata"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "セッションが削除されました"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "セッションが削除されました"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "세션 삭제됨"
           }
         },
         "ko-KR" : {
@@ -2125,12 +1369,6 @@
     "error_title_unauthorized_access" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nicht autorisierter Zugriff"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2143,22 +1381,10 @@
             "value" : "Unauthorized Access"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Acceso no autorizado"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Acceso no autorizado"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Accès non autorisé"
           }
         },
         "fr-FR" : {
@@ -2167,34 +1393,16 @@
             "value" : "Accès non autorisé"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Accesso non autorizzato"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Accesso non autorizzato"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "承認されていないアクセス"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "承認されていないアクセス"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "승인되지 않은 액세스"
           }
         },
         "ko-KR" : {
@@ -2226,12 +1434,6 @@
     "error_title_unexpected_error" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Client getrennt"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2244,22 +1446,10 @@
             "value" : "Client Disconnected"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cliente desconectado"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cliente desconectado"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Client déconnecté"
           }
         },
         "fr-FR" : {
@@ -2268,34 +1458,16 @@
             "value" : "Client déconnecté"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Client disconnesso"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Client disconnesso"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "クライアントが切断されました"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "クライアントが切断されました"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "클라이언트 연결 해제됨"
           }
         },
         "ko-KR" : {
@@ -2327,12 +1499,6 @@
     "pin_screen_button_cancel" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abbrechen"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2345,22 +1511,10 @@
             "value" : "Cancel"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancelar"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancelar"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Annuler"
           }
         },
         "fr-FR" : {
@@ -2369,34 +1523,16 @@
             "value" : "Annuler"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Annulla"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Annulla"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "キャンセル"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "キャンセル"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "취소"
           }
         },
         "ko-KR" : {
@@ -2428,12 +1564,6 @@
     "pin_screen_button_connect" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verbinden"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2446,22 +1576,10 @@
             "value" : "Connect"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Conectar"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Conectar"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Se connecter"
           }
         },
         "fr-FR" : {
@@ -2470,34 +1588,16 @@
             "value" : "Se connecter"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Connetti"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Connetti"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "接続"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "接続"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "연결"
           }
         },
         "ko-KR" : {
@@ -2529,12 +1629,6 @@
     "pin_screen_button_retry" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wiederholen"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2547,22 +1641,10 @@
             "value" : "Retry"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reintentar"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reintentar"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Réessayer"
           }
         },
         "fr-FR" : {
@@ -2571,34 +1653,16 @@
             "value" : "Réessayer"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Riprova"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Riprova"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "再試行"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "再試行"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "다시 시도"
           }
         },
         "ko-KR" : {
@@ -2630,12 +1694,6 @@
     "pin_screen_connecting" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verbindung wird hergestellt..."
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2648,22 +1706,10 @@
             "value" : "Connecting..."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Conectando..."
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Conectando..."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Connexion..."
           }
         },
         "fr-FR" : {
@@ -2672,34 +1718,16 @@
             "value" : "Connexion..."
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Connessione..."
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Connessione..."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "連携しています…"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "連携しています…"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "연결 중…"
           }
         },
         "ko-KR" : {
@@ -2731,12 +1759,6 @@
     "pin_screen_header" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zum Fortfahren die 4-stellige PIN eingeben"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2749,22 +1771,10 @@
             "value" : "Enter the 4 digit PIN to continue"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Introduzca el PIN de 4 dígitos para continuar"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Introduzca el PIN de 4 dígitos para continuar"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Saisissez le code confidentiel à 4 chiffres pour continuer"
           }
         },
         "fr-FR" : {
@@ -2773,34 +1783,16 @@
             "value" : "Saisissez le code confidentiel à 4 chiffres pour continuer"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Immetti il PIN a 4 cifre per continuare"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Immetti il PIN a 4 cifre per continuare"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "続行するには 4 桁の PIN を入力してください"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "続行するには 4 桁の PIN を入力してください"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "계속하려면 4자리 PIN 입력"
           }
         },
         "ko-KR" : {
@@ -2832,12 +1824,6 @@
     "quick_connect_screen_button_cancel" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abbrechen"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2850,22 +1836,10 @@
             "value" : "Cancel"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancelar"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancelar"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Annuler"
           }
         },
         "fr-FR" : {
@@ -2874,34 +1848,16 @@
             "value" : "Annuler"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Annulla"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Annulla"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "キャンセル"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "キャンセル"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "취소"
           }
         },
         "ko-KR" : {
@@ -2933,12 +1889,6 @@
     "quick_connect_screen_button_connect" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verbinden"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2951,22 +1901,10 @@
             "value" : "Connect"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Conectar"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Conectar"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Se connecter"
           }
         },
         "fr-FR" : {
@@ -2975,34 +1913,16 @@
             "value" : "Se connecter"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Connetti"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Connetti"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "接続"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "接続"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "연결"
           }
         },
         "ko-KR" : {
@@ -3034,12 +1954,6 @@
     "quick_connect_screen_button_retry" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wiederholen"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3052,22 +1966,10 @@
             "value" : "Retry"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reintentar"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reintentar"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Réessayer"
           }
         },
         "fr-FR" : {
@@ -3076,34 +1978,16 @@
             "value" : "Réessayer"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Riprova"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Riprova"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "再試行"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "再試行"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "다시 시도"
           }
         },
         "ko-KR" : {
@@ -3135,12 +2019,6 @@
     "quick_connect_screen_button_waiting" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Warten…"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3153,22 +2031,10 @@
             "value" : "Waiting.."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esperando..."
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esperando..."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "En attente..."
           }
         },
         "fr-FR" : {
@@ -3177,34 +2043,16 @@
             "value" : "En attente..."
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "In attesa..."
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "In attesa..."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "待機中..."
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "待機中..."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "대기 중.."
           }
         },
         "ko-KR" : {
@@ -3236,12 +2084,6 @@
     "quick_connect_screen_header" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Der Bildschirm mit den Verbindungsdetails der Sitzung muss aufgerufen werden, um die Verbindung zu bestätigen"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3254,22 +2096,10 @@
             "value" : "Confirm connection by visiting your session's connection detail screen"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Para confirmar la conexión, visite la pantalla de detalles de conexión de la sesión"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Para confirmar la conexión, visite la pantalla de detalles de conexión de la sesión"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Confirmez la connexion en consultant l’écran des détails de la connexion de votre session."
           }
         },
         "fr-FR" : {
@@ -3278,34 +2108,16 @@
             "value" : "Confirmez la connexion en consultant l’écran des détails de la connexion de votre session."
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Conferma la connessione visitando la schermata dei dettagli di connessione della sessione"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Conferma la connessione visitando la schermata dei dettagli di connessione della sessione"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "セッション接続の詳細画面にアクセスして接続を確認します"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "セッション接続の詳細画面にアクセスして接続を確認します"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "세션의 연결 세부 정보 화면에서 연결을 확인하시기 바랍니다."
           }
         },
         "ko-KR" : {
@@ -3337,12 +2149,6 @@
     "status_screen_button_cancel" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abbrechen"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3355,22 +2161,10 @@
             "value" : "Cancel"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancelar"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancelar"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Annuler"
           }
         },
         "fr-FR" : {
@@ -3379,34 +2173,16 @@
             "value" : "Annuler"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Annulla"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Annulla"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "キャンセル"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "キャンセル"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "취소"
           }
         },
         "ko-KR" : {
@@ -3438,12 +2214,6 @@
     "status_screen_button_clear" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Protokoll löschen"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3456,22 +2226,10 @@
             "value" : "Clear Log"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Borrar registro"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Borrar registro"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Effacer le journal"
           }
         },
         "fr-FR" : {
@@ -3480,34 +2238,16 @@
             "value" : "Effacer le journal"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancella registro"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancella registro"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ログをクリア"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "ログをクリア"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "로그 지우기"
           }
         },
         "ko-KR" : {
@@ -3539,12 +2279,6 @@
     "status_screen_button_disconnect" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Trennen"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3557,22 +2291,10 @@
             "value" : "Disconnect"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desconectar"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desconectar"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Se déconnecter"
           }
         },
         "fr-FR" : {
@@ -3581,34 +2303,16 @@
             "value" : "Se déconnecter"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Disconnetti"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Disconnetti"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "切断"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "切断"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "연결 해제"
           }
         },
         "ko-KR" : {
@@ -3640,12 +2344,6 @@
     "status_screen_header" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Protokolle"
-          }
-        },
         "de-DE" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3658,22 +2356,10 @@
             "value" : "Logs"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Registros"
-          }
-        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Registros"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Journaux"
           }
         },
         "fr-FR" : {
@@ -3682,34 +2368,16 @@
             "value" : "Journaux"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Registri"
-          }
-        },
         "it-IT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Registri"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ログ"
-          }
-        },
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "ログ"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "로그"
           }
         },
         "ko-KR" : {
