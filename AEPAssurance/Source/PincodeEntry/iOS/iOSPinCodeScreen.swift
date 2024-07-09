@@ -59,11 +59,11 @@ class iOSPinCodeScreen: SessionAuthorizingUI {
     }
     
     private func localizeStrings() {
-        let enterPinSubheader = NSLocalizedString("pin_screen_header", value: "Enter the 4 digit PIN to continue", comment: "")
-        let connectingSubheader = NSLocalizedString("pin_screen_connecting", value: "Connecting...", comment: "")
-        let connectButtonText = NSLocalizedString("pin_screen_button_connect", value: "Connect", comment: "")
-        let cancelButtonText = NSLocalizedString("pin_screen_button_cancel", value: "Cancel", comment: "")
-        let retryButtonText = NSLocalizedString("pin_screen_button_retry", value: "Retry", comment: "")
+        let enterPinSubheader = NSLocalizedString("pin_screen_header", bundle: Bundle(for: type(of: self)), value: "Enter the 4 digit PIN to continue", comment: "")
+        let connectingSubheader = NSLocalizedString("pin_screen_connecting", bundle: Bundle(for: type(of: self)), value: "Connecting...", comment: "")
+        let connectButtonText = NSLocalizedString("pin_screen_button_connect", bundle: Bundle(for: type(of: self)), value: "Connect", comment: "")
+        let cancelButtonText = NSLocalizedString("pin_screen_button_cancel", bundle: Bundle(for: type(of: self)), value: "Cancel", comment: "")
+        let retryButtonText = NSLocalizedString("pin_screen_button_retry", bundle: Bundle(for: type(of: self)), value: "Retry", comment: "")
         let localizeTextJS = String(format: "localizeText('%@', '%@', '%@', '%@', '%@');", enterPinSubheader, connectingSubheader, connectButtonText, cancelButtonText, retryButtonText)
         
         fullscreenWebView?.evaluateJavaScript(localizeTextJS, completionHandler: nil)

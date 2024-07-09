@@ -782,6 +782,77 @@
         }
       }
     },
+    "error_desc_unexpected_error" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "de-DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Verbindung mit diesem Client wurde aufgrund eines unerwarteten Fehlers getrennt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "This client has been disconnected due to an unexpected error."
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This client has been disconnected due to an unexpected error."
+          }
+        },
+        "es-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se ha desconectado este cliente debido a un error inesperado."
+          }
+        },
+        "fr-FR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce client a été déconnecté en raison d’une erreur inattendue."
+          }
+        },
+        "it-IT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il client è stato disconnesso a causa di un errore imprevisto."
+          }
+        },
+        "ja-JP" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "予期しないエラーが発生したため、このクライアントは切断されました。"
+          }
+        },
+        "ko-KR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "예상치 못한 오류가 발생하여 이 클라이언트와의 연결이 해제되었습니다."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este cliente foi desconectado devido a um erro inesperado."
+          }
+        },
+        "zh-Hant-CN" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "由于意外错误，该客户端已断开连接。"
+          }
+        },
+        "zh-Hant-TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "由於意外錯誤，此用戶端已中斷連接。"
+          }
+        }
+      }
+    },
     "error_title_connection_limit" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {

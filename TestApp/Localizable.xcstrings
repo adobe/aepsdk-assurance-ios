@@ -1,0 +1,128 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Analytics" : {
+      "localizations" : {
+        "it-IT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "test italian"
+          }
+        }
+      }
+    },
+    "Assurance: v" : {
+      "localizations" : {
+        "de-DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assurance German"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assurance English"
+          }
+        },
+        "es-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assurance Spanish"
+          }
+        },
+        "fr-FR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assurance French"
+          }
+        },
+        "it-IT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assurance Italian"
+          }
+        },
+        "ja-JP" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assurance Japanese"
+          }
+        },
+        "ko-KR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assurance Korean"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assurance Portuguese"
+          }
+        },
+        "zh-Hant-CN" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assurance Chinese (China)"
+          }
+        },
+        "zh-Hant-TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assurance Chinese (Taiwan)"
+          }
+        }
+      }
+    },
+    "Big Assurance Events" : {
+
+    },
+    "Consent" : {
+
+    },
+    "Consent No" : {
+
+    },
+    "Consent Yes" : {
+
+    },
+    "Entry" : {
+
+    },
+    "Exit" : {
+
+    },
+    "Get POIs" : {
+
+    },
+    "Places" : {
+
+    },
+    "Remove" : {
+
+    },
+    "Send HTML" : {
+
+    },
+    "Send huge rules data" : {
+
+    },
+    "Start Session" : {
+
+    },
+    "Track Action" : {
+
+    },
+    "Track State" : {
+
+    },
+    "Update" : {
+
+    },
+    "UserProfile" : {
+
+    }
+  },
+  "version" : "1.0"
+}

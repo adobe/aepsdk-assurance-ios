@@ -65,10 +65,11 @@ class QuickConnectView: SessionAuthorizingUI {
         textView.accessibilityLabel = "AssuranceQuickConnectDescriptionTextView"
         textView.backgroundColor = .clear
         textView.textColor = .white
-        textView.text = NSLocalizedString("quick_connect_screen_header", value: "Confirm connection by visiting your session's connection detail screen", comment: "")
+        textView.text = NSLocalizedString("quick_connect_screen_header", bundle: Bundle(for: type(of: self)), value: "Confirm connection by visiting your session's connection detail screen", comment: "")
         textView.textAlignment = .center
         textView.textContainerInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         textView.font = UIFont(name: "Helvetica", size: 16.0)
+        textView.isScrollEnabled = false
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
@@ -110,7 +111,7 @@ class QuickConnectView: SessionAuthorizingUI {
         button.layer.borderColor = UIColor.white.cgColor
         button.layer.cornerRadius = uiConstants.BUTTON_CORNER_RADIUS
         button.titleLabel?.font = UIFont(name: "Helvetica", size: uiConstants.BUTTON_FONT_SIZE)
-        button.setTitle(NSLocalizedString("quick_connect_screen_button_cancel", value: "Cancel", comment: ""), for: .normal)
+        button.setTitle(NSLocalizedString("quick_connect_screen_button_cancel", bundle: Bundle(for: type(of: self)), value: "Cancel", comment: ""), for: .normal)
         button.accessibilityLabel = "AssuranceQuickConnectButtonCancel"
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -136,7 +137,7 @@ class QuickConnectView: SessionAuthorizingUI {
         let textView = UITextView()
         textView.accessibilityLabel = "AssuranceQuickConnectErrorLabel"
         textView.backgroundColor = .clear
-        textView.text = NSLocalizedString("error_title_registration_error", value: "Connection Error", comment: "")
+        textView.text = NSLocalizedString("error_title_registration_error", bundle: Bundle(for: type(of: self)), value: "Connection Error", comment: "")
         textView.textColor = .white
         textView.isScrollEnabled = false
         textView.textAlignment = .left
@@ -196,7 +197,7 @@ class QuickConnectView: SessionAuthorizingUI {
     ///
     func initialState(){
         DispatchQueue.main.async {
-            self.connectButton.setTitle(NSLocalizedString("quick_connect_screen_button_connect", value: "Connect", comment: ""), for: .normal)
+            self.connectButton.setTitle(NSLocalizedString("quick_connect_screen_button_connect", bundle: Bundle(for: type(of: self)), value: "Connect", comment: ""), for: .normal)
             self.connectButton.backgroundColor = UIColor(red: 20.0/256.0, green: 115.0/256.0, blue: 230.0/256.0, alpha: 1)
             self.connectButton.isUserInteractionEnabled = true
         }
@@ -209,19 +210,17 @@ class QuickConnectView: SessionAuthorizingUI {
         DispatchQueue.main.async {
             self.errorTitle.isHidden = true
             self.errorDescription.isHidden = true
-            self.connectButton.setTitle(NSLocalizedString("quick_connect_screen_button_waiting", value: "Waiting..", comment: ""), for: .normal)
+            self.connectButton.setTitle(NSLocalizedString("quick_connect_screen_button_waiting", bundle: Bundle(for: type(of: self)), value: "Waiting..", comment: ""), for: .normal)
             self.connectButton.backgroundColor = UIColor(red: 67.0/256.0, green: 67.0/256.0, blue: 67.0/256.0, alpha: 1)
             self.connectButton.isUserInteractionEnabled = false
         }
     }
     
     ///
-    /// Sets the QuickConnectView to a successful connection state, where the connect button changes to "Connected" and user interaction on the button is disabled
+    /// Sets the QuickConnectView to a successful connection state, where the connect button user interaction on the button is disabled
     ///
     func connectionSuccessfulState(){
         DispatchQueue.main.async {
-            self.connectButton.setTitle("Connected", for: .normal)
-            self.connectButton.backgroundColor = UIColor(red: 45.0/256.0, green: 157.0/256.0, blue: 120.0/256.0, alpha: 1)
             self.connectButton.isUserInteractionEnabled = false
         }
     }
@@ -235,7 +234,7 @@ class QuickConnectView: SessionAuthorizingUI {
             self.errorTitle.isHidden = false
             self.errorDescription.isHidden = false
             self.errorDescription.text = errorText
-            self.connectButton.setTitle(NSLocalizedString("quick_connect_screen_button_retry", value: "Retry", comment: ""), for: .normal)
+            self.connectButton.setTitle(NSLocalizedString("quick_connect_screen_button_retry", bundle: Bundle(for: type(of: self)), value: "Retry", comment: ""), for: .normal)
             self.connectButton.backgroundColor = UIColor(red: 20.0/256.0, green: 115.0/256.0, blue: 230.0/256.0, alpha: 1)
             self.connectButton.isUserInteractionEnabled = true
         }
@@ -315,7 +314,7 @@ class QuickConnectView: SessionAuthorizingUI {
             descriptionTextView.leftAnchor.constraint(equalTo: safeView.leftAnchor),
             descriptionTextView.rightAnchor.constraint(equalTo: safeView.rightAnchor),
             descriptionTextView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: uiConstants.DESCRIPTION_TEXTVIEW_TOP_MARGIN),
-            descriptionTextView.heightAnchor.constraint(equalToConstant: uiConstants.DESCRIPTION_TEXTVIEW_HEIGHT)
+            //descriptionTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: uiConstants.DESCRIPTION_TEXTVIEW_HEIGHT)
         ])
         
         baseView.addSubview(connectionImageView)
