@@ -16,6 +16,12 @@
             "value" : "You have reached the maximum number of connected device allowed to a session."
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have reached the maximum number of connected device allowed to a session."
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -78,6 +84,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "You have reached the maximum number of events that can be sent per minute."
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "You have reached the maximum number of events that can be sent per minute."
           }
         },
@@ -146,6 +158,12 @@
             "value" : "The connection may be failing due to a network issue or an incorrect PIN. Please verify internet connectivity or the PIN and try again."
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The connection may be failing due to a network issue or an incorrect PIN. Please verify internet connectivity or the PIN and try again."
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -208,6 +226,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "The Experience Cloud organization identifier is unavailable. Ensure SDK configuration is setup correctly. See documentation for more detail."
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "The Experience Cloud organization identifier is unavailable. Ensure SDK configuration is setup correctly. See documentation for more detail."
           }
         },
@@ -276,6 +300,12 @@
             "value" : "Unable to authorize Assurance connection. Please verify the PIN and try again."
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to authorize Assurance connection. Please verify the PIN and try again."
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -338,6 +368,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "The connection may be failing due to an invalid network request."
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "The connection may be failing due to an invalid network request."
           }
         },
@@ -406,6 +442,12 @@
             "value" : "Connection failed due to an invalid response."
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection failed due to an invalid response."
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -468,6 +510,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Attempted a network request with an invalid url."
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Attempted a network request with an invalid url."
           }
         },
@@ -536,6 +584,12 @@
             "value" : "Error occurred during device registration or status check."
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error occurred during device registration or status check."
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -598,6 +652,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "You attempted to connect to a deleted session."
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "You attempted to connect to a deleted session."
           }
         },
@@ -666,6 +726,12 @@
             "value" : "The Experience Cloud organization identifier does not match with that of the Assurance session. Ensure the right Experience Cloud organization is being used. See documentation for more detail."
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Experience Cloud organization identifier does not match with that of the Assurance session. Ensure the right Experience Cloud organization is being used. See documentation for more detail."
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -728,6 +794,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Connection Limit Reached"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Connection Limit Reached"
           }
         },
@@ -796,6 +868,12 @@
             "value" : "Event Limit Reached"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Event Limit Reached"
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -858,6 +936,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Connection Error"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Connection Error"
           }
         },
@@ -926,6 +1010,12 @@
             "value" : "Invalid Mobile SDK Configuration"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid Mobile SDK Configuration"
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -988,6 +1078,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Authorization Error"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Authorization Error"
           }
         },
@@ -1056,6 +1152,12 @@
             "value" : "Connection Error"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection Error"
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1118,6 +1220,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Invalid response data"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Invalid response data"
           }
         },
@@ -1186,6 +1294,12 @@
             "value" : "Invalid url"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid url"
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1248,6 +1362,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Connection Error"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Connection Error"
           }
         },
@@ -1316,6 +1436,12 @@
             "value" : "Session Deleted"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Session Deleted"
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1378,6 +1504,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Unauthorized Access"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Unauthorized Access"
           }
         },
@@ -1446,6 +1578,12 @@
             "value" : "Client Disconnected"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Client Disconnected"
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1508,6 +1646,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Cancel"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Cancel"
           }
         },
@@ -1576,6 +1720,12 @@
             "value" : "Connect"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect"
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1638,6 +1788,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Retry"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Retry"
           }
         },
@@ -1706,6 +1862,12 @@
             "value" : "Connecting..."
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecting..."
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1768,6 +1930,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Enter the 4 digit PIN to continue"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Enter the 4 digit PIN to continue"
           }
         },
@@ -1836,6 +2004,12 @@
             "value" : "Cancel"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1898,6 +2072,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Connect"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Connect"
           }
         },
@@ -1966,6 +2146,12 @@
             "value" : "Retry"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2028,6 +2214,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Waiting.."
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Waiting.."
           }
         },
@@ -2096,6 +2288,12 @@
             "value" : "Confirm connection by visiting your session's connection detail screen"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm connection by visiting your session's connection detail screen"
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2158,6 +2356,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Cancel"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Cancel"
           }
         },
@@ -2226,6 +2430,12 @@
             "value" : "Clear Log"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear Log"
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2291,6 +2501,12 @@
             "value" : "Disconnect"
           }
         },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disconnect"
+          }
+        },
         "es-ES" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2353,6 +2569,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Logs"
+          }
+        },
+        "en-US" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Logs"
           }
         },
