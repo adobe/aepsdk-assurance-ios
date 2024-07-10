@@ -62,6 +62,7 @@ class QuickConnectView: SessionAuthorizingUI {
     
     lazy private var descriptionTextView : UITextView = {
         let textView = UITextView()
+        textView.isEditable = false
         textView.accessibilityLabel = "AssuranceQuickConnectDescriptionTextView"
         textView.backgroundColor = .clear
         textView.textColor = .white
@@ -135,9 +136,9 @@ class QuickConnectView: SessionAuthorizingUI {
     
     lazy private var errorTitle: UITextView = {
         let textView = UITextView()
+        textView.isEditable = false
         textView.accessibilityLabel = "AssuranceQuickConnectErrorLabel"
         textView.backgroundColor = .clear
-        textView.text = NSLocalizedString("error_title_registration_error", bundle: Bundle(for: type(of: self)), value: "Connection Error", comment: "")
         textView.textColor = .white
         textView.isScrollEnabled = false
         textView.textAlignment = .left
@@ -149,6 +150,7 @@ class QuickConnectView: SessionAuthorizingUI {
     
     lazy private var errorDescription: UITextView = {
         let textView = UITextView()
+        textView.isEditable = false
         textView.accessibilityLabel = "AssuranceQuickConnectErrorDescriptionTextView"
         textView.backgroundColor = .clear
         textView.textColor = .white
@@ -229,10 +231,11 @@ class QuickConnectView: SessionAuthorizingUI {
     /// Sets the QuickConnectView to an error state, where the error dialogue is displayed with a given error, and the connect button
     /// changes to "Retry"
     ///
-    func errorState(errorText: String) {
+    func errorState(errorTitle: String, errorText: String) {
         DispatchQueue.main.async {
             self.errorTitle.isHidden = false
             self.errorDescription.isHidden = false
+            self.errorTitle.text = errorTitle
             self.errorDescription.text = errorText
             self.connectButton.setTitle(NSLocalizedString("quick_connect_screen_button_retry", bundle: Bundle(for: type(of: self)), value: "Retry", comment: ""), for: .normal)
             self.connectButton.backgroundColor = UIColor(red: 20.0/256.0, green: 115.0/256.0, blue: 230.0/256.0, alpha: 1)
@@ -410,14 +413,7 @@ class QuickConnectView: SessionAuthorizingUI {
     }
     
     func sessionConnectionFailed(withError error: AssuranceConnectionError) {
-        switch error {
-        // These three cases can use the default info description as it is only related to quick connect
-        case .requestFailed:
-            errorState(errorText: error.info.description)
-        // Other errors will be handled generically
-        default:
-            errorState(errorText: "Failed to create an Assurance session. Please refer to debug logs for more information.")
-        }
+        errorState(errorTitle: error.info.name, errorText: error.info.description)
     }
 }
 #endif
