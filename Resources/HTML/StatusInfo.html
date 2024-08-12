@@ -148,7 +148,7 @@
                 <div class="header">
                     Assurance
                 </div>
-                <div class="subtitle">
+                <div class="subtitle" id="logSubtitle">
                     Logs
                 </div>
                 <div class="scrollable-content" id="divEvents">
@@ -199,6 +199,14 @@
                 
                 element.innerHTML = output + element.innerHTML;
             }
+            
+            function localizeText(logsTitle, disconnectButton, cancelButton, clearLogsButton) {
+                document.getElementById('logSubtitle').innerHTML = logsTitle;
+                document.getElementById('btnDisconnect').value = disconnectButton;
+                document.getElementById('btnCancel').value = cancelButton;
+                document.getElementById('btnClearLog').value = clearLogsButton;
+            }
+            
         </script>
     </body>
 </html>
