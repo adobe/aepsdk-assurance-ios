@@ -151,6 +151,7 @@ class iOSStatusUITests: XCTestCase {
     func test_statusUI_PublishesClientLogs() throws {
         // setup
         mockWebView.expectation = XCTestExpectation(description: "Should call javascript method.")
+        mockWebView.expectationCounter = 2
         let logMessage = "sampleMessage"
         statusUI.display()
 
@@ -177,7 +178,7 @@ class iOSStatusUITests: XCTestCase {
 
         // verify
         wait(for: [mockWebView.expectation!], timeout: 2.0)
-        XCTAssertEqual(3, mockWebView.javaScriptMethodInvokeCount)
+        XCTAssertEqual(4, mockWebView.javaScriptMethodInvokeCount)
     }
 
     func test_updateLogUI_whenNoLogsQueued() throws {
