@@ -27,11 +27,6 @@ class AssuranceConnectionErrorTests: XCTestCase {
         XCTAssertNotNil(AssuranceConnectionError.noPincode.info.description)
         XCTAssertTrue(AssuranceConnectionError.noPincode.info.shouldRetry)
 
-        // NoURL Error
-        XCTAssertNotNil(AssuranceConnectionError.noURL.info.name)
-        XCTAssertNotNil(AssuranceConnectionError.noURL.info.description)
-        XCTAssertFalse(AssuranceConnectionError.noURL.info.shouldRetry)
-
         // noOrgId Error
         XCTAssertNotNil(AssuranceConnectionError.noOrgId.info.name)
         XCTAssertNotNil(AssuranceConnectionError.noOrgId.info.description)
@@ -57,11 +52,6 @@ class AssuranceConnectionErrorTests: XCTestCase {
         XCTAssertNotNil(AssuranceConnectionError.clientError.info.description)
         XCTAssertFalse(AssuranceConnectionError.clientError.info.shouldRetry)
 
-        // userCancelled Error
-        XCTAssertNotNil(AssuranceConnectionError.userCancelled.info.name)
-        XCTAssertNotNil(AssuranceConnectionError.userCancelled.info.description)
-        XCTAssertFalse(AssuranceConnectionError.userCancelled.info.shouldRetry)
-        
         // deleted session error
         XCTAssertNotNil(AssuranceConnectionError.deletedSession.info.name)
         XCTAssertNotNil(AssuranceConnectionError.deletedSession.info.description)

@@ -90,6 +90,8 @@ class iOSStatusUI {
         guard let webView = webView else {
             return
         }
+        
+        localizeStrings()
 
         while clientLogQueue.size() > 0 {
             guard let logMessage = clientLogQueue.dequeue() else {
@@ -110,6 +112,16 @@ class iOSStatusUI {
                 })
             }
         }
+    }
+    
+    private func localizeStrings() {
+        let statusHeader = NSLocalizedString("status_screen_header", bundle: Bundle(for: type(of: self)), value: "Logs", comment: "")
+        let disconnectButtonText = NSLocalizedString("status_screen_button_disconnect", bundle: Bundle(for: type(of: self)), value: "Disconnect", comment: "")
+        let cancelButtonText = NSLocalizedString("status_screen_button_cancel", bundle: Bundle(for: type(of: self)), value: "Cancel", comment: "")
+        let clearLogsButtonText = NSLocalizedString("status_screen_button_clear", bundle: Bundle(for: type(of: self)), value: "Clear Log", comment: "")
+        
+        let localizeText = String(format: "localizeText('%@', '%@', '%@', '%@');", statusHeader, disconnectButtonText, cancelButtonText, clearLogsButtonText)
+        webView?.evaluateJavaScript(localizeText, completionHandler: nil)
     }
 
 }

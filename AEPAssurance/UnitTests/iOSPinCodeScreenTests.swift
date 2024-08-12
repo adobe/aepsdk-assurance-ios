@@ -199,7 +199,7 @@ class iOSPinCodeScreenTests: XCTestCase {
         pinCodeScreen.sessionConnectionFailed(withError: .clientError)
 
         // verify
-        XCTAssertEqual("showError('Client Disconnected','This client has been disconnected due to an unexpected error. Error Code 4400.', 0);",
+        XCTAssertEqual("showError('Client Disconnected','This client has been disconnected due to an unexpected error.', 0);",
                        mockWebView.javaScriptStringReceived)
     }
 

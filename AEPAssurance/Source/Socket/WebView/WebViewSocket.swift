@@ -167,7 +167,7 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
             self.delegate.webSocketDidConnect(self)
         })
 
-        registerSocketCallback("onerror", with: { _ in
+        registerSocketCallback("onerror", with: { message in
             self.delegate.webSocketOnError(self)
         })
 

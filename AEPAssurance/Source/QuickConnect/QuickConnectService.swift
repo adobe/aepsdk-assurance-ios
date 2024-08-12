@@ -39,7 +39,7 @@ class QuickConnectService {
         /// Bail out with failure, if we are unable to form a valid create device API request URL
         let urlString = AssuranceConstants.QUICK_CONNECT_BASE_URL + "/create"
         guard let requestURL = URL(string: urlString) else {
-            let error = AssuranceConnectionError.invalidURL(url: urlString)
+            let error = AssuranceConnectionError.invalidURL
             Log.error(label: LOG_TAG, error.info.description)
             completion(error)
             return
@@ -51,7 +51,7 @@ class QuickConnectService {
 
         /// Bail out with failure, if we are unable to create the request body required for the API
         guard let body = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) else {
-            let error = AssuranceConnectionError.invalidRequestBody
+            let error = AssuranceConnectionError.invalidRequest
             Log.error(label: LOG_TAG, error.info.description)
             completion(error)
             return
@@ -68,14 +68,14 @@ class QuickConnectService {
         ServiceProvider.shared.networkService.connectAsync(networkRequest: request) { connection in
 
             if !(connection.responseCode == HTTP_RESPONSE_CODES.HTTP_OK || connection.responseCode == 201) {
-                let error = AssuranceConnectionError.failedToRegisterDevice(statusCode: connection.responseCode ?? -1, responseMessage: connection.responseMessage ?? "Unkown error")
+                let error = AssuranceConnectionError.requestFailed
                 Log.error(label: self.LOG_TAG, error.info.description)
                 completion(error)
                 return
             }
             guard let data = connection.data, let responseJson = try? JSONDecoder().decode([String: AnyCodable].self, from: data) else {
-                Log.error(label: self.LOG_TAG, AssuranceConnectionError.invalidResponseData.info.description)
-                completion(.invalidResponseData)
+                Log.error(label: self.LOG_TAG, AssuranceConnectionError.invalidResponse.info.description)
+                completion(.invalidResponse)
                 return
             }
             Log.debug(label: self.LOG_TAG, "Created device \(String(describing: responseJson))")
@@ -99,7 +99,7 @@ class QuickConnectService {
         /// Bail out with failure, if we are unable to form a valid create device API request URL
         let urlString = AssuranceConstants.QUICK_CONNECT_BASE_URL + "/status"
         guard let requestURL = URL(string: urlString) else {
-            let error = AssuranceConnectionError.invalidURL(url: urlString)
+            let error = AssuranceConnectionError.invalidURL
             Log.error(label: self.LOG_TAG, error.info.description)
             completion(.failure(error))
             return
@@ -109,7 +109,7 @@ class QuickConnectService {
 
         /// Bail out with failure, if we are unable to create the request body required for the API
         guard let body = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) else {
-            let error = AssuranceConnectionError.invalidRequestBody
+            let error = AssuranceConnectionError.invalidRequest
             Log.error(label: self.LOG_TAG, error.info.description)
             completion(.failure(error))
             return
@@ -125,7 +125,7 @@ class QuickConnectService {
 
         ServiceProvider.shared.networkService.connectAsync(networkRequest: request) { connection in
             if !(connection.responseCode == HTTP_RESPONSE_CODES.HTTP_OK || connection.responseCode == 201) {
-                let error = AssuranceConnectionError.failedToGetDeviceStatus(statusCode: connection.responseCode ?? -1, responseMessage: connection.responseMessage ?? "Unknown error")
+                let error = AssuranceConnectionError.requestFailed
                 Log.error(label: self.LOG_TAG, error.info.description)
                 completion(.failure(error))
                 return
@@ -148,67 +148,9 @@ class QuickConnectService {
 
                 return
             }
-            let error = AssuranceConnectionError.invalidResponseData
+            let error = AssuranceConnectionError.invalidResponse
             Log.error(label: self.LOG_TAG, error.info.description)
             completion(.failure(error))
-            return
-        }
-    }
-
-    ///
-    /// Deletes this device from the org
-    /// - Parameters:
-    ///     - clientID: `String` the clientID.
-    ///     - orgID: `String` the orgID
-    ///     - completion: `(AssuranceNetworkError?) -> Void` the completion which is nil if successful or an `AssuranceNetworkError` if there is a failure
-    func deleteDevice(clientID: String,
-                      orgID: String,
-                      completion: @escaping (AssuranceConnectionError?) -> Void) {
-
-        /// Bail out with failure, if we are unable to form a valid create device API request URL
-        let urlString = AssuranceConstants.QUICK_CONNECT_BASE_URL + "/delete"
-        guard let requestURL = URL(string: urlString) else {
-            let error = AssuranceConnectionError.invalidURL(url: urlString)
-            Log.error(label: self.LOG_TAG, error.info.description)
-            completion(error)
-            return
-        }
-
-        let parameters = [AssuranceConstants.QuickConnect.KEY_ORGID: orgID,
-                          AssuranceConstants.QuickConnect.KEY_DEVICE_NAME: UIDevice.current.name,
-                          AssuranceConstants.QuickConnect.KEY_CLIENT_ID: clientID]
-
-        /// Bail out with failure, if we are unable to create the request body required for the API
-        guard let body = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) else {
-            let error = AssuranceConnectionError.invalidRequestBody
-            Log.error(label: self.LOG_TAG, error.info.description)
-            completion(error)
-            return
-        }
-
-        /// Create the request
-        let request = NetworkRequest(url: requestURL,
-                                     httpMethod: HttpMethod.post,
-                                     connectPayloadData: body,
-                                     httpHeaders: HEADERS,
-                                     connectTimeout: AssuranceConstants.Network.CONNECTION_TIMEOUT,
-                                     readTimeout: AssuranceConstants.Network.READ_TIMEOUT)
-
-        ServiceProvider.shared.networkService.connectAsync(networkRequest: request) { connection in
-
-            if !(connection.responseCode == HTTP_RESPONSE_CODES.HTTP_OK || connection.responseCode == 201) {
-                let error = AssuranceConnectionError.failedToDeleteDevice(statusCode: connection.responseCode ?? -1, responseMessage: connection.responseMessage ?? "Unknown error")
-                Log.error(label: self.LOG_TAG, error.info.description)
-                completion(error)
-                return
-            }
-            guard let data = connection.data, let responseJson = try? JSONDecoder().decode([String: AnyCodable].self, from: data) else {
-                Log.error(label: self.LOG_TAG, AssuranceConnectionError.invalidResponseData.info.description)
-                completion(.invalidResponseData)
-                return
-            }
-            Log.debug(label: self.LOG_TAG, "Deleted device \(String(describing: responseJson))")
-            completion(nil)
             return
         }
     }
