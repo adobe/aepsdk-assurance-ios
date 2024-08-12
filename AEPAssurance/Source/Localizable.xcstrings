@@ -386,7 +386,7 @@
         "fr-FR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La connexion peut échouer en raison d’une demande réseau non valide."
+            "value" : "Il se peut que la connexion ne fonctionne pas en raison d’une requête de réseau non valide."
           }
         },
         "it-IT" : {
@@ -2386,7 +2386,7 @@
         "ja-JP" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "セッション接続の詳細画面にアクセスして接続を確認します"
+            "value" : "セッションの接続の詳細画面にアクセスすることで、接続を確認します"
           }
         },
         "ko-KR" : {
