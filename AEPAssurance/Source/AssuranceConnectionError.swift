@@ -17,72 +17,55 @@ enum AssuranceConnectionError: Error, Equatable {
     case genericError
     case noOrgId
     case noPincode
-    case noURL
     case orgIDMismatch
     case connectionLimit
     case eventLimit
     case deletedSession
     case clientError
-    case userCancelled
-    case invalidURL(url: String)
-    case invalidRequestBody
-    case invalidResponseData
-    case failedToRegisterDevice(statusCode: Int, responseMessage: String)
-    case failedToGetDeviceStatus(statusCode: Int, responseMessage: String)
-    case failedToDeleteDevice(statusCode: Int, responseMessage: String)
+    case invalidURL
+    case invalidRequest
+    case invalidResponse
+    case requestFailed
 
     var info: (name: String, description: String, shouldRetry: Bool) {
         switch self {
         case .genericError:
-            return ("Connection Error",
-                    "The connection may be failing due to a network issue or an incorrect PIN. Please verify internet connectivity or the PIN and try again.", true)
+            return (NSLocalizedString("error_title_incorrect_pin_or_network", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "Connection Error", comment: ""), NSLocalizedString("error_desc_incorrect_pin_or_network", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "The connection may be failing due to a network issue or an incorrect PIN. Please verify internet connectivity or the PIN and try again." , comment: ""), true)
         case .noPincode:
-            return ("HTML Error",
-                    "Unable to extract the pincode entered.", true)
-        case .noURL:
-            return ("Socket Connection Error",
-                    "Unable to form a valid socket URL for connection.", false)
+            return (NSLocalizedString("error_title_invalid_pin", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "Authorization Error", comment: ""),
+                    NSLocalizedString("error_desc_invalid_pin", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "Unable to authorize Assurance connection. Please verify the PIN and try again.", comment: ""), true)
         case .noOrgId:
-            return (" Invalid Mobile SDK Configuration",
-                    "The Experience Cloud organization identifier is unavailable. Ensure SDK configuration is setup correctly. See documentation for more detail.", false)
+            return (NSLocalizedString("error_title_invalid_org_id", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "Invalid Mobile SDK Configuration", comment: ""),
+                    NSLocalizedString("error_desc_invalid_org_id", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "The Experience Cloud organization identifier is unavailable. Ensure SDK configuration is setup correctly. See documentation for more detail.", comment: ""), false)
         case .orgIDMismatch:
-            return ("Unauthorized Access",
-                    "The Experience Cloud organization identifier does not match with that of the Assurance session. Ensure the right Experience Cloud organization is being used. See documentation for more detail.", false)
+            return (NSLocalizedString("error_title_unauthorized_access", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "Unauthorized Access", comment: ""),
+                    NSLocalizedString("error_desc_unauthorized_access", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "The Experience Cloud organization identifier does not match with that of the Assurance session. Ensure the right Experience Cloud organization is being used. See documentation for more detail.", comment: ""), false)
         case .connectionLimit:
-            return ("Connection Limit Reached",
-                    "You have reached the maximum number of connected device (50) allowed to a session.", false)
+            return (NSLocalizedString("error_title_connection_limit", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "Connection Limit Reached", comment: ""),
+                    NSLocalizedString("error_desc_connection_limit", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "You have reached the maximum number of connected device allowed to a session.", comment: ""), false)
         case .eventLimit:
-            return ("Event Limit Reached",
-                    "You have reached the maximum number of events (10k) that can be sent per minute.", false)
+            return (NSLocalizedString("error_title_event_limit", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "Event Limit Reached", comment: ""),
+                    NSLocalizedString("error_desc_event_limit", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "You have reached the maximum number of events that can be sent per minute.", comment: ""), false)
         // todo immediate:  check with the team on better description.
         // todo later:  have griffon server return error description and how to solve... Same for connection & event limit errors
         case .deletedSession:
-            return ("Session Deleted",
-                    "You attempted to connect to a deleted session.", false)
+            return (NSLocalizedString("error_title_session_deleted", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "Session Deleted", comment: ""),
+                    NSLocalizedString("error_desc_session_deleted", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "You attempted to connect to a deleted session.", comment: ""), false)
         case .clientError:
-            return ("Client Disconnected",
-                    "This client has been disconnected due to an unexpected error. Error Code 4400.", false)
-        case .userCancelled:
-            return ("Assurance session connection cancelled.",
-                    "User has chosen to cancel the socket connection. To start again, please open the app with an assurance deeplink url.", false)
-        case .invalidURL(let url):
-            return ("Invalid url",
-                "Attempted a network request with an invalid url: \(url)", false)
-        case .invalidResponseData:
-            return ("Invalid response data",
-                    "Received invalid response data", false)
-        case .invalidRequestBody:
-            return ("Invalid request body",
-                    "Attempted a network request with an invalid request body", false)
-        case .failedToRegisterDevice(let statusCode, let responseMessage):
-            return ("Failed to register device",
-                    "Failed to register device with status code: \(statusCode), and response message: \"\(responseMessage)\"", true)
-        case .failedToGetDeviceStatus(let statusCode, let responseMessage):
-            return ("Failed to get device status",
-                    "Failed to get device status with status code: \(statusCode), and response message: \"\(responseMessage)\"", true)
-        case .failedToDeleteDevice(let statusCode, let responseMessage):
-            return ("Failed to delete device",
-                    "Failed to delete device with status code: \(statusCode), and response message: \"\(responseMessage)\"", true)
+            return (NSLocalizedString("error_title_unexpected_error", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "Client Disconnected", comment: ""),
+                    NSLocalizedString("error_desc_unexpected_error", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "This client has been disconnected due to an unexpected error.", comment: ""), false)
+        case .invalidURL:
+            return (NSLocalizedString("error_title_invalid_url", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "Invalid url", comment: ""),
+                    NSLocalizedString("error_desc_invalid_url", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "Attempted a network request with an invalid url.", comment: ""), false)
+        case .invalidResponse:
+            return (NSLocalizedString("error_title_invalid_registration_response", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "Invalid response data", comment: ""),
+                    NSLocalizedString("error_desc_invalid_registration_response", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "Connection failed due to an invalid response.", comment: ""), false)
+        case .invalidRequest:
+            return (NSLocalizedString("error_title_invalid_registration_request", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "Connection Error", comment: ""),
+                    NSLocalizedString("error_desc_invalid_registration_request", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "The connection may be failing due to an invalid network request.", comment: ""), false)
+        case .requestFailed:
+            return (NSLocalizedString("error_title_registration_error", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "Connection Error", comment: ""),
+                    NSLocalizedString("error_desc_registration_error", bundle: Bundle(identifier: "com.adobe.aep.assurance.AEPAssurance") ?? Bundle.main, value: "Error occurred during device registration or status check.", comment: ""), false)
         }
     }
 }

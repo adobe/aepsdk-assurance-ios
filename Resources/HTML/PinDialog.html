@@ -182,11 +182,11 @@
         </style>
     </head>
     <body>
-        <div class="header">
+        <div class="header" id="assuranceheader">
             Assurance
         </div>
         <div id="pinentrydiv">
-            <div class="subheader">
+            <div class="subheader" id="enterpinsubheader">
                 Enter the 4 digit PIN to continue
             </div>
             <div class="digitinputframe">
@@ -221,7 +221,7 @@
             
         <div class="digitinputframe" id="loaderdiv" style="display:none;">
             <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-            <div class="subheader">
+            <div class="subheader" id="connectingsubheader">
                 Connecting...
             </div>
         </div>
@@ -237,7 +237,7 @@
 
         <div class="actionrow">
             <div style="width:50%;float:left;overflow:hidden;">
-                <input type="button" class="action" onclick="cancel();" value="Cancel" />
+                <input id="btnCancel" type="button" class="action" onclick="cancel();" value="Cancel" />
             </div>
             <div style="width:50%;float:right;overflow:hidden;">
                 <input id="btnConnect" type="button" class="action" style="display:none;" onclick="connect();" value="Connect" />
@@ -332,6 +332,16 @@
             function showElement(elementId) {
                 document.getElementById(elementId).style.display = "inline-block";
             }
+            
+            function localizeText(enterPinSubheader, connectingSubheader, connectButton, cancelButton, retryButton) {
+                document.getElementById('enterpinsubheader').innerText = enterPinSubheader;
+                document.getElementById('connectingsubheader').innerText = connectingSubheader;
+                document.getElementById('btnConnect').value = connectButton;
+                document.getElementById('btnCancel').value = cancelButton;
+                document.getElementById('btnRetry').value = retryButton;
+
+            }
+                        
         </script>
                 
     </body>

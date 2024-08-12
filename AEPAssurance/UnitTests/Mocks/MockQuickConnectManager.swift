@@ -24,11 +24,6 @@ class MockQuickConnectManager: QuickConnectManager {
         createDeviceCalled = true
     }
     
-    var deleteDeviceCalled = false
-    override func deleteDevice() {
-        deleteDeviceCalled = true
-    }
-    
     var cancelRetryGetDeviceStatusCalled = false
     override func cancelRetryGetDeviceStatus() {
         cancelRetryGetDeviceStatusCalled = true
