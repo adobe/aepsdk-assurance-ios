@@ -11,6 +11,7 @@
  */
 
 import AEPServices
+import AEPCore
 import Foundation
 
 /// An orchestrating component that manages the creation and teardown of sessions in response to different
@@ -213,6 +214,11 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     
     func quickConnectError(error: AssuranceConnectionError) {
         authorizingPresentation?.sessionConnectionError(error: error)
+    }
+    
+    func quickConnectConnectedAndDismissed() {
+        let event = Event(name: "QuickConnectDismissed", type: EventType.assuranceEventType, source: EventSource.readyForScanSource, data: nil)
+        MobileCore.dispatch(event: event)
     }
 #endif
     

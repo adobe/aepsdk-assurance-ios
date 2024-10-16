@@ -12,6 +12,7 @@
       }
     },
     "Assurance: v" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de-DE" : {
           "stringUnit" : {

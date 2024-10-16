@@ -183,7 +183,7 @@ class QuickConnectView: SessionAuthorizingUI {
     ///
     @objc func cancelClicked(_ sender: AnyObject?) {
         presentationDelegate.quickConnectCancelled()
-        dismiss()
+        dismiss(onConnected: false)
      }
     
     ///
@@ -246,7 +246,7 @@ class QuickConnectView: SessionAuthorizingUI {
     ///
     /// Dismisses the QuickConnectView with an animation
     ///
-    func dismiss() {
+    func dismiss(onConnected: Bool) {
         DispatchQueue.main.async {
             guard let window = UIApplication.shared.assuranceGetKeyWindow() else {
                 return
@@ -260,6 +260,9 @@ class QuickConnectView: SessionAuthorizingUI {
             }, completion: { [self] _ in
                 self.baseView.removeFromSuperview()
                 self.displayed = false
+                if onConnected {
+                    presentationDelegate.quickConnectConnectedAndDismissed()
+                }
             })
         }
     }
@@ -403,13 +406,13 @@ class QuickConnectView: SessionAuthorizingUI {
     
     func sessionConnected() {
         self.connectionSuccessfulState()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-          self.dismiss()
+        DispatchQueue.main.async {
+            self.dismiss(onConnected: true)
       }
     }
     
     func sessionDisconnected() {
-        self.dismiss()
+        self.dismiss(onConnected: false)
     }
     
     func sessionConnectionFailed(withError error: AssuranceConnectionError) {
