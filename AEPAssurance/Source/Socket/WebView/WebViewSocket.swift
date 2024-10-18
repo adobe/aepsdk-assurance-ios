@@ -30,7 +30,9 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
             socketQueue.async(flags: .barrier) { [weak self] in
                 guard let self = self else { return }
                 self._socketState = newValue
-                self.delegate.webSocket(self, didChangeState: newValue)
+                DispatchQueue.global().async {
+                    self.delegate.webSocket(self, didChangeState: newValue)
+                }
             }
         }
     }
