@@ -33,7 +33,22 @@ class MockSessionOrchestrator : AssuranceSessionOrchestrator {
         return canProcessSDKEventsReturnValue
     }
 
-    var terminateSessionCalled = false
+    private let syncQueue = DispatchQueue(label: "com.mockSessionOrchestrator.syncQueue")
+    
+    private var _terminateSessionCalled = false
+    var terminateSessionCalled: Bool {
+        get {
+            return syncQueue.sync {
+                _terminateSessionCalled
+            }
+        }
+        set {
+            syncQueue.async {
+                self._terminateSessionCalled = newValue
+            }
+        }
+    }
+
     override func terminateSession(purgeBuffer: Bool) {
         terminateSessionCalled = true
     }
