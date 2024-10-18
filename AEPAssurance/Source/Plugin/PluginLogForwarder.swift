@@ -27,8 +27,17 @@ class PluginLogForwarder: AssurancePlugin {
     weak var session: AssuranceSession?
     var vendor: String = AssuranceConstants.Vendor.MOBILE
     var commandType: String = AssuranceConstants.CommandType.LOG_FORWARDING
-
-    var currentlyRunning: Bool = false
+    private var _currentlyRunning: Bool = false
+    
+    var currentlyRunning: Bool {
+        get {
+            return logQueue.sync { self._currentlyRunning }
+        } set {
+            logQueue.async {
+                self._currentlyRunning = newValue
+            }
+        }
+    }
     private var logPipe = Pipe() /// consumes the log messages from STDERR
     private var consoleRedirectPipe = Pipe() /// outputs the log message back to STDERR
     private var logQueue: DispatchQueue = DispatchQueue(label: "com.adobe.assurance.log.forwarder")
@@ -39,13 +48,14 @@ class PluginLogForwarder: AssurancePlugin {
         /// Set up a read handler which fires when data is written into `logPipe`
         /// This handler intercepts the log, sends to assurance session and then redirects back to the console.
         logPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
+            guard let self = self else { return }
             let data = fileHandle.availableData
             if let logLine = String(data: data, encoding: .utf8) {
-                self?.session?.sendEvent(AssuranceEvent(type: AssuranceConstants.EventType.LOG, payload: [AssuranceConstants.LogForwarding.LOG_LINE: AnyCodable.init(logLine)]))
+                self.session?.sendEvent(AssuranceEvent(type: AssuranceConstants.EventType.LOG, payload: [AssuranceConstants.LogForwarding.LOG_LINE: AnyCodable.init(logLine)]))
             }
 
             /// writes log back to stderr
-            self?.consoleRedirectPipe.fileHandleForWriting.write(data)
+            self.consoleRedirectPipe.fileHandleForWriting.write(data)
         }
     }
 
@@ -80,12 +90,12 @@ class PluginLogForwarder: AssurancePlugin {
 
     func startForwarding() {
         logQueue.async {
-            if self.currentlyRunning {
+            if self._currentlyRunning {
                 Log.trace(label: AssuranceConstants.LOG_TAG, "Assurance SDK is already forwarding logs. Log forwarding start command is ignored.")
                 return
             }
 
-            self.currentlyRunning = true
+            self._currentlyRunning = true
 
             /// File Descriptors (FD) are non-negative integers (0, 1, 2, ...) that are associated with files that are opened.
             /// Standard Error STDERR  FileDescriptor value is always  2
@@ -105,7 +115,7 @@ class PluginLogForwarder: AssurancePlugin {
 
     func stopForwarding() {
         logQueue.async {
-            if !self.currentlyRunning {
+            if !self._currentlyRunning {
                 Log.trace(label: AssuranceConstants.LOG_TAG, "Assurance SDK is currently not forwarding logs. Log forwarding stop command is ignored.")
                 return
             }
@@ -113,7 +123,7 @@ class PluginLogForwarder: AssurancePlugin {
             /// the following dup2() makes STDERR_FILENO be the copy of  savedStdError descriptor, closing STDERR_FILENO first if necessary.
             dup2(self.savedStdError, STDERR_FILENO)
             close(self.savedStdError)
-            self.currentlyRunning = false
+            self._currentlyRunning = false
         }
     }
 }
