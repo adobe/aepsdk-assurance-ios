@@ -21,15 +21,20 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     
     var eventChunker: EventChunker = AssuranceEventChunker()
     private var _socketState: SocketState = .unknown
+    private let stateQueue = DispatchQueue(label: "com.adobe.assurance.socket.stateQueue", attributes: .concurrent)
     /// variable tracking the current socket status
     var socketState: SocketState {
         get {
-            return socketQueue.sync { _socketState }
+            return stateQueue.sync { _socketState }
         }
         set {
-            socketQueue.async {
+            stateQueue.async(flags: .barrier) { [weak self] in
+                guard let self = self else { return }
                 self._socketState = newValue
-                self.delegate.webSocket(self, didChangeState: newValue)
+                // Dispatch delegate call to background thread to avoid deadlocks
+                DispatchQueue.global().async {
+                    self.delegate.webSocket(self, didChangeState: newValue)
+                }
             }
         }
     }
