@@ -246,8 +246,7 @@ public class Assurance: NSObject, Extension {
         Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance shutdown timer started. Waiting for 5 seconds to receive assurance session url.")
         timerQueue.async { [weak self] in
             guard let self else { return }
-            let queue = DispatchQueue.init(label: "com.adobe.assurance.shutdowntimer", qos: .background)
-            self.timer = self.createDispatchTimer(queue: queue, block: {
+            self.timer = self.createDispatchTimer(queue: timerQueue, block: {
                 self.shutDownAssurance()
             })
         }
@@ -258,12 +257,9 @@ public class Assurance: NSObject, Extension {
     /// @see readyForEvent
     private func shutDownAssurance() {
         Log.debug(label: AssuranceConstants.LOG_TAG, "Timeout - Assurance extension did not receive session url. Shutting down from processing any further events.")
-        timerQueue.async { [weak self] in
-            guard let self = self else { return }
-            self.invalidateTimer()
-            Log.debug(label: AssuranceConstants.LOG_TAG, "Clearing the queued events and purging Assurance shared state.")
-            self.sessionOrchestrator.terminateSession(purgeBuffer: true)
-        }
+        self.invalidateTimer()
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Clearing the queued events and purging Assurance shared state.")
+        self.sessionOrchestrator.terminateSession(purgeBuffer: true)
     }
 
     /// Invalidate the ongoing timer and cleans it from memory
