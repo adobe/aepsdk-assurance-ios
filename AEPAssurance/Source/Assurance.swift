@@ -248,7 +248,7 @@ public class Assurance: NSObject, Extension {
             guard let self else { return }
             let queue = DispatchQueue.init(label: "com.adobe.assurance.shutdowntimer", qos: .background)
             self.timer = self.createDispatchTimer(queue: queue, block: {
-            self.shutDownAssurance()
+                self.shutDownAssurance()
             })
         }
     }
