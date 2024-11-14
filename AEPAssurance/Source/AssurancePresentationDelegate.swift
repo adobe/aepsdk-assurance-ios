@@ -67,5 +67,10 @@ protocol AssurancePresentationDelegate {
     /// Tells the conforming delegate to begin the quick connect handshake
     ///
     func quickConnectBegin()
+    
+    ///
+    /// Tells the conforming delegate that the QuickConnect view has been dismissed
+    ///
+    func quickConnectConnectedAndDismissed()
 #endif
 }

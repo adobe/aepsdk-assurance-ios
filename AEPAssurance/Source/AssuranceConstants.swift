@@ -179,6 +179,7 @@ enum AssuranceConstants {
         enum Name {
             static let DEEPLINK_START_SESSION = "Assurance Start Session"
             static let QUICKCONNECT_START_SESSION = "Assurance Quick Connect Start Session"
+            static let SCAN_STATE_EVENT = "Scan State Event"
         }
         
         enum PayloadKey {
