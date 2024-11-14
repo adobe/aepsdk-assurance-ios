@@ -16,7 +16,7 @@ PODS:
     - AEPCore (< 6.0.0, >= 5.3.0)
   - AEPLifecycle (5.3.0):
     - AEPCore (< 6.0.0, >= 5.3.0)
-  - AEPMessaging (5.4.0):
+  - AEPMessaging (5.5.0):
     - AEPCore (< 6.0.0, >= 5.3.0)
     - AEPEdge (< 6.0.0, >= 5.0.2)
     - AEPEdgeIdentity (< 6.0.0, >= 5.0.0)
@@ -93,28 +93,28 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   AEPCore:
-    :commit: 2762b109c25f6c10381ae93c15bd9b3e38d18e56
+    :commit: 3fca608200fd7f9daea1124ed2edf39061f95f90
     :git: https://github.com/adobe/aepsdk-core-ios.git
   AEPEdgeConsent:
     :commit: 911d686fed6525425658d2ed42d79ba53bf8807e
     :git: https://github.com/adobe/aepsdk-edgeconsent-ios.git
   AEPIdentity:
-    :commit: 2762b109c25f6c10381ae93c15bd9b3e38d18e56
+    :commit: 3fca608200fd7f9daea1124ed2edf39061f95f90
     :git: https://github.com/adobe/aepsdk-core-ios.git
   AEPLifecycle:
-    :commit: 2762b109c25f6c10381ae93c15bd9b3e38d18e56
+    :commit: 3fca608200fd7f9daea1124ed2edf39061f95f90
     :git: https://github.com/adobe/aepsdk-core-ios.git
   AEPMessaging:
-    :commit: 4b3e9adf739c67234ac385893adacbce3c9b06c6
+    :commit: 3b872cb92767855b2835778b8342189b3df54e69
     :git: https://github.com/adobe/aepsdk-messaging-ios.git
   AEPPlaces:
     :commit: 62982db58bf9ed6b4e98362dd9b9b34476f53169
     :git: https://github.com/adobe/aepsdk-places-ios.git
   AEPServices:
-    :commit: 2762b109c25f6c10381ae93c15bd9b3e38d18e56
+    :commit: 3fca608200fd7f9daea1124ed2edf39061f95f90
     :git: https://github.com/adobe/aepsdk-core-ios.git
   AEPSignal:
-    :commit: 2762b109c25f6c10381ae93c15bd9b3e38d18e56
+    :commit: 3fca608200fd7f9daea1124ed2edf39061f95f90
     :git: https://github.com/adobe/aepsdk-core-ios.git
   AEPTarget:
     :commit: dfea8c2c23f993448706e3bb5ec6af308adc3382
@@ -131,7 +131,7 @@ SPEC CHECKSUMS:
   AEPEdgeIdentity: 3161ff33434586962946912d6b8e9e8fca1c4d23
   AEPIdentity: 5039e51ba7e91f6a416aeeb3ec8b64173a8da893
   AEPLifecycle: f1eabb71198d160a34ba39859468626a092fc204
-  AEPMessaging: 03422e902fc0e30c39c6f62e36a81146a766a3da
+  AEPMessaging: 6c7ae2cc3a48046ffb1113365dd2ab1629993bdf
   AEPPlaces: 9eec5f88306033ce8190ec30727cbdd4008cc018
   AEPRulesEngine: fe5800653a4bee07b1e41e61b4d5551f0dba557b
   AEPServices: 7704bdac78fe8b76322dd546010ab5152d30d686

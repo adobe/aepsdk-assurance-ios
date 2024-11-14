@@ -41,7 +41,7 @@ class PluginScreenshot: AssurancePlugin {
         }
         
         // TODO: - Temporary hook for scan mode
-        let event = Event(name: "StartScan", type: EventType.assuranceEventType, source: EventSource.startScanEventSource, data: nil)
+        let event = Event(name: AssuranceConstants.AssuranceEvent.Name.SCAN_STATE_EVENT, type: EventType.assurance, source: EventSource.appScan, data: ["state": "active"])
         MobileCore.dispatch(event: event)
         
         session.statusPresentation.statusUI.remove()

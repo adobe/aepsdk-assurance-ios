@@ -217,7 +217,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     }
     
     func quickConnectConnectedAndDismissed() {
-        let event = Event(name: "QuickConnectDismissed", type: EventType.assuranceEventType, source: EventSource.readyForScanSource, data: nil)
+        let event = Event(name: AssuranceConstants.AssuranceEvent.Name.SCAN_STATE_EVENT, type: EventType.assurance, source: EventSource.appScan, data: ["state": "ready"])
         MobileCore.dispatch(event: event)
     }
 #endif
