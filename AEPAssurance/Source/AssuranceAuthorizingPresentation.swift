@@ -50,8 +50,10 @@ class AssuranceAuthorizingPresentation {
         if sessionView.displayed == true {
             sessionView.sessionConnectionFailed(withError: error)
         } else {
+            #if os(iOS)
             let errorView = ErrorView.init(AssuranceConnectionError.clientError)
             errorView.display()
+            #endif
         }
     }
 }

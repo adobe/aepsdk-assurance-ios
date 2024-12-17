@@ -16,7 +16,7 @@ PODS:
     - AEPCore (< 6.0.0, >= 5.3.1)
   - AEPLifecycle (5.3.1):
     - AEPCore (< 6.0.0, >= 5.3.1)
-  - AEPMessaging (5.4.0):
+  - AEPMessaging (5.5.0):
     - AEPCore (< 6.0.0, >= 5.3.0)
     - AEPEdge (< 6.0.0, >= 5.0.2)
     - AEPEdgeIdentity (< 6.0.0, >= 5.0.0)
@@ -42,7 +42,7 @@ DEPENDENCIES:
   - AEPEdgeIdentity
   - AEPIdentity
   - AEPLifecycle
-  - AEPMessaging (from `https://github.com/adobe/aepsdk-messaging-ios.git`, branch `staging`)
+  - AEPMessaging (from `https://github.com/adobe/aepsdk-messaging-ios.git`, branch `main`)
   - AEPPlaces (from `https://github.com/adobe/aepsdk-places-ios.git`, branch `staging`)
   - AEPRulesEngine
   - AEPServices
@@ -69,7 +69,7 @@ EXTERNAL SOURCES:
     :branch: staging
     :git: https://github.com/adobe/aepsdk-edgeconsent-ios.git
   AEPMessaging:
-    :branch: staging
+    :branch: main
     :git: https://github.com/adobe/aepsdk-messaging-ios.git
   AEPPlaces:
     :branch: staging
@@ -83,10 +83,10 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   AEPEdgeConsent:
-    :commit: 911d686fed6525425658d2ed42d79ba53bf8807e
+    :commit: e867c1fa5cc8c8e183d57eda88d6f8c131dd8dd5
     :git: https://github.com/adobe/aepsdk-edgeconsent-ios.git
   AEPMessaging:
-    :commit: 4b3e9adf739c67234ac385893adacbce3c9b06c6
+    :commit: 973ef4ba35b86d1a28782a3dac5c9c1cfc28c703
     :git: https://github.com/adobe/aepsdk-messaging-ios.git
   AEPPlaces:
     :commit: 62982db58bf9ed6b4e98362dd9b9b34476f53169
@@ -106,7 +106,7 @@ SPEC CHECKSUMS:
   AEPEdgeIdentity: 3161ff33434586962946912d6b8e9e8fca1c4d23
   AEPIdentity: 345c9bd3e5f2910148fa46a02dbc89cc5e248196
   AEPLifecycle: b2c4d928a8556410b8d2ef5763432bc97ebde417
-  AEPMessaging: 03422e902fc0e30c39c6f62e36a81146a766a3da
+  AEPMessaging: 6c7ae2cc3a48046ffb1113365dd2ab1629993bdf
   AEPPlaces: 9eec5f88306033ce8190ec30727cbdd4008cc018
   AEPRulesEngine: fe5800653a4bee07b1e41e61b4d5551f0dba557b
   AEPServices: fcba979e90f6916b066aa66f016700d7b7534d96
@@ -115,6 +115,6 @@ SPEC CHECKSUMS:
   AEPUserProfile: cf36305d683d993d528337a46b7a269029b63e5d
   SwiftLint: 13280e21cdda6786ad908dc6e416afe5acd1fcb7
 
-PODFILE CHECKSUM: e3e3e3dec8c979c4ae3382e9653489d72124849a
+PODFILE CHECKSUM: c998ed7599cb992a219981fc9671a4e5424be579
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.16.2

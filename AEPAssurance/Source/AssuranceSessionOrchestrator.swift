@@ -95,13 +95,22 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
             Log.warning(label: AssuranceConstants.LOG_TAG, "An active Assurance session already exists. Cannot create a new one. Ignoring attempt to start quick connect flow.")
             return
         }
-
+        #if os(iOS)
         guard let authorizingPresentation = authorizingPresentation, authorizingPresentation.sessionView is QuickConnectView else {
             self.authorizingPresentation = AssuranceAuthorizingPresentation(authorizingView: QuickConnectView(withPresentationDelegate: self))
             self.authorizingPresentation?.show()
             return
             
         }
+        #elseif os(tvOS)
+        guard let authorizingPresentation = authorizingPresentation, authorizingPresentation.sessionView is OverlayPresenter else {
+            let presenter = OverlayPresenter(withPresentationDelegate: self)
+            self.authorizingPresentation = AssuranceAuthorizingPresentation(authorizingView: presenter)
+            self.authorizingPresentation?.show()
+            return
+        }
+        #endif
+
         self.authorizingPresentation?.show()
     }
     #endif
@@ -152,11 +161,13 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     
     // MARK: - AssurancePresentationDelegate
     func initializePinScreenFlow() {
+        #if os(iOS)
         guard let authorizingPresentation = authorizingPresentation, authorizingPresentation.sessionView is iOSPinCodeScreen else {
             self.authorizingPresentation = AssuranceAuthorizingPresentation(authorizingView: self.authorizingPresentation?.sessionView ?? iOSPinCodeScreen(withPresentationDelegate: self))
             self.authorizingPresentation?.show()
             return
         }
+        #endif
         self.authorizingPresentation?.show()
     }
 
@@ -210,6 +221,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     func createQuickConnectSession(with sessionDetails: AssuranceSessionDetails) {
         if session != nil {
             Log.warning(label: AssuranceConstants.LOG_TAG, "Quick connect attempted when active session exists")
+            #if os(iOS)
             if authorizingPresentation?.sessionView is iOSPinCodeScreen {
                 Log.warning(label: AssuranceConstants.LOG_TAG, "Cannot create a new Quick Connect session, an active PIN based session exists.")
                 return
@@ -218,6 +230,7 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
                 Log.debug(label: AssuranceConstants.LOG_TAG, "Disconnecting active QuickConnect session and retrying")
                 terminateSession(purgeBuffer: false)
             }
+            #endif
         }
         
         authorizingPresentation?.sessionConnecting()

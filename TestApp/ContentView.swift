@@ -13,25 +13,132 @@
 import AEPAssurance
 import AEPCore
 import AEPEdgeConsent
+import AEPMessaging
 import AEPPlaces
 import AEPUserProfile
+
 import CoreLocation
 import SwiftUI
 
 let HEADING_FONT_SIZE: CGFloat = 25.0
 
-struct ContentView: View {
+struct SectionHeader: View {
+    var title: String
+
+    init(_ title: String) {
+        self.title = title
+    }
 
     var body: some View {
-        ScrollView(.vertical) {
-            AssuranceCard()
-            AnalyticsCard()
-            UserProfileCard()
-            ConsentCard()
-            PlacesCard()
-            BigEventsCard()
+        Text(title)
+            .font(.title)
+            .fontWeight(.bold)
+            .padding(.top)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+class HomePageCardCustomizer : ContentCardCustomizing {
+
+    func customize(template: SmallImageTemplate) {
+        // customize title
+        template.title.font = .system(size: 16, weight: .bold)
+        template.title.textColor = .black
+
+        // customize body
+        template.body?.textColor = .gray
+        template.body?.font = .system(size: 13, weight: .regular)
+
+        // customize stack structure
+        template.textVStack.spacing = 10
+
+        // customize buttons
+        template.buttons?.first?.text.font = .system(size: 14)
+        template.buttons?.first?.text.textColor = .white
+        template.buttons?.first?.modifier = AEPViewModifier(ButtonModifier())
+
+        // customize image
+        template.image?.modifier = AEPViewModifier(ImageModifier())
+
+        // customize rootView
+        template.rootHStack.modifier = AEPViewModifier(RootHStackModifier())
+
+    }
+
+
+    struct ButtonModifier : ViewModifier {
+        func body(content: Content) -> some View {
+            content
+                .background(Color.pink)
+                .cornerRadius(10)
+                .fontWeight(.semibold)
         }
-        .onAppear { MobileCore.track(state: "Home Screen", data: nil)
+    }
+
+    struct ImageModifier : ViewModifier {
+        func body(content: Content) -> some View {
+            content
+                .cornerRadius(10)
+        }
+    }
+
+    struct RootHStackModifier : ViewModifier {
+        func body(content: Content) -> some View {
+            content
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color.yellow)
+                .cornerRadius(15)
+        }
+    }
+}
+
+struct ContentView: View {
+    @State var savedCards: [ContentCardUI]?
+
+    var body: some View {
+        ZStack {
+            ScrollView(.vertical) {
+                if let cards = savedCards {
+                    SectionHeader("Deals")
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        LazyHStack(spacing: 30) {
+                            ForEach(cards) { card in
+                                Button(action: {
+                                    print(card.id)
+                                    print(card.meta)
+                                }) {
+                                    card.view
+                                }
+                            }
+                        }
+                    }
+                }
+                Button(action: {
+                    let homepageSurface = Surface(path: "homepage")
+                    Messaging.updatePropositionsForSurfaces([homepageSurface])
+                }) {
+                    Text("Update props")
+                }
+                AssuranceCard()
+                AnalyticsCard()
+                UserProfileCard()
+                ConsentCard()
+                PlacesCard()
+                BigEventsCard()
+            }
+        }
+
+        .onAppear {
+            MobileCore.track(state: "Home Screen", data: nil)
+            let homePageSurface = Surface(path: "homepage")
+            Messaging.getContentCardsUI(for: homePageSurface, customizer: HomePageCardCustomizer()) { result in
+                switch result {
+                case .success(let cards):
+                    savedCards = cards
+                case .failure(let error):
+                    print(error)
+                }
+            }
         }
     }
 }
@@ -43,6 +150,11 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 struct YellowButtonStyle: ButtonStyle {
+#if os(tvOS)
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+    }
+#else
     func makeBody(configuration: Configuration) -> some View {
         HStack {
             Spacer()
@@ -53,6 +165,7 @@ struct YellowButtonStyle: ButtonStyle {
         .background(Color.yellow.cornerRadius(8))
         .scaleEffect(configuration.isPressed ? 0.95 : 1)
     }
+#endif
 }
 
 struct AssuranceCard: View {
@@ -61,7 +174,6 @@ struct AssuranceCard: View {
     var body: some View {
         VStack {
             HStack {
-
                 Text("Assurance: v" + Assurance.extensionVersion)
                     .padding(.leading)
                     .font(.system(size: HEADING_FONT_SIZE, weight: .heavy, design: .default))
@@ -70,7 +182,7 @@ struct AssuranceCard: View {
 
             HStack {
                 TextField("Copy Assurance Session URL to here", text: $assuranceURL)
-                    .background(Color(.systemGray6))
+                    .background(Color(.systemGray))
                     .cornerRadius(5.0)
                     .frame(height: 100)
                     .frame(height: 50)
@@ -86,7 +198,7 @@ struct AssuranceCard: View {
                     }
                 }, label: {
                     Text("Start Session")
-                }).buttonStyle(YellowButtonStyle()).padding().onReceive(NotificationCenter.default.publisher(for: .deviceDidShakeNotification)) { _ in
+                }).padding().onReceive(NotificationCenter.default.publisher(for: .deviceDidShakeNotification)) { _ in
                     #if DEBUG
                     Assurance.startSession()
                     #endif
@@ -113,13 +225,13 @@ struct UserProfileCard: View {
                     UserProfile.updateUserAttributes(attributeDict: userProfile)
                 }, label: {
                     Text("Update")
-                }).buttonStyle(YellowButtonStyle()).padding()
+                }).padding()
 
                 Button(action: {
                     UserProfile.removeUserAttributes(attributeNames: ["type"])
                 }, label: {
                     Text("Remove")
-                }).buttonStyle(YellowButtonStyle()).padding()
+                }).padding()
             }
         }
     }
@@ -137,13 +249,13 @@ struct AnalyticsCard: View {
                     MobileCore.track(action: "Television Purchased", data: ["Model": "Sony"])
                 }, label: {
                     Text("Track Action")
-                }).buttonStyle(YellowButtonStyle()).padding()
+                }).padding()
 
                 Button(action: {
                     MobileCore.track(state: "Billing Screen", data: nil)
                 }, label: {
                     Text("Track State")
-                }).buttonStyle(YellowButtonStyle()).padding()
+                }).padding()
             }
         }
     }
@@ -164,7 +276,7 @@ struct ConsentCard: View {
                     Consent.update(with: currentConsents)
                 }, label: {
                     Text("Consent Yes")
-                }).buttonStyle(YellowButtonStyle()).padding()
+                }).padding()
 
                 Button(action: {
                     let collectConsent = ["collect": ["val": "n"]]
@@ -172,7 +284,7 @@ struct ConsentCard: View {
                     Consent.update(with: currentConsents)
                 }, label: {
                     Text("Consent No")
-                }).buttonStyle(YellowButtonStyle()).padding()
+                }).padding()
             }
         }
     }
@@ -194,7 +306,7 @@ struct PlacesCard: View {
                     }
                 }, label: {
                     Text("Get POIs")
-                }).buttonStyle(YellowButtonStyle())
+                })
 
                 Button(action: {
                     let regionCenter = CLLocationCoordinate2D(latitude: 37.3255196, longitude: -121.9458237)
@@ -202,7 +314,7 @@ struct PlacesCard: View {
                     Places.processRegionEvent(PlacesRegionEvent.entry, forRegion: region)
                 }, label: {
                     Text("Entry")
-                }).buttonStyle(YellowButtonStyle())
+                })
 
                 Button(action: {
                     let regionCenter = CLLocationCoordinate2D(latitude: 37.3255196, longitude: -121.9458237)
@@ -210,7 +322,7 @@ struct PlacesCard: View {
                     Places.processRegionEvent(PlacesRegionEvent.exit, forRegion: region)
                 }, label: {
                     Text("Exit")
-                }).buttonStyle(YellowButtonStyle())
+                })
             }
         }
     }
@@ -234,7 +346,7 @@ struct BigEventsCard: View {
                     MobileCore.dispatch(event: Event(name: "Huge HTML Event", type: "type", source: "source", data: ["html": sampleHtml ?? ""]))
                 }, label: {
                     Text("Send HTML")
-                }).buttonStyle(YellowButtonStyle()).padding()
+                }).padding()
                 Button(action: {
                     let path = Bundle.main.path(forResource: "sampleRules", ofType: "json")
                     guard let sampleJson = try? String(contentsOfFile: path!, encoding: String.Encoding.utf8) else {
@@ -248,7 +360,7 @@ struct BigEventsCard: View {
 
                 }, label: {
                     Text("Send huge rules data")
-                }).buttonStyle(YellowButtonStyle()).padding()
+                }).padding()
             }
         }
     }

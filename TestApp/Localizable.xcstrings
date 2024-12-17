@@ -109,9 +109,6 @@
     "Send huge rules data" : {
 
     },
-    "Start Session" : {
-
-    },
     "Track Action" : {
 
     },
@@ -119,6 +116,9 @@
 
     },
     "Update" : {
+
+    },
+    "Update props" : {
 
     },
     "UserProfile" : {

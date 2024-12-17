@@ -14,7 +14,7 @@ import AEPServices
 import Foundation
 import UIKit
 
-#if DEBUG
+#if DEBUG && os(iOS)
 ///
 /// The QuickConnectView SessionAuthorizingUI which is used to start a QuickConnect session
 ///

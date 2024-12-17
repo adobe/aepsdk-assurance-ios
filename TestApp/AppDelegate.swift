@@ -18,11 +18,14 @@ import AEPEdgeConsent
 import AEPEdgeIdentity
 import AEPIdentity
 import AEPLifecycle
+import AEPMessaging
 import AEPPlaces
 import AEPSignal
+#if os(iOS)
 import AEPTarget
+#endif
 import AEPUserProfile
-import AEPMessaging
+
 import UIKit
 
 @main
@@ -35,32 +38,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         MobileCore.track(state: "Before SDK Init", data: nil)
         MobileCore.setLogLevel(.trace)
         
-        let extensions = [AEPIdentity.Identity.self,
-                          Lifecycle.self,
-                          Signal.self,
-                          Edge.self,
-                          Consent.self,
+        var extensions = [AEPEdgeIdentity.Identity.self,
+                          AEPIdentity.Identity.self,
                           Analytics.self,
-                          AEPEdgeIdentity.Identity.self,
-                          Target.self,
-                          Consent.self,
-                          UserProfile.self,
                           Assurance.self,
+                          Consent.self,
+                          Consent.self,
+                          Edge.self,
+                          Lifecycle.self,
+                          Messaging.self,
                           Places.self,
-                          Messaging.self
+                          Signal.self,
+                          UserProfile.self,
         ]
+        #if os(iOS)
+        extensions.append(Target.self)
+        #endif
         let appState = application.applicationState
         MobileCore.registerExtensions(extensions, {
-            // NOTE: - The app id is hardcoded in order to support e2e automated testing
-            MobileCore.configureWith(appId: "94f571f308d5/f986c2be4925/launch-e96cdeaddea9-development")
+            MobileCore.configureWith(appId: "bf7248f92b53/58de23f6a5a7/launch-392d05c5c4a4-development")
+            #if os(tvOS) // Launch quick connect for tvOS
+            Assurance.startSession()
+            #endif
             if appState != .background {
                 MobileCore.lifecycleStart(additionalContextData: nil)
             }
         })
 
-        //MobileCore.updateConfigurationWith(configDict: ["experienceCloud.org": "056F3DD059CB22060A494021@AdobeOrg"])
-//            MobileCore.configureWith(appId: "launch-EN516bfbc0fe2b42449bf171a4f8cb9cef-development")
-//        })
+        let homepageSurface = Surface(path: "homepage")
+        Messaging.updatePropositionsForSurfaces([homepageSurface])
+
         return true
     }
 

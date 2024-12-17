@@ -10,11 +10,12 @@
  governing permissions and limitations under the License.
  */
 
+#if os(iOS)
 import AEPServices
 import Foundation
 import WebKit
 
-class iOSStatusUI {
+class iOSStatusUI: StatusUIPresentable {
     var displayed: Bool = false
     var clientLogQueue: ThreadSafeQueue<AssuranceClientLogMessage>
     var floatingButton: FloatingButtonPresentable?
@@ -123,5 +124,5 @@ class iOSStatusUI {
         let localizeText = String(format: "localizeText('%@', '%@', '%@', '%@');", statusHeader, disconnectButtonText, cancelButtonText, clearLogsButtonText)
         webView?.evaluateJavaScript(localizeText, completionHandler: nil)
     }
-
 }
+#endif

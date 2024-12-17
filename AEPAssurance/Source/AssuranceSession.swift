@@ -31,8 +31,16 @@ class AssuranceSession {
     #else
     let statusPresentation: AssuranceStatusPresentation
     #endif
+
     lazy var socket: SocketConnectable  = {
+    #if os(iOS)
         return WebViewSocket(withDelegate: self)
+    #elseif os(tvOS)
+        return NativeSocket(withDelegate: self)
+    #else
+        // Default for unsupported platforms
+        #error("Unsupported platform")
+    #endif
     }()
 
     // MARK: - boolean flags
@@ -56,7 +64,11 @@ class AssuranceSession {
         self.sessionOrchestrator = sessionOrchestrator
         self.presentationDelegate = sessionOrchestrator
         self.connectionDelegate = sessionOrchestrator
+        #if os(tvOS)
+        statusPresentation = AssuranceStatusPresentation(with: tvOSStatusUI(presentationDelegate: presentationDelegate))
+        #else
         statusPresentation = AssuranceStatusPresentation(with: iOSStatusUI(presentationDelegate: presentationDelegate))
+        #endif
         handleInBoundEvents()
         handleOutBoundEvents()
         registerInternalPlugins()
