@@ -7,7 +7,7 @@
 
 ## About this project
 
-Assurance/Project Griffon is a new, innovative beta product from [Adobe Experience Cloud](https://business.adobe.com/) to help you inspect, proof, simulate, and validate how you collect data or serve experiences in your mobile app. For more information on what Project Griffon can do for you, see [here](https://aep-sdks.gitbook.io/docs/beta/project-griffon#what-can-project-griffon-do-for-you).
+Adobe Experience Platform Assurance is a product from Adobe Experience Cloud to help you inspect, proof, simulate, and validate how you collect data or serve experiences in your mobile app. For more information on what Assurance can do for you, see [here](https://experienceleague.adobe.com/en/docs/experience-platform/assurance/home#what-can-assurance-do-for-you). To integrate Assurance in your app, refer to the [documentation](https://developer.adobe.com/client-sdks/home/base/assurance/).
 
 ## Requirements
 - Xcode 15.0 or newer
