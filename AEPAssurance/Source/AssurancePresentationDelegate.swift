@@ -43,6 +43,12 @@ protocol AssurancePresentationDelegate {
     ///
     func disconnectClicked()
     
+    
+    ///
+    /// Tells the conforming delegate that the pinScreen view has been dismissed
+    ///
+    func pinScreenDismissed()
+    
 #if DEBUG
     ///
     /// Tells the conforming delegate to create a quick connect session with the given sessionDetails
@@ -69,8 +75,13 @@ protocol AssurancePresentationDelegate {
     func quickConnectBegin()
     
     ///
-    /// Tells the conforming delegate that the QuickConnect view has been dismissed
+    /// Tells the conforming delegate that the QuickConnect view has been dismissed after successful connection
     ///
     func quickConnectConnectedAndDismissed()
+    
+    ///
+    /// Tlls the conforming delegate that the scan button has been tapped
+    ///
+    func scanButtonTapped()
 #endif
 }

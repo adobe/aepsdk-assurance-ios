@@ -177,6 +177,12 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
         Log.trace(label: AssuranceConstants.LOG_TAG, "Disconnect clicked. Terminating session.")
         terminateSession(purgeBuffer: true)
     }
+    
+    func pinScreenDismissed() {
+        if session != nil {
+            setAndSendScanState(assuranceScanState: .ready)
+        }
+    }
 
     var isConnected: Bool {
         get {
@@ -217,8 +223,11 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     }
     
     func quickConnectConnectedAndDismissed() {
-        let event = Event(name: AssuranceConstants.AssuranceEvent.Name.SCAN_STATE_EVENT, type: EventType.assurance, source: EventSource.appScan, data: ["state": "ready"])
-        MobileCore.dispatch(event: event)
+        setAndSendScanState(assuranceScanState: .ready)
+    }
+    
+    func scanButtonTapped() {
+        setAndSendScanState(assuranceScanState: .inactive)
     }
 #endif
     
@@ -229,9 +238,26 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     
     func handleSuccessfulConnection() {
         authorizingPresentation?.sessionConnected()
+        sendScanState()
     }
     
     func handleSessionDisconnect() {
+        setAndSendScanState(assuranceScanState: .inactive)
         authorizingPresentation?.sessionDisconnected()
+    }
+    
+    // MARK: - Helper functions
+    func setAndSendScanState(assuranceScanState: AssuranceScanState) {
+        stateManager.scanState = assuranceScanState
+        print("set and sending scan state \(assuranceScanState.rawValue)")
+        let event = Event(name: AssuranceConstants.AssuranceEvent.Name.SCAN_STATE_EVENT, type: EventType.assurance, source: EventSource.appScan, data: ["state": assuranceScanState.rawValue])
+        MobileCore.dispatch(event: event)
+    }
+    
+    func sendScanState() {
+        let scanState = stateManager.scanState
+        print("sending scan state \(scanState)")
+        let event = Event(name: AssuranceConstants.AssuranceEvent.Name.SCAN_STATE_EVENT, type: EventType.assurance, source: EventSource.appScan, data: ["state": scanState.rawValue])
+        MobileCore.dispatch(event: event)
     }
 }

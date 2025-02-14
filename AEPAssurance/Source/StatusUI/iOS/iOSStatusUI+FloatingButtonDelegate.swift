@@ -17,6 +17,11 @@ extension iOSStatusUI: FloatingButtonDelegate {
 
     /// Invoked when the floating button is tapped
     func onTapDetected() {
+        if scanModeEnabled {
+            updateForScanModeDisabled()
+            presentationDelegate.scanButtonTapped()
+            return
+        }
         floatingButton?.dismiss()
         self.fullScreenMessage?.show()
     }

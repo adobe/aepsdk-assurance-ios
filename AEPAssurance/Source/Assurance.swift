@@ -199,10 +199,10 @@ public class Assurance: NSObject, Extension {
     private func handleAssuranceBlobRequest(event: Event) {
         guard let imageData = event.data?["imageData"] as? Data,
               let session = sessionOrchestrator.session,
-              let screenID = event.data?["screenID"] as? String else { return }
+              let screenID = event.data?["screenId"] as? String else { return }
         AssuranceBlob.sendBlob(imageData, forSession: session, contentType: "image/png", callback: { blobID in
             if blobID != nil {
-                let assuranceEvent = AssuranceEvent(type: AssuranceConstants.EventType.BLOB, payload: ["blobId": AnyCodable(blobID), "mimeType": "image/png", "screenID": AnyCodable(screenID)])
+                let assuranceEvent = AssuranceEvent(type: AssuranceConstants.EventType.BLOB, payload: ["blobId": AnyCodable(blobID), "mimeType": "image/png", "screenId": AnyCodable(screenID)])
                 session.sendEvent(assuranceEvent)
             } else {
                 Log.debug(label: AssuranceConstants.LOG_TAG, "Uploading screenshot failed. Ignoring the screenShot request.")

@@ -49,6 +49,14 @@ class AssuranceStatusPresentation {
     func sessionDisconnected() {
         statusUI.remove()
     }
+    
+    func scanModeEnabled() {
+        statusUI.updateForScanModeEnabled()
+    }
+    
+    func scanModeDisabled() {
+        statusUI.updateForScanModeDisabled()
+    }
 
     /// Call this to show the UI elements that are required when a session has connection error.
     func sessionConnectionError(error: AssuranceConnectionError) {

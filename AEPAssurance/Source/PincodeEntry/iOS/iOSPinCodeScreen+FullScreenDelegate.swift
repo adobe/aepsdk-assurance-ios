@@ -32,6 +32,7 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
         displayed = false
         fullscreenWebView = nil
         fullscreenMessage = nil
+        presentationDelegate.pinScreenDismissed()
     }
 
     /// Invoked when the fullscreen message is attempting to load a url

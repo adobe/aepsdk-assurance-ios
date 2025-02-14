@@ -31,6 +31,12 @@ class PluginScreenshot: AssurancePlugin {
     var uiUtil = AssuranceUIUtil()
     var vendor: String = AssuranceConstants.Vendor.MOBILE
     var commandType: String = AssuranceConstants.CommandType.SCREENSHOT
+    var stateManager: AssuranceStateManager
+    
+    // TODO: - State only needed temporarily while using plugin for scan state mode enablement. Remove this once scan mode is fully implemented
+    init(stateManager: AssuranceStateManager) {
+        self.stateManager = stateManager
+    }
 
     /// this protocol method is called from `PluginHub` to handle screenshot command
     func receiveEvent(_ event: AssuranceEvent) {
@@ -41,10 +47,12 @@ class PluginScreenshot: AssurancePlugin {
         }
         
         // TODO: - Temporary hook for scan mode
+        print("received scan command")
+        stateManager.scanState = .active
         let event = Event(name: AssuranceConstants.AssuranceEvent.Name.SCAN_STATE_EVENT, type: EventType.assurance, source: EventSource.appScan, data: ["state": "active"])
         MobileCore.dispatch(event: event)
         
-        session.statusPresentation.statusUI.remove()
+        session.statusPresentation.statusUI.updateForScanModeEnabled()
         return
 
 //        uiUtil.takeScreenshot({ imageData in

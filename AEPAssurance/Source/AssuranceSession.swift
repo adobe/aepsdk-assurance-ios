@@ -144,7 +144,7 @@ class AssuranceSession {
     private func registerInternalPlugins() {
         pluginHub.registerPlugin(PluginFakeEvent(), toSession: self)
         pluginHub.registerPlugin(PluginConfigModify(), toSession: self)
-        pluginHub.registerPlugin(PluginScreenshot(), toSession: self)
+        pluginHub.registerPlugin(PluginScreenshot(stateManager: stateManager), toSession: self)
         pluginHub.registerPlugin(PluginLogForwarder(), toSession: self)
     }
     

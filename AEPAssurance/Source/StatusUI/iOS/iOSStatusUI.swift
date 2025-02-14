@@ -16,6 +16,7 @@ import WebKit
 
 class iOSStatusUI {
     var displayed: Bool = false
+    var scanModeEnabled: Bool = false
     var clientLogQueue: ThreadSafeQueue<AssuranceClientLogMessage>
     var floatingButton: FloatingButtonPresentable?
     var fullScreenMessage: FullscreenPresentable?
@@ -70,6 +71,19 @@ class iOSStatusUI {
     func updateForSocketInActive() {
         addClientLog("Attempting to reconnect..", visibility: .low)
         floatingButton?.setButtonImage(imageData: Data(bytes: InactiveIcon.content, count: InactiveIcon.content.count))
+    }
+    
+    func updateForScanModeEnabled() {
+        scanModeEnabled = true
+        addClientLog("Assurance scan mode enabled.", visibility: .low)
+        floatingButton?.setButtonImage(imageData: Data(bytes: scanImage.content, count: scanImage.content.count))
+
+    }
+    
+    func updateForScanModeDisabled() {
+        scanModeEnabled = false
+        addClientLog("Assurance scan mode enabled.", visibility: .low)
+        floatingButton?.setButtonImage(imageData: Data(bytes: ActiveIcon.content, count: ActiveIcon.content.count))
     }
 
     ///

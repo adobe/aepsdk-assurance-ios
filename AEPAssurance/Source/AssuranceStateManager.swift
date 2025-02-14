@@ -58,6 +58,18 @@ class AssuranceStateManager {
             }
         }
     }
+    
+    ///
+    /// Property representing the scan state for Assurance
+    ///
+    var scanState: AssuranceScanState {
+        get {
+            datastore.getString(key: AssuranceConstants.DataStoreKeys.SCAN_STATE).flatMap { AssuranceScanState(rawValue: $0)} ?? .inactive
+        }
+        set {
+            datastore.set(key: AssuranceConstants.DataStoreKeys.SCAN_STATE, value: newValue.rawValue)
+        }
+    }
 
     /// Call this function to create a new shared state for Assurance with the provided sessionId
     ///

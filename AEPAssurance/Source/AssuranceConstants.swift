@@ -90,6 +90,7 @@ enum AssuranceConstants {
         static let ENVIRONMENT = "assurance.environment"
         static let SOCKETURL = "assurance.socketurl"
         static let CONFIG_MODIFIED_KEYS = "assurance.control.modifiedConfigKeys"
+        static let SCAN_STATE = "assurance.scan.state"
     }
 
     enum SharedStateKeys {
