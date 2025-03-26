@@ -190,6 +190,9 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
         }
     }
     
+    func scanButtonTapped() {
+        setAndSendScanState(assuranceScanState: .inactive)
+    }
 #if DEBUG
     
     func quickConnectBegin() {
@@ -226,9 +229,6 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
         setAndSendScanState(assuranceScanState: .ready)
     }
     
-    func scanButtonTapped() {
-        setAndSendScanState(assuranceScanState: .inactive)
-    }
 #endif
     
     // MARK: - AssuranceConnectionDelegate
