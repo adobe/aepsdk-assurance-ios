@@ -49,6 +49,11 @@ protocol AssurancePresentationDelegate {
     ///
     func pinScreenDismissed()
     
+    ///
+    /// Tlls the conforming delegate that the scan button has been tapped
+    ///
+    func scanButtonTapped()
+
 #if DEBUG
     ///
     /// Tells the conforming delegate to create a quick connect session with the given sessionDetails
@@ -79,9 +84,5 @@ protocol AssurancePresentationDelegate {
     ///
     func quickConnectConnectedAndDismissed()
     
-    ///
-    /// Tlls the conforming delegate that the scan button has been tapped
-    ///
-    func scanButtonTapped()
 #endif
 }

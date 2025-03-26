@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         MobileCore.setLogLevel(.trace)
 
         // Set QuickConnect Environment
-        ServiceProvider.shared.namedKeyValueService.set(collectionName: "com.adobe.assurance", key: "assurance.environment", value: "qa")
+//        ServiceProvider.shared.namedKeyValueService.set(collectionName: "com.adobe.assurance", key: "assurance.environment", value: "qa")
 //        ServiceProvider.shared.namedKeyValueService.set(collectionName: "com.adobe.assurance", key: "assurance.environment", value: "stage")
 //        ServiceProvider.shared.namedKeyValueService.set(collectionName: "com.adobe.assurance", key: "assurance.environment", value: "")
         let extensions = [AEPIdentity.Identity.self,
@@ -57,8 +57,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let appState = application.applicationState
         MobileCore.registerExtensions(extensions, {
             // QA CJM Stage
-            MobileCore.configureWith(appId: "staging/1b50a869c4a2/523c58f26834/launch-6ea0794aee60-development")
-//            MobileCore.configureWith(appId: "94f571f308d5/f986c2be4925/launch-e96cdeaddea9-development")
+//            MobileCore.configureWith(appId: "staging/1b50a869c4a2/523c58f26834/launch-6ea0794aee60-development")
+            MobileCore.configureWith(appId: "94f571f308d5/f986c2be4925/launch-e96cdeaddea9-development")
             if appState != .background {
                 MobileCore.lifecycleStart(additionalContextData: nil)
             }
