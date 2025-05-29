@@ -18,9 +18,9 @@ import UIKit
 class OverlayPresenter: SessionAuthorizingUI {
     var displayed: Bool { viewModel.displayed }
 
-    private var window: UIWindow?
     private var hostingController: UIHostingController<QuickConnectSwiftUIView>!
     private let viewModel: QuickConnectViewModel
+    private weak var presentingViewController: UIViewController?
 
     // A set to store the dismiss signal observer.
     private var cancellables = Set<AnyCancellable>()
@@ -30,41 +30,52 @@ class OverlayPresenter: SessionAuthorizingUI {
         let quickConnectView = QuickConnectSwiftUIView(viewModel: viewModel)
         DispatchQueue.main.async {
             self.hostingController = UIHostingController(rootView: quickConnectView)
+            // Configure the hosting controller for tvOS
+            self.hostingController.modalPresentationStyle = .blurOverFullScreen
+            self.hostingController.view.backgroundColor = UIColor(white: 0, alpha: 0.8)
         }
 
-        // When `viewModel.displayed` changes, Combine can be used to listen for updates and trigger
-        // dismissal. Alternatively, rely on `QuickConnectView` calling `viewModel.dismiss()` and
-        // invoke `dismiss()` within a `.sink` if necessary.
-
-        // Observe changes to `displayed` to auto-dismiss when it's set to false.
-        // Subscribe once per class lifecycle.
+        // Observe changes to `displayed` to handle dismissal
         viewModel.$displayed
             .dropFirst()
             .sink { [weak self] isDisplayed in
                 guard let self = self else { return }
                 if !isDisplayed {
-                    self.dismiss()
+                    self.dismissOverlay()
                 }
             }
             .store(in: &cancellables)
     }
 
     func show() {
-        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-            // Fallback if no scene is available
-            return
-        }
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self,
+                  let window = UIApplication.shared.assuranceGetKeyWindow(),
+                  let rootViewController = window.rootViewController else {
+                return
+            }
 
-        let newWindow = UIWindow(windowScene: scene)
-        newWindow.rootViewController = hostingController
-        newWindow.windowLevel = .alert + 1
-        self.window = newWindow
-        newWindow.makeKeyAndVisible()
+            // Store the presenting view controller for dismissal
+            self.presentingViewController = rootViewController
+
+            // Present modally
+            rootViewController.present(self.hostingController, animated: true) {
+                // Set initial focus if needed
+                if let firstFocusableButton = self.hostingController.view.subviews.first(where: { $0 is UIButton }) {
+                    firstFocusableButton.becomeFirstResponder()
+                }
+            }
+        }
+    }
+
+    private func dismissOverlay() {
+        DispatchQueue.main.async { [weak self] in
+            self?.hostingController.dismiss(animated: true)
+        }
     }
 
     func dismiss() {
-        window?.isHidden = true
-        window = nil
+        dismissOverlay()
     }
 
     // SessionAuthorizingUI methods

@@ -1,6 +1,21 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Assurance" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Clear Log" : {
+
+    },
+    "Confirm connection by visiting your session's connection detail screen" : {
+
+    },
+    "Disconnect" : {
+
+    },
     "error_desc_connection_limit" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1705,6 +1720,9 @@
         }
       }
     },
+    "Logs" : {
+
+    },
     "pin_screen_button_cancel" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -2416,7 +2434,7 @@
       }
     },
     "status_screen_button_cancel" : {
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
         "de-DE" : {
           "stringUnit" : {
@@ -2487,7 +2505,7 @@
       }
     },
     "status_screen_button_clear" : {
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
         "de-DE" : {
           "stringUnit" : {
@@ -2629,7 +2647,7 @@
       }
     },
     "status_screen_header" : {
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
         "de-DE" : {
           "stringUnit" : {

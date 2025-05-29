@@ -89,19 +89,35 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
     // MARK: - Private methods
 
     private func registerCallbacks() {
-        socketTask?.receive {[weak self] result in
+        // Only register if socket is open
+        guard socketState != .closed, socketState != .closing else {
+            return
+        }
+
+        socketTask?.receive { [weak self] result in
+            guard let self = self else { return }
+
             switch result {
             case .success(let response):
                 switch response {
                 case .string(let message):
-                    self?.didReceiveMessage(message)
+                    self.didReceiveMessage(message)
                 case .data(let data):
-                    self?.didReceiveBinaryData(data)
+                    self.didReceiveBinaryData(data)
                 @unknown default:
                     Log.debug(label: AssuranceConstants.LOG_TAG, "Received data in an unknown format from the socket. Ignoring the incoming event.")
                 }
+
+                // Re-register to receive the next message
+                self.registerCallbacks()
+
             case .failure(let error):
-                self?.didReceiveError(error)
+                self.didReceiveError(error)
+
+                // If the error is not due to cancellation or closing, try to re-register
+                if self.socketState != .closed && self.socketState != .closing {
+                    self.registerCallbacks()
+                }
             }
         }
     }
@@ -128,4 +144,4 @@ class NativeSocket: NSObject, SocketConnectable, URLSessionDelegate, URLSessionW
         Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance SDK cannot handle binary data received from the socket. Ignoring the incoming event.")
     }
 
- }
+}

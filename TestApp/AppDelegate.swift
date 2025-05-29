@@ -18,10 +18,10 @@ import AEPEdgeConsent
 import AEPEdgeIdentity
 import AEPIdentity
 import AEPLifecycle
-import AEPMessaging
 import AEPPlaces
 import AEPSignal
 #if os(iOS)
+import AEPMessaging
 import AEPTarget
 #endif
 import AEPUserProfile
@@ -38,35 +38,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         MobileCore.track(state: "Before SDK Init", data: nil)
         MobileCore.setLogLevel(.trace)
         
-        var extensions = [AEPEdgeIdentity.Identity.self,
-                          AEPIdentity.Identity.self,
-                          Analytics.self,
-                          Assurance.self,
-                          Consent.self,
-                          Consent.self,
-                          Edge.self,
-                          Lifecycle.self,
-                          Messaging.self,
-                          Places.self,
-                          Signal.self,
-                          UserProfile.self,
-        ]
-        #if os(iOS)
-        extensions.append(Target.self)
-        #endif
-        let appState = application.applicationState
-        MobileCore.registerExtensions(extensions, {
-            MobileCore.configureWith(appId: "bf7248f92b53/58de23f6a5a7/launch-392d05c5c4a4-development")
+        //MobileCore.initialize(appId: "bf7248f92b53/58de23f6a5a7/launch-392d05c5c4a4-development")
+        MobileCore.initialize(appId: "94f571f308d5/acf70fbd2ce5/launch-8c4a96c9ec51-development")
+        {
+            
             #if os(tvOS) // Launch quick connect for tvOS
-            Assurance.startSession()
+            //Assurance.startSession()
             #endif
-            if appState != .background {
-                MobileCore.lifecycleStart(additionalContextData: nil)
-            }
-        })
+        }
+    
 
+        #if os(iOS)
         let homepageSurface = Surface(path: "homepage")
         Messaging.updatePropositionsForSurfaces([homepageSurface])
+        #endif
 
         return true
     }

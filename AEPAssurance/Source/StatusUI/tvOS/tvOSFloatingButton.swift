@@ -11,45 +11,45 @@
 //
 
 import SwiftUI
-
-struct tvOSFloatingButton: View {
-    var dismissAction: () -> Void
-
-    func adobeLogoImage() -> Image {
-        let imageData = Data(bytes: ActiveIcon.content, count: ActiveIcon.content.count)
-        guard let uiImage = UIImage(data: imageData) else {
-            return Image(systemName: "a.circle") // Fallback image
-        }
-        return Image(uiImage: uiImage)
-    }
-
-    var body: some View {
-        ZStack {
-            // Transparent background that doesn't intercept focus or touches
-            Color.clear
-                .allowsHitTesting(false)
-
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    Button(action: dismissAction) {
-                        VStack(spacing: 4) {
-                            adobeLogoImage()
-                                .resizable()
-                                .frame(width: 50, height: 50)
-                                .cornerRadius(4)
-
-                            Text(NSLocalizedString("status_screen_button_disconnect", value: "Disconnect", comment: ""))
-                                .font(.caption2)
-                                .lineLimit(1)
-                        }
-                        .background(Color.gray.opacity(0.8))
-                        .cornerRadius(8)
-                    }
-                }
-            }
-        }
-    }
-}
-
+//
+//struct tvOSFloatingButton: View {
+//    var dismissAction: () -> Void
+//
+//    func adobeLogoImage() -> Image {
+//        let imageData = Data(bytes: ActiveIcon.content, count: ActiveIcon.content.count)
+//        guard let uiImage = UIImage(data: imageData) else {
+//            return Image(systemName: "a.circle") // Fallback image
+//        }
+//        return Image(uiImage: uiImage)
+//    }
+//
+//    var body: some View {
+//        ZStack {
+//            // Transparent background that doesn't intercept focus or touches
+//            Color.clear
+//                .allowsHitTesting(false)
+//
+//            VStack {
+//                Spacer()
+//                HStack {
+//                    Spacer()
+//                    Button(action: dismissAction) {
+//                        VStack(spacing: 4) {
+//                            adobeLogoImage()
+//                                .resizable()
+//                                .frame(width: 50, height: 50)
+//                                .cornerRadius(4)
+//
+//                            Text(NSLocalizedString("status_screen_button_disconnect", value: "Disconnect", comment: ""))
+//                                .font(.caption2)
+//                                .lineLimit(1)
+//                        }
+//                        .background(Color.gray.opacity(0.8))
+//                        .cornerRadius(8)
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+//

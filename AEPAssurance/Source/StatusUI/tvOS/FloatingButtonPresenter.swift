@@ -12,44 +12,44 @@
 
 import SwiftUI
 
-class PassthroughWindow: UIWindow {
-    // To refine hit-testing so that only the button area is enabled, SwiftUI’s default hit
-    // testing is currently used. If further customization is needed, override the `hitTest` method here.
-}
-
-class FloatingButtonPresenter {
-    private var hostingController: UIHostingController<tvOSFloatingButton>?
-
-    init(dismissAction: @escaping () -> Void) {
-        let rootView = tvOSFloatingButton(dismissAction: dismissAction)
-        hostingController = UIHostingController(rootView: rootView)
-        hostingController?.view.backgroundColor = .clear
-    }
-
-    func show() {
-        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let mainWindow = scene.windows.first(where: { $0.isKeyWindow }) else {
-            return
-        }
-
-        guard let hcView = hostingController?.view else { return }
-
-        // Add the overlay as a subview of the main window
-        mainWindow.addSubview(hcView)
-        hcView.translatesAutoresizingMaskIntoConstraints = false
-
-        // Pin the overlay to fill the entire window so it can position the button at bottom-right
-        NSLayoutConstraint.activate([
-            hcView.topAnchor.constraint(equalTo: mainWindow.topAnchor),
-            hcView.leadingAnchor.constraint(equalTo: mainWindow.leadingAnchor),
-            hcView.trailingAnchor.constraint(equalTo: mainWindow.trailingAnchor),
-            hcView.bottomAnchor.constraint(equalTo: mainWindow.bottomAnchor)
-        ])
-        mainWindow.layoutIfNeeded()
-    }
-
-    func dismiss() {
-        hostingController?.view.removeFromSuperview()
-        hostingController = nil
-    }
-}
+//class PassthroughWindow: UIWindow {
+//    // To refine hit-testing so that only the button area is enabled, SwiftUI’s default hit
+//    // testing is currently used. If further customization is needed, override the `hitTest` method here.
+//}
+//
+//class FloatingButtonPresenter {
+//    private var hostingController: UIHostingController<tvOSFloatingButton>?
+//
+//    init(dismissAction: @escaping () -> Void) {
+//        let rootView = tvOSFloatingButton(dismissAction: dismissAction)
+//        hostingController = UIHostingController(rootView: rootView)
+//        hostingController?.view.backgroundColor = .clear
+//    }
+//
+//    func show() {
+//        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+//              let mainWindow = scene.windows.first(where: { $0.isKeyWindow }) else {
+//            return
+//        }
+//
+//        guard let hcView = hostingController?.view else { return }
+//
+//        // Add the overlay as a subview of the main window
+//        mainWindow.addSubview(hcView)
+//        hcView.translatesAutoresizingMaskIntoConstraints = false
+//
+//        // Pin the overlay to fill the entire window so it can position the button at bottom-right
+//        NSLayoutConstraint.activate([
+//            hcView.topAnchor.constraint(equalTo: mainWindow.topAnchor),
+//            hcView.leadingAnchor.constraint(equalTo: mainWindow.leadingAnchor),
+//            hcView.trailingAnchor.constraint(equalTo: mainWindow.trailingAnchor),
+//            hcView.bottomAnchor.constraint(equalTo: mainWindow.bottomAnchor)
+//        ])
+//        mainWindow.layoutIfNeeded()
+//    }
+//
+//    func dismiss() {
+//        hostingController?.view.removeFromSuperview()
+//        hostingController = nil
+//    }
+//}

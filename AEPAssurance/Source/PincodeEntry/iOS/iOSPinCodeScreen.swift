@@ -58,7 +58,7 @@ class iOSPinCodeScreen: SessionAuthorizingUI {
         let jsFunctionCall = String(format: "showError('%@','%@', %d);", error.info.name, error.info.description, error.info.shouldRetry)
         fullscreenWebView?.evaluateJavaScript(jsFunctionCall, completionHandler: nil)
     }
-    
+
     private func localizeStrings() {
         let enterPinSubheader = NSLocalizedString("pin_screen_header", bundle: Bundle(for: type(of: self)), value: "Enter the 4 digit PIN to continue", comment: "")
         let connectingSubheader = NSLocalizedString("pin_screen_connecting", bundle: Bundle(for: type(of: self)), value: "Connecting...", comment: "")
@@ -66,7 +66,7 @@ class iOSPinCodeScreen: SessionAuthorizingUI {
         let cancelButtonText = NSLocalizedString("pin_screen_button_cancel", bundle: Bundle(for: type(of: self)), value: "Cancel", comment: "")
         let retryButtonText = NSLocalizedString("pin_screen_button_retry", bundle: Bundle(for: type(of: self)), value: "Retry", comment: "")
         let localizeTextJS = String(format: "localizeText('%@', '%@', '%@', '%@', '%@');", enterPinSubheader, connectingSubheader, connectButtonText, cancelButtonText, retryButtonText)
-        
+
         fullscreenWebView?.evaluateJavaScript(localizeTextJS, completionHandler: nil)
     }
 

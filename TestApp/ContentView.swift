@@ -9,11 +9,12 @@
  OF ANY KIND, either express or implied. See the License for the specific language
  governing permissions and limitations under the License.
  */
-
 import AEPAssurance
 import AEPCore
 import AEPEdgeConsent
+#if os(iOS)
 import AEPMessaging
+#endif
 import AEPPlaces
 import AEPUserProfile
 
@@ -38,6 +39,8 @@ struct SectionHeader: View {
     }
 }
 
+#if os(iOS)
+@available(iOS 15.0, *)
 class HomePageCardCustomizer : ContentCardCustomizing {
 
     func customize(template: SmallImageTemplate) {
@@ -68,10 +71,14 @@ class HomePageCardCustomizer : ContentCardCustomizing {
 
     struct ButtonModifier : ViewModifier {
         func body(content: Content) -> some View {
-            content
-                .background(Color.pink)
-                .cornerRadius(10)
-                .fontWeight(.semibold)
+            if #available(iOS 16.0, *) {
+                content
+                    .background(Color.pink)
+                    .cornerRadius(10)
+                    .fontWeight(.semibold)
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
 
@@ -91,13 +98,18 @@ class HomePageCardCustomizer : ContentCardCustomizing {
         }
     }
 }
+#endif
 
+@available(iOS 15.0, *)
 struct ContentView: View {
+    #if os(iOS)
     @State var savedCards: [ContentCardUI]?
+    #endif
 
     var body: some View {
         ZStack {
             ScrollView(.vertical) {
+#if os(iOS)
                 if let cards = savedCards {
                     SectionHeader("Deals")
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -119,6 +131,7 @@ struct ContentView: View {
                 }) {
                     Text("Update props")
                 }
+                #endif
                 AssuranceCard()
                 AnalyticsCard()
                 UserProfileCard()
@@ -130,6 +143,7 @@ struct ContentView: View {
 
         .onAppear {
             MobileCore.track(state: "Home Screen", data: nil)
+            #if os(iOS)
             let homePageSurface = Surface(path: "homepage")
             Messaging.getContentCardsUI(for: homePageSurface, customizer: HomePageCardCustomizer()) { result in
                 switch result {
@@ -139,10 +153,12 @@ struct ContentView: View {
                     print(error)
                 }
             }
+            #endif
         }
     }
 }
 
+@available(iOS 15.0, *)
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
@@ -340,24 +356,68 @@ struct BigEventsCard: View {
             HStack {
                 Button(action: {
                     guard let path = Bundle.main.path(forResource: "sample", ofType: "html") else {
+                        print("[Assurance] Could not find sample.html file")
                         return
                     }
-                    let sampleHtml = try? String(contentsOfFile: path, encoding: String.Encoding.utf8)
-                    MobileCore.dispatch(event: Event(name: "Huge HTML Event", type: "type", source: "source", data: ["html": sampleHtml ?? ""]))
+                    guard let sampleHtml = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) else {
+                        print("[Assurance] Could not read sample.html file")
+                        return
+                    }
+
+                    // Check size before sending
+                    let data = sampleHtml.data(using: .utf8) ?? Data()
+                    let sizeInKB = Double(data.count) / 1024.0
+                    print("[Assurance] Sending HTML data of size: \(sizeInKB) KB")
+
+                    // Create event with detailed logging
+                    let payload = ["html": sampleHtml]
+                    let event = Event(name: "Huge HTML Event", type: "type", source: "source", data: payload)
+
+                    // Log event details
+                    if let eventData = try? JSONSerialization.data(withJSONObject: payload),
+                       let eventJson = String(data: eventData, encoding: .utf8) {
+                        print("[Assurance] Event payload size: \(Double(eventData.count) / 1024.0) KB")
+                        print("[Assurance] Event JSON preview (first 200 chars): \(String(eventJson.prefix(200)))...")
+                    }
+
+                    print("[Assurance] Dispatching event through MobileCore...")
+                    MobileCore.dispatch(event: event)
+                    print("[Assurance] Event dispatched")
+
                 }, label: {
                     Text("Send HTML")
                 }).padding()
+
                 Button(action: {
-                    let path = Bundle.main.path(forResource: "sampleRules", ofType: "json")
-                    guard let sampleJson = try? String(contentsOfFile: path!, encoding: String.Encoding.utf8) else {
+                    guard let path = Bundle.main.path(forResource: "sampleRules", ofType: "json") else {
+                        print("[Assurance] Could not find sampleRules.json file")
                         return
                     }
+                    guard let sampleJson = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) else {
+                        print("[Assurance] Could not read sampleRules.json file")
+                        return
+                    }
+
                     do {
                         if let json = try JSONSerialization.jsonObject(with: Data(sampleJson.utf8), options: []) as? [String: Any] {
-                            MobileCore.dispatch(event: Event(name: "Huge JSON Event", type: "type", source: "source", data: json))
-                        }
-                    } catch _ as NSError {}
+                            // Log JSON details
+                            if let jsonData = try? JSONSerialization.data(withJSONObject: json),
+                               let jsonString = String(data: jsonData, encoding: .utf8) {
+                                let sizeInKB = Double(jsonData.count) / 1024.0
+                                print("[Assurance] JSON data size: \(sizeInKB) KB")
+                                print("[Assurance] JSON preview (first 200 chars): \(String(jsonString.prefix(200)))...")
+                            }
 
+                            print("[Assurance] Creating event...")
+                            let event = Event(name: "Huge JSON Event", type: "type", source: "source", data: json)
+
+                            print("[Assurance] Dispatching event through MobileCore...")
+                            MobileCore.dispatch(event: event)
+                            print("[Assurance] Event dispatched")
+                        }
+                    } catch let error {
+                        print("[Assurance] Failed to parse JSON: \(error.localizedDescription)")
+                    }
                 }, label: {
                     Text("Send huge rules data")
                 }).padding()

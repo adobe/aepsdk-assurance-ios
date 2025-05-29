@@ -56,9 +56,12 @@ struct AssuranceEventChunker: EventChunker {
     /// - Returns: An array of chunked AssuranceEvents
     func chunk(_ event: AssuranceEvent) -> [AssuranceEvent] {
         let jsonData = event.jsonData
+        let sizeInKB = Double(jsonData.count) / 1024.0
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Chunking event of size: \(sizeInKB) KB")
 
         // send the original event back if the size is within the socket limit
         if jsonData.count < AssuranceConstants.AssuranceEvent.SIZE_LIMIT {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Event size within limit, no chunking needed")
             return [event]
         }
         var chunkedEvents: [AssuranceEvent] = []
@@ -89,6 +92,8 @@ struct AssuranceEventChunker: EventChunker {
         ///    n is the total payload size to be chunked
         ///    d is the size of each chunk
         let totalChunks = payloadSize / CHUNK_SIZE + ((payloadSize % CHUNK_SIZE) == 0 ? 0 : 1)
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Breaking event into \(totalChunks) chunks")
+
         for chunkCounter in 0..<totalChunks {
             var chunk: Data
             let chunkBase = chunkCounter * CHUNK_SIZE
@@ -98,6 +103,8 @@ struct AssuranceEventChunker: EventChunker {
             }
             let range: Range<Data.Index> = chunkBase..<(chunkBase + diff)
             chunk = payloadData.subdata(in: range)
+            let chunkSizeKB = Double(chunk.count) / 1024.0
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Created chunk \(chunkCounter + 1) of \(totalChunks), size: \(chunkSizeKB) KB")
 
             let decodedChunkString = String(decoding: chunk, as: UTF8.self)
             chunkedEvents.append(AssuranceEvent(type: event.type,
@@ -110,7 +117,7 @@ struct AssuranceEventChunker: EventChunker {
         }
         return chunkedEvents
     }
-    
+
     ///
     /// Stitches chunked events together into one `AssuranceEvent` where the stitched events chunkData is now the new event's payload
     ///
@@ -119,7 +126,7 @@ struct AssuranceEventChunker: EventChunker {
     func stitch(_ chunkedEvents: [AssuranceEvent]) -> AssuranceEvent? {
         //exit early if chunkedEvents is empty
         guard !chunkedEvents.isEmpty else { return nil }
-        
+
         var stitchedString = ""
         // Stitch chunked payload data together
         for event in chunkedEvents {
@@ -128,14 +135,14 @@ struct AssuranceEventChunker: EventChunker {
                 Log.warning(label: AssuranceConstants.LOG_TAG, "Error while attempting to stitch chunked event: Chunk payload was not in proper string format.")
                 return nil
             }
-            
+
             stitchedString += payloadString
         }
         guard let stitchedStringData = stitchedString.data(using: .utf8) else {
             Log.warning(label: AssuranceConstants.LOG_TAG, "Error while attempting to create data from stitched string")
             return nil
         }
-        
+
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .millisecondsSince1970
         var decodedPayload: [String: AnyCodable]? = nil
@@ -150,6 +157,6 @@ struct AssuranceEventChunker: EventChunker {
                               payload: decodedPayload,
                               timestamp: referenceEvent.timestamp ?? Date(),
                               vendor: referenceEvent.vendor)
-        
+
    }
 }

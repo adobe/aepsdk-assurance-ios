@@ -64,11 +64,11 @@ class AssuranceSession {
         self.sessionOrchestrator = sessionOrchestrator
         self.presentationDelegate = sessionOrchestrator
         self.connectionDelegate = sessionOrchestrator
-        #if os(tvOS)
-        statusPresentation = AssuranceStatusPresentation(with: tvOSStatusUI(presentationDelegate: presentationDelegate))
-        #else
+//        #if os(tvOS)
+//        statusPresentation = AssuranceStatusPresentation(with: tvOSStatusUI(presentationDelegate: presentationDelegate))
+//        #else
         statusPresentation = AssuranceStatusPresentation(with: iOSStatusUI(presentationDelegate: presentationDelegate))
-        #endif
+        //#endif
         handleInBoundEvents()
         handleOutBoundEvents()
         registerInternalPlugins()

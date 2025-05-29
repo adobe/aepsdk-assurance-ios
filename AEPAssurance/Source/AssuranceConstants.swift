@@ -67,7 +67,7 @@ enum AssuranceConstants {
         static let NAME    = "ACPExtensionEventName"
         static let TYPE    = "ACPExtensionEventType"
         static let SOURCE  = "ACPExtensionEventSource"
-        static let DATA    = "ACPExtensionEventData"
+    static let DATA    = "ACPExtensionEventData"
         static let TIMESTAMP = "ACPExtensionEventTimestamp"
         static let NUMBER = "ACPExtensionEventNumber"
         static let UNIQUE_IDENTIFIER = "ACPExtensionEventUniqueIdentifier"

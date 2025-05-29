@@ -22,22 +22,33 @@ class AssuranceUIUtil {
     func takeScreenshot(_ callback :@escaping (Data?) -> Void) {
         // use main thread to capture the screenshot
         DispatchQueue.main.async {
-            guard let layer = UIApplication.shared.assuranceGetKeyWindow()?.layer else {
+            // START: Dark mode screenshot capture updates
+            // ORIGINAL: guard let layer = UIApplication.shared.assuranceGetKeyWindow()?.layer else {
+            guard let window = UIApplication.shared.assuranceGetKeyWindow() else {
                 callback(nil)
                 return
             }
 
-            let scale = UIScreen.main.scale
-            UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale)
+            // ORIGINAL: let scale = UIScreen.main.scale
+            // ORIGINAL: UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale)
+            let size = window.bounds.size
+            UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
+
             guard let context = UIGraphicsGetCurrentContext() else {
                 callback(nil)
                 return
             }
-            layer.render(in: context)
+
+            // ORIGINAL: layer.render(in: context)
+            window.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
+
             let screenshotImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
-            let data = screenshotImage?.jpegData(compressionQuality: 0.9)
+
+            // ORIGINAL: let data = screenshotImage?.jpegData(compressionQuality: 0.9)
+            let data = screenshotImage?.pngData()
             callback(data)
+            // END: Dark mode screenshot capture updates
         }
     }
 }
