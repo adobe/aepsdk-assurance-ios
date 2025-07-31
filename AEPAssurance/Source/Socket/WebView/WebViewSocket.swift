@@ -10,6 +10,7 @@
  governing permissions and limitations under the License.
  */
 
+#if os(iOS)
 import AEPServices
 import Foundation
 import WebKit
@@ -37,7 +38,8 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
         }
     }
 
-    /// boolean that tracks if webView for making socket connection is loaded
+    /// A boolean indicating whether the WebView for establishing the socket connection has loaded.
+    /// If set to `true` and a valid socket URL is available, the connection will be automatically attempted.
     var isWebViewLoaded: Bool = false {
         didSet {
             if let socketURL = self.socketURL, isWebViewLoaded {
@@ -64,7 +66,7 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
         self.delegate = delegate
         super.init()
 
-        // read the webSocket javascript from the built resources
+        // Read the webSocket javascript from the built resources
         guard let socketJavascript = String(bytes: SocketScript.content, encoding: .utf8) else {
             Log.warning(label: AssuranceConstants.LOG_TAG, "Unable to load javascript string for webView socket connection.")
             return
@@ -245,5 +247,5 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
             })
         }
     }
-
 }
+#endif

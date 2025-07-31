@@ -12,31 +12,34 @@
 
 import AEPServices
 import Foundation
+#if os(iOS)
 import WebKit
 
 class ErrorView: FullscreenMessageDelegate {
-
-    var error: AssuranceConnectionError
+    var displayed: Bool = false
     var fullscreenMessage: FullscreenPresentable?
     var fullscreenWebView: WKWebView?
+    let error: AssuranceConnectionError
 
-    /// Initializer
-    init(_ error: AssuranceConnectionError) {
+    required init(_ error: AssuranceConnectionError) {
         self.error = error
     }
 
     func display() {
-        fullscreenMessage = ServiceProvider.shared.uiService.createFullscreenMessage(payload: String(bytes: PinDialogHTML.content, encoding: .utf8) ?? "", listener: self, isLocalImageUsed: false)
+        // Use the UIService to create a fullscreen message with the `ErrorDialogHTML` and show to the user.
+        fullscreenMessage = ServiceProvider.shared.uiService.createFullscreenMessage(payload: String(bytes: ErrorDialogHTML.content, encoding: .utf8) ?? "", listener: self, isLocalImageUsed: false)
         fullscreenMessage?.show()
     }
+}
 
+extension ErrorView: FullscreenMessageDelegate {
     func onShow(message: FullscreenMessage) {
         fullscreenWebView = message.webView as? WKWebView
     }
 
     func onDismiss(message: FullscreenMessage) {
-        fullscreenWebView = nil
         fullscreenMessage = nil
+        fullscreenWebView = nil
     }
 
     func overrideUrlLoad(message: FullscreenMessage, url: String?) -> Bool {
@@ -46,7 +49,7 @@ class ErrorView: FullscreenMessageDelegate {
             return true
         }
 
-        // when the user hits "Cancel" on the iOS pinpad screen. Dismiss the fullscreen message
+        // when the user hits "Cancel" on the iOS error screen. Dismiss the fullscreen message
         // return false, to indicate that the URL has been handled
         if host == AssuranceConstants.HTMLURLPath.CANCEL {
             message.dismiss()
@@ -61,13 +64,72 @@ class ErrorView: FullscreenMessageDelegate {
     }
 
     func onShowFailure() {
-        Log.debug(label: AssuranceConstants.LOG_TAG, "Unable to display Assurance error screen. Assurance session terminated.")
+        Log.warning(label: AssuranceConstants.LOG_TAG, "Unable to display the error screen, onShowFailure delegate method is invoked")
     }
 
     private func showErrorDialogToUser() {
-        Log.debug(label: AssuranceConstants.LOG_TAG, String(format: "Assurance connection establishment failed. Error : %@, Description : %@", error.info.name, error.info.description))
-        let jsFunctionCall = String(format: "showError('%@','%@', %d);", error.info.name, error.info.description, false)
-        fullscreenWebView?.evaluateJavaScript(jsFunctionCall, completionHandler: nil)
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Showing error dialog to user with error name: \(error.info.name) and description: \(error.info.description)")
+        fullscreenWebView?.evaluateJavaScript(String(format: "showError('%@','%@', 0);", error.info.name, error.info.description), completionHandler: nil)
+    }
+}
+#else
+import AEPServices
+import Foundation
+import SwiftUI
+
+struct ErrorMessageView: View {
+    let error: AssuranceConnectionError
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Text(error.info.name)
+                .font(.title)
+                .fontWeight(.bold)
+
+            Text(error.info.description)
+                .font(.body)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
+
+            Button("OK") {
+                // This will be handled by the delegate
+            }
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(8)
+        }
+        .padding()
+    }
+}
+
+class ErrorView: FullscreenMessageNativeDelegate {
+    var displayed: Bool = false
+    var fullscreenMessage: FullscreenPresentable?
+    let error: AssuranceConnectionError
+
+    required init(_ error: AssuranceConnectionError) {
+        self.error = error
     }
 
+    func display() {
+        // Create a FullscreenMessageNative with the error view
+        let errorView = ErrorMessageView(error: error)
+        fullscreenMessage = ServiceProvider.shared.uiService.createFullscreenMessage(payload: errorView, listener: self)
+        fullscreenMessage?.show()
+    }
+
+    // MARK: - FullscreenMessageNativeDelegate
+
+    func onShow(message: FullscreenMessageNative) {
+        displayed = true
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Showing error dialog to user with error name: \(error.info.name) and description: \(error.info.description)")
+    }
+
+    func onDismiss(message: FullscreenMessageNative) {
+        displayed = false
+        fullscreenMessage = nil
+    }
 }
+#endif
+

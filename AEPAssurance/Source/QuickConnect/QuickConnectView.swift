@@ -14,7 +14,7 @@ import AEPServices
 import Foundation
 import UIKit
 
-#if DEBUG
+//#if DEBUG && os(iOS)
 ///
 /// The QuickConnectView SessionAuthorizingUI which is used to start a QuickConnect session
 ///
@@ -62,7 +62,9 @@ class QuickConnectView: SessionAuthorizingUI {
     
     lazy private var descriptionTextView : UITextView = {
         let textView = UITextView()
+        #if os(iOS)
         textView.isEditable = false
+        #endif
         textView.accessibilityLabel = "AssuranceQuickConnectDescriptionTextView"
         textView.backgroundColor = .clear
         textView.textColor = .white
@@ -136,7 +138,9 @@ class QuickConnectView: SessionAuthorizingUI {
     
     lazy private var errorTitle: UITextView = {
         let textView = UITextView()
+#if os(iOS)
         textView.isEditable = false
+        #endif
         textView.accessibilityLabel = "AssuranceQuickConnectErrorLabel"
         textView.backgroundColor = .clear
         textView.textColor = .white
@@ -150,7 +154,9 @@ class QuickConnectView: SessionAuthorizingUI {
     
     lazy private var errorDescription: UITextView = {
         let textView = UITextView()
+        #if os(iOS)
         textView.isEditable = false
+        #endif
         textView.accessibilityLabel = "AssuranceQuickConnectErrorDescriptionTextView"
         textView.backgroundColor = .clear
         textView.textColor = .white
@@ -416,4 +422,4 @@ class QuickConnectView: SessionAuthorizingUI {
         errorState(errorTitle: error.info.name, errorText: error.info.description)
     }
 }
-#endif
+//#endif

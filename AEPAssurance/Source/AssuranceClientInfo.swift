@@ -81,8 +81,12 @@ enum AssuranceClientInfo {
     ///
     /// - Returns: An `Int` representing the battery level of the device
     private static func getBatteryLevel() -> Int {
+        #if os(tvOS)
+        return -1
+        #else
         let batteryPercentage = Int(UIDevice.current.batteryLevel * 100)
         return (batteryPercentage) > 0 ? batteryPercentage : -1
+        #endif
     }
 
     /// - Returns: A `String` representing the device's location authorization status

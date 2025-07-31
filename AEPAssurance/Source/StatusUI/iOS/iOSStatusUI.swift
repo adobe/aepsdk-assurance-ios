@@ -10,25 +10,57 @@
  governing permissions and limitations under the License.
  */
 
+//#if os(iOS)
 import AEPServices
 import Foundation
+#if os(iOS)
 import WebKit
+import UIKit
+import SwiftUI
+#else
+import TVUIKit
+import SwiftUI
+#endif
 
-class iOSStatusUI {
+class iOSStatusUI: StatusUIPresentable {
     var displayed: Bool = false
     var clientLogQueue: ThreadSafeQueue<AssuranceClientLogMessage>
     var floatingButton: FloatingButtonPresentable?
     var fullScreenMessage: FullscreenPresentable?
     var presentationDelegate: AssurancePresentationDelegate
-    var webView: WKWebView?
+    #if os(tvOS)
+    private var statusView: AssuranceStatusView?
+    private let statusViewModel = AssuranceStatusViewModel()
+    #endif
 
     required init(presentationDelegate: AssurancePresentationDelegate) {
         self.presentationDelegate = presentationDelegate
         self.clientLogQueue = ThreadSafeQueue(withLimit: 100)
+        #if os(tvOS)
+        setupStatusView()
+        #endif
     }
 
+    #if os(tvOS)
+    private func setupStatusView() {
+        let statusView = AssuranceStatusView(
+            viewModel: statusViewModel,
+            onDisconnect: { [weak self] in
+                guard let self = self else { return }
+                self.presentationDelegate.disconnectClicked()
+                self.fullScreenMessage?.dismiss()
+            },
+            onCancel: { [weak self] in
+                self?.fullScreenMessage?.dismiss()
+                self?.floatingButton?.show()
+            }
+        )
+        self.statusView = statusView
+    }
+    #endif
+
     /// Displays the Assurance Status UI on the customers application.
-    /// This method will initialize the FloatingButton and the FullScreen webView required for the displaying Assurance status.
+    /// This method will initialize the FloatingButton and the Status UI required for displaying Assurance status.
     /// On calling this method Floating button appears on the screen showing the current connection status.
     func display() {
         if floatingButton != nil {
@@ -36,7 +68,12 @@ class iOSStatusUI {
         }
 
         if fullScreenMessage == nil {
+            #if os(iOS)
             self.fullScreenMessage = ServiceProvider.shared.uiService.createFullscreenMessage(payload: String(bytes: StatusInfoHTML.content, encoding: .utf8) ?? "", listener: self, isLocalImageUsed: false)
+            #else
+            guard let statusView = self.statusView else { return }
+            self.fullScreenMessage = ServiceProvider.shared.uiService.createFullscreenMessage(payload: statusView, listener: self)
+            #endif
         }
 
         floatingButton = ServiceProvider.shared.uiService.createFloatingButton(listener: self)
@@ -49,10 +86,16 @@ class iOSStatusUI {
     /// Removes Assurance Status UI from the customers application
     ///
     func remove() {
-        self.floatingButton?.dismiss()
-        self.floatingButton = nil
         self.fullScreenMessage = nil
-        self.webView = nil
+        #if os(tvOS)
+        self.statusView = nil
+        #endif
+
+        // Only dismiss the floating button if we're actually disconnecting
+        if !displayed {
+            self.floatingButton?.dismiss()
+            self.floatingButton = nil
+        }
         displayed = false
     }
 
@@ -87,41 +130,89 @@ class iOSStatusUI {
     /// Load and display all the pending log messages on Assurance Status UI.
     ///
     func updateLogUI() {
-        guard let webView = webView else {
-            return
-        }
-        
-        localizeStrings()
-
-        while clientLogQueue.size() > 0 {
-            guard let logMessage = clientLogQueue.dequeue() else {
-                return
-            }
-
-            var cleanMessage = logMessage.message.replacingOccurrences(of: "\\", with: "\\\\")
-            cleanMessage = cleanMessage.replacingOccurrences(of: "\"", with: "\\\"")
-            cleanMessage = cleanMessage.replacingOccurrences(of: "\n", with: "<br>")
-            cleanMessage = cleanMessage.replacingOccurrences(of: "\t", with: "&nbsp;&nbsp;&nbsp;&nbsp;")
-            DispatchQueue.main.async {
-                let logCommand = String(format: "addLog(\"%d\", \"%@\");", logMessage.visibility.rawValue, logMessage.message)
-                webView.evaluateJavaScript(logCommand, completionHandler: { _, error in
-                    if let error = error {
-                        print("An error occurred while displaying client logs. Error Description: \(error.localizedDescription)")
-                    }
-
-                })
+        DispatchQueue.main.async {
+            while self.clientLogQueue.size() > 0 {
+                guard let logMessage = self.clientLogQueue.dequeue() else {
+                    return
+                }
+                #if os(iOS)
+                self.updateLogInHTML(logMessage)
+                #else
+                Log.debug(label: AssuranceConstants.LOG_TAG, "Adding log message to status view: \(logMessage.message)")
+                self.statusViewModel.addLog(logMessage.message, visibility: logMessage.visibility)
+                #endif
             }
         }
     }
-    
-    private func localizeStrings() {
-        let statusHeader = NSLocalizedString("status_screen_header", bundle: Bundle(for: type(of: self)), value: "Logs", comment: "")
-        let disconnectButtonText = NSLocalizedString("status_screen_button_disconnect", bundle: Bundle(for: type(of: self)), value: "Disconnect", comment: "")
-        let cancelButtonText = NSLocalizedString("status_screen_button_cancel", bundle: Bundle(for: type(of: self)), value: "Cancel", comment: "")
-        let clearLogsButtonText = NSLocalizedString("status_screen_button_clear", bundle: Bundle(for: type(of: self)), value: "Clear Log", comment: "")
-        
-        let localizeText = String(format: "localizeText('%@', '%@', '%@', '%@');", statusHeader, disconnectButtonText, cancelButtonText, clearLogsButtonText)
-        webView?.evaluateJavaScript(localizeText, completionHandler: nil)
-    }
 
+    private func updateLogInHTML(_ message: AssuranceClientLogMessage) {
+        #if os(iOS)
+        if let fullscreenMessage = fullScreenMessage as? FullscreenMessage {
+            let script = "addLog('\(message.message)', '\(message.visibility.rawValue)');"
+            fullscreenMessage.webView?.evaluateJavaScript(script, completionHandler: nil)
+        }
+        #endif
+    }
 }
+
+#if os(iOS)
+extension iOSStatusUI: FullscreenMessageDelegate {
+    func onShow(message: FullscreenMessage) {
+        displayed = true
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Status UI fullscreen message displayed")
+    }
+
+    func onDismiss(message: FullscreenMessage) {
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Status UI fullscreen message dismissing, webView is \(message.webView == nil ? "nil" : "not nil")")
+        displayed = false
+        fullScreenMessage = nil
+        // Dismiss floating button after fullscreen is dismissed during disconnect
+        if message.webView == nil {
+            floatingButton?.dismiss()
+            floatingButton = nil
+        }
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Status UI fullscreen message dismissed")
+    }
+
+    func overrideUrlLoad(message: FullscreenMessage, url: String?) -> Bool {
+        guard let host = URL(string: url ?? "")?.host else {
+            return true
+        }
+
+        if host == AssuranceConstants.HTMLURLPath.CANCEL {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Cancel clicked, hiding fullscreen message")
+            message.hide()
+            floatingButton?.show()
+            return false
+        }
+
+        if host == AssuranceConstants.HTMLURLPath.DISCONNECT {
+            Log.debug(label: AssuranceConstants.LOG_TAG, "Disconnect clicked, dismissing fullscreen message")
+            // First notify delegate about disconnect
+            presentationDelegate.disconnectClicked()
+            // Then dismiss the fullscreen message which will trigger onDismiss
+            message.dismiss()
+            return false
+        }
+
+        return true
+    }
+
+    func onShowFailure() {
+        Log.warning(label: AssuranceConstants.LOG_TAG, "Unable to display the statusUI screen, onShowFailure delegate method is invoked")
+    }
+}
+#else
+extension iOSStatusUI: FullscreenMessageNativeDelegate {
+    func onShow(message: FullscreenMessageNative) {
+        displayed = true
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Status UI fullscreen message displayed")
+    }
+
+    func onDismiss(message: FullscreenMessageNative) {
+        displayed = false
+        displayed = false
+        Log.debug(label: AssuranceConstants.LOG_TAG, "Status UI fullscreen message dismissed")
+    }
+}
+#endif

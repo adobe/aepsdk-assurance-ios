@@ -10,6 +10,7 @@
  governing permissions and limitations under the License.
  */
 
+#if os(iOS)
 import AEPServices
 import Foundation
 import WebKit
@@ -73,5 +74,5 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
     func onShowFailure() {
         Log.warning(label: AssuranceConstants.LOG_TAG, "Unable to display the pincode screen, onShowFailure delegate method is invoked")
     }
-
 }
+#endif

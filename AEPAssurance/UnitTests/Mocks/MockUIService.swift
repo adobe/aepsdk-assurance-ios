@@ -106,15 +106,15 @@ class MockMessageMonitor: MessageMonitoring {
     func show(message: any AEPServices.Showable) -> (Bool, AEPServices.PresentationError?) {
         return (true, nil)
     }
-    
+
     func show(message: any AEPServices.Showable, delegateControl: Bool) -> (Bool, AEPServices.PresentationError?) {
         return (true, nil)
     }
-    
+
     func show(message: AEPServices.Showable, delegateControl: Bool) -> Bool {
         return true
     }
-    
+
     func isMessageDisplayed() -> Bool {
         return false
     }

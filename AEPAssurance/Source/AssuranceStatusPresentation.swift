@@ -17,16 +17,16 @@ import Foundation
 ///
 class AssuranceStatusPresentation {
 
-    let statusUI: iOSStatusUI
+    let statusUI: StatusUIPresentable
 
-    init(with statusUI: iOSStatusUI) {
+    init(with statusUI: StatusUIPresentable) {
         self.statusUI = statusUI
     }
 
-    /// Adds the log message o Assurance session's Status UI.
+    /// Adds the log message to Assurance session's Status UI.
     /// - Parameters:
-    ///     - message: `String` log message
-    ///     - visibility: an `AssuranceClientLogVisibility` determining the importance of the log message
+    ///   - message: `String` log message
+    ///   - visibility: an `AssuranceClientLogVisibility` determining the importance of the log message
     func addClientLog(_ message: String, visibility: AssuranceClientLogVisibility) {
         statusUI.addClientLog(message, visibility: visibility)
     }
@@ -38,7 +38,7 @@ class AssuranceStatusPresentation {
         }
         statusUI.updateForSocketInActive()
     }
-    
+
     /// Call this to show the UI elements that are required when a session connection has been successfully established.
     func sessionConnected() {
         self.statusUI.display()
