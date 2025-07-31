@@ -20,12 +20,9 @@ import AEPIdentity
 import AEPLifecycle
 import AEPPlaces
 import AEPSignal
-#if os(iOS)
-import AEPMessaging
 import AEPTarget
-#endif
 import AEPUserProfile
-
+import AEPMessaging
 import UIKit
 
 @main
@@ -38,21 +35,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         MobileCore.track(state: "Before SDK Init", data: nil)
         MobileCore.setLogLevel(.trace)
         
-        //MobileCore.initialize(appId: "bf7248f92b53/58de23f6a5a7/launch-392d05c5c4a4-development")
-        MobileCore.initialize(appId: "94f571f308d5/acf70fbd2ce5/launch-8c4a96c9ec51-development")
-        {
-            
-            #if os(tvOS) // Launch quick connect for tvOS
-            //Assurance.startSession()
-            #endif
-        }
-    
+        let extensions = [AEPIdentity.Identity.self,
+                          Lifecycle.self,
+                          Signal.self,
+                          Edge.self,
+                          Consent.self,
+                          Analytics.self,
+                          AEPEdgeIdentity.Identity.self,
+                          Target.self,
+                          Consent.self,
+                          UserProfile.self,
+                          Assurance.self,
+                          Places.self,
+                          Messaging.self
+        ]
+        let appState = application.applicationState
+        MobileCore.registerExtensions(extensions, {
+            // NOTE: - The app id is hardcoded in order to support e2e automated testing
+            MobileCore.configureWith(appId: "94f571f308d5/f986c2be4925/launch-e96cdeaddea9-development")
+            if appState != .background {
+                MobileCore.lifecycleStart(additionalContextData: nil)
+            }
+        })
 
-        #if os(iOS)
-        let homepageSurface = Surface(path: "homepage")
-        Messaging.updatePropositionsForSurfaces([homepageSurface])
-        #endif
-
+        //MobileCore.updateConfigurationWith(configDict: ["experienceCloud.org": "056F3DD059CB22060A494021@AdobeOrg"])
+//            MobileCore.configureWith(appId: "launch-EN516bfbc0fe2b42449bf171a4f8cb9cef-development")
+//        })
         return true
     }
 
