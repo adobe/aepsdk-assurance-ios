@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1610"
+   LastUpgradeVersion = "1620"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4C20DE602D07BE90009DCDDC"
-               BuildableName = "TestApptvOS.app"
-               BlueprintName = "TestApptvOS"
+               BuildableName = "TvTestApp.app"
+               BlueprintName = "TvTestApp"
                ReferencedContainer = "container:AEPAssurance.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4C20DE602D07BE90009DCDDC"
-            BuildableName = "TestApptvOS.app"
-            BlueprintName = "TestApptvOS"
+            BuildableName = "TvTestApp.app"
+            BlueprintName = "TvTestApp"
             ReferencedContainer = "container:AEPAssurance.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4C20DE602D07BE90009DCDDC"
-            BuildableName = "TestApptvOS.app"
-            BlueprintName = "TestApptvOS"
+            BuildableName = "TvTestApp.app"
+            BlueprintName = "TvTestApp"
             ReferencedContainer = "container:AEPAssurance.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

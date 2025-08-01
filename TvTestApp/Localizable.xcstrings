@@ -1,0 +1,179 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@:" : {
+
+    },
+    "%@: Not Available on tvOS\n\n%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: Not Available on tvOS\n\n%2$@"
+          }
+        }
+      }
+    },
+    "© 2025 Adobe Inc. All rights reserved." : {
+
+    },
+    "About" : {
+
+    },
+    "Adobe Experience Platform Mobile SDK" : {
+
+    },
+    "Analytics" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analytics"
+          }
+        }
+      }
+    },
+    "Assurance" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assurance"
+          }
+        }
+      }
+    },
+    "Close" : {
+
+    },
+    "Consent" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consent"
+          }
+        }
+      }
+    },
+    "Duration: %@" : {
+
+    },
+    "Entry" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entry"
+          }
+        }
+      }
+    },
+    "Exit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exit"
+          }
+        }
+      }
+    },
+    "Get POIs" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get POIs"
+          }
+        }
+      }
+    },
+    "iOS Sample TV App" : {
+
+    },
+    "Loading video..." : {
+
+    },
+    "Loading..." : {
+
+    },
+    "Places" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Places"
+          }
+        }
+      }
+    },
+    "Playback Error" : {
+
+    },
+    "Quick Connect" : {
+
+    },
+    "Retry" : {
+
+    },
+    "Start Session" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start Session"
+          }
+        }
+      }
+    },
+    "This app demonstrates the Adobe Experience Platform Mobile SDK on tvOS. It includes examples of edge network communication, Analytics tracking,and SDK configuration." : {
+
+    },
+    "Track Action" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Track Action"
+          }
+        }
+      }
+    },
+    "Track State" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Track State"
+          }
+        }
+      }
+    },
+    "TV APP" : {
+
+    },
+    "UserProfile" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UserProfile"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
