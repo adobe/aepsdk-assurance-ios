@@ -40,7 +40,7 @@
 		4C8E3BA72D08F2ED008DD2F1 /* QuickConnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8E3BA62D08F2ED008DD2F1 /* QuickConnectViewModel.swift */; };
 		4C8E3BA92D0A6631008DD2F1 /* tvOSFloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8E3BA82D0A6631008DD2F1 /* tvOSFloatingButton.swift */; };
 		4C8E3BB82D0BA997008DD2F1 /* FloatingButtonPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8E3BB72D0BA997008DD2F1 /* FloatingButtonPresenter.swift */; };
-		580E2F0D869009FB95E587C4 /* Pods_TestApptvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A719608D5E78F68AE4D4F25 /* Pods_TestApptvOS.framework */; };
+		580E2F0D869009FB95E587C4 /* Pods_TvTestApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A719608D5E78F68AE4D4F25 /* Pods_TvTestApp.framework */; };
 		750EE32A2936A4490013C411 /* MockStatusPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EE3292936A4490013C411 /* MockStatusPresentation.swift */; };
 		750EE32C2937C6D50013C411 /* AssuranceStatusPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EE32B2937C6D50013C411 /* AssuranceStatusPresentationTests.swift */; };
 		750EE32E2937C7E40013C411 /* QuickConnectViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EE32D2937C7E40013C411 /* QuickConnectViewTests.swift */; };
@@ -235,18 +235,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0ADC674903FF55A1A77D9C89 /* Pods-TestApptvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestApptvOS.debug.xcconfig"; path = "Target Support Files/Pods-TestApptvOS/Pods-TestApptvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		0ADC674903FF55A1A77D9C89 /* Pods-TvTestApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TvTestApp.debug.xcconfig"; path = "Target Support Files/Pods-TvTestApp/Pods-TvTestApp.debug.xcconfig"; sourceTree = "<group>"; };
 		0E4862F591BACD0E7A2CB329 /* Pods_UnitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		11C59C66E154FB74A084BA10 /* Pods_TestApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1863846DA12D682A6B3196B0 /* Pods-UnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.release.xcconfig"; path = "Target Support Files/Pods-UnitTests/Pods-UnitTests.release.xcconfig"; sourceTree = "<group>"; };
 		192B02157B1810A6A8B532EB /* Pods-TestAppObjC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppObjC.debug.xcconfig"; path = "Target Support Files/Pods-TestAppObjC/Pods-TestAppObjC.debug.xcconfig"; sourceTree = "<group>"; };
 		28E8A60F3C3F769FE8A3577A /* Pods_TestAppObjC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestAppObjC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2A719608D5E78F68AE4D4F25 /* Pods_TestApptvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestApptvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A719608D5E78F68AE4D4F25 /* Pods_TvTestApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TvTestApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2ECF82FE2D946FB800E5A71C /* AssuranceStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStatusView.swift; sourceTree = "<group>"; };
 		2ECF82FF2D946FB800E5A71C /* AssuranceStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssuranceStatusViewModel.swift; sourceTree = "<group>"; };
 		30C657915E2FFEAFB943BEE5 /* Pods-TestApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestApp.release.xcconfig"; path = "Target Support Files/Pods-TestApp/Pods-TestApp.release.xcconfig"; sourceTree = "<group>"; };
 		36E5036F68C0D1285D63025C /* Pods-AEPAssurance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AEPAssurance.release.xcconfig"; path = "Target Support Files/Pods-AEPAssurance/Pods-AEPAssurance.release.xcconfig"; sourceTree = "<group>"; };
-		4C20DE612D07BE90009DCDDC /* TestApptvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApptvOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C20DE612D07BE90009DCDDC /* TvTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TvTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C20DE982D07DB39009DCDDC /* StatusUIPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusUIPresentable.swift; sourceTree = "<group>"; };
 		4C20DE9B2D07DB83009DCDDC /* tvOSStatusUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tvOSStatusUI.swift; sourceTree = "<group>"; };
 		4C8E3BA22D08EEE2008DD2F1 /* OverlayPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayPresenter.swift; sourceTree = "<group>"; };
@@ -268,7 +268,26 @@
 		7881FA5828D50C8D0051F902 /* QuickConnectServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickConnectServiceTests.swift; sourceTree = "<group>"; };
 		7EF3817848DFDEB7549C60CF /* Pods-TestApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestApp.debug.xcconfig"; path = "Target Support Files/Pods-TestApp/Pods-TestApp.debug.xcconfig"; sourceTree = "<group>"; };
 		860E1F2B3DF4C24A9874E3A6 /* Pods-AEPAssurance.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AEPAssurance.debug.xcconfig"; path = "Target Support Files/Pods-AEPAssurance/Pods-AEPAssurance.debug.xcconfig"; sourceTree = "<group>"; };
-		97AD0FD2424AFBDEA3CCDB01 /* Pods-TestApptvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestApptvOS.release.xcconfig"; path = "Target Support Files/Pods-TestApptvOS/Pods-TestApptvOS.release.xcconfig"; sourceTree = "<group>"; };
+		921FC9FD2E3C34600087AE50 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		921FCA002E3C34600087AE50 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		921FCA022E3C34600087AE50 /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
+		921FCA032E3C34600087AE50 /* SharedComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedComponents.swift; sourceTree = "<group>"; };
+		921FCA052E3C34600087AE50 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		921FCA072E3C34600087AE50 /* Big Buck Bunny - FULL HD 60FPS.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Big Buck Bunny - FULL HD 60FPS.mp4"; sourceTree = "<group>"; };
+		921FCA092E3C34600087AE50 /* VideosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosView.swift; sourceTree = "<group>"; };
+		921FCA0C2E3C34600087AE50 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		921FCA0D2E3C34600087AE50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		921FCA0E2E3C34600087AE50 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		921FCA0F2E3C34600087AE50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		921FCA102E3C34600087AE50 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		921FCA112E3C34600087AE50 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		921FCA122E3C34600087AE50 /* sample.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = sample.html; sourceTree = "<group>"; };
+		921FCA132E3C34600087AE50 /* sampleRules.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sampleRules.json; sourceTree = "<group>"; };
+		921FCA142E3C34600087AE50 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		921FCA152E3C34600087AE50 /* TvTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TvTestApp.entitlements; sourceTree = "<group>"; };
+		921FCA162E3C34600087AE50 /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
+		921FCA172E3C34600087AE50 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
+		97AD0FD2424AFBDEA3CCDB01 /* Pods-TvTestApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TvTestApp.release.xcconfig"; path = "Target Support Files/Pods-TvTestApp/Pods-TvTestApp.release.xcconfig"; sourceTree = "<group>"; };
 		B601171F27BAE193006D3968 /* connection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connection.png; sourceTree = "<group>"; };
 		B601172127BAE3EF006D3968 /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
 		B601172327BAE478006D3968 /* adobelogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adobelogo.png; sourceTree = "<group>"; };
@@ -406,7 +425,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C20DE912D07C18A009DCDDC /* AEPAssurance.framework in Frameworks */,
-				580E2F0D869009FB95E587C4 /* Pods_TestApptvOS.framework in Frameworks */,
+				580E2F0D869009FB95E587C4 /* Pods_TvTestApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,7 +473,7 @@
 				4FE37759693F38A8EB70FC1D /* Pods_AEPAssurance.framework */,
 				11C59C66E154FB74A084BA10 /* Pods_TestApp.framework */,
 				28E8A60F3C3F769FE8A3577A /* Pods_TestAppObjC.framework */,
-				2A719608D5E78F68AE4D4F25 /* Pods_TestApptvOS.framework */,
+				2A719608D5E78F68AE4D4F25 /* Pods_TvTestApp.framework */,
 				0E4862F591BACD0E7A2CB329 /* Pods_UnitTests.framework */,
 			);
 			name = Frameworks;
@@ -489,12 +508,102 @@
 				30C657915E2FFEAFB943BEE5 /* Pods-TestApp.release.xcconfig */,
 				192B02157B1810A6A8B532EB /* Pods-TestAppObjC.debug.xcconfig */,
 				DE7113B91F4879636B78444E /* Pods-TestAppObjC.release.xcconfig */,
-				0ADC674903FF55A1A77D9C89 /* Pods-TestApptvOS.debug.xcconfig */,
-				97AD0FD2424AFBDEA3CCDB01 /* Pods-TestApptvOS.release.xcconfig */,
+				0ADC674903FF55A1A77D9C89 /* Pods-TvTestApp.debug.xcconfig */,
+				97AD0FD2424AFBDEA3CCDB01 /* Pods-TvTestApp.release.xcconfig */,
 				F73A7FDE0D9F35CF5DB638F5 /* Pods-UnitTests.debug.xcconfig */,
 				1863846DA12D682A6B3196B0 /* Pods-UnitTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		921FC9FE2E3C34600087AE50 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				921FC9FD2E3C34600087AE50 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		921FC9FF2E3C34600087AE50 /* src */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		921FCA012E3C34600087AE50 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				921FCA002E3C34600087AE50 /* AboutView.swift */,
+			);
+			path = About;
+			sourceTree = "<group>";
+		};
+		921FCA042E3C34600087AE50 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				921FCA022E3C34600087AE50 /* NavigationView.swift */,
+				921FCA032E3C34600087AE50 /* SharedComponents.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		921FCA062E3C34600087AE50 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				921FCA052E3C34600087AE50 /* HomeView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		921FCA082E3C34600087AE50 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				921FCA072E3C34600087AE50 /* Big Buck Bunny - FULL HD 60FPS.mp4 */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		921FCA0A2E3C34600087AE50 /* Videos */ = {
+			isa = PBXGroup;
+			children = (
+				921FCA082E3C34600087AE50 /* src */,
+				921FCA092E3C34600087AE50 /* VideosView.swift */,
+			);
+			path = Videos;
+			sourceTree = "<group>";
+		};
+		921FCA0B2E3C34600087AE50 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				921FCA012E3C34600087AE50 /* About */,
+				921FCA042E3C34600087AE50 /* Components */,
+				921FCA062E3C34600087AE50 /* Home */,
+				921FCA0A2E3C34600087AE50 /* Videos */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		921FCA182E3C34600087AE50 /* TvTestApp */ = {
+			isa = PBXGroup;
+			children = (
+				921FC9FE2E3C34600087AE50 /* Preview Content */,
+				921FC9FF2E3C34600087AE50 /* src */,
+				921FCA0B2E3C34600087AE50 /* Views */,
+				921FCA0C2E3C34600087AE50 /* AppDelegate.swift */,
+				921FCA0D2E3C34600087AE50 /* Assets.xcassets */,
+				921FCA0E2E3C34600087AE50 /* ContentView.swift */,
+				921FCA0F2E3C34600087AE50 /* Info.plist */,
+				921FCA102E3C34600087AE50 /* Localizable.xcstrings */,
+				921FCA112E3C34600087AE50 /* README.md */,
+				921FCA122E3C34600087AE50 /* sample.html */,
+				921FCA132E3C34600087AE50 /* sampleRules.json */,
+				921FCA142E3C34600087AE50 /* SceneDelegate.swift */,
+				921FCA152E3C34600087AE50 /* TvTestApp.entitlements */,
+				921FCA162E3C34600087AE50 /* Video.swift */,
+				921FCA172E3C34600087AE50 /* VideoPlayerView.swift */,
+			);
+			path = TvTestApp;
 			sourceTree = "<group>";
 		};
 		B603F9FB27A9EB620033416B /* Resources */ = {
@@ -550,6 +659,7 @@
 				B64071A6262C313E00C43183 /* UnitTests */,
 				B64071E5262C8F8B00C43183 /* TestApp */,
 				B6DDFAA7268139B7002D2757 /* TestAppObjC */,
+				921FCA182E3C34600087AE50 /* TvTestApp */,
 				B640719A262C313E00C43183 /* Products */,
 				7C9CE91021FA05FB899F6787 /* Pods */,
 				4AA6375E514C465D994E92E6 /* Frameworks */,
@@ -563,7 +673,7 @@
 				B64071A2262C313E00C43183 /* UnitTests.xctest */,
 				B64071E4262C8F8B00C43183 /* TestApp.app */,
 				B6DDFAA6268139B7002D2757 /* TestAppObjC.app */,
-				4C20DE612D07BE90009DCDDC /* TestApptvOS.app */,
+				4C20DE612D07BE90009DCDDC /* TvTestApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -897,9 +1007,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		4C20DE602D07BE90009DCDDC /* TestApptvOS */ = {
+		4C20DE602D07BE90009DCDDC /* TvTestApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4C20DE822D07BE92009DCDDC /* Build configuration list for PBXNativeTarget "TestApptvOS" */;
+			buildConfigurationList = 4C20DE822D07BE92009DCDDC /* Build configuration list for PBXNativeTarget "TvTestApp" */;
 			buildPhases = (
 				DA65F598A3EEF3C41CA7D36B /* [CP] Check Pods Manifest.lock */,
 				4C20DE5D2D07BE90009DCDDC /* Sources */,
@@ -912,9 +1022,9 @@
 			dependencies = (
 				4C20DE902D07C170009DCDDC /* PBXTargetDependency */,
 			);
-			name = TestApptvOS;
-			productName = TestApptvOS;
-			productReference = 4C20DE612D07BE90009DCDDC /* TestApptvOS.app */;
+			name = TvTestApp;
+			productName = TvTestApp;
+			productReference = 4C20DE612D07BE90009DCDDC /* TvTestApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 		B6407198262C313E00C43183 /* AEPAssurance */ = {
@@ -1060,7 +1170,7 @@
 				B64071E3262C8F8A00C43183 /* TestApp */,
 				B6DDFAA5268139B7002D2757 /* TestAppObjC */,
 				B64212AC2683DB48007343B6 /* AEPAssuranceXCF */,
-				4C20DE602D07BE90009DCDDC /* TestApptvOS */,
+				4C20DE602D07BE90009DCDDC /* TvTestApp */,
 			);
 		};
 /* End PBXProject section */
@@ -1313,15 +1423,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TestApptvOS/Pods-TestApptvOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-TvTestApp/Pods-TvTestApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TestApptvOS/Pods-TestApptvOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-TvTestApp/Pods-TvTestApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TestApptvOS/Pods-TestApptvOS-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TvTestApp/Pods-TvTestApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C96D68C6964696C76BEEA060 /* [CP] Check Pods Manifest.lock */ = {
@@ -1361,7 +1471,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TestApptvOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TvTestApp-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1602,7 +1712,7 @@
 /* Begin XCBuildConfiguration section */
 		4C20DE832D07BE92009DCDDC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0ADC674903FF55A1A77D9C89 /* Pods-TestApptvOS.debug.xcconfig */;
+			baseConfigurationReference = 0ADC674903FF55A1A77D9C89 /* Pods-TvTestApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1625,7 +1735,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.assurance.TestApptvOS;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.assurance.TvTestApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -1638,7 +1748,7 @@
 		};
 		4C20DE842D07BE92009DCDDC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 97AD0FD2424AFBDEA3CCDB01 /* Pods-TestApptvOS.release.xcconfig */;
+			baseConfigurationReference = 97AD0FD2424AFBDEA3CCDB01 /* Pods-TvTestApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1661,7 +1771,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.assurance.TestApptvOS;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.assurance.TvTestApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -2012,7 +2122,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4C20DE822D07BE92009DCDDC /* Build configuration list for PBXNativeTarget "TestApptvOS" */ = {
+		4C20DE822D07BE92009DCDDC /* Build configuration list for PBXNativeTarget "TvTestApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4C20DE832D07BE92009DCDDC /* Debug */,
