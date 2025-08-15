@@ -10,6 +10,8 @@ function connect(url) {
         clearInterval(_pingInterval);
     }
     
+    _pingInterval = setInterval(doPing, 30000);
+    
     _socket.onmessage = function(messageEvent) {
         if(messageEvent.data === "__pong__") {
             log("socket onmessage() pong response from server");
@@ -20,9 +22,6 @@ function connect(url) {
     };
     _socket.onclose = function(closeEvent) {
         log("socket onclose() called");
-        if (_pingInterval != null) {
-            clearInterval(_pingInterval);
-        }
         var message = {
           wasClean: closeEvent.wasClean,
           reason: closeEvent.reason,
@@ -32,19 +31,10 @@ function connect(url) {
     };
     _socket.onerror = function() {
         log("socket onerror() called");
-        if (_pingInterval != null) {
-            clearInterval(_pingInterval);
-        }
         window.webkit.messageHandlers.onerror.postMessage('error');
     };
     _socket.onopen = function() {
         log("socket onopen() called");
-        // Send first ping after 1 second to prevent WebView dormancy
-        setTimeout(function() {
-            doPing();
-            // Then start regular 30-second pinging
-            _pingInterval = setInterval(doPing, 30000);
-        }, 1000);
         window.webkit.messageHandlers.onopen.postMessage('open');
     };
     
