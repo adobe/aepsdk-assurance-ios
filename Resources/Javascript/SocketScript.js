@@ -1,6 +1,6 @@
 var _socket;
 var _pingInterval;
-var _verbose = true;
+var _verbose = false;
 
 function connect(url) {
     log("socket connecting to: " + url);
