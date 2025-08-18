@@ -73,8 +73,17 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
         // grab the main queue to set up webView for socket connection
         // WebView Initialization should be run on main thread
         DispatchQueue.main.async {
-            self.webView = WKWebView(frame: CGRect.zero)
-            self.webView?.configuration.userContentController.addUserScript(WKUserScript(source: socketJavascript, injectionTime: .atDocumentEnd, forMainFrameOnly: false))
+            let configuration = WKWebViewConfiguration()
+            
+            // Keep javascript running even when webview is considered inactive.
+            if #available(iOS 17, *) {
+                configuration.preferences.inactiveSchedulingPolicy = .none
+            }
+            
+            configuration.userContentController.addUserScript(WKUserScript(source: socketJavascript, injectionTime: .atDocumentEnd, forMainFrameOnly: false))
+            
+            self.webView = WKWebView(frame: CGRect.zero, configuration: configuration)
+            
             self.setupCallbacks()
             self.webView?.navigationDelegate = self
             self.loadNav = self.webView?.loadHTMLString(self.pageContent, baseURL: nil)
