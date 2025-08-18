@@ -140,7 +140,7 @@ class MockWebView: WKWebView {
     var javaScriptStringReceived = ""
     var javaScriptMethodInvokeCount = 0
     var throwJavascriptError = false
-    #if compiler(>=6)
+#if compiler(>=6)
     override func evaluateJavaScript(_ javaScriptString: String, completionHandler: (@MainActor (Any?, (any Error)?) -> Void)? = nil) {
         if throwJavascriptError {
             completionHandler?(nil, MockError.error("mockError"))
