@@ -66,24 +66,11 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
         DispatchQueue.main.async {
             let configuration = WKWebViewConfiguration()
             
-//            // Configure to prevent suspension and optimize for background operation
-//            configuration.suppressesIncrementalRendering = false
-//            configuration.allowsInlineMediaPlayback = true
-//            configuration.mediaTypesRequiringUserActionForPlayback = []
-//            
-//            // Configure preferences to keep JavaScript active when inactive
-//            if #available(iOS 14.0, *) {
-//                configuration.defaultWebpagePreferences.allowsContentJavaScript = true
-//            } else {
-//                configuration.preferences.javaScriptEnabled = true
-//            }
-            
-            // Keep JavaScript timers running when WebView becomes inactive
+            // Keep javascript running even when webview is considered inactive.
             if #available(iOS 17, *) {
                 configuration.preferences.inactiveSchedulingPolicy = .none
             }
             
-            // Add our JavaScript
             configuration.userContentController.addUserScript(WKUserScript(source: socketJavascript, injectionTime: .atDocumentEnd, forMainFrameOnly: false))
             
             self.webView = WKWebView(frame: CGRect.zero, configuration: configuration)
