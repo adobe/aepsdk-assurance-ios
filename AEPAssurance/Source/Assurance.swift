@@ -24,6 +24,7 @@ public class Assurance: NSObject, Extension {
     public var metadata: [String: String]?
     public var runtime: ExtensionRuntime
 
+    private var timerQueue = DispatchQueue(label: "com.adobe.assurance.timerQueue")
     var timer: DispatchSourceTimer?
 
     #if DEBUG
@@ -243,10 +244,12 @@ public class Assurance: NSObject, Extension {
     /// If the timer get fired, then it shuts down the assurance extension.
     private func startShutDownTimer() {
         Log.debug(label: AssuranceConstants.LOG_TAG, "Assurance shutdown timer started. Waiting for 5 seconds to receive assurance session url.")
-        let queue = DispatchQueue.init(label: "com.adobe.assurance.shutdowntimer", qos: .background)
-        timer = createDispatchTimer(queue: queue, block: {
-            self.shutDownAssurance()
-        })
+        timerQueue.async { [weak self] in
+            guard let self else { return }
+            self.timer = self.createDispatchTimer(queue: timerQueue, block: {
+                self.shutDownAssurance()
+            })
+        }
     }
 
     /// Shuts down the assurance extension by setting the `shouldProcessEvents` to false. On which no more events
@@ -254,15 +257,18 @@ public class Assurance: NSObject, Extension {
     /// @see readyForEvent
     private func shutDownAssurance() {
         Log.debug(label: AssuranceConstants.LOG_TAG, "Timeout - Assurance extension did not receive session url. Shutting down from processing any further events.")
-        invalidateTimer()
+        self.invalidateTimer()
         Log.debug(label: AssuranceConstants.LOG_TAG, "Clearing the queued events and purging Assurance shared state.")
-        sessionOrchestrator.terminateSession(purgeBuffer: true)
+        self.sessionOrchestrator.terminateSession(purgeBuffer: true)
     }
 
     /// Invalidate the ongoing timer and cleans it from memory
     func invalidateTimer() {
-        timer?.cancel()
-        timer = nil
+        timerQueue.async { [weak self] in
+            guard let self = self else { return }
+            self.timer?.cancel()
+            self.timer = nil
+        }
     }
 
     /// Creates and returns a new dispatch source object for timer events.

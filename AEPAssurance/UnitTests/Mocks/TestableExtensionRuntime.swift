@@ -14,6 +14,7 @@
 import Foundation
 
 class TestableExtensionRuntime: ExtensionRuntime {
+    
 
     var listeners: [String: EventListener] = [:]
     var dispatchedEvents: [Event] = []
@@ -53,6 +54,10 @@ class TestableExtensionRuntime: ExtensionRuntime {
         }
     }
 
+    func recordHistoricalEvent(_ event: AEPCore.Event, handler: ((Bool) -> Void)?) {
+        //no-op
+    }
+    
     func getSharedState(extensionName: String, event: Event?, barrier: Bool) -> SharedStateResult? {
         return otherSharedStates["\(extensionName)-\(String(describing: event?.id))"] ?? nil
     }

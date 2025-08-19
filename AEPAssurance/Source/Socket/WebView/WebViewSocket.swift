@@ -20,11 +20,20 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     var socketURL: URL?
     
     var eventChunker: EventChunker = AssuranceEventChunker()
-
+    private var _socketState: SocketState = .unknown
     /// variable tracking the current socket status
-    var socketState: SocketState = .unknown {
-        didSet {
-            delegate.webSocket(self, didChangeState: self.socketState)
+    var socketState: SocketState {
+        get {
+            return socketQueue.sync { _socketState }
+        }
+        set {
+            socketQueue.async(flags: .barrier) { [weak self] in
+                guard let self = self else { return }
+                self._socketState = newValue
+                DispatchQueue.global().async {
+                    self.delegate.webSocket(self, didChangeState: newValue)
+                }
+            }
         }
     }
 
@@ -64,8 +73,17 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
         // grab the main queue to set up webView for socket connection
         // WebView Initialization should be run on main thread
         DispatchQueue.main.async {
-            self.webView = WKWebView(frame: CGRect.zero)
-            self.webView?.configuration.userContentController.addUserScript(WKUserScript(source: socketJavascript, injectionTime: .atDocumentEnd, forMainFrameOnly: false))
+            let configuration = WKWebViewConfiguration()
+            
+            // Keep javascript running even when webview is considered inactive.
+            if #available(iOS 17, *) {
+                configuration.preferences.inactiveSchedulingPolicy = .none
+            }
+            
+            configuration.userContentController.addUserScript(WKUserScript(source: socketJavascript, injectionTime: .atDocumentEnd, forMainFrameOnly: false))
+            
+            self.webView = WKWebView(frame: CGRect.zero, configuration: configuration)
+            
             self.setupCallbacks()
             self.webView?.navigationDelegate = self
             self.loadNav = self.webView?.loadHTMLString(self.pageContent, baseURL: nil)

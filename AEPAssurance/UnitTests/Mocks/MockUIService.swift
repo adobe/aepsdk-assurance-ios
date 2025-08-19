@@ -103,6 +103,14 @@ class MockFullScreenMessage: FullscreenMessage {
 }
 
 class MockMessageMonitor: MessageMonitoring {
+    func show(message: any AEPServices.Showable) -> (Bool, AEPServices.PresentationError?) {
+        return (true, nil)
+    }
+    
+    func show(message: any AEPServices.Showable, delegateControl: Bool) -> (Bool, AEPServices.PresentationError?) {
+        return (true, nil)
+    }
+    
     func show(message: AEPServices.Showable, delegateControl: Bool) -> Bool {
         return true
     }
@@ -132,7 +140,18 @@ class MockWebView: WKWebView {
     var javaScriptStringReceived = ""
     var javaScriptMethodInvokeCount = 0
     var throwJavascriptError = false
-
+#if compiler(>=6)
+    override func evaluateJavaScript(_ javaScriptString: String, completionHandler: (@MainActor (Any?, (any Error)?) -> Void)? = nil) {
+        if throwJavascriptError {
+            completionHandler?(nil, MockError.error("mockError"))
+        }
+        javaScriptMethodInvokeCount += 1
+        javaScriptStringReceived = javaScriptString
+        if javaScriptMethodInvokeCount == expectationCounter {
+            expectation?.fulfill()
+        }
+    }
+    #else
     override func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)? = nil) {
         if throwJavascriptError {
             completionHandler?(nil, MockError.error("mockError"))
@@ -143,6 +162,7 @@ class MockWebView: WKWebView {
             expectation?.fulfill()
         }
     }
+    #endif
 }
 
 enum MockError: Error {

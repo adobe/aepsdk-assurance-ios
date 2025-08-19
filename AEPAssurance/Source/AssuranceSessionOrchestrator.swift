@@ -32,13 +32,31 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     ///  1. Assurance SDK has timeout and shutdown after non-reception of deep link URL.
     ///  2. After an Assurance Session is terminated.
     var hasEverTerminated: Bool = false
+    private var _session: AssuranceSession?
 
     #if DEBUG
     var quickConnectManager: QuickConnectManager?
-    var session: AssuranceSession?
+    var session: AssuranceSession? {
+        get {
+            return orchestratorQueue.sync { _session }
+        } set {
+            orchestratorQueue.async {
+                self._session = newValue
+            }
+        }
+    }
     var authorizingPresentation: AssuranceAuthorizingPresentation?
     #else
-    private(set) var session: AssuranceSession?
+    private(set) var session: AssuranceSession? {
+        get {
+            return orchestratorQueue.sync { _session }
+        }
+        set {
+            orchestratorQueue.async {
+                self._session = newValue
+            }
+        }
+    }
     private(set) var authorizingPresentation: AssuranceAuthorizingPresentation?
     #endif
     
@@ -59,14 +77,14 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     ///    - sessionDetails: An `AssuranceSessionDetails` instance containing all the essential data for starting a session
     func createSession(withDetails sessionDetails: AssuranceSessionDetails) {
         orchestratorQueue.async {
-            if self.session != nil {
+            if self._session != nil {
                 Log.warning(label: AssuranceConstants.LOG_TAG, "An active Assurance session already exists. Cannot create a new one. Ignoring to process the scanned deeplink.")
                 return
             }
             
             self.stateManager.shareAssuranceState(withSessionID: sessionDetails.sessionId)
-            self.session = AssuranceSession(sessionDetails: sessionDetails, stateManager: self.stateManager, sessionOrchestrator: self, outboundEvents: self.outboundEventBuffer)
-            self.session?.startSession()
+            self._session = AssuranceSession(sessionDetails: sessionDetails, stateManager: self.stateManager, sessionOrchestrator: self, outboundEvents: self.outboundEventBuffer)
+            self._session?.startSession()
             
             self.outboundEventBuffer?.clear()
             self.outboundEventBuffer = nil
@@ -107,15 +125,15 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
             
             self.stateManager.clearAssuranceState()
             
-            self.session?.disconnect()
-            self.session = nil
+            self._session?.disconnect()
+            self._session = nil
         }
     }
 
     func queueEvent(_ assuranceEvent: AssuranceEvent) {
         orchestratorQueue.async {
             /// Queue this event to the active session if one exists.
-            if let session = self.session {
+            if let session = self._session {
                 session.sendEvent(assuranceEvent)
                 return
             }
