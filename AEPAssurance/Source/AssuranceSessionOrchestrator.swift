@@ -51,6 +51,11 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
         get {
             return orchestratorQueue.sync { _session }
         }
+        set {
+            orchestratorQueue.async {
+                self._session = newValue
+            }
+        }
     }
     private(set) var authorizingPresentation: AssuranceAuthorizingPresentation?
     #endif
