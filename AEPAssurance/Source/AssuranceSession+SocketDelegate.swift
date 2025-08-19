@@ -150,7 +150,7 @@ extension AssuranceSession: SocketDelegate {
     ///     - socket - the socket instance
     ///     - state - the present socket state
     func webSocket(_ socket: SocketConnectable, didChangeState state: SocketState) {
-        Log.debug(label: AssuranceConstants.LOG_TAG, "AssuranceSession: Socket state changed \(socket.socketState)")
+        Log.debug(label: AssuranceConstants.LOG_TAG, "AssuranceSession: Socket state changed \(state)")
         if state == .open {
             stateManager.connectedWebSocketURL = socket.socketURL?.absoluteString
         }
