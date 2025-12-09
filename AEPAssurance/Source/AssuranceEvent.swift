@@ -182,7 +182,13 @@ struct AssuranceEvent: Codable {
             negativeInfinity: String(-Double.greatestFiniteMagnitude),
             nan: "NaN"
         )
-        return (try? encoder.encode(self)) ?? Data()
+        
+        do {
+            return try encoder.encode(self)
+        } catch {
+            Log.error(label: AssuranceConstants.LOG_TAG, "Failed to encode AssuranceEvent to JSON. Error: \(error.localizedDescription)")
+            return Data()
+        }
     }
 
 }
