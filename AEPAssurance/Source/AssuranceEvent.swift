@@ -177,6 +177,11 @@ struct AssuranceEvent: Codable {
     var jsonData: Data {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .millisecondsSince1970
+        encoder.nonConformingFloatEncodingStrategy = .convertToString(
+            positiveInfinity: String(Double.greatestFiniteMagnitude),
+            negativeInfinity: String(-Double.greatestFiniteMagnitude),
+            nan: "NaN"
+        )
         return (try? encoder.encode(self)) ?? Data()
     }
 
