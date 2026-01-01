@@ -186,7 +186,9 @@ struct AssuranceEvent: Codable {
         do {
             return try encoder.encode(self)
         } catch {
-            Log.error(label: AssuranceConstants.LOG_TAG, "Failed to encode AssuranceEvent to JSON. Error: \(error.localizedDescription)")
+            let eventID = payload?[AssuranceConstants.ACPExtensionEventKey.UNIQUE_IDENTIFIER]?.stringValue
+            Log.error(label: AssuranceConstants.LOG_TAG, "Failed to encode AssuranceEvent (eventID: \(String(describing: eventID))) to JSON. " +
+                      "Error: \(error.localizedDescription)")
             return Data()
         }
     }
