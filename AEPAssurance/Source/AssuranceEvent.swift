@@ -177,7 +177,20 @@ struct AssuranceEvent: Codable {
     var jsonData: Data {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .millisecondsSince1970
-        return (try? encoder.encode(self)) ?? Data()
+        encoder.nonConformingFloatEncodingStrategy = .convertToString(
+            positiveInfinity: String(Double.greatestFiniteMagnitude),
+            negativeInfinity: String(-Double.greatestFiniteMagnitude),
+            nan: "NaN"
+        )
+        
+        do {
+            return try encoder.encode(self)
+        } catch {
+            let eventID = payload?[AssuranceConstants.ACPExtensionEventKey.UNIQUE_IDENTIFIER]?.stringValue
+            Log.error(label: AssuranceConstants.LOG_TAG, "Failed to encode AssuranceEvent (eventID: \(String(describing: eventID))) to JSON. " +
+                      "Error: \(error.localizedDescription)")
+            return Data()
+        }
     }
 
 }

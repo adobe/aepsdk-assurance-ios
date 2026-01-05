@@ -409,4 +409,97 @@ class AssuranceEventTests: XCTestCase {
         // verify if the responseId is captured
         XCTAssertEqual(childCoreEvent.parentID?.uuidString, assuranceEventForChild.payload?[AssuranceConstants.ACPExtensionEventKey.PARENT_IDENTIFIER]?.stringValue)
     }
+    
+    /*--------------------------------------------------
+     jsonData encoding with non-conforming floats
+     --------------------------------------------------*/
+    
+    func test_jsonData_withPositiveInfinity() {
+        // setup
+        let payload: [String: AnyCodable] = [
+            "normalValue": AnyCodable(42.0),
+            "infinityValue": AnyCodable(Double.infinity)
+        ]
+        let event = AssuranceEvent(type: "testType", payload: payload)
+        
+        // test
+        let jsonData = event.jsonData
+        let jsonObject = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any]
+        let payloadObject = jsonObject?["payload"] as? [String: Any]
+        
+        // verify
+        XCTAssertFalse(jsonData.isEmpty, "JSON data should not be empty")
+        XCTAssertNotNil(payloadObject, "Payload should be decoded")
+        XCTAssertEqual(42.0, payloadObject?["normalValue"] as? Double)
+        XCTAssertEqual(String(Double.greatestFiniteMagnitude), payloadObject?["infinityValue"] as? String)
+    }
+    
+    func test_jsonData_withNegativeInfinity() {
+        // setup
+        let payload: [String: AnyCodable] = [
+            "normalValue": AnyCodable(42.0),
+            "negativeInfinityValue": AnyCodable(-Double.infinity)
+        ]
+        let event = AssuranceEvent(type: "testType", payload: payload)
+        
+        // test
+        let jsonData = event.jsonData
+        let jsonObject = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any]
+        let payloadObject = jsonObject?["payload"] as? [String: Any]
+        
+        // verify
+        XCTAssertFalse(jsonData.isEmpty, "JSON data should not be empty")
+        XCTAssertNotNil(payloadObject, "Payload should be decoded")
+        XCTAssertEqual(42.0, payloadObject?["normalValue"] as? Double)
+        XCTAssertEqual(String(-Double.greatestFiniteMagnitude), payloadObject?["negativeInfinityValue"] as? String)
+    }
+    
+    func test_jsonData_withMultipleInfinityValues() {
+        // setup
+        let payload: [String: AnyCodable] = [
+            "positiveInf": AnyCodable(Double.infinity),
+            "negativeInf": AnyCodable(-Double.infinity),
+            "regularValue": AnyCodable(123.456)
+        ]
+        let event = AssuranceEvent(type: "testType", payload: payload)
+        
+        // test
+        let jsonData = event.jsonData
+        let jsonObject = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any]
+        let payloadObject = jsonObject?["payload"] as? [String: Any]
+        
+        // verify
+        XCTAssertFalse(jsonData.isEmpty, "JSON data should not be empty")
+        XCTAssertNotNil(payloadObject, "Payload should be decoded")
+        XCTAssertEqual(String(Double.greatestFiniteMagnitude), payloadObject?["positiveInf"] as? String)
+        XCTAssertEqual(String(-Double.greatestFiniteMagnitude), payloadObject?["negativeInf"] as? String)
+        XCTAssertEqual(123.456, payloadObject?["regularValue"] as? Double)
+    }
+    
+    func test_jsonData_withNestedInfinityValues() {
+        // setup
+        let nestedDict: [String: Any] = [
+            "nestedInfinity": Double.infinity,
+            "nestedValue": 99.0
+        ]
+        let payload: [String: AnyCodable] = [
+            "topLevel": AnyCodable(42.0),
+            "nested": AnyCodable(nestedDict)
+        ]
+        let event = AssuranceEvent(type: "testType", payload: payload)
+        
+        // test
+        let jsonData = event.jsonData
+        let jsonObject = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any]
+        let payloadObject = jsonObject?["payload"] as? [String: Any]
+        let nestedObject = payloadObject?["nested"] as? [String: Any]
+        
+        // verify
+        XCTAssertFalse(jsonData.isEmpty, "JSON data should not be empty")
+        XCTAssertNotNil(payloadObject, "Payload should be decoded")
+        XCTAssertEqual(42.0, payloadObject?["topLevel"] as? Double)
+        XCTAssertNotNil(nestedObject, "Nested object should be decoded")
+        XCTAssertEqual(String(Double.greatestFiniteMagnitude), nestedObject?["nestedInfinity"] as? String)
+        XCTAssertEqual(99.0, nestedObject?["nestedValue"] as? Double)
+    }
 }

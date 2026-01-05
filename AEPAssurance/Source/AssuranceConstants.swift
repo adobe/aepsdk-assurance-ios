@@ -15,7 +15,7 @@ import Foundation
 enum AssuranceConstants {
     static let EXTENSION_NAME = "com.adobe.assurance"
     static let FRIENDLY_NAME = "Assurance"
-    static let EXTENSION_VERSION = "5.0.2"
+    static let EXTENSION_VERSION = "5.0.3"
 
     static let LOG_TAG = FRIENDLY_NAME
     static let DEFAULT_ENVIRONMENT = AssuranceEnvironment.prod
