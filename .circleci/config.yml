@@ -17,8 +17,9 @@ workflows:
 jobs:
 
   build-and-test:
+    resource_class: m4pro.medium
     macos:
-      xcode: 15.1.0 # Specify the Xcode version to use
+      xcode: 16.4.0 # Specify the Xcode version to use
 
     steps:
       - checkout
@@ -66,8 +67,8 @@ jobs:
       # pre-start the simulator to prevent timeouts
       - macos/preboot-simulator:
           platform: "iOS"
-          version: "17.2"
-          device: "iPhone 15"
+          version: "18.5"
+          device: "iPhone 16"
 
       - run:
           name: Run Tests
