@@ -17,6 +17,7 @@ import Foundation
 import WebKit
 import XCTest
 
+@MainActor
 class iOSStatusUITests: XCTestCase {
 
     var statusUI: iOSStatusUI!

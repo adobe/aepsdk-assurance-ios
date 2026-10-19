@@ -19,7 +19,7 @@ class AssuranceUIUtil {
     /// Callback is called with nil data if there is any failure in capturing a screenshot.
     /// - Parameters:
     ///     - callback: callback  called with image `Data` of screenshot
-    func takeScreenshot(_ callback :@escaping (Data?) -> Void) {
+    func takeScreenshot(_ callback :@escaping @Sendable (Data?) -> Void) {
         // use main thread to capture the screenshot
         DispatchQueue.main.async {
             guard let layer = UIApplication.shared.assuranceGetKeyWindow()?.layer else {

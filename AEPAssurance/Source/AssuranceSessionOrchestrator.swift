@@ -17,7 +17,7 @@ import Foundation
 /// events or work flows (scanning QR code, disconnection from PIN screen, shake gesture for QuickConnect etc).
 ///
 /// Acts as the source of truth for all operations related to active session.
-class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConnectionDelegate {
+class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConnectionDelegate, @unchecked Sendable {
 
     let stateManager: AssuranceStateManager
     /// A buffer for holding the events until the initial Assurance session associated with
@@ -101,13 +101,15 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
             return
         }
 
-        guard let authorizingPresentation = authorizingPresentation, authorizingPresentation.sessionView is QuickConnectView else {
-            self.authorizingPresentation = AssuranceAuthorizingPresentation(authorizingView: QuickConnectView(withPresentationDelegate: self))
+        DispatchQueue.main.async {
+            guard let authorizingPresentation = self.authorizingPresentation, authorizingPresentation.sessionView is QuickConnectView else {
+                self.authorizingPresentation = AssuranceAuthorizingPresentation(authorizingView: QuickConnectView(withPresentationDelegate: self))
+                self.authorizingPresentation?.show()
+                return
+
+            }
             self.authorizingPresentation?.show()
-            return
-            
         }
-        self.authorizingPresentation?.show()
     }
     #endif
 
@@ -157,12 +159,14 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     
     // MARK: - AssurancePresentationDelegate
     func initializePinScreenFlow() {
-        guard let authorizingPresentation = authorizingPresentation, authorizingPresentation.sessionView is iOSPinCodeScreen else {
-            self.authorizingPresentation = AssuranceAuthorizingPresentation(authorizingView: self.authorizingPresentation?.sessionView ?? iOSPinCodeScreen(withPresentationDelegate: self))
+        DispatchQueue.main.async {
+            guard let authorizingPresentation = self.authorizingPresentation, authorizingPresentation.sessionView is iOSPinCodeScreen else {
+                self.authorizingPresentation = AssuranceAuthorizingPresentation(authorizingView: self.authorizingPresentation?.sessionView ?? iOSPinCodeScreen(withPresentationDelegate: self))
+                self.authorizingPresentation?.show()
+                return
+            }
             self.authorizingPresentation?.show()
-            return
         }
-        self.authorizingPresentation?.show()
     }
 
     func pinScreenConnectClicked(_ pin: String) {
@@ -174,12 +178,16 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
 
         /// display error if the OrgID is missing.
         guard let orgID = stateManager.getURLEncodedOrgID() else {
-            authorizingPresentation?.sessionConnectionError(error: .noOrgId)
+            DispatchQueue.main.async {
+                self.authorizingPresentation?.sessionConnectionError(error: .noOrgId)
+            }
             terminateSession(purgeBuffer: true)
             return
         }
         
-        authorizingPresentation?.sessionConnecting()
+        DispatchQueue.main.async {
+            self.authorizingPresentation?.sessionConnecting()
+        }
         Log.trace(label: AssuranceConstants.LOG_TAG, "Connect Button clicked. Starting a socket connection.")
         session.sessionDetails.authenticate(withPIN: pin, andOrgID: orgID)
         session.startSession()
@@ -213,37 +221,47 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     }
     
     func createQuickConnectSession(with sessionDetails: AssuranceSessionDetails) {
-        if session != nil {
-            Log.warning(label: AssuranceConstants.LOG_TAG, "Quick connect attempted when active session exists")
-            if authorizingPresentation?.sessionView is iOSPinCodeScreen {
-                Log.warning(label: AssuranceConstants.LOG_TAG, "Cannot create a new Quick Connect session, an active PIN based session exists.")
-                return
-            } else {
-                // This is the QuickConnect retry scenario. Disconnect the existing session without clearing the event buffer
-                Log.debug(label: AssuranceConstants.LOG_TAG, "Disconnecting active QuickConnect session and retrying")
-                terminateSession(purgeBuffer: false)
+        DispatchQueue.main.async {
+            if self.session != nil {
+                Log.warning(label: AssuranceConstants.LOG_TAG, "Quick connect attempted when active session exists")
+                if self.authorizingPresentation?.sessionView is iOSPinCodeScreen {
+                    Log.warning(label: AssuranceConstants.LOG_TAG, "Cannot create a new Quick Connect session, an active PIN based session exists.")
+                    return
+                } else {
+                    // This is the QuickConnect retry scenario. Disconnect the existing session without clearing the event buffer
+                    Log.debug(label: AssuranceConstants.LOG_TAG, "Disconnecting active QuickConnect session and retrying")
+                    self.terminateSession(purgeBuffer: false)
+                }
             }
+
+            self.authorizingPresentation?.sessionConnecting()
+            self.createSession(withDetails: sessionDetails)
         }
-        
-        authorizingPresentation?.sessionConnecting()
-        createSession(withDetails: sessionDetails)
     }
     
     func quickConnectError(error: AssuranceConnectionError) {
-        authorizingPresentation?.sessionConnectionError(error: error)
+        DispatchQueue.main.async {
+            self.authorizingPresentation?.sessionConnectionError(error: error)
+        }
     }
 #endif
     
     // MARK: - AssuranceConnectionDelegate
     func handleConnectionError(error: AssuranceConnectionError) {
-        authorizingPresentation?.sessionConnectionError(error: error)
+        DispatchQueue.main.async {
+            self.authorizingPresentation?.sessionConnectionError(error: error)
+        }
     }
     
     func handleSuccessfulConnection() {
-        authorizingPresentation?.sessionConnected()
+        DispatchQueue.main.async {
+            self.authorizingPresentation?.sessionConnected()
+        }
     }
     
     func handleSessionDisconnect() {
-        authorizingPresentation?.sessionDisconnected()
+        DispatchQueue.main.async {
+            self.authorizingPresentation?.sessionDisconnected()
+        }
     }
 }

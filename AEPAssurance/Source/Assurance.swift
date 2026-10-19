@@ -20,7 +20,7 @@ public class Assurance: NSObject, Extension {
 
     public var name = AssuranceConstants.EXTENSION_NAME
     public var friendlyName = AssuranceConstants.FRIENDLY_NAME
-    public static var extensionVersion = AssuranceConstants.EXTENSION_VERSION
+    public nonisolated(unsafe) static var extensionVersion = AssuranceConstants.EXTENSION_VERSION
     public var metadata: [String: String]?
     public var runtime: ExtensionRuntime
 

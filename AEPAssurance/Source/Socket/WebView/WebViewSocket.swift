@@ -14,7 +14,7 @@ import AEPServices
 import Foundation
 import WebKit
 
-class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScriptMessageHandler {
+class WebViewSocket: NSObject, SocketConnectable, @unchecked Sendable {
 
     var delegate: SocketDelegate
     var socketURL: URL?
@@ -154,20 +154,20 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
 
     // MARK: - WebView Delegate methods
 
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    nonisolated func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         let block = self.socketEventHandlers[message.name]
         block?(message)
     }
 
     // Called after page is loaded
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    nonisolated func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if navigation == self.loadNav {
             Log.trace(label: AssuranceConstants.LOG_TAG, "WKWebView initialization complete with socket connection javascript.")
             isWebViewLoaded = true
         }
     }
 
-    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+    nonisolated func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         if navigation == self.loadNav {
             Log.debug(label: AssuranceConstants.LOG_TAG, "WKWebView failed to load bundled JS for socket. Error: \(error.localizedDescription)")
         }
@@ -247,7 +247,7 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     }
 
     /// Helper method to run javascript commands on webView.
-    private func runJavascriptCommand(_ jsCommand: String, _ callbackError : @escaping (Error?) -> Void) {
+    private func runJavascriptCommand(_ jsCommand: String, _ callbackError : @escaping @Sendable (Error?) -> Void) {
         DispatchQueue.main.async {
             self.webView?.evaluateJavaScript(jsCommand, completionHandler: { _, error in
                 callbackError(error)
@@ -256,3 +256,5 @@ class WebViewSocket: NSObject, SocketConnectable, WKNavigationDelegate, WKScript
     }
 
 }
+
+extension WebViewSocket: WKNavigationDelegate, WKScriptMessageHandler {}

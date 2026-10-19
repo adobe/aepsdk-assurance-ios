@@ -24,31 +24,31 @@ class QuickConnectView: SessionAuthorizingUI {
     private let presentationDelegate: AssurancePresentationDelegate
     var displayed = false
     
-    lazy private var baseView : UIView = {
+    lazy private var baseView : UIView = { MainActor.assumeIsolated {
         let view = UIView()
         view.accessibilityLabel = "AssuranceQuickConnectBaseView"
         view.backgroundColor = .clear
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
-    }()
+    } }()
     
-    lazy private var safeView : UIView = {
+    lazy private var safeView : UIView = { MainActor.assumeIsolated {
         let view = UIView()
         view.accessibilityLabel = "AssuranceQuickConnectSafeView"
         view.backgroundColor = .clear
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
-    }()
+    } }()
     
-    lazy private var headerView : UIView = {
+    lazy private var headerView : UIView = { MainActor.assumeIsolated {
         let view = UIView()
         view.accessibilityLabel = "AssuranceQuickConnectHeaderView"
         view.backgroundColor = UIColor(red: 37.0/256.0, green: 37.0/256.0, blue: 37.0/256.0, alpha: 1)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
-    }()
+    } }()
     
-    lazy private var headerLabel : UILabel = {
+    lazy private var headerLabel : UILabel = { MainActor.assumeIsolated {
         let label = UILabel()
         label.accessibilityLabel = "AssuranceQuickConnectHeaderLabel"
         label.backgroundColor = .clear
@@ -58,9 +58,9 @@ class QuickConnectView: SessionAuthorizingUI {
         label.font = UIFont(name: "Helvetica-Bold", size: 30.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
-    }()
+    } }()
     
-    lazy private var descriptionTextView : UITextView = {
+    lazy private var descriptionTextView : UITextView = { MainActor.assumeIsolated {
         let textView = UITextView()
         textView.isEditable = false
         textView.accessibilityLabel = "AssuranceQuickConnectDescriptionTextView"
@@ -73,27 +73,27 @@ class QuickConnectView: SessionAuthorizingUI {
         textView.isScrollEnabled = false
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
-    }()
+    } }()
     
-    lazy private var connectionImageView : UIImageView = {
+    lazy private var connectionImageView : UIImageView = { MainActor.assumeIsolated {
         let imageView = UIImageView()
         imageView.image = UIImage(data: Data(bytes: connectionImage.content, count: connectionImage.content.count))
         imageView.contentMode = .scaleAspectFit
         imageView.accessibilityLabel = "AssuranceQuickConnectConnectionImageView"
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
-    }()
+    } }()
     
-    lazy private var adobeLogo : UIImageView = {
+    lazy private var adobeLogo : UIImageView = { MainActor.assumeIsolated {
         let imageView = UIImageView()
         imageView.image = UIImage(data: Data(bytes: adobelogo.content, count: adobelogo.content.count))
         imageView.contentMode = .scaleAspectFit
         imageView.accessibilityLabel = "AssuranceQuickConnectAdobeLogo"
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
-    }()
+    } }()
     
-    lazy private var buttonStackView : UIStackView = {
+    lazy private var buttonStackView : UIStackView = { MainActor.assumeIsolated {
         let stackView = UIStackView()
         stackView.backgroundColor = .clear
         stackView.spacing = 15.0
@@ -102,9 +102,9 @@ class QuickConnectView: SessionAuthorizingUI {
         stackView.distribution = .fillProportionally
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
-    }()
+    } }()
     
-    lazy private var cancelButton : UIButton = {
+    lazy private var cancelButton : UIButton = { MainActor.assumeIsolated {
         let button = UIButton()
         button.contentMode = .scaleAspectFit
         button.backgroundColor = .clear
@@ -118,9 +118,9 @@ class QuickConnectView: SessionAuthorizingUI {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(self.cancelClicked(_:)), for: .touchUpInside)
         return button
-    }()
+    } }()
     
-    lazy private var connectButton : UIButton = {
+    lazy private var connectButton : UIButton = { MainActor.assumeIsolated {
         let button = UIButton()
         button.contentMode = .scaleAspectFit
         button.backgroundColor = UIColor(red: 20.0/256.0, green: 115.0/256.0, blue: 230.0/256.0, alpha: 1)
@@ -132,9 +132,9 @@ class QuickConnectView: SessionAuthorizingUI {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(self.connectClicked(_:)), for: .touchUpInside)
         return button
-    }()
+    } }()
     
-    lazy private var errorTitle: UITextView = {
+    lazy private var errorTitle: UITextView = { MainActor.assumeIsolated {
         let textView = UITextView()
         textView.isEditable = false
         textView.accessibilityLabel = "AssuranceQuickConnectErrorLabel"
@@ -146,9 +146,9 @@ class QuickConnectView: SessionAuthorizingUI {
         textView.font = UIFont(name: "Helvetica-Bold", size: 18.0)
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
-    }()
+    } }()
     
-    lazy private var errorDescription: UITextView = {
+    lazy private var errorDescription: UITextView = { MainActor.assumeIsolated {
         let textView = UITextView()
         textView.isEditable = false
         textView.accessibilityLabel = "AssuranceQuickConnectErrorDescriptionTextView"
@@ -160,9 +160,9 @@ class QuickConnectView: SessionAuthorizingUI {
         textView.font = UIFont(name: "Helvetica", size: 14.0)
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
-    }()
+    } }()
     
-    lazy private var errorAndButtonsStackView: UIStackView = {
+    lazy private var errorAndButtonsStackView: UIStackView = { MainActor.assumeIsolated {
         let stackView = UIStackView()
         stackView.accessibilityLabel = "AssuranceErrorAndButtonsStackView"
         stackView.backgroundColor = .clear
@@ -172,7 +172,7 @@ class QuickConnectView: SessionAuthorizingUI {
         stackView.distribution = .fillProportionally
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
-    }()
+    } }()
     
     required init(withPresentationDelegate presentationDelegate: AssurancePresentationDelegate) {
         self.presentationDelegate = presentationDelegate

@@ -17,6 +17,7 @@ import Foundation
 import WebKit
 import XCTest
 
+@MainActor
 class iOSPinCodeScreenTests: XCTestCase {
 
     var mockStateManager: AssuranceStateManager!
@@ -46,6 +47,12 @@ class iOSPinCodeScreenTests: XCTestCase {
         runtime.reset()
     }
 
+    private func drainMainQueue() {
+        let expectation = XCTestExpectation(description: "drain main queue")
+        DispatchQueue.main.async { expectation.fulfill() }
+        wait(for: [expectation], timeout: 1.0)
+    }
+
     /*--------------------------------------------------
      show
      --------------------------------------------------*/
@@ -69,6 +76,7 @@ class iOSPinCodeScreenTests: XCTestCase {
         let shouldURLBeHandled = pinCodeScreen.overrideUrlLoad(message: mockMessage, url: "adbinapp://confirm?code=4444")
 
         // verify
+        drainMainQueue()
         XCTAssertTrue(mockSessionOrchestrator.pinScreenConnectClickedCalled)
         XCTAssertEqual("4444", mockSessionOrchestrator.pinScreenConnectClickedPinParameter)
         XCTAssertFalse(shouldURLBeHandled)
@@ -85,6 +93,7 @@ class iOSPinCodeScreenTests: XCTestCase {
         let shouldURLBeHandled = pinCodeScreen.overrideUrlLoad(message: mockMessage, url: "adbinapp://confirm?nodata")
         
         // verify
+        drainMainQueue()
         XCTAssertTrue(mockSessionOrchestrator.pinScreenConnectClickedCalled)
         XCTAssertEqual("", mockSessionOrchestrator.pinScreenConnectClickedPinParameter)
         XCTAssertFalse(shouldURLBeHandled)
@@ -99,6 +108,7 @@ class iOSPinCodeScreenTests: XCTestCase {
         let shouldURLBeHandled = pinCodeScreen.overrideUrlLoad(message: mockMessage, url: "adbinapp://cancel?")
 
         // verify that the message is dismissed
+        drainMainQueue()
         XCTAssertTrue(mockSessionOrchestrator.pinScreenCancelClickedCalled)
         XCTAssertFalse(shouldURLBeHandled)
     }
@@ -169,6 +179,7 @@ class iOSPinCodeScreenTests: XCTestCase {
         pinCodeScreen.onShow(message: mockMessage)
 
         // verify
+        drainMainQueue()
         XCTAssertTrue(pinCodeScreen.displayed)
     }
 
@@ -185,6 +196,7 @@ class iOSPinCodeScreenTests: XCTestCase {
         pinCodeScreen.onDismiss(message: mockMessage)
 
         // verify
+        drainMainQueue()
         XCTAssertFalse(pinCodeScreen.displayed)
         XCTAssertNil(pinCodeScreen.fullscreenMessage)
         XCTAssertNil(pinCodeScreen.fullscreenWebView)

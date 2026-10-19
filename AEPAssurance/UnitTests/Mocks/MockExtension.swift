@@ -16,7 +16,7 @@ import Foundation
 class MockExtension: Extension {
     var name = "mockExtension"
     var friendlyName = "mockExtension"
-    static var extensionVersion = "0.0.1"
+    nonisolated(unsafe) static var extensionVersion = "0.0.1"
     var metadata: [String: String]?
 
     let runtime: ExtensionRuntime
