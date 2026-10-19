@@ -12,7 +12,7 @@
 import AEPServices
 import Foundation
 
-class AssuranceSession {
+class AssuranceSession: @unchecked Sendable {
     let RECONNECT_TIMEOUT = 5
     let stateManager: AssuranceStateManager
     var sessionDetails: AssuranceSessionDetails

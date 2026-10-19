@@ -24,7 +24,7 @@ import UIKit
 /// Once the command to capture a screenshot is received, this plugin uses the `AssuranceBlob` service to upload the screenshot data.
 /// The ` AssuranceBlob` service then responds with the blobID of the uploaded screenshot image. This blobID is then forwarded to the ongoing assurance session.
 /// Failure to upload the screenshot will result in not sending any event to assurance session.
-class PluginScreenshot: AssurancePlugin {
+class PluginScreenshot: AssurancePlugin, @unchecked Sendable {
 
     weak var session: AssuranceSession?
     var uiUtil = AssuranceUIUtil()

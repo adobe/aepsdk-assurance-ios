@@ -13,7 +13,7 @@
 import AEPServices
 import Foundation
 
-class AssuranceSessionDetails {
+class AssuranceSessionDetails: @unchecked Sendable {
 
     typealias SOCKET_URL_KEYS = AssuranceConstants.SocketURLKeys
     

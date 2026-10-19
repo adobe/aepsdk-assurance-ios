@@ -14,6 +14,7 @@ import Foundation
 import XCTest
 @testable import AEPAssurance
 
+@MainActor
 class QuickConnectViewTests: XCTestCase {
     var sessionOrchestrator: MockSessionOrchestrator!
     var mockStateManager: MockStateManager!

@@ -14,6 +14,7 @@ import Foundation
 import XCTest
 @testable import AEPAssurance
 
+@MainActor
 class AssuranceSessionOrchestratorTests: XCTestCase {
     
     var sessionOrchestrator: AssuranceSessionOrchestrator!
@@ -168,6 +169,7 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         // verify that the UI is indicated for the error and session is cleared
         wait(for: [mockSession.startSessionCalled], timeout: 1.0)
         wait(for: [mockSession.disconnectCalled], timeout: 1.0)
+        drainMainQueue()
         XCTAssertTrue(mockAuthorizingPresentation.sessionConnectionErrorCalled)
         XCTAssertEqual(.noOrgId ,mockAuthorizingPresentation.sessionConnectionErrorValue)
         XCTAssertTrue(mockStateManager.clearAssuranceStateCalled)
@@ -222,6 +224,7 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         let sampleSessionDetails = AssuranceSessionDetails(sessionId: sampleSessionID, clientId: "sampleClientID")
         sessionOrchestrator.createQuickConnectSession(with: sampleSessionDetails)
         
+        drainMainQueue()
         XCTAssertTrue(mockAuthorizingPresentation.sessionConnectingCalled)
         
         wait(for: [mockStateManager.shareAssuranceStateExpectation], timeout: 1.0)
@@ -252,6 +255,7 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         
         sessionOrchestrator.quickConnectError(error: .genericError)
         
+        drainMainQueue()
         XCTAssertTrue(mockAuthorizingPresentation.sessionConnectionErrorCalled)
         XCTAssertEqual(mockAuthorizingPresentation.sessionConnectionErrorValue, .genericError)
     }
@@ -263,6 +267,7 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         
         sessionOrchestrator.handleConnectionError(error: .genericError)
         
+        drainMainQueue()
         XCTAssertTrue(mockAuthorizingPresentation.sessionConnectionErrorCalled)
         XCTAssertEqual(mockAuthorizingPresentation.sessionConnectionErrorValue, .genericError)
         
@@ -274,6 +279,7 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         
         sessionOrchestrator.handleSuccessfulConnection()
         
+        drainMainQueue()
         XCTAssertTrue(mockAuthorizingPresentation.sessionConnectedCalled)
         
     }
@@ -284,10 +290,17 @@ class AssuranceSessionOrchestratorTests: XCTestCase {
         
         sessionOrchestrator.handleSessionDisconnect()
         
+        drainMainQueue()
         XCTAssertTrue(mockAuthorizingPresentation.sessionDisconnectedCalled)
     }
     
     // MARK: - Private methods
+    private func drainMainQueue() {
+        let expectation = XCTestExpectation(description: "drain main queue")
+        DispatchQueue.main.async { expectation.fulfill() }
+        wait(for: [expectation], timeout: 1.0)
+    }
+
     private func queueTwoOutboundEvents() {
         sessionOrchestrator.outboundEventBuffer?.append(AssuranceEvent(type: "event1", payload: [:]))
         sessionOrchestrator.outboundEventBuffer?.append(AssuranceEvent(type: "event2", payload: [:]))
