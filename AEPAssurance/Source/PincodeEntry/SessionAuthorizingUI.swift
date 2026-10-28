@@ -12,6 +12,7 @@
 
 import Foundation
 
+@MainActor
 protocol SessionAuthorizingUI {
 
     /// property that indicated if the session authorizing ui screen is currently displayed

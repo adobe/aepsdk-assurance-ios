@@ -19,19 +19,24 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
     /// Invoked when the fullscreen message is displayed
     /// - Parameters:
     ///     - message: Fullscreen message which is currently shown
-    func onShow(message: FullscreenMessage) {
-        displayed = true
-        fullscreenWebView = message.webView as? WKWebView
-        Log.trace(label: AssuranceConstants.LOG_TAG, "PinCode Screen loaded and awaiting input from user.")
+    nonisolated func onShow(message: FullscreenMessage) {
+        let webView = message.webView as? WKWebView
+        runOnMain {
+            self.displayed = true
+            self.fullscreenWebView = webView
+            Log.trace(label: AssuranceConstants.LOG_TAG, "PinCode Screen loaded and awaiting input from user.")
+        }
     }
 
     /// Invoked when the fullscreen message is dismissed
     /// - Parameters:
     ///     - message: Fullscreen message which is dismissed
-    func onDismiss(message: FullscreenMessage) {
-        displayed = false
-        fullscreenWebView = nil
-        fullscreenMessage = nil
+    nonisolated func onDismiss(message: FullscreenMessage) {
+        runOnMain {
+            self.displayed = false
+            self.fullscreenWebView = nil
+            self.fullscreenMessage = nil
+        }
     }
 
     /// Invoked when the fullscreen message is attempting to load a url
@@ -39,7 +44,7 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
     ///     - message: Fullscreen message
     ///     - url:     String the url being loaded by the message
     /// - Returns: True if the core wants to handle the URL (and not the fullscreen message view implementation)
-    func overrideUrlLoad(message: FullscreenMessage, url: String?) -> Bool {
+    nonisolated func overrideUrlLoad(message: FullscreenMessage, url: String?) -> Bool {
 
         // no operation if we are unable to find the host of the url
         // return true, so force core to handle the URL
@@ -50,8 +55,10 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
         // when the user hits "Cancel" on the iOS pinpad screen. Dismiss the fullscreen message
         // return false, to indicate that the URL has been handled
         if host == AssuranceConstants.HTMLURLPath.CANCEL {
-            self.presentationDelegate.pinScreenCancelClicked()
             message.dismiss()
+            runOnMain {
+                self.presentationDelegate.pinScreenCancelClicked()
+            }
             return false
         }
 
@@ -60,7 +67,9 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
         if host == AssuranceConstants.HTMLURLPath.CONFIRM {
             // get the entered 4 digit code from url
             let pin = URL(string: url ?? "")?.params["code"] ?? ""
-            self.presentationDelegate.pinScreenConnectClicked(pin)
+            runOnMain {
+                self.presentationDelegate.pinScreenConnectClicked(pin)
+            }
             return false
         }
 
@@ -70,8 +79,20 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
     ///
     /// Invoked when the FullscreenMessage failed to be displayed
     ///
-    func onShowFailure() {
+    nonisolated func onShowFailure() {
         Log.warning(label: AssuranceConstants.LOG_TAG, "Unable to display the pincode screen, onShowFailure delegate method is invoked")
+    }
+
+    /// Runs the given main-actor work synchronously when already on the main thread
+    /// (the path AEPServices uses to deliver these callbacks), otherwise hops to main.
+    /// Running synchronously preserves the original callback ordering so a deferred
+    /// block cannot clobber a newer presentation's state.
+    private nonisolated func runOnMain(_ work: @escaping @MainActor () -> Void) {
+        if Thread.isMainThread {
+            MainActor.assumeIsolated(work)
+        } else {
+            DispatchQueue.main.async(execute: work)
+        }
     }
 
 }

@@ -16,6 +16,7 @@ import Foundation
 ///
 /// Represents the Assurance Session's Authorizing Presentation
 ///
+@MainActor
 class AssuranceAuthorizingPresentation {
     
     let sessionView: SessionAuthorizingUI
@@ -27,9 +28,7 @@ class AssuranceAuthorizingPresentation {
     /// Call this to show the UI elements that are required when a session is initialized.
     func show() {
         // invoke the pinpad screen and create a socketURL with the pincode and other essential parameters
-        DispatchQueue.main.async {
-            self.sessionView.show()
-        }
+        self.sessionView.show()
     }
     
     func sessionConnecting() {

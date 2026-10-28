@@ -154,7 +154,7 @@ struct AssuranceEvent: Codable {
         return payload?[AssuranceConstants.PayloadKey.DETAIL]?.dictionaryValue
     }
 
-    static private var eventNumberCounter: Int32 = 0
+    static private nonisolated(unsafe) var eventNumberCounter: Int32 = 0
     private static func generateEventNumber() -> Int32 {
         OSAtomicIncrement32(&eventNumberCounter)
         return eventNumberCounter
