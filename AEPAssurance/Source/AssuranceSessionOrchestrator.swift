@@ -221,21 +221,35 @@ class AssuranceSessionOrchestrator: AssurancePresentationDelegate, AssuranceConn
     }
     
     func createQuickConnectSession(with sessionDetails: AssuranceSessionDetails) {
-        DispatchQueue.main.async {
-            if self.session != nil {
-                Log.warning(label: AssuranceConstants.LOG_TAG, "Quick connect attempted when active session exists")
-                if self.authorizingPresentation?.sessionView is iOSPinCodeScreen {
-                    Log.warning(label: AssuranceConstants.LOG_TAG, "Cannot create a new Quick Connect session, an active PIN based session exists.")
-                    return
-                } else {
-                    // This is the QuickConnect retry scenario. Disconnect the existing session without clearing the event buffer
-                    Log.debug(label: AssuranceConstants.LOG_TAG, "Disconnecting active QuickConnect session and retrying")
-                    self.terminateSession(purgeBuffer: false)
-                }
+        // Resolve the active-session decision and submit the session transition
+        // synchronously so termination/creation stay in arrival order on the
+        // orchestratorQueue relative to a concurrent quickConnectCancelled().
+        if session != nil {
+            Log.warning(label: AssuranceConstants.LOG_TAG, "Quick connect attempted when active session exists")
+            if isPinBasedSessionActive() {
+                Log.warning(label: AssuranceConstants.LOG_TAG, "Cannot create a new Quick Connect session, an active PIN based session exists.")
+                return
+            } else {
+                // This is the QuickConnect retry scenario. Disconnect the existing session without clearing the event buffer
+                Log.debug(label: AssuranceConstants.LOG_TAG, "Disconnecting active QuickConnect session and retrying")
+                terminateSession(purgeBuffer: false)
             }
+        }
 
+        DispatchQueue.main.async {
             self.authorizingPresentation?.sessionConnecting()
-            self.createSession(withDetails: sessionDetails)
+        }
+        createSession(withDetails: sessionDetails)
+    }
+
+    /// Returns whether the current authorizing presentation is a PIN based screen.
+    /// Reads the main-actor presentation safely from any thread.
+    private func isPinBasedSessionActive() -> Bool {
+        if Thread.isMainThread {
+            return MainActor.assumeIsolated { self.authorizingPresentation?.sessionView is iOSPinCodeScreen }
+        }
+        return DispatchQueue.main.sync {
+            MainActor.assumeIsolated { self.authorizingPresentation?.sessionView is iOSPinCodeScreen }
         }
     }
     

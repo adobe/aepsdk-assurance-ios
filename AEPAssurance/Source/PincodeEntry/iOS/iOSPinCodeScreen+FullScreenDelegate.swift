@@ -21,7 +21,7 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
     ///     - message: Fullscreen message which is currently shown
     nonisolated func onShow(message: FullscreenMessage) {
         let webView = message.webView as? WKWebView
-        DispatchQueue.main.async {
+        runOnMain {
             self.displayed = true
             self.fullscreenWebView = webView
             Log.trace(label: AssuranceConstants.LOG_TAG, "PinCode Screen loaded and awaiting input from user.")
@@ -32,7 +32,7 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
     /// - Parameters:
     ///     - message: Fullscreen message which is dismissed
     nonisolated func onDismiss(message: FullscreenMessage) {
-        DispatchQueue.main.async {
+        runOnMain {
             self.displayed = false
             self.fullscreenWebView = nil
             self.fullscreenMessage = nil
@@ -56,7 +56,7 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
         // return false, to indicate that the URL has been handled
         if host == AssuranceConstants.HTMLURLPath.CANCEL {
             message.dismiss()
-            DispatchQueue.main.async {
+            runOnMain {
                 self.presentationDelegate.pinScreenCancelClicked()
             }
             return false
@@ -67,7 +67,7 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
         if host == AssuranceConstants.HTMLURLPath.CONFIRM {
             // get the entered 4 digit code from url
             let pin = URL(string: url ?? "")?.params["code"] ?? ""
-            DispatchQueue.main.async {
+            runOnMain {
                 self.presentationDelegate.pinScreenConnectClicked(pin)
             }
             return false
@@ -81,6 +81,18 @@ extension iOSPinCodeScreen: FullscreenMessageDelegate {
     ///
     nonisolated func onShowFailure() {
         Log.warning(label: AssuranceConstants.LOG_TAG, "Unable to display the pincode screen, onShowFailure delegate method is invoked")
+    }
+
+    /// Runs the given main-actor work synchronously when already on the main thread
+    /// (the path AEPServices uses to deliver these callbacks), otherwise hops to main.
+    /// Running synchronously preserves the original callback ordering so a deferred
+    /// block cannot clobber a newer presentation's state.
+    private nonisolated func runOnMain(_ work: @escaping @MainActor () -> Void) {
+        if Thread.isMainThread {
+            MainActor.assumeIsolated(work)
+        } else {
+            DispatchQueue.main.async(execute: work)
+        }
     }
 
 }
