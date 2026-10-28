@@ -14,7 +14,7 @@ import AEPServices
 import Foundation
 import WebKit
 
-extension iOSPinCodeScreen: @preconcurrency FullscreenMessageDelegate {
+extension iOSPinCodeScreen: FullscreenMessageDelegate {
 
     /// Invoked when the fullscreen message is displayed
     /// - Parameters:
