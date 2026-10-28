@@ -10,8 +10,8 @@
 Adobe Experience Platform Assurance is a product from Adobe Experience Cloud to help you inspect, proof, simulate, and validate how you collect data or serve experiences in your mobile app. For more information on what Assurance can do for you, see [here](https://experienceleague.adobe.com/en/docs/experience-platform/assurance/home#what-can-assurance-do-for-you). To integrate Assurance in your app, refer to the [documentation](https://developer.adobe.com/client-sdks/home/base/assurance/).
 
 ## Requirements
-- Xcode 15.0 or newer
-- Swift 5.1 or newer
+- Xcode 15.3 or newer
+- Swift 5.10 or newer
 
 ## Installation
 
